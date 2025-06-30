@@ -17,7 +17,7 @@ using static TUGraz.VectoCore.OutputData.SumDataFields;
 
 namespace TUGraz.VectoCore.OutputData
 {
-	[SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
 	[SuppressMessage("ReSharper", "IdentifierTypo")]
 	public static class SumDataFields
 	{
@@ -812,7 +812,7 @@ namespace TUGraz.VectoCore.OutputData
 			{ E_PS_CompressorOn, SumFunc((r, m) => m.EnergyPneumaticCompressorOn().ConvertToKiloWattHour(), ModalResultField.Nl_busAux_PS_generated)},
 			{ E_BusAux_ES_generated, SumFunc((r, m) => m.EnergyBusAuxESGenerated().ConvertToKiloWattHour(), ModalResultField.P_busAux_ES_generated)},
 			{ E_BusAux_ES_consumed, SumFunc((r, m) => m.EnergyBusAuxESConsumed().ConvertToKiloWattHour(), ModalResultField.P_busAux_ES_consumer_sum)},
-			{ Delta_E_BusAux_Battery, SumFunc((r, m) => ((r.BusAuxiliaries != null && r.BusAuxiliaries.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart)
+			{ Delta_E_BusAux_Battery, SumFunc((r, m) => (r.BusAuxiliaries?.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
 					? m.DeltaSOCBusAuxBattery() * r.BusAuxiliaries.ElectricalUserInputsConfig.ElectricStorageCapacity
 					: 0.SI<WattSecond>())
 				.ConvertToKiloWattHour()) },
@@ -1225,7 +1225,7 @@ namespace TUGraz.VectoCore.OutputData
 			{ E_IEPC_OFF_Loss_Format, (r, m, em) => m.ElectricMotorOffLosses(em).ConvertToKiloWattHour() },
 			{ E_IEPC_LOSS_FORMAT, (r, m, em) => m.ElectricMotorLosses(em).ConvertToKiloWattHour() },
 			{ E_IEPC_OFF_TIME_SHARE, (r, m, em) => (ConvertedSI)m.ElectricMotorOffTimeShare(em) },
-			{ EM_RATED_POWER, (r, m, em) => r.VehicleData.InputData.Components.IEPC?.TotalRatedPowerCalculated.ConvertToKiloWatt() ?? 0.SI<Watt>().ConvertToKiloWatt() },
+			{ EM_RATED_POWER, (r, m, em) => r.VehicleData.InputData.Components?.IEPC?.TotalRatedPowerCalculated.ConvertToKiloWatt() ?? 0.SI<Watt>().ConvertToKiloWatt() },
 			{ EM_RATED_SPEED_HI, (r, m, em) => r.VehicleData.InputData.Components?.IEPC?.VoltageLevels.MaxBy(v  => v.VoltageLevel)?.ContinuousTorqueSpeed.AsRPM ?? 0 },
 			{ EM_RATED_SPEED_LO, (r, m, em) => r.VehicleData.InputData.Components?.IEPC?.VoltageLevels.MinBy(v  => v.VoltageLevel)?.ContinuousTorqueSpeed.AsRPM ?? 0 },
 			{ EM_RATED_TORQUE_HI, (r, m, em) => (ConvertedSI)(r.VehicleData.InputData.Components.IEPC?.VoltageLevels.MaxBy(v  => v.VoltageLevel)?.ContinuousTorque ?? 0.SI<NewtonMeter>()) },

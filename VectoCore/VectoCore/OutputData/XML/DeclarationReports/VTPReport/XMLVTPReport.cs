@@ -37,7 +37,6 @@ using System.Xml;
 using System.Xml.Linq;
 using NLog.Config;
 using NLog.Targets;
-using TUGraz.IVT.VectoXML.Writer;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;

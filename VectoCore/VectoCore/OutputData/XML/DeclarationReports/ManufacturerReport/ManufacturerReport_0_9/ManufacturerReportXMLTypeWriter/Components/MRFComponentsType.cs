@@ -540,7 +540,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 				_mrfFactory.GetRetarderType().GetElement(inputData),
 				_mrfFactory.GetAxleGearType().GetElement(inputData),
 				_mrfFactory.GetAxleWheelsType().GetElement(inputData),
-				_mrfFactory.GetPrimaryBusAuxType_Conventional().GetElement(inputData.JobInputData.Vehicle.Components.BusAuxiliaries)
+				_mrfFactory.GetPrimaryBusAuxType_HEV_P().GetElement(inputData.JobInputData.Vehicle.Components.BusAuxiliaries)
 			);
 		}
 

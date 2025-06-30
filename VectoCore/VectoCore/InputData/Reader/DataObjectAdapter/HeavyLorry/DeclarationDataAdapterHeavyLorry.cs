@@ -43,7 +43,6 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.AuxiliaryDataAdapter;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.Interfaces;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.StrategyDataAdapter;
-using TUGraz.VectoCore.InputData.Reader.ShiftStrategy;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent;
@@ -61,14 +60,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 	{
 		public abstract class LorryBase : AbstractSimulationDataAdapter, ILorryDeclarationDataAdapter
 		{
-            
-            private readonly IDriverDataAdapter _driverDataAdapter = new LorryDriverDataAdapter();
-            //protected readonly IVehicleDataAdapter _vehicleDataAdapter = new LorryVehicleDataAdapter();
-			private readonly IAxleGearDataAdapter _axleGearDataAdapter = new AxleGearDataAdapter();
-			private readonly RetarderDataAdapter _retarderDataAdapter = new RetarderDataAdapter();
-			private readonly IAirdragDataAdapter _airdragDataAdapter = new AirdragDataAdapter();
 
-			private IAngledriveDataAdapter _angleDriveDataAdapter = new AngledriveDataAdapter();
+			protected virtual IDriverDataAdapter DriverDataAdapter { get; } = new LorryDriverDataAdapter();
+            //protected readonly IVehicleDataAdapter _vehicleDataAdapter = new LorryVehicleDataAdapter();
+			protected virtual IAxleGearDataAdapter AxleGearDataAdapter { get; }  = new AxleGearDataAdapter();
+			protected virtual IRetarderDataAdapter RetarderDataAdapter { get; }  = new RetarderDataAdapter();
+			protected virtual IAirdragDataAdapter AirdragDataAdapter { get; }  = new AirdragDataAdapter();
+
+			protected virtual IAngledriveDataAdapter AngleDriveDataAdapter { get; } = new AngledriveDataAdapter();
 
 			protected virtual IVehicleDataAdapter VehicleDataAdapter { get; } = new LorryVehicleDataAdapter();
 			protected abstract IEngineDataAdapter EngineDataAdapter { get; }
@@ -85,7 +84,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
 			public virtual DriverData CreateDriverData(Segment segment)
 			{
-				return _driverDataAdapter.CreateDriverData(segment);
+				return DriverDataAdapter.CreateDriverData(segment);
 			}
 
 			protected abstract GearboxType[] SupportedGearboxTypes { get; }
@@ -143,18 +142,18 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 			public virtual AirdragData CreateAirdragData(IVehicleDeclarationInputData vehicleData, Mission mission,
 				Segment segment, OvcHevMode ovcMode)
 			{
-				return _airdragDataAdapter.CreateAirdragData(vehicleData, mission, segment, ovcMode);
+				return AirdragDataAdapter.CreateAirdragData(vehicleData, mission, segment, ovcMode);
 			}
 
 			public AxleGearData CreateAxleGearData(IAxleGearInputData axlegearData)
 			{
-				return _axleGearDataAdapter.CreateAxleGearData(axlegearData);
+				return AxleGearDataAdapter.CreateAxleGearData(axlegearData);
 			}
 
 
 			public AngledriveData CreateAngledriveData(IAngledriveInputData data)
 			{
-				return _angleDriveDataAdapter.CreateAngledriveData(data, false);
+				return AngleDriveDataAdapter.CreateAngledriveData(data, false);
 			}
 
 			public virtual CombustionEngineData CreateEngineData(IVehicleDeclarationInputData vehicle,
@@ -164,10 +163,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 				return EngineDataAdapter.CreateEngineData(vehicle, engineMode, mission);
 			}
 
-			public virtual GearboxData CreateGearboxData(IVehicleDeclarationInputData inputData, VectoRunData runData,
-				IShiftPolygonCalculator shiftPolygonCalc)
+			public virtual GearboxData CreateGearboxData(IVehicleDeclarationInputData inputData, VectoRunData runData, GearboxType? overrideGearboxType = null)
 			{
-				return GearboxDataAdapter.CreateGearboxData(inputData, runData, shiftPolygonCalc, SupportedGearboxTypes);
+				var name = GetShiftStrategyName(inputData, overrideGearboxType);
+				var retVal = GearboxDataAdapter.CreateGearboxData(inputData, runData, ShiftStrategyFactory.CreateShiftPolygonCalculator(name, runData.GearshiftParameters), SupportedGearboxTypes);
+				retVal.ShiftStrategy = name;
+				return retVal;
 			}
 
 			public virtual ShiftStrategyParameters CreateGearshiftData(double axleRatio,
@@ -179,7 +180,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 			public RetarderData CreateRetarderData(IRetarderInputData retarderData, ArchitectureID archID,
 				IIEPCDeclarationInputData iepcInputData)
 			{
-				return _retarderDataAdapter.CreateRetarderData(retarderData, archID, iepcInputData);
+				return RetarderDataAdapter.CreateRetarderData(retarderData, archID, iepcInputData);
 			}
 
 			public virtual PTOData CreatePTOCycleData(IGearboxDeclarationInputData gbx, IPTOTransmissionInputData pto)
@@ -205,7 +206,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
 			public AxleGearData CreateDummyAxleGearData(IGearboxDeclarationInputData gbxData)
 			{
-				return _axleGearDataAdapter.CreateDummyAxleGearData(gbxData);
+				return AxleGearDataAdapter.CreateDummyAxleGearData(gbxData);
 			}
 
 			public virtual IList<Tuple<PowertrainPosition, ElectricMotorData>> CreateElectricMachines(
@@ -333,7 +334,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 			private readonly HeavyLorryPEVAuxiliaryDataAdapter
 				_auxDataAdapter = new HeavyLorryPEVAuxiliaryDataAdapter();
 
-			protected override IGearboxDataAdapter GearboxDataAdapter { get; } = new GearboxDataAdapter(null);
+			protected override IGearboxDataAdapter GearboxDataAdapter { get; } = null;
 
 			protected override IEngineDataAdapter EngineDataAdapter => throw new NotImplementedException();
 
@@ -458,7 +459,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 		{
 			#region Overrides of BatteryElectric
 
-			protected override GearboxType[] SupportedGearboxTypes => new[]
+			protected override IGearboxDataAdapter GearboxDataAdapter { get; } = new GearboxDataAdapter(null);
+
+            protected override GearboxType[] SupportedGearboxTypes => new[]
 				{ GearboxType.AMT, GearboxType.ATPowerSplit, GearboxType.ATSerial, GearboxType.APTN };
 
 			#endregion
@@ -513,7 +516,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
 			protected override IPTODataAdapter PtoDataAdapter => throw new NotImplementedException();
 
-			#endregion
-		}
-	}
+			protected override IAxleGearDataAdapter AxleGearDataAdapter => throw new NotImplementedException();
+
+			protected override IRetarderDataAdapter RetarderDataAdapter => throw new NotImplementedException();
+
+			protected override IAirdragDataAdapter AirdragDataAdapter => throw new NotImplementedException();
+
+			protected override IAngledriveDataAdapter AngleDriveDataAdapter => throw new NotImplementedException();
+
+            #endregion
+        }
+    }
 }

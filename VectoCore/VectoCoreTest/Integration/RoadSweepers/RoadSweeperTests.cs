@@ -109,7 +109,8 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestReadingPTOCycleDuringDrive()
 		{
 			var cycle = @"TestData/RoadSweepers/Class9_RigidTruck_6x2_PTO/PTO-cycle.vptor";

@@ -5,6 +5,7 @@ Imports System.Linq
 Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.OutputData.FileIO
 
 Public Class HybridStrategyParams
     Implements IHybridStrategyParameters

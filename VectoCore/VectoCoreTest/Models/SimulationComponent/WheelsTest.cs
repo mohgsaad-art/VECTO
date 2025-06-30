@@ -44,7 +44,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	{
 		private const string VehicleDataFile = @"TestData/Components/24t Coach.vveh";
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WheelsRequestTest()
 		{
 			var container = VehicleContainer.CreateVehicleContainer(null, null, null);

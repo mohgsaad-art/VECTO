@@ -7,16 +7,13 @@ using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunData
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus;
-using TUGraz.VectoCore.Utils.Ninject;
 
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 {
 	public class DeclarationDataAdapterNinjectModule : AbstractNinjectModule
 	{
 		#region Overrides of NinjectModule
-
-		private VehicleTypeAndArchitectureStringHelperRundata _vehicleStringHelper =
-			new VehicleTypeAndArchitectureStringHelperRundata();
+		
 		public override void Load()
 		{
 			#region HeavyLorry

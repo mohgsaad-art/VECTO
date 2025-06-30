@@ -9,7 +9,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     public class MeasuredSpeedGearHybridsElectricMotor : ElectricMotor
     {
         public MeasuredSpeedGearHybridsElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, 
-            PowertrainPosition position) : base(container, data, control, position)
+            PowertrainPosition position) : base(container, data, control, position, false)
         {}
 
         public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false)

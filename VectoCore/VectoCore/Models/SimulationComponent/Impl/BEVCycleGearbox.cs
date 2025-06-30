@@ -7,7 +7,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class BEVCycleGearbox : CycleGearbox
     {
-        public BEVCycleGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData)
+        public BEVCycleGearbox(IVehicleContainer container, VectoRunData runData) : base(container)
         {}
 
         protected override IResponse GetDisengagedResponse(Second absTime, Second dt, PerSecond outAngularVelocity)

@@ -72,6 +72,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		public NewtonMeter MaxTorque { get; internal set; }
 
 		public ShiftPolygon TorqueConverterShiftPolygon { get; set; }
+		
+		public ShiftPolygon DeRatedEmShiftPolygon { get; set; }
 
 		// ReSharper disable once UnusedMember.Global -- used via validation
 		public static ValidationResult ValidateGearData(GearData gearData, ValidationContext context)

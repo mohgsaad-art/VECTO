@@ -76,7 +76,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestSumCalcFixedTime()
 		{
 			var writer = new FileOutputWriter("testsumcalc_fixed");
@@ -175,7 +176,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual((500.0 * 1e-4) * 1000 * 1000 / 500, sumData.Rows[0].ParseDouble("FC-Map [g/km]"), 1e-3);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestSumCalcVariableTime()
 		{
 			var writer = new FileOutputWriter("testsumcalc_var");

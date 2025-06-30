@@ -56,6 +56,11 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		Watt PowerDemand(Second absTime, Second dt, Watt powerDemandEletricMotor, Watt auxPower, bool dryRun);
 	}
 
+	public interface ITestpowertrainGensetChargerAdapter : IElectricChargerPort
+	{
+
+	}
+	
 	public interface IFuelCellPort
 	{
 		Watt Initialize();

@@ -1094,17 +1094,11 @@ Public Class GearboxForm
             Return Nothing
         End If
 
-        Dim tmpRunData as VectoRunData = New VectoRunData() With {
-                .GearboxData = New GearboxData() with {
-                .Type = CType(CbGStype.SelectedValue, GearboxType)
-                },
-                .GearshiftParameters = New  ShiftStrategyParameters(), 
-                .JobType = VectoSimulationJobType.BatteryElectricVehicle
-                }
         Dim kernel As IKernel = new StandardKernel(new VectoNinjectModule)
-        dim ptBuilder as IPowertrainBuilder = kernel.Get(of IPowertrainBuilder)()
-        Dim tmpStrategy as IShiftPolygonCalculator = ptBuilder.GetShiftStrategy(new DummyVehicleContainer(tmpRunData))
-        
+        dim shiftStrategyFactory as IShiftStrategyFactory = kernel.Get(of IShiftStrategyFactory)()
+        Dim tmpStrategyName as String = shiftStrategyFactory.GetShiftStrategyName( CType(CbGStype.SelectedValue, GearboxType), VectoSimulationJobType.BatteryElectricVehicle)
+        Dim tmpStrategy As IShiftPolygonCalculator = shiftStrategyFactory.CreateShiftPolygonCalculator(tmpStrategyName, Nothing)
+
         dim em as ElectricMotorData = ConvertToElectricMotorData(emFld, gear)
 
         Dim shiftLines As ShiftPolygon = tmpStrategy.ComputeDeclarationShiftPolygon(
@@ -1138,16 +1132,10 @@ Public Class GearboxForm
             Return Nothing
         End If
 
-        Dim tmpRunData as VectoRunData = New VectoRunData() With {
-            .GearboxData = New GearboxData() with {
-                .Type = CType(CbGStype.SelectedValue, GearboxType)
-            },
-            .JobType = _vehicleJobType
-        }
         Dim kernel As IKernel = new StandardKernel(new VectoNinjectModule)
-        dim ptBuilder as IPowertrainBuilder = kernel.Get(of IPowertrainBuilder)()
-        Dim tmpStrategy as IShiftPolygonCalculator = ptBuilder.GetShiftStrategy(new DummyVehicleContainer(tmpRunData))
-            
+        dim shiftStrategyFactory as IShiftStrategyFactory = kernel.Get(of IShiftStrategyFactory)()
+        Dim tmpStrategyName as String = shiftStrategyFactory.GetShiftStrategyName( CType(CbGStype.SelectedValue, GearboxType), _vehicleJobType)
+        Dim tmpStrategy As IShiftPolygonCalculator = shiftStrategyFactory.CreateShiftPolygonCalculator(tmpStrategyName, Nothing)
 
         Dim shiftLines As ShiftPolygon = tmpStrategy.ComputeDeclarationShiftPolygon(
             CType(CbGStype.SelectedValue, GearboxType), gear - 1,
@@ -1216,49 +1204,13 @@ Public Class GearboxForm
     End Sub
 
     Private Sub btnExportXML_Click(sender As Object, e As EventArgs) Handles btnExportXML.Click
-        If Not Cfg.DeclMode Then
-            MsgBox("XML Export is only supported in Declaration Mode")
-            Exit Sub
-        End If
-        If Not FolderFileBrowser.OpenDialog("") Then
-            Exit Sub
-        End If
-        Dim filePath As String = FolderFileBrowser.Files(0)
-
-        Dim data As Gearbox = FillGearboxData(_gbxFile)
-        If (Cfg.DeclMode) Then
-            Dim export As XDocument = New XMLDeclarationWriter(data.Manufacturer).GenerateVectoComponent(data, data)
-            export.Save(Path.Combine(filePath, data.ModelName + ".xml"))
-        Else
-		    Dim kernel As IKernel = new StandardKernel(new VectoNinjectModule)
-		    dim writer As IXMLEngineeringWriter = kernel.Get(of IXMLEngineeringWriter)()
-		    writer.Configuration = new WriterConfiguration() With { .SingleFile = true, .BasePath = filePath }
-			Dim export As XDocument = writer.WriteComponent(TryCast(data, IGearboxEngineeringInputData))
-            export.Save(Path.Combine(filePath, data.ModelName + ".xml"))
-        End If
+        MsgBox("XML Export is lo nonger supported")
+        
     End Sub
 
     Private Sub btnExportAxlGearXML_Click(sender As Object, e As EventArgs) Handles btnExportAxlGearXML.Click
-        If Not Cfg.DeclMode Then
-            MsgBox("XML Export is only supported in Declaration Mode")
-            Exit Sub
-        End If
-        If Not FolderFileBrowser.OpenDialog("") Then
-            Exit Sub
-        End If
-        Dim filePath As String = FolderFileBrowser.Files(0)
+        MsgBox("XML Export is lo nonger supported")
 
-        Dim data As Gearbox = FillGearboxData(_gbxFile)
-        If (Cfg.DeclMode) Then
-            Dim export As XDocument = New XMLDeclarationWriter(data.Manufacturer).GenerateVectoComponent(data)
-            export.Save(Path.Combine(filePath, data.ModelName + ".xml"))
-        Else
-		    Dim kernel As IKernel = new StandardKernel(new VectoNinjectModule)
-		    dim writer As IXMLEngineeringWriter = kernel.Get(of IXMLEngineeringWriter)()
-		    writer.Configuration = new WriterConfiguration() With { .SingleFile = true, .BasePath = filePath }
-			Dim export As XDocument = writer.WriteComponent(TryCast(data, IAxleGearInputData))
-            export.Save(Path.Combine(filePath, data.ModelName + ".xml"))
-        End If
     End Sub
 
     Private Sub btExportVGBS_Click(sender As Object, e As EventArgs) Handles btExportVGBS.Click

@@ -75,6 +75,8 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		Second TractionInterruption { get; }
 		uint NumGears { get; }
 
+		bool Disengaged { get; }
+
 		bool DisengageGearbox { get; }
 
 		bool GearEngaged(Second absTime);

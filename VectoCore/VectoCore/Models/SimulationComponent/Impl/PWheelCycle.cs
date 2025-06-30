@@ -33,6 +33,7 @@ using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -42,10 +43,15 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
+	public interface IPWheelCycle : IDriverInfo, IVehicleInfo, ITnInProvider
+    {
+
+	}
+
 	/// <summary>
 	/// Driving Cycle for the PWheel driving cycle.
 	/// </summary>
-	public class PWheelCycle : PowertrainDrivingCycle, IDriverInfo, IVehicleInfo
+	public class PWheelCycle : PowertrainDrivingCycle, IPWheelCycle
 	{
 		protected bool FirstRun = true;
 		protected readonly VectoRunData RunData;

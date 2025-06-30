@@ -39,6 +39,7 @@ namespace TUGraz.VectoCore.Tests.Utils
         TestCase("1.1.3.400-DEV", "1.1.4.400-DEV", VersioningUtil.VersionPart.Build, -1),
         TestCase("1.2.2.400-DEV", "1.2.1.400-DEV", VersioningUtil.VersionPart.Build, 1),
         TestCase("1.1.3.400-DEV", "1.1.3.400-DEV", VersioningUtil.VersionPart.Build, 0),
+        Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void TestCompareVersionsWithBound(string a, string b, VersioningUtil.VersionPart bound, int result)
         {
@@ -61,6 +62,7 @@ namespace TUGraz.VectoCore.Tests.Utils
         TestCase("1.1-DEV", false),
         TestCase("1.1.1-DEV", false),
         TestCase("a.b.c.d-qwe", false),
+        Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void TestIsVersion(string text, bool result)
         {

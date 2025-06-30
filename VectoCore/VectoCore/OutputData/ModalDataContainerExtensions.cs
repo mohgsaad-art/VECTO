@@ -4,13 +4,14 @@ using System.Data;
 using System.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 
 namespace TUGraz.VectoCore.OutputData
 {
-	public static class ModalDataContainerExtensions
+    public static class ModalDataContainerExtensions
 	{
 		public static T Max<T>(this IModalDataContainer data, ModalResultField field)
 		{

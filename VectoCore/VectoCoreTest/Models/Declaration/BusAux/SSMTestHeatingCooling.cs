@@ -216,7 +216,7 @@ public class SSMTestHeatingCooling
 	TestCase(CFG9  , 6  , HeatPump2Stage    , HeatPumpCont , 856.80    , 0.0)       ,
 	TestCase(CFG9  , 8  , HeatPump2Stage    , HeatPumpCont , 1360.3368 , 59.7565)   ,
 	TestCase(CFG9  , 11 , HeatPump2Stage    , HeatPumpCont , 3393.4694 , 285.6602)  ,
-
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
 	public void SSMTest_Cooling_SingleEnvironment(BusHVACSystemConfiguration cfg, int envId, HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump,  double expectedElPwrW, double expectedMechPwrW)
@@ -294,7 +294,7 @@ public class SSMTestHeatingCooling
 		TestCase(CFG9 , HeatPump2Stage , HeatPumpCont   , 1039.7276 , 41.703)   ,
 		TestCase(CFG9 , HeatPumpR744   , HeatPump3Stage , 708.0087, 392.4745) ,
 		TestCase(CFG9 , HeatPump2Stage , HeatPumpR744   , 1084.5117, 46.679)   ,
-
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void SSMTest_Cooling_AvgAllEnvironments(BusHVACSystemConfiguration cfg, HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, double expectedElPwrW, double expectedMechPwrW)
@@ -392,7 +392,7 @@ public class SSMTestHeatingCooling
 		TestCase(CFG10, 4, HeatPumpNone, HeatPump3Stage, NoElHtr, AuxHtrPwr0, 1973.9875),
 		TestCase(CFG10, 5, HeatPumpNone, HeatPump3Stage, NoElHtr, AuxHtrPwr0, 1494.6531),
 		TestCase(CFG10, 6, HeatPumpNone, HeatPump3Stage, NoElHtr, AuxHtrPwr0, 0),
-
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void SSMTest_HeatingDemand_SingleEnvironment(BusHVACSystemConfiguration cfg, int envId, HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr, double expectedHeatingPower)
@@ -443,9 +443,10 @@ public class SSMTestHeatingCooling
 		TestCase("2f", CFG1, 2, HeatPumpNone, HeatPumpNone, AirElHtr, AuxHtrPwr30, HDC10, HDC10, 7261.9812, 0, 0, 0, 9077.4766),
 		TestCase("2g", CFG1, 2, HeatPumpNone, HeatPumpNone, WaterElHtr, AuxHtrPwr30, HDC10, HDC10, 7261.9812, 0, 0, 0, 9077.4766),
 		TestCase("2h", CFG1, 2, HeatPumpNone, HeatPumpNone, OthrElHtr | AirElHtr, AuxHtrPwr30, HDC10, HDC10, 7261.9812, 0, 0, 0, 9077.4766),
+		Category(Definitions.TESTCASE_MIGRATED)
 
-	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG1(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    ]
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG1(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -513,9 +514,10 @@ public class SSMTestHeatingCooling
 
 		TestCase("3k", CFG2, 3, HeatPumpR744, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC4, HDC11, 4395.4812, 140.6554, 0, 0, 5054.8034),
 		TestCase("3l", CFG2, 3, HeatPumpR744, HeatPumpNone, WaterElHtr, AuxHtrPwr30, HDC3, HDC10, 4395.4812, 140.6554, 0, 0, 5054.8034),
+		Category(Definitions.TESTCASE_MIGRATED)
 
-	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG2(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    ]
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG2(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -541,9 +543,10 @@ public class SSMTestHeatingCooling
 
 		TestCase("2c", CFG3, 2, HeatPumpNone, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC11, HDC11, 7261.9812, 0, 0, 0, 9077.4766),
 		TestCase("2d", CFG3, 2, HeatPumpNone, HeatPumpNone, AirElHtr, AuxHtrPwr30, HDC10, HDC10, 7261.9812, 0, 0, 0, 9077.4766),
+		Category(Definitions.TESTCASE_MIGRATED)
 
-	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG3(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    ]
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG3(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -593,8 +596,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2k", CFG4, 2, HeatPumpR744, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC4, HDC11, 7261.9812, 249.1856, 0, 0, 8442.0532),
 		TestCase("2l", CFG4, 2, HeatPumpR744, HeatPumpNone, OthrElHtr, AuxHtrPwr30, HDC3, HDC10, 7261.9812, 249.1856, 0, 0, 8442.0532),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG4(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG4(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -643,8 +647,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2k", CFG5, 2, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2l", CFG5, 2, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG5(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG5(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -694,8 +699,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2k", CFG6, 2, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2l", CFG6, 2, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG6(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG6(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -782,8 +788,9 @@ public class SSMTestHeatingCooling
 		TestCase("2w", CFG7, 2, HeatPumpR744, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC4, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2x", CFG7, 2, HeatPumpR744, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC3, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
 
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG7(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG7(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -833,8 +840,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2k", CFG8, 2, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2l", CFG8, 2, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG8(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG8(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -919,8 +927,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2w", CFG9, 2, HeatPumpR744, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC4, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2x", CFG9, 2, HeatPumpR744, HeatPumpR744, WaterElHtr, AuxHtrPwr30, HDC3, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG9(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG9(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -970,8 +979,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("2k", CFG10, 2, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 7261.9812, 2491.8563, 0, 0, 2723.243),
 		TestCase("2l", CFG10, 2, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 7261.9812, 2491.8563, 0, 0, 2723.243),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_SingleEnvironment_CFG10(string dummySort, BusHVACSystemConfiguration cfg, int envId,
+    public void SSMTest_HeatingDistribution_SingleEnvironment_CFG10(string dummySort, BusHVACSystemConfiguration cfg, int envId,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -996,7 +1006,7 @@ public class SSMTestHeatingCooling
 		TestCase("f", CFG1, HeatPumpNone, HeatPumpNone, AirElHtr, AuxHtrPwr30, HDC10, HDC10, 1485.6642, 0, 0, 15.3592, 1839.2252),
 		TestCase("g", CFG1, HeatPumpNone, HeatPumpNone, WaterElHtr, AuxHtrPwr30, HDC10, HDC10, 1485.6642, 0, 0, 15.3592, 1839.2252),
 		TestCase("h", CFG1, HeatPumpNone, HeatPumpNone, OthrElHtr | AirElHtr, AuxHtrPwr30, HDC10, HDC10, 1485.6642, 0, 0, 15.3592, 1839.2252),
-
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG1(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
@@ -1025,9 +1035,10 @@ public class SSMTestHeatingCooling
 		TestCase("j", CFG2, HeatPumpR744, HeatPumpNone, WaterElHtr, AuxHtrPwr0, HDC2, HDC9, 1485.6642, 61.056, 0, 1441.5793, 0),
 		TestCase("k", CFG2, HeatPumpR744, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC4, HDC11, 1485.6642, 48.9335, 0, 0, 1708.2994),
 		TestCase("l", CFG2, HeatPumpR744, HeatPumpNone, WaterElHtr, AuxHtrPwr30, HDC3, HDC10, 1485.6642, 48.9335, 0, 15.3592, 1690.4444),
+		Category(Definitions.TESTCASE_MIGRATED)
 
-	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG2(string dummySort, BusHVACSystemConfiguration cfg,
+    ]
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG2(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1045,9 +1056,10 @@ public class SSMTestHeatingCooling
 
 		TestCase("c", CFG3, HeatPumpNone, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC11, HDC11, 1485.6642, 0, 0, 0, 1857.0802),
 		TestCase("d", CFG3, HeatPumpNone, HeatPumpNone, AirElHtr, AuxHtrPwr30, HDC10, HDC10, 1485.6642, 0, 0, 15.3592, 1839.2252),
+		Category(Definitions.TESTCASE_MIGRATED)
 
-	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG3(string dummySort, BusHVACSystemConfiguration cfg,
+    ]
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG3(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1077,8 +1089,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("k", CFG4, HeatPumpR744, HeatPumpNone, NoElHtr, AuxHtrPwr30, HDC4, HDC11, 1485.6642, 48.9335, 0, 0, 1708.2994),
 		TestCase("l", CFG4, HeatPumpR744, HeatPumpNone, OthrElHtr, AuxHtrPwr30, HDC3, HDC10, 1485.6642, 48.9335, 0, 15.3592, 1690.4444),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG4(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG4(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1108,8 +1121,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("k", CFG5, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("l", CFG5, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG5(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG5(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1139,8 +1153,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("k", CFG6, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("l", CFG6, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG6(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG6(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1188,8 +1203,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("w", CFG7, HeatPumpR744, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC4, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("x", CFG7, HeatPumpR744, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC3, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG7(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG7(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1219,8 +1235,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("k", CFG8, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("l", CFG8, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG8(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG8(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1268,8 +1285,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("w", CFG9, HeatPumpR744, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC4, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("x", CFG9, HeatPumpR744, HeatPumpR744, WaterElHtr, AuxHtrPwr30, HDC3, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG9(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG9(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1299,8 +1317,9 @@ public class SSMTestHeatingCooling
 
 		TestCase("k", CFG10, HeatPumpNone, HeatPumpR744, NoElHtr, AuxHtrPwr30, HDC11, HDC4, 1485.6642, 489.3354, 0, 0, 369.2716),
 		TestCase("l", CFG10, HeatPumpNone, HeatPumpR744, OthrElHtr, AuxHtrPwr30, HDC10, HDC3, 1485.6642, 489.3354, 0, 15.3592, 351.4166),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-	public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG10(string dummySort, BusHVACSystemConfiguration cfg,
+    public void SSMTest_HeatingDistribution_AvgAllEnvironment_CFG10(string dummySort, BusHVACSystemConfiguration cfg,
 		HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, HeaterType electricHeater, double auxHeaterPwr,
 		HeatingDistributionCase expectedHeatingDistributionCase, HeatingDistributionCase expectedHeatingDistributionCasePassenger,
@@ -1318,6 +1337,7 @@ public class SSMTestHeatingCooling
 	[
 		TestCase(CFG7  , 11  , HeatPump2Stage    , HeatPump3Stage, 5000, 9639.0, 329.0112, 5705.3337),
 		TestCase(CFG7, 11, HeatPumpCont, HeatPumpCont, 5000, 9639.0, 5671.7119, 0),
+		Category(Definitions.TESTCASE_MIGRATED)
 		]
 	public void SSMTest_CoolingLimited_SingleEnvironment(BusHVACSystemConfiguration cfg, int envId, HeatPumpType driverHeatpump,
 		HeatPumpType passengerHeatpump, double expectedMaxCoolingPwrDriver, double expectedMaxCoolingPwrPassenger
@@ -1366,6 +1386,7 @@ public class SSMTestHeatingCooling
 		TestCase(CFG1, 9, 5e3, 0),
 		TestCase(CFG1, 10, 5e3, 0),
 		TestCase(CFG1, 11, 5e3, 0),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void SSMTest_HeatingDemand_EngineWasteHeat_SingleEnvironment(BusHVACSystemConfiguration cfg, int envId,
 		double engineWasteHeat, double expectedHeatingPower)

@@ -14,7 +14,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class BatterySystem : StatefulVectoSimulationComponent<BatterySystem.State>, IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable
+    public class BatterySystem : StatefulVectoSimulationComponent<BatterySystem.State>, IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable
 	{
 		public class BatteryString: IUpdateable
 		{
@@ -141,7 +141,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private Scalar _minSoc;
 		private Scalar _maxSoc;
 
-		public BatterySystem(IVehicleContainer dataBus, BatterySystemData batterySystemData) : base(dataBus)
+		public BatterySystem(IVehicleContainer container, BatterySystemData batterySystemData) : base(container)
 		{
 			foreach (var entry in batterySystemData.Batteries) {
 				var bat = new Battery(null, entry.Item2);

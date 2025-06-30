@@ -8,13 +8,15 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 {
 
-	public class PrimaryBusPostMortemStrategy : IPostMortemAnalyzeStrategy
+    public class PrimaryBusPostMortemStrategy : IPostMortemAnalyzeStrategy
 	{
 		protected static readonly MeterPerSecond MinSpeed = 5.KMPHtoMeterPerSecond();
 
@@ -52,7 +54,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 
 		protected virtual Radian GetMaxGradability(IVehicleContainer container)
 		{
-			ISimpleVehicleContainer testContainer = null;
+			ITestPowertrain testContainer = null;
             switch (container.PowertrainInfo.VehicleArchitecutre) {
 				//case VectoSimulationJobType.ConventionalVehicle:
 				//	PowertrainBuilder.BuildSimplePowertrain(container.RunData, testContainer);
@@ -71,49 +73,50 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
                 case VectoSimulationJobType.FCHV_IEPC:
                 case VectoSimulationJobType.BatteryElectricVehicle:
 				case VectoSimulationJobType.IEPC_E:
-					testContainer = container.SimplePowertrainBuilder.BuildSimplePowertrainElectric(container.RunData);
+					testContainer = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false);
 					break;
 				default:
 					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecutre} to calculate gradability");
 			}
 
-			testContainer.UpdateComponents(container);
+			testContainer.UpdateComponents();
 
 			var maxSlope = SearchSlope(testContainer);
 
 			return maxSlope;
 		}
 
-		protected virtual Radian SearchSlope(ISimpleVehicleContainer container)
+		protected virtual Radian SearchSlope(ITestPowertrain testPowertrain)
 		{
 			var simulationInterval = Constants.SimulationSettings.TargetTimeInterval;
 			var absTime = 0.SI<Second>();
 			var gradient = 0.SI<Radian>();
 
-			var vehicle = container.VehiclePort;
+			var vehicle = testPowertrain.Vehicle;
 			var acceleration = DeclarationData.GearboxTCU.StartAcceleration * 0.5;
 
-            foreach (var motor in container.ElectricMotors.Values) {
-				if ((motor as ElectricMotor).Control is SimpleElectricMotorControl emCtl) {
+            foreach (var motor in testPowertrain.ElectricMotors.Values) {
+				if (motor.Control is ITestPowertrainElectricMotorControl emCtl) {
 					emCtl.EmOff = false;
 				}
 			}
 
-			if (container.HasGearbox) {
-				var gbx = container.GearboxCtl as Gearbox;
-				gbx.Gear = gbx.ModelData.GearList.First();
+			if (testPowertrain.Container.HasGearbox) {
+				var gbx = testPowertrain.Gearbox;
+				gbx.SetGear = testPowertrain.Container.RunData.GearboxData.GearList.First();
 			}
 			vehicle.Initialize(0.KMPHtoMeterPerSecond(), gradient);
 
+			var architecture = testPowertrain.Container.VehicleArchitecutre;
             var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient, true);
-			var delta = GetDelta(initialResponse as ResponseDryRun, container.VehicleArchitecutre);
+			var delta = GetDelta(initialResponse as ResponseDryRun, architecture);
 
 			try {
 				gradient = SearchAlgorithm.Search(
 					gradient, delta, 0.1.SI<Radian>(),
-					getYValue: response => GetDelta(response as ResponseDryRun, container.VehicleArchitecutre),
+					getYValue: response => GetDelta(response as ResponseDryRun, architecture),
 					evaluateFunction: grad => vehicle.Request(absTime, simulationInterval, acceleration, grad, true),
-					criterion: response => GetDelta(response as ResponseDryRun, container.VehicleArchitecutre).Value(),
+					criterion: response => GetDelta(response as ResponseDryRun, architecture).Value(),
 					searcher: this);
 			} catch (VectoSearchAbortedException) {
 				return double.MaxValue.SI<Radian>();

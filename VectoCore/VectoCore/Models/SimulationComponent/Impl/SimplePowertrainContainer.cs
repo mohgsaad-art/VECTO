@@ -9,14 +9,16 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
+
+
 	public class SimplePowertrainContainer : VehicleContainer, IDriverInfo, ISimpleVehicleContainer
-	{
+    {
 		public SimplePowertrainContainer(VectoRunData runData, ISimplePowertrainBuilder ptBuilder) : base(runData, null, null, ptBuilder)
 		{
 			RunData = runData;
 		}
 
-		public IDriverDemandOutPort VehiclePort => (VehicleInfo as Vehicle)?.OutPort();
+		//public IDriverDemandOutPort VehiclePort => (VehicleInfo as Vehicle)?.OutPort();
 
 		public ITnOutPort GearboxOutPort => (GearboxInfo as IGearbox)?.OutPort();
 

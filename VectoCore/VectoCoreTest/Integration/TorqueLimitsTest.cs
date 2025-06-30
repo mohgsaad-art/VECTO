@@ -91,7 +91,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearboxTorqueLimitsAbove90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_865);
@@ -118,7 +119,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearboxTorqueLimitsBelow90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_800);
@@ -145,7 +147,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestVehicleTorqueLimitsAbove95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_910);
@@ -172,7 +175,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestVehicleTorqueLimitsBelow95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_850);

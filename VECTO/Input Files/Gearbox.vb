@@ -29,6 +29,7 @@ Imports TUGraz.VectoCore.Models.Simulation.Data
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 Imports TUGraz.VectoCore.Models.SimulationComponent.Impl
+Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.Utils
 Imports DeclarationDataAdapterHeavyLorry = TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry.DeclarationDataAdapterHeavyLorry
 
@@ -293,7 +294,7 @@ Public Class Gearbox
                                                        .VehicleData =
                                                        New VehicleData() _
                                                        With { .DynamicTyreRadius = rdyn,
-                                                       .VehicleCategory = vehiclecategory}}, Nothing)
+                                                       .VehicleCategory = vehiclecategory}})
                 'gearbox, engine, gearbox, axlegearData.AxleGear.Ratio, rdyn,
                 '                                vehiclecategory, gearbox, Nothing, Nothing)
             End If

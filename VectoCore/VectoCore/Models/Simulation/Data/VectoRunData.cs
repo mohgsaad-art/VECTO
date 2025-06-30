@@ -165,7 +165,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public IDrivingCycleData PTOCycleWhileDrive { get; internal set; }
 
-		public string ShiftStrategy { get; set; }
+		public string ShiftStrategy => GearboxData?.ShiftStrategy;
 
 		// only used for factor method
 		public IResult PrimaryResult { get; set; }
@@ -258,6 +258,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 
 			if (jobType == VectoSimulationJobType.ConventionalVehicle || jobType == VectoSimulationJobType.ParallelHybridVehicle) {
+				if (runData.AxleGearData == null) {
+					return new ValidationResult("Axlegear data is required for conventional and parallel hybrid vehicles!");
+				}
+				
 				if (gearboxData == null) {
 					return new ValidationResult("Gearbox data is required for conventional and parallel hybrid vehicles!");
 				}

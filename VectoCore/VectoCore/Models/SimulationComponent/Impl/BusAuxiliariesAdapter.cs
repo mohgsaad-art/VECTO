@@ -35,6 +35,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.BusAuxiliaries;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 using TUGraz.VectoCore.Models.Simulation;
@@ -44,7 +45,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class BusAuxiliariesAdapter : VectoSimulationComponent, IAuxInProvider, IAuxPort
+    public class BusAuxiliariesAdapter : VectoSimulationComponent, IBusAuxiliariesAdapter
 	{
 		protected internal BusAuxState CurrentState;
 		protected internal BusAuxState PreviousState;
@@ -235,7 +236,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 
 
-		protected internal virtual void DoWriteModalResultsICE(Second absTime, Second dt, IModalDataContainer container)
+		public virtual void DoWriteModalResultsICE(Second absTime, Second dt, IModalDataContainer container)
 		{
 			// called from ICE - write modal results there
 

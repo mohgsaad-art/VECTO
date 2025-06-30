@@ -32,13 +32,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 
 namespace TUGraz.VectoCore.OutputData
@@ -51,7 +51,7 @@ namespace TUGraz.VectoCore.OutputData
 
 	public interface IModalDataFactory
 	{
-		IModalDataContainer CreateModDataContainer(VectoRunData runData, IModalDataWriter writer, Action<ModalDataContainer> addReportResult, IModalDataFilter[] filter);
+		IModalDataContainer CreateModDataContainer(VectoRunData runData, IModalDataWriter writer, Action<IModalDataContainer> addReportResult, IModalDataFilter[] filter);
 	}
 
     public interface IModalDataContainer

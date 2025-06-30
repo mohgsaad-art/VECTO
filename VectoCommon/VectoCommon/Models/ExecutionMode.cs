@@ -33,6 +33,7 @@ namespace TUGraz.VectoCommon.Models
 {
 	public enum ExecutionMode
 	{
+		NOT_SET,
 		Engineering,
 		Declaration,
 //		ExPostTest,

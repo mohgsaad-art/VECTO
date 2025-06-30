@@ -20,7 +20,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_DriveTorqueBelowEM()
 		{
 			var emFld = new [] {
@@ -42,7 +43,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_DriveTorqueIntersects1()
 		{
 			var emFld = new[] {
@@ -65,7 +67,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_GenTorqueIntersects1()
 		{
 			var emFld = new[] {
@@ -87,7 +90,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			TestIntersectEmMaxTorque(emFld, maxTq, expected);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_DifferentGridpoints1()
 		{
 			var emFld = new[] {
@@ -112,7 +116,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			TestIntersectEmMaxTorque(emFld, maxTq, expected);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_Complex1()
 		{
 			var emFld = new[] {
@@ -154,7 +159,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			TestIntersectEmMaxTorque(emFld, maxTq, expected);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestEmTorqueLimit_Complex2()
 		{
 			var emFld = new[] {

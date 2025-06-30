@@ -42,7 +42,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public abstract class AbstractGearbox<TStateType> :
+    public abstract class AbstractGearbox<TStateType> :
 		StatefulProviderComponent<TStateType, ITnOutPort, ITnInPort, ITnOutPort>, ITnOutPort, ITnInPort, IGearbox
 		where TStateType : GearboxState, new()
 	{
@@ -131,6 +131,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public virtual Second TractionInterruption => ModelData.TractionInterruption;
 
 		public uint NumGears => (uint)ModelData.Gears.Count;
+		public abstract bool Disengaged { get; set; }
 
 		#endregion
 
@@ -151,7 +152,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return nextGear.TorqueConverterLocked.HasValue && nextGear.TorqueConverterLocked.Value;
 		}
 
-		protected internal WattSecond ComputeShiftLosses(NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition gear)
+		public WattSecond ComputeShiftLosses(NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition gear)
 		{
 			var ratio = ModelData.Gears[gear.Gear].Ratio;
 			if (double.IsNaN(ratio)) {
@@ -167,6 +168,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		#region Implementation of IGearboxControl
 
 		public abstract bool DisengageGearbox { get; set; }
+
 		public abstract void TriggerGearshift(Second absTime, Second dt);
 
 		#endregion

@@ -13,8 +13,9 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
     internal class TorqueLimitationsTypeWriter : AbstractMrfXmlType, IXmlTypeWriter
     {
 
+		public TorqueLimitationsTypeWriter(IManufacturerReportFactory mrfFactory) : base(mrfFactory) { }
 
-		public XElement GetElement(IDeclarationInputDataProvider inputData)
+        public XElement GetElement(IDeclarationInputDataProvider inputData)
 		{
 			if (inputData.JobInputData.Vehicle.TorqueLimits == null || inputData.JobInputData.Vehicle.TorqueLimits.Count == 0) {
 
@@ -33,8 +34,5 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 			return torqueLimitsElement;
 		}
 
-
-
-		public TorqueLimitationsTypeWriter(IManufacturerReportFactory mrfFactory) : base(mrfFactory) { }
 	}
 }

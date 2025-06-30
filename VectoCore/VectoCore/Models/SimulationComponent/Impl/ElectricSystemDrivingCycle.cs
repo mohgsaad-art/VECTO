@@ -12,10 +12,10 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	/// <summary>
-	/// Represents a cycle which is directly connected to the electric system
-	/// </summary>
-	public class ElectricSystemDrivingCycle : StatefulProviderComponent<SimpleComponentState, ISimulationOutPort, ITnInPort, IElectricSystem>, 
+    /// <summary>
+    /// Represents a cycle which is directly connected to the electric system
+    /// </summary>
+    public class ElectricSystemDrivingCycle : StatefulProviderComponent<SimpleComponentState, ISimulationOutPort, ITnInPort, IElectricSystem>, 
 		ITnInProvider,
 		ISimulationOutPort, IDrivingCycleInfo
 	{

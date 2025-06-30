@@ -46,26 +46,42 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class Vehicle : StatefulProviderComponent<Vehicle.VehicleState, IDriverDemandOutPort, IFvInPort, IFvOutPort>,
-		IVehicle, IMileageCounter, IFvInPort, IDriverDemandOutPort, IUpdateable
+	public class TestPowertrainVehicle : Vehicle, ITestPowertrainVehicle
 	{
+		public TestPowertrainVehicle(IVehicleContainer container, VehicleData modelData, AirdragData airdrag) : base(
+			container, modelData, airdrag, false)
+		{
+			if (!container.IsTestPowertrain) {
+				throw new VectoException("This class shall not be used in a real powertrain!");
+            }
+		}
+	}
+
+    public class Vehicle : StatefulProviderComponent<Vehicle.VehicleState, IDriverDemandOutPort, IFvInPort, IFvOutPort>,
+		IVehicle, IMileageCounter, IFvInPort, IDriverDemandOutPort
+    {
 		internal readonly VehicleData ModelData;
 
 		public readonly AirdragData AirdragData;
 
+		public Vehicle(IVehicleContainer container, VehicleData modelData, AirdragData airdrag) : this(container,
+			modelData, airdrag, false)
+		{
+			if (container.IsTestPowertrain) {
+				throw new VectoException(
+					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+            }
+		}
 
-		public Vehicle(IVehicleContainer container, VehicleData modelData, AirdragData airdrag) : base(container)
+
+		protected Vehicle(IVehicleContainer container, VehicleData modelData, AirdragData airdrag, bool dummy) : base(container)
 		{
 			ModelData = modelData;
 			AirdragData = airdrag;
 			//if (AirdragData?.CrossWindCorrectionCurve != null) {
 			//	AirdragData.CrossWindCorrectionCurve.SetDataBus(container);
 			//}
-			var model = container.RunData;
-			
-			
 		}
-
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient)
 		{
@@ -115,7 +131,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				var pos = positions.First();
 				if (pos.IsBatteryElectric()) {
-					var maxEMSpeed = DataBus.ElectricMotorInfo(pos).MaxSpeed;
+					var maxEMSpeed = DataBus.ElectricMotorInfo(pos).MaxSpeedDt;
 
 					var ratio = 1.0;
 					if (pos == PowertrainPosition.BatteryElectricE3) {
@@ -128,7 +144,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								(DataBus.AngledriveInfo?.Ratio ?? 1.0);
 
 						maxEMSpeed = VectoMath.Min(
-							DataBus.ElectricMotorInfo(pos).MaxSpeed,
+							DataBus.ElectricMotorInfo(pos).MaxSpeedDt,
 							DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).MaxSpeed);
 					}
 					MaxVehicleSpeed = maxEMSpeed / ratio * DataBus.WheelsInfo.DynamicTyreRadius * 0.995;

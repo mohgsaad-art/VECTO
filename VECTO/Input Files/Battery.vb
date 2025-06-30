@@ -9,6 +9,7 @@ Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery
+Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.Utils
 
 <CustomValidation(GetType(Battery), "ValidateBattery")>

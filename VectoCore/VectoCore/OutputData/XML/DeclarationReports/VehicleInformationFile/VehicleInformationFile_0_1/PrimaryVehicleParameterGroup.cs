@@ -196,32 +196,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		#endregion
 	}
 
-	public class IepcVehicleParameterGroup : AbstractVIFGroupWriter
-	{
-		public IepcVehicleParameterGroup(IVIFReportFactory vifReportFactory) : base(vifReportFactory) { }
-
-		#region Overrides of AbstractVIFGroupWriter
-
-		public override IList<XElement> GetElements(IDeclarationInputDataProvider inputData)
-		{
-			var vehicle = inputData.JobInputData.Vehicle;
-
-			var result = new List<XElement>();
-			result.AddRange(_vifReportFactory.GetPrimaryBusGeneralParameterGroup().GetElements(inputData));
-			result.AddRange(_vifReportFactory.GetPrimaryBusChassisParameterGroup().GetElements(inputData));
-			result.AddRange(_vifReportFactory.GetPrimaryBusRetarderParameterGroup().GetElements(inputData));
-			result.Add(new XElement(_vif + XMLNames.Vehicle_AngledriveType, vehicle.Components.AngledriveInputData.Type.ToXMLFormat()));
-			result.Add(new XElement(_vif + XMLNames.Vehicle_ZeroEmissionVehicle, vehicle.ZeroEmissionVehicle));
-			result.Add(new XElement(_vif + XMLNames.Vehicle_ArchitectureID, vehicle.ArchitectureID.GetLabel()));
-			result.AddRange(_vifReportFactory.GetPrimaryBusXevParameterGroup().GetElements(inputData));
-			result.Add(_vifReportFactory.GetPEVADASType().GetXmlType(inputData.JobInputData.Vehicle.ADAS));
-
-			return result;
-		}
-
-		#endregion
-	}
-
 	public class PevExVehicleParameterGroup : AbstractVIFGroupWriter
 	{
 		public PevExVehicleParameterGroup(IVIFReportFactory vifReportFactory) : base(vifReportFactory) { }
@@ -270,10 +244,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			result.Add(new XElement(_vif + XMLNames.Vehicle_ArchitectureID, vehicle.ArchitectureID.GetLabel()));
 			result.AddRange(_vifReportFactory.GetPrimaryBusXevParameterGroup().GetElements(inputData));
 			result.Add(_vifReportFactory.GetIEPCADASType().GetXmlType(inputData.JobInputData.Vehicle.ADAS));
-			var motorTorqueLimits = _vifReportFactory.GetElectricMotorTorqueLimitsType().GetElement(inputData);
-			if (motorTorqueLimits != null)
-				result.Add(motorTorqueLimits);
-
+			
 			return result;
 		}
 

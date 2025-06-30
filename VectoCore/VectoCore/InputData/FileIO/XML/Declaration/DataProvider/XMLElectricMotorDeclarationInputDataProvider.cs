@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Xml;
 using System.Xml.Linq;
-using TUGraz.IVT.VectoXML;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -16,7 +15,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Common;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
@@ -491,13 +490,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
     // ---------------------------------------------------------------------------------------
 
-    public class XMLElectricMotorIepciStandardInputDataProviderV23 : XMLElectricMotorIEPCIInputDataProviderV23
+    public class XMLElectricMotorIEPCStandardInputDataProviderV23 : XMLElectricMotorIEPCIInputDataProviderV23
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V23;
 		public new const string XSD_TYPE = "IEPCStandardValuesDataDeclarationType";
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLElectricMotorIepciStandardInputDataProviderV23(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) 
+		public XMLElectricMotorIEPCStandardInputDataProviderV23(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) 
 			: base(vehicle, componentNode, sourceFile) { }
 
 		protected override void ValidateGearCount()
@@ -514,14 +513,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	// ---------------------------------------------------------------------------------------
 
-	public class XMLElectricMotorIEPCIInputDataProviderV26 : XMLElectricMotorIEPCIInputDataProviderV23
+	public class XMLElectricMotorIEPCInputDataProviderV26 : XMLElectricMotorIEPCIInputDataProviderV23
 	{
 		public static new readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
 		public static new readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		private IList<IElectricMotorLoadCurve> _fullLoadCurves;
 
-		public XMLElectricMotorIEPCIInputDataProviderV26(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+		public XMLElectricMotorIEPCInputDataProviderV26(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
 			: base(vehicle, componentNode, sourceFile)
 		{
 			ValidateCurveTypeUniformityAcrossVoltageLevels();
@@ -609,7 +608,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
             foreach (XmlNode voltageLevelNode in voltageLevelNodes)
             {
-                voltageLevels.Add(new XMLElectricMotorIEPCIInputDataProviderV26(null, voltageLevelNode, null));
+                voltageLevels.Add(new XMLElectricMotorIEPCInputDataProviderV26(null, voltageLevelNode, null));
             }
 
             if (voltageLevels.Count > 1)
@@ -667,13 +666,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	//________________________________________________________________________________________
 
-	public class XMLElectricMotorIepciStandardInputDataProviderV26 : XMLElectricMotorIEPCIInputDataProviderV26
+	public class XMLElectricMotorIEPCStandardInputDataProviderV26 : XMLElectricMotorIEPCInputDataProviderV26
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
 		public new const string XSD_TYPE = "IEPCStandardValuesDataDeclarationType";
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLElectricMotorIepciStandardInputDataProviderV26(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+		public XMLElectricMotorIEPCStandardInputDataProviderV26(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
 			: base(vehicle, componentNode, sourceFile) { }
 
 		protected override void ValidateGearCount()
@@ -729,6 +728,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_VO1;
 		public const string XSD_TYPE = "IEPCDataDeclarationType";
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+		
 		public XMLElectricMotorIEPCIInputDataProviderV01(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) : base(vehicle, componentNode, sourceFile) { }
 
 		#region Overrides of XMLElectricMotorIEPCIInputDataProviderV23
@@ -740,7 +740,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		#endregion
 	}
 
-	public class XMLElectricMotorIEPCIInputDataProviderV10 : XMLElectricMotorIEPCIInputDataProviderV26
+	public class XMLElectricMotorIEPCIInputDataProviderV10 : XMLElectricMotorIEPCInputDataProviderV26
 	{
         public static new readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V10;
         public new const string XSD_TYPE = "IEPCDataDeclarationType"; 

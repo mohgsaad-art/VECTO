@@ -139,7 +139,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(-18768.1337, pwrMap.LookupElectricPower(120.RPMtoRad(), -800.SI<NewtonMeter>()).ElectricalPower.Value(), 1e-3);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestElectricMotorV3_Lookup()
 		{
 			var inputProvider =

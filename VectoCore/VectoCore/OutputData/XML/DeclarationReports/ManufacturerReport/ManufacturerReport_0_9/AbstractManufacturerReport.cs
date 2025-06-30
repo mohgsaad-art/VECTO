@@ -42,8 +42,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 
 		protected XElement InputDataIntegrity { get; set; }
 
-		protected XElement Signature { get; set; }
-
 		public abstract string OutputDataType { get; } //also used as name for the mockup result element
 
 		protected AbstractManufacturerReport(IManufacturerReportFactory MRFReportFactory, IResultsWriterFactory resultFactory)

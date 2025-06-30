@@ -2,6 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
@@ -9,8 +10,8 @@ using TUGraz.VectoCore.OutputData.XML.GroupWriter.Declaration.Vehicle.Components
 
 namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
 {
-	// Used by SSMHVAC Class
-	public class SSMInputs : ISSMDeclarationInputs, ISSMBoundaryConditions, IEnvironmentalConditions, IACSystem, IVentilation,
+    // Used by SSMHVAC Class
+    public class SSMInputs : ISSMDeclarationInputs, ISSMBoundaryConditions, IEnvironmentalConditions, IACSystem, IVentilation,
 		IAuxHeater, ISSMBusParameters
 	{
 		private readonly IFuelProperties HeatingFuel;

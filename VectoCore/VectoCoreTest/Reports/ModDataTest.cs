@@ -49,6 +49,7 @@ using TUGraz.VectoCore.Tests.Integration;
 using TUGraz.VectoCore.Tests.Utils;
 using System.IO;
 using Ninject;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
@@ -58,7 +59,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Reports
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class ModDataTest
 	{
@@ -77,7 +78,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		[TestCase(80, 0),
 			TestCase(80, -0.1),
-			TestCase(10, 0.1)]
+			TestCase(10, 0.1),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SumDataTest(double initialSpeedVal, double accVal)
 		{
 			var rundata = new VectoRunData() {
@@ -89,8 +91,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
-			var initalSpeed = initialSpeedVal.KMPHtoMeterPerSecond();
-			var speed = initalSpeed;
+			var initialSpeed = initialSpeedVal.KMPHtoMeterPerSecond();
+			var speed = initialSpeed;
 			var dist = 0.SI<Meter>();
 			var dt = 0.5.SI<Second>();
 			var acc = accVal.SI<MeterPerSquareSecond>();
@@ -106,7 +108,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			// distance = 80km/h * 50s + acc/2 * 50s * 50s
 			var totalTime = 50.SI<Second>();
-			var expected = initalSpeed * totalTime + acc / 2.0 * totalTime * totalTime;
+			var expected = initialSpeed * totalTime + acc / 2.0 * totalTime * totalTime;
 
 			Assert.AreEqual(expected.Value(), modData.Distance.Value(), 1e-6);
 		}
@@ -571,7 +573,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		}
 
 		private static void AssertModDataIntegrity(ModalResults modData, Dictionary<string, DataColumn> auxKeys,
-			double totalDistance, FuelConsumptionMap consumptionMap, bool distanceBased, VectoRunData runData)
+			double totalDistance, IFuelConsumptionMap consumptionMap, bool distanceBased, VectoRunData runData)
 		{
 			Assert.IsTrue(modData.Rows.Count > 0);
 

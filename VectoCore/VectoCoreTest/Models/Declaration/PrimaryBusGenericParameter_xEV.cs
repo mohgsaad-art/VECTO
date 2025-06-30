@@ -72,6 +72,7 @@ public class PrimaryBusGenericParameter_xEV
         TestCase(
             VehicleCategory.HeavyBusPrimaryVehicle, AxleConfiguration.AxleConfig_8x4, HF, true, true,
 			VehicleClass.ClassP39_40, 1489),
+        Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void TestVehicleMassCalculation(VehicleCategory category, AxleConfiguration axleConfiguration, FloorType floorType, bool doubleDecker,
 		bool articulated, VehicleClass expectedClass, double expectedICEMass)

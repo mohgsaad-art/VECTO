@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
@@ -93,6 +94,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			};
 		}
 
+		[ExcludeFromCodeCoverage] // OVC results are not written in case of an error
 		public XElement[] GetElement(IOVCResultEntry entry)
 		{
 			throw new NotImplementedException();

@@ -57,7 +57,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(entry.Deceleration.Value(), deceleration, Tolerance);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void AccelerationTest()
 		{
 			Data = AccelerationCurveReader.ReadFromFile(@"TestData/Components/Coach.vacc");
@@ -132,7 +133,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		 TestCase(59, 55, 27.33155090),
 		// decelerate across multiple areas of acceleration curve
 		 TestCase(60, 0, 59.44491148 + 96.45061728395),
-		 TestCase(100, 0, 59.44491148 + 96.45061728395 + 493.82716049383)
+		 TestCase(100, 0, 59.44491148 + 96.45061728395 + 493.82716049383),
+		Category(Definitions.TESTCASE_MIGRATED)
 			]
 		public void ComputeAccelerationDistanceTest(double v1, double v2, double expectedDistance)
 		{
@@ -155,7 +157,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		 TestCase(50, 15, 78.2040),
 		 TestCase(55, 15, 82.3264),
 		 TestCase(65, 15, 92),
-		 TestCase(20, 300, 120)
+		 TestCase(20, 300, 120),
+			Category(Definitions.TESTCASE_MIGRATED)
 		 ]
 		public void ComputeEndVelocity(double startSpeed, double accTime, double expectedVelocity)
 		{

@@ -14,9 +14,9 @@ using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
-    public class MeasuredSpeedGearHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
+    public class MeasuredSpeedGearHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy
     {
-        public MeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
+        public MeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container)
         {}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
@@ -29,9 +29,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
 				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 
-			TestPowertrain.Gearbox.Gear = useNextGear; // DataBus.VehicleInfo.VehicleStopped ? NextGear : PreviousState.GearboxEngaged ? CurrentGear : NextGear;
-			TestPowertrain.Gearbox.DisengageGearbox = !useNextGear.Engaged;
-			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Gearbox.SetGear = useNextGear; // DataBus.VehicleInfo.VehicleStopped ? NextGear : PreviousState.GearboxEngaged ? CurrentGear : NextGear;
+			TestPowertrain.Gearbox.SetDisengageGearbox = !useNextGear.Engaged;
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
@@ -42,8 +42,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				TestPowertrain.Clutch.UpdateFrom(DataBus.ClutchInfo);
 				var pos = ModelData.ElectricMachinesData.FirstOrDefault().Item1;
 				TestPowertrain.ElectricMotor.UpdateFrom(DataBus.ElectricMotorInfo(pos));
+				// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
 				foreach (var emPos in TestPowertrain.ElectricMotorsUpstreamTransmission.Keys) {
-					TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorInfo(emPos).ElectricMotorSpeed;
+					//TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorInfo(emPos).ElectricMotorSpeed;
+					TestPowertrain.ElectricMotorsUpstreamTransmission[pos].UpdateFrom(DataBus.ElectricMotorInfo(emPos));
 				}
 			}
 
@@ -74,11 +76,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class MeasuredSpeedGearATHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
+	public class MeasuredSpeedGearATHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy
 	{
 
-		public MeasuredSpeedGearATHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
-			vehicleContainer)
+		public MeasuredSpeedGearATHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container)
 		{}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
@@ -88,9 +89,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			TestPowertrain.UpdateComponents();
 			
-			TestPowertrain.Gearbox.Gear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
-			TestPowertrain.Gearbox.DisengageGearbox = !nextGear.Engaged;
-			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Gearbox.SetGear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
+			TestPowertrain.Gearbox.SetDisengageGearbox = !nextGear.Engaged;
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
 			
@@ -121,14 +122,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					}
 				}
 
-				TestPowertrain.Gearbox.Gear = nextGear;
+				TestPowertrain.Gearbox.SetGear = nextGear;
 				TestPowertrain.Gearbox.RequestAfterGearshift = true;
 			} else {
 				TestPowertrain.Gearbox.RequestAfterGearshift = DataBus.GearboxInfo.RequestAfterGearshift;
 			}
 			
 			if (!nextGear.Engaged) {
-				TestPowertrain.Gearbox.DisengageGearbox = !nextGear.Engaged;
+				TestPowertrain.Gearbox.SetDisengageGearbox = !nextGear.Engaged;
 			}
 
 			TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
@@ -139,11 +140,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var pos = ModelData.ElectricMachinesData.FirstOrDefault().Item1;
 			TestPowertrain.ElectricMotor.UpdateFrom(DataBus.ElectricMotorInfo(pos));
+			// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
 			foreach (var emPos in TestPowertrain.ElectricMotorsUpstreamTransmission.Keys) {
-				TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorInfo(emPos).ElectricMotorSpeed;
+				//TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorInfo(emPos).ElectricMotorSpeed;
+				TestPowertrain.ElectricMotorsUpstreamTransmission[pos].UpdateFrom(DataBus.ElectricMotorInfo(emPos));
 			}
 
-			var retVal = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+            var retVal = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
 			retVal.HybridController.StrategySettings = cfg;
 
 			return retVal;
@@ -188,17 +191,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 	}
 
     //--------------------------------------------------
-    public abstract class AbstractMeasuredSpeedGearHybridStrategy<T> : AbstractHybridStrategy<T> 
-        where T : class, IHybridControlledGearbox, IGearbox
-    {
+    public abstract class AbstractMeasuredSpeedGearHybridStrategy : AbstractHybridStrategy
+	{
         public AbstractMeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : 
             base(runData, vehicleContainer)
         {}
-
-        protected override ISimpleVehicleContainer BuildSimplePowertrain(VectoRunData runData)
-		{
-			return PowertrainBuilder.BuildSimpleHybridPowertrainGear(runData);
-        }
 
         protected override void WarnGearShiftRange()
         {}

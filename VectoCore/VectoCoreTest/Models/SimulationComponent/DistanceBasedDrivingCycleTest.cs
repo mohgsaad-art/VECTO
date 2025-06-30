@@ -43,16 +43,16 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Integration;
 using TUGraz.VectoCore.Tests.Utils;
+using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class DistanceBasedDrivingCycleTest
 	{
@@ -66,7 +66,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLimitRequst()
 		{
 			var data = new string[] {
@@ -83,7 +84,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				GearshiftParameters = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
-				}
+				},
 			}, null, null);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
@@ -163,7 +164,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestDistanceRequest()
 		{
 			var cycleData = DrivingCycleDataReader.ReadFromFile(ShortCycle, CycleType.DistanceBased, false);
@@ -174,6 +176,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				}
 			}, null, null);
+		
 		
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 

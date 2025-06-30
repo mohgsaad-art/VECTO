@@ -41,7 +41,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 	[Parallelizable(ParallelScope.All)]
 	public class SITest
 	{
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		[SuppressMessage("ReSharper", "UnusedVariable")]
 		public void SI_TypicalUsageTest()
 		{
@@ -104,7 +105,8 @@ namespace TUGraz.VectoCore.Tests.Utils
             var res2 = 40.SI(Unit.SI.Newton).Cast<Newton>();
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Test()
 		{
 			var si = 0.SI();
@@ -144,7 +146,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual(45.0 / 180.0 * Math.PI, VectoMath.InclinationToAngle(1).Value(), 0.000001);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		[SuppressMessage("ReSharper", "UnusedVariable")]
 		public void SI_Comparison_Operators()
 		{
@@ -205,7 +208,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual(1, 2.SI().CompareTo(1.SI()));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		[SuppressMessage("ReSharper", "UnusedVariable")]
 		public void SI_Test_Addition_Subtraction()
 		{
@@ -232,7 +236,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 				"Operator '-' can only operate on SI Objects with the same unit. Got: 1.0000 [s] - 1.0000 [m]");
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_SpecialUnits()
 		{
 			Scalar scalar = 3.SI<Scalar>();
@@ -294,7 +299,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		/// <summary>
 		/// VECTO-111
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_ReziprokDivision()
 		{
 			var test = 2.0.SI<Second>();
@@ -305,7 +311,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			AssertHelper.AreRelativeEqual(expected, actual);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Multiplication_Division()
 		{
 			AssertHelper.AreRelativeEqual(12.SI(), 3.SI() * 4.SI());
@@ -343,14 +350,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 			AssertHelper.AreRelativeEqual(2.SI<NormLiterPerSecond>(), 2.SI<NormLiterPerSecond>() * 1);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_MeterPerSecond_Div_Meter()
 		{
 			PerSecond actual = 6.SI<MeterPerSecond>() / 2.SI<Meter>();
             AssertHelper.AreRelativeEqual(3.SI(Unit.SI.Per.Second), actual);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_SimplifyUnits()
 		{
             AssertHelper.AreRelativeEqual(3.SI(), 18.SI(Unit.SI.Kilo.Gramm) / 6.SI(Unit.SI.Kilo.Gramm));
@@ -373,14 +382,16 @@ namespace TUGraz.VectoCore.Tests.Utils
             // AssertHelper.AreRelativeEqual(3.SI(Unit.SI.Meter.Per.Second), 3.SI<Newton>(Unit.SI.Second.Per.Kilo.Gramm));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Math()
 		{
 			AssertHelper.AreRelativeEqual(-3, -3.SI().Value());
 			AssertHelper.AreRelativeEqual(3.SI(), (-3).SI().Abs());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		[SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
 		public void SI_Equality()
 		{
@@ -418,7 +429,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			4.SI<NewtonMeter>().GetHashCode();
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Output()
 		{
 			Assert.AreEqual("3.0000", 3.SI().ToOutputFormat());
@@ -436,7 +448,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual("0.5000 [m/s^2]", 0.5.SI<MeterPerSquareSecond>().ToOutputFormat(showUnit: true));
 		}
 		
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_Hash()
         {
             3.SI().GetHashCode();
@@ -444,7 +457,8 @@ namespace TUGraz.VectoCore.Tests.Utils
             4.SI<NewtonMeter>().GetHashCode();
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_ConstructorPerformance()
         {
             for (var i = 0; i < 5e5; i++)
@@ -464,7 +478,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_CheckForEqualUnitPerformance()
         {
 
@@ -486,7 +501,8 @@ namespace TUGraz.VectoCore.Tests.Utils
         }
 
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_NeutralArithmeticPerformance()
         {
 
@@ -508,7 +524,8 @@ namespace TUGraz.VectoCore.Tests.Utils
             }
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_SpecialArithmeticPerformance()
         {
 
@@ -530,7 +547,8 @@ namespace TUGraz.VectoCore.Tests.Utils
             }
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SI_NewTests()
         {
             UnitInstance sikg = Unit.SI.Kilo.Gramm;
@@ -594,7 +612,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1000),
 		TestCase(1e-3, 1),
-		TestCase(2.65344, 2653.44)]
+		TestCase(2.65344, 2653.44),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGramm(double val, double converted)
 		{
 			var siVal = val.SI<Kilogram>();
@@ -605,7 +624,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1000, 1),
 		TestCase(1, 1e-3),
-		TestCase(5243, 5.243)]
+		TestCase(5243, 5.243),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToTon(double val, double converted)
 		{
 			var siVal = val.SI<Kilogram>();
@@ -616,7 +636,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 3.6),
 		TestCase(0.2777777777777777, 1),
-		TestCase(13.7603, 49.53708)]
+		TestCase(13.7603, 49.53708),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToKiloMeterPerHour(double val, double converted)
 		{
 			var siVal = val.SI<MeterPerSecond>();
@@ -627,7 +648,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e6),
 		TestCase(1e-6, 1),
-		TestCase(7.54214451, 7542144.51)]
+		TestCase(7.54214451, 7542144.51),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGrammPerKiloMeter(double val, double converted)
 		{
 			var siVal = val.SI<KilogramPerMeter>();
@@ -638,7 +660,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e8),
 		TestCase(1e-8, 1),
-		TestCase(0.00935934235, 935934.235)]
+		TestCase(0.00935934235, 935934.235),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToLiterPer100Kilometer(double val, double converted)
 		{
 			var siVal = val.SI<VolumePerMeter>();
@@ -649,7 +672,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e11),
 		TestCase(1e-11, 1),
-		TestCase(0.00013243241234, 13243241.234)]
+		TestCase(0.00013243241234, 13243241.234),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToLiterPer100TonKiloMeter(double val, double converted)
 		{
 			var siVal = val.SI<VolumePerMeterMass>();
@@ -660,7 +684,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e8),
 		TestCase(1e-8, 1),
-		TestCase(0.13243241234, 13243241.234)]
+		TestCase(0.13243241234, 13243241.234),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToLiterPerCubicMeter100KiloMeter(double val, double converted)
 		{
 			var siVal = val.SI<VolumePerMeterVolume>();
@@ -671,7 +696,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1,3.6e6),
 		TestCase(0.277777777777777777e-6,1),
-		TestCase(0.0135897845, 13589.7845*3.6)]
+		TestCase(0.0135897845, 13589.7845*3.6),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGrammPerHour(double val, double converted)
 		{
 			var siVal = val.SI<KilogramPerSecond>();
@@ -682,7 +708,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e-3),
 		TestCase(1e3, 1),
-		TestCase(4353.32, 4.35332)]
+		TestCase(4353.32, 4.35332),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToKiloMeter(double val, double converted)
 		{
 			var siVal = val.SI<Meter>();
@@ -693,7 +720,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e6),
 		TestCase(1e-6, 1),
-		TestCase(0.053798513789, 53798.513789)]
+		TestCase(0.053798513789, 53798.513789),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToCubicCentiMeter(double val, double converted)
 		{
 			var siVal = val.SI<CubicMeter>();
@@ -704,7 +732,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e6),
 		TestCase(1e-6, 1),
-		TestCase(7.54214451, 7542144.51)]
+		TestCase(7.54214451, 7542144.51),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGrammPerCubicMeterKiloMeter(double val, double converted)
 		{
 			var siVal = val.SI<KilogramPerMeterCubicMeter>();
@@ -715,7 +744,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e9),
 		TestCase(1e-9, 1),
-		TestCase(7.54214451, 7542144510)]
+		TestCase(7.54214451, 7542144510),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGrammPerTonKilometer(double val, double converted)
 		{
 			var siVal = val.SI<KilogramPerMeterMass>();
@@ -726,7 +756,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 0.277777777777e-6),
 		TestCase(3600e3, 1),
-		TestCase(135890, 0.0377472222)]
+		TestCase(135890, 0.0377472222),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToKiloWattHour(double val, double converted)
 		{
 			var siVal = val.SI<WattSecond>();
@@ -737,7 +768,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e-3),
 		TestCase(1e3, 1),
-		TestCase(23453, 23.453)]
+		TestCase(23453, 23.453),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToKiloWatt(double val, double converted)
 		{
 			var siVal = val.SI<Watt>();
@@ -748,7 +780,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 9.549296586),
 		TestCase(0.104719755, 1),
-		TestCase(62.83185307, 600)]
+		TestCase(62.83185307, 600),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToRoundsPerMinute(double val, double converted)
 		{
 			var siVal = val.SI<PerSecond>();
@@ -760,7 +793,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e3),
 		TestCase(1e-3, 1),
-		TestCase(123.780, 123780)]
+		TestCase(123.780, 123780),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToCubicDeziMeter(double val, double converted)
 		{
 			var siVal = val.SI<CubicMeter>();
@@ -771,7 +805,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 1e3),
 		TestCase(1e-3, 1),
-		TestCase(0.255, 255)]
+		TestCase(0.255, 255),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToMilliMeter(double val, double converted)
 		{
 			var siVal = val.SI<Meter>();
@@ -781,7 +816,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 
-		[TestCase(0.2/1000/3600, 200)]
+		[TestCase(0.2/1000/3600, 200),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void SI_Convert_ConvertToGramPerKiloWattHour(double val, double converted)
 		{
 			var siVal = val.SI<SpecificFuelConsumption>();

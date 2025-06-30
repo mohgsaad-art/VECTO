@@ -1,6 +1,6 @@
 ﻿using TUGraz.VectoCommon.Utils;
 
-namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
+namespace TUGraz.VectoCommon.BusAuxiliaries
 {
     public enum HeatingDistributionCase
     {

@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Ninject.Extensions.Factory;
 using Ninject.Modules;
@@ -39,6 +40,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils.Ninject;
 using TUGraz.VectoHashing;
@@ -47,29 +49,21 @@ namespace TUGraz.VectoCore.Models.Simulation
 {
 	public class SimulatorFactoryNinjectModule : VectoNinjectModule
 	{
+
 		#region Overrides of NinjectModule
 
-		public override void Load()
+        public override void Load()
 		{
 			Bind<ISimulatorFactoryFactory>().ToFactory(() => new UseFirstArgumentAsInstanceProvider());
-
-			Bind<IVehicleContainerFactory>().ToFactory().InSingletonScope();
 			
-			Bind<IVehicleContainer>().To<VehicleContainer>();
-			Bind<IExemptedVehicleContainer>().To<ExemptedVehicleContainer>();
-			Bind<ISimpleVehicleContainer>().To<SimplePowertrainContainer>();
-
-            Bind<IPowertrainBuilder>().To<PowertrainBuilder>().InSingletonScope();
-			Bind<ISimplePowertrainBuilder>().To<SimplePowertrainBuilder>().InSingletonScope();
-
 			Bind<IModalDataFactory>().ToFactory().InSingletonScope();
 			Bind<IModalDataContainer>().To<ModalDataContainer>();
 
-            Bind<ISimulatorFactory>().To<SimulatorFactoryDeclaration>().Named(ExecutionMode.Declaration.ToString());
+			Bind<ISimulatorFactory>().To<SimulatorFactoryDeclaration>().Named(ExecutionMode.Declaration.ToString());
 			Bind<ISimulatorFactory>().To<SimulatorFactoryEngineering>().Named(ExecutionMode.Engineering.ToString());
 
 			// ToDo: MQ 2023-05-09: REMOVE CLASS IN PRODUCTION!!!
-            //Bind<IDeclarationCycleFactory>().To<DeclarationCycleFromFilesystemFactory>().InSingletonScope();
+			//Bind<IDeclarationCycleFactory>().To<DeclarationCycleFromFilesystemFactory>().InSingletonScope();
 			Bind<IMissionFilter>().To<DefaultMissionFilter>();
 
 			Bind<IDeclarationCycleFactory>().To<DeclarationCycleFactory>().InSingletonScope();
@@ -81,8 +75,8 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		}
 
-		#endregion
-	}
+        #endregion
+    }
 
 	internal class NullDeclarationReport : IDeclarationReport
 	{

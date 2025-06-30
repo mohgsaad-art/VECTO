@@ -8,7 +8,7 @@ namespace TUGraz.VectoCore.Tests.Utils;
 public class ConvertedSITest
 {
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToLiterPer100KiloMeter()
 	{
 		var fcLiter = 5.0;
@@ -22,7 +22,7 @@ public class ConvertedSITest
 		Assert.AreEqual("l/100km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToLiterPerTonKiloMeter()
 	{
 		var fcLiter = 5.0;
@@ -38,7 +38,7 @@ public class ConvertedSITest
 		Assert.AreEqual("l/t-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToLiterPerCubicMeterKiloMeter()
 	{
 		var fcLiter = 5.0;
@@ -54,7 +54,7 @@ public class ConvertedSITest
 		Assert.AreEqual("l/m³-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_J_ConvertToMegaJoulePerCubicMeterKiloMeter()
 	{
 		var ecMj = 200.0;
@@ -70,7 +70,7 @@ public class ConvertedSITest
 		Assert.AreEqual("MJ/m³-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToMegaJoulePerTonKiloMeter()
 	{
 		var ecMj = 200.0;
@@ -86,7 +86,7 @@ public class ConvertedSITest
 		Assert.AreEqual("MJ/t-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToMegaJoulePerKilometer()
 	{
 		var ecMj = 200.0;
@@ -101,7 +101,7 @@ public class ConvertedSITest
 	}
 
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToKiloWattHourPerKiloMeter()
 	{
 		var ec_kWh = 200.0;
@@ -115,7 +115,7 @@ public class ConvertedSITest
 		Assert.AreEqual("kWh/km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToKiloWattHourPerTonKiloMeter()
 	{
 		var ec_kWh = 200.0;
@@ -131,7 +131,7 @@ public class ConvertedSITest
 		Assert.AreEqual("kWh/t-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_ConvertToKiloWattHourPerCubicMeterKiloMeter()
 	{
 		var ec_kWh = 200.0;
@@ -147,7 +147,7 @@ public class ConvertedSITest
 		Assert.AreEqual("kWh/m³-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_Ws_ConvertToMegaJoulePerKiloMeter()
 	{
 		var ec_MJ = 200.0;
@@ -161,7 +161,7 @@ public class ConvertedSITest
 		Assert.AreEqual("MJ/km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_Ws_ConvertToMegaJoulePerTonKiloMeter()
 	{
 		var ec_MJ = 200.0;
@@ -177,7 +177,7 @@ public class ConvertedSITest
 		Assert.AreEqual("MJ/t-km", converted.Units);
 	}
 
-	[Test]
+	[Test, Category(Definitions.TESTCASE_MIGRATED)]
 	public void ConvertedSITest_Ws_ConvertToMegaJoulePerCubicMeterKiloMeter()
 	{
 		var ec_MJ = 200.0;

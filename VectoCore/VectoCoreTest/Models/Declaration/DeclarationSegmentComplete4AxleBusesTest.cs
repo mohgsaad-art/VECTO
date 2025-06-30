@@ -42,8 +42,9 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CC, RegistrationClass.II_III, 0, 3.1001, false, VehicleClass.Class40c, 2),
 			TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CC, RegistrationClass.B, 0, 0, false, VehicleClass.Class40d, 2),
 			TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CD, RegistrationClass.III, 5, 0, false, VehicleClass.Class40e, 2),
-			TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CD, RegistrationClass.II, 10, 0, false, VehicleClass.Class40f, 2)
-		]
+			TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CD, RegistrationClass.II, 10, 0, false, VehicleClass.Class40f, 2),
+			Category(Definitions.TESTCASE_MIGRATED)
+        ]
 		public void SegmentLookupTest(AxleConfiguration axleConfig, VehicleCode vehicleCode, RegistrationClass registrationClass, int passengersLowerDeck,
 			double bodyHeight, bool lowEntry, VehicleClass vehicleParameterGroup, int numberOfMissions)
 		{
@@ -54,7 +55,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		}
 
 
-		[TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CG, RegistrationClass.I, 0, 0, false, VehicleClass.Class39a, 3)]
+		[TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CG, RegistrationClass.I, 0, 0, false, VehicleClass.Class39a, 3),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestComplete4AxlesCompleteBus39A(AxleConfiguration axleConfig, VehicleCode vehicleCode, RegistrationClass registrationClass,
 			int passengersLowerDeck, double bodyHeight, bool lowEntry, VehicleClass vehicleParameterGroup, int numberOfMissions)
 		{
@@ -86,7 +88,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 
 		[TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CG, RegistrationClass.A, 0, 0, true, VehicleClass.Class39b1, 3),
-		TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CG, RegistrationClass.II, 0, 0, true, VehicleClass.Class39b2, 4)]
+		TestCase(AxleConfiguration.AxleConfig_8x2, VehicleCode.CG, RegistrationClass.II, 0, 0, true, VehicleClass.Class39b2, 4),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestComplete4AxlesCompleteBus39B(AxleConfiguration axleConfig, VehicleCode vehicleCode, RegistrationClass registrationClass,
 			int passengersLowerDeck, double bodyHeight, bool lowEntry, VehicleClass vehicleParameterGroup, int numberOfMissions)
 		{

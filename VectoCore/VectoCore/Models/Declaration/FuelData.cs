@@ -41,7 +41,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class FuelData : LookupData
+    public sealed class FuelData : LookupData
 	{
 		private static FuelData _instance;
 

@@ -39,7 +39,6 @@ using TUGraz.VectoCore.Tests.Models.SimulationComponentData;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Tests.Utils.RunDataHelper;
 using TUGraz.VectoCore.Utils;
-using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.ElectricSystem;
 
 
 namespace TUGraz.VectoCore.Tests.Integration.FuelCell

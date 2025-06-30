@@ -41,10 +41,11 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Tests.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class FactoryTest
 	{
@@ -74,11 +75,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			Assert.AreEqual(10, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<AMTGearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
 			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo, "engine not installed");
 			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo, "vehicle not installed");
 
-			var gearbox = vehicleContainer.GearboxInfo as Gearbox;
+			var gearbox = vehicleContainer.GearboxInfo as AMTGearbox;
 			Assert.IsNotNull(gearbox);
 
 			// -- shiftpolygon downshift 
@@ -123,7 +124,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 			Assert.AreEqual(12, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<AMTGearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
 			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo,  "engine not installed");
 			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo,  "vehicle not installed");
 		}

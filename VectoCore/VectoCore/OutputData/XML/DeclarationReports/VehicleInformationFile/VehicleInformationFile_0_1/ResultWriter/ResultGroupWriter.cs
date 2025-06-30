@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
@@ -59,6 +60,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			};
 		}
 
+		[ExcludeFromCodeCoverage] // no ovc results in VIF
 		public XElement[] GetElement(IOVCResultEntry entry)
 		{
 			return null;
@@ -88,25 +90,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		#endregion
 	}
 
-
-	public class VehiclePerformanceVIFWriter : AbstractResultGroupWriter
-	{
-		public VehiclePerformanceVIFWriter(ICommonResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
-
-		#region Overrides of AbstractResultGroupWriter
-
-		public override XElement GetElement(IResultEntry entry)
-		{
-			return null;
-		}
-
-		public override XElement GetElement(IOVCResultEntry entry)
-		{
-			return null;
-		}
-
-		#endregion
-	}
 
 	public class VIFFuelConsumptionWriter : FuelConsumptionWriterBase
     {
@@ -151,23 +134,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		#endregion
 	}
 
-	public class VIFCO2Writer : ICO2Writer
-	{
-		#region Implementation of ICO2Writer
-
-		public XElement[] GetElements(IResultEntry entry)
-		{
-			return null;
-		}
-
-		public XElement[] GetElements(IWeightedResult entry)
-		{
-			return null;
-		}
-
-		#endregion
-	}
-
 	public class VIFResultSuccessMissionWriter : AbstractResultWriter, IResultSequenceWriter
 	{
 		public VIFResultSuccessMissionWriter(ICommonResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
@@ -182,6 +148,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			};
 		}
 
+		[ExcludeFromCodeCoverage] // no ovc results in VIF
 		public XElement[] GetElement(IOVCResultEntry entry)
 		{
 			return null;

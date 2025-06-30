@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
+namespace TUGraz.VectoCommon.Models
 {
 	[DebuggerDisplay("{Name}")]
 	public class GearshiftPosition

@@ -37,8 +37,9 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.OutputData;
 
-namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
-	public class CycleTorqueConverter : StatefulVectoSimulationComponent<TorqueConverter.TorqueConverterComponentState>
+namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
+{
+    public class CycleTorqueConverter : StatefulVectoSimulationComponent<TorqueConverter.TorqueConverterComponentState>
 	{
 		protected internal ITnOutPort NextComponent;
 		private TorqueConverterData ModelData;

@@ -30,7 +30,6 @@
 */
 
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML
 {
@@ -45,7 +44,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 			LoadModule<XMLDeclarationReaderInjectModule>();
 
-			LoadModule<XMLEngineeringReaderInjectModule>();
 		}
 
 		#endregion

@@ -139,35 +139,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 				: new XElement(_vif10 + XMLNames.MaxTorqueCurve, maxTorqueCurveEntries);
 		}
 		
-		private List<XElement> GetPowerMap(IList<IElectricMotorPowerMap> powerMapData)
-		{
-			var powerMaps = new List<XElement>();
-
-			foreach (var powerMapEntry in powerMapData) {
-				
-				var entries = new List<XElement>();
-				for (int r = 0; r < powerMapEntry.PowerMap.Rows.Count; r++) {
-					var outShaftSpeed = powerMapEntry.PowerMap.Rows[r][XMLNames.PowerMap_OutShaftSpeed].ToString().ToDouble();
-					var torque = powerMapEntry.PowerMap.Rows[r][XMLNames.PowerMap_Torque].ToString().ToDouble();
-					var electricPower = powerMapEntry.PowerMap.Rows[r][XMLNames.PowerMap_ElectricPower].ToString().ToDouble();
-
-					var entry = new XElement(_vif + XMLNames.PowerMap_Entry,
-						new XAttribute(XMLNames.PowerMap_OutShaftSpeed, outShaftSpeed.ToXMLFormat(2)),
-						new XAttribute(XMLNames.PowerMap_Torque, torque.ToXMLFormat(2)),
-						new XAttribute(XMLNames.PowerMap_ElectricPower, electricPower.ToXMLFormat(2)));
-					entries.Add(entry);
-				}
-
-				var powerEntry = new XElement(_vif + XMLNames.PowerMap,
-					new XAttribute("gear", powerMapEntry.Gear),
-					entries);
-
-				powerMaps.Add(powerEntry);
-			}
-
-			return powerMaps;
-		}
-
 		private IList<XElement> GetDragCurves(IList<IDragCurve> dragCurves)
 		{
 			var result = new List<XElement>();

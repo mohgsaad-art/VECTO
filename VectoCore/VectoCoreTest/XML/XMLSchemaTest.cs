@@ -21,7 +21,8 @@ namespace TUGraz.VectoCore.Tests.XML
 
         [TestCase("conventional", AlternatorType.Conventional)]
 		[TestCase("no alternator", AlternatorType.None)]
-		[TestCase("smart", AlternatorType.Smart)]
+		[TestCase("smart", AlternatorType.Smart),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void ParseAlternatorEnum(string xmlValue, AlternatorType expected)
 		{
 			var enumResult = AlternatorTypeHelper.Parse(xmlValue);

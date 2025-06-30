@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -9,16 +8,14 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
-using TUGraz.VectoCore.Models.BusAuxiliaries;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 
-namespace TUGraz.VectoMockup.Simulation.RundataFactories
+namespace TUGraz.VectoCore.Mockup.Simulation.RundataFactories
 {
     public class MockupLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunDataFactory.Conventional
     {
@@ -148,6 +145,15 @@ namespace TUGraz.VectoMockup.Simulation.RundataFactories
             {
 				var cycle = CycleFactory.GetDeclarationCycle(mission);
 
+				var segment = new Segment() {
+					AccelerationFile = @"v [km/h],acc [m/s²],dec [m/s²]
+0,1,-1
+25,1,-1
+50,0.642857143,-1
+60,0.5,-0.5
+120,0.5,-0.5
+".ToStream(),
+				};
                 runData = new VectoRunData()
                 {
                     Loading = loading.Key,
@@ -161,6 +167,7 @@ namespace TUGraz.VectoMockup.Simulation.RundataFactories
                     EngineData = CreateMockupEngineData(vehicle, modeIdx),
                     GearboxData = CreateMockupGearboxData(vehicle),
                     AxleGearData = CreateMockupAxleGearData(vehicle),
+                    //DriverData = CreateDriverData(segment),
                     BatteryData = new VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery.BatterySystemData(),
                     JobType = InputDataProvider.JobInputData.JobType,
 
@@ -186,11 +193,9 @@ namespace TUGraz.VectoMockup.Simulation.RundataFactories
             return runData;
         }
 
-
         public static DriverData CreateMockupDriverData(IVehicleDeclarationInputData vehicle)
         {
             var uf = DeclarationData.Driver.GetEngineStopStartLorry().UtilityFactor;
-
             return new DriverData
             {
                 EngineStopStart = new DriverData.EngineStopStartData()
@@ -200,8 +205,7 @@ namespace TUGraz.VectoMockup.Simulation.RundataFactories
                 }
             };
         }
-
-        protected override void Initialize()
+		protected override void Initialize()
         {
             _segment = DeclarationData.GetTruckSegment(
                 InputDataProvider.JobInputData.Vehicle, 

@@ -9,7 +9,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 	[TestFixture]
 	public class PathHelperTest
 	{
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RelativePathTest1()
 		{
 			var path = (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -28,7 +29,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual(path, PathHelper.GetAbsolutePath(relativeTo, result));
 		}
 
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RelativePathTest2()
 		{
 			var path = (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -51,7 +53,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual(path, PathHelper.GetAbsolutePath(relativeTo, result));
 		}
 
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RelativePathTest3()
 		{
 			var path = (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -74,7 +77,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RelativePathDifferentDrives()
 		{
 			var path =

@@ -91,7 +91,8 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IDCDCConverter DCDCConverter { get; }
 
-		WHRCharger WHRCharger { get; }
+		IWHRCharger WHRCharger { get; }
+
 		bool IsTestPowertrain { get; }
 	}
 

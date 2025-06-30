@@ -21,7 +21,7 @@ namespace TUGraz.VectoMockup.Simulation.SimulatorFactory
     internal class MockupEngineeringSimulatorFactory : SimulatorFactoryEngineering
 	{
 		public MockupEngineeringSimulatorFactory(IInputDataProvider dataProvider, IOutputDataWriter writer,
-			bool validate) : base(dataProvider, writer, validate, null, null)
+			bool validate, IVectoRunDataFactoryFactory runDataFactoryFactory) : base(dataProvider, writer, validate, runDataFactoryFactory, null, null)
 		{
 			throw new VectoException("Engineering mode is not supported in Mockup Vecto");
 		}

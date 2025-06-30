@@ -13,7 +13,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class SuperCap : StatefulVectoSimulationComponent<SuperCap.State>, IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable
+    public class SuperCap : StatefulVectoSimulationComponent<SuperCap.State>, IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable
 	{
 		private SuperCapData ModelData;
 

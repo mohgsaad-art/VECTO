@@ -18,14 +18,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
 
 		//private SwitchableClutch clutch;
-		private ElectricSystem ElectricSystem;
+		private IElectricSystem ElectricSystem;
 
 		protected readonly Dictionary<PowertrainPosition, ElectricMotorController> _electricMotorCtl = new Dictionary<PowertrainPosition, ElectricMotorController>();
 		public ITnOutPort NextComponent { get; protected set; }
 
 		private Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> _electricMotorTorque = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>();
 
-		public SimpleHybridController(IVehicleContainer container, ElectricSystem es) : base(container)
+		public SimpleHybridController(IVehicleContainer container, IElectricSystem es) : base(container)
 		{
 			ElectricSystem = es;
 			//this.clutch = clutch;

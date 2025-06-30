@@ -45,26 +45,35 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class CycleGearbox : AbstractGearbox<CycleGearbox.CycleGearboxState>
+	public class CycleGearbox : AbstractGearbox<CycleGearbox.CycleGearboxState>, ITypedGearbox
 	{
 		/// <summary>
 		/// True if gearbox is disengaged (no gear is set).
 		/// </summary>
-		protected internal Second Disengaged;
+		protected internal Second DisengagedTstmp;
+
+		public override bool Disengaged
+		{
+			get { return DisengagedTstmp != null; }
+			set {}
+		}
 
 		protected internal readonly TorqueConverterWrapper TorqueConverter;
 
-		public CycleGearbox(IVehicleContainer container, VectoRunData runData)
+		public CycleGearbox(IVehicleContainer container)
 			: base(container)
 		{
 			if (!ModelData.Type.AutomaticTransmission()) {
 				return;
 			}
+
+			var runData = container.RunData;
 
 			// Because APTN gearbox does not have a torque converter.
 			if (ModelData.Type == GearboxType.APTN) {
@@ -78,7 +87,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var strategy = new CycleShiftStrategy(container);
 
-			
 			TorqueConverter = new TorqueConverterWrapper(runData.Cycle.Entries.All(x => x.EngineSpeed != null),
 				new CycleTorqueConverter(container, ModelData.TorqueConverterData),
 				new TorqueConverter(this, strategy, container, ModelData.TorqueConverterData, runData));
@@ -223,7 +231,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun)
 		{
-			Disengaged = null;
+			DisengagedTstmp = null;
 
 			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
@@ -327,8 +335,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun)
 		{
-			if (Disengaged == null) {
-				Disengaged = absTime;
+			if (DisengagedTstmp == null) {
+				DisengagedTstmp = absTime;
 			}
 
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
@@ -439,7 +447,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] = Disengaged != null ? 0 : Gear.Gear;
+			container[ModalResultField.Gear] = DisengagedTstmp != null ? 0 : Gear.Gear;
 			container[ModalResultField.P_gbx_loss] = inPower - outPower;
 			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
 			container[ModalResultField.P_gbx_in] = inPower;
@@ -494,7 +502,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override GearshiftPosition NextGear
 		{
 			get {
-				if (Disengaged == null) {
+				if (DisengagedTstmp == null) {
 					return Gear;
 				}
 
@@ -527,7 +535,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override Second TractionInterruption
 		{
 			get {
-				if (Disengaged == null) {
+				if (DisengagedTstmp == null) {
 					return ModelData.TractionInterruption;
 				}
 
@@ -546,7 +554,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						continue;
 					}
 
-					return entry.Time - Disengaged;
+					return entry.Time - DisengagedTstmp;
 				}
 
 				return ModelData.TractionInterruption;
@@ -581,49 +589,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public WattSecond PowershiftLosses { get; set; }
 		}
 
-		public class CycleShiftStrategy : BaseShiftStrategy
-		{
-			public CycleShiftStrategy(IVehicleContainer dataBus) : base(dataBus) { }
-
-			public override IGearbox Gearbox { get; set; }
-
-			protected override bool DoCheckShiftRequired(Second absTime, Second dt, NewtonMeter outTorque,
-				PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear,
-				Second lastShiftTime, IResponse response)
-			{
-				return false;
-			}
-
-			public override GearshiftPosition InitGear(Second absTime, Second dt, NewtonMeter torque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override GearshiftPosition Engage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override void Disengage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override GearshiftPosition NextGear => throw new NotImplementedException();
-
-			public override ShiftPolygon ComputeDeclarationShiftPolygon(
-				GearboxType gearboxType, int i, EngineFullLoadCurve engineDataFullLoadCurve, IList<ITransmissionInputData> gearboxGears,
-				CombustionEngineData engineData, double axlegearRatio, Meter dynamicTyreRadius, ElectricMotorData electricMotorData = null)
-			{
-				return null;
-			}
-
-			public override ShiftPolygon ComputeDeclarationExtendedShiftPolygon(
-				GearboxType gearboxType, int i, EngineFullLoadCurve engineDataFullLoadCurve, IList<ITransmissionInputData> gearboxGears,
-				CombustionEngineData engineData, double axlegearRatio, Meter dynamicTyreRadius, ElectricMotorData electricMotorData = null)
-			{
-				return null;
-			}
-		}
+		
 	}
 }

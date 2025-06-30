@@ -47,10 +47,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		private readonly List<ShiftPolygonEntry> _upShiftPolygon;
 		private readonly List<ShiftPolygonEntry> _downShiftPolygon;
 
-		internal ShiftPolygon(List<ShiftPolygonEntry> downshift, List<ShiftPolygonEntry> upShift)
+		internal ShiftPolygon(IList<ShiftPolygonEntry> downshift, IList<ShiftPolygonEntry> upShift)
 		{
-			_upShiftPolygon = upShift;
-			_downShiftPolygon = downshift;
+			_upShiftPolygon = upShift.ToList();
+			_downShiftPolygon = downshift.ToList();
 		}
 
 		[JsonIgnore]

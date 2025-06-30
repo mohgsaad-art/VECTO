@@ -77,6 +77,7 @@ public class BusDeclarationDataTest
 	TestCase(4, true, VehicleCode.CC, RegistrationClass.III, null, null, null, VehicleClass.Class40d, 0.0),
 	TestCase(4, true, VehicleCode.CD, RegistrationClass.II, null, 5, null, VehicleClass.Class40e, 0.0),
 	TestCase(4, true, VehicleCode.CD, RegistrationClass.II, null, 10, null, VehicleClass.Class40f, 0.0),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void TestDrivetrainCorrectionLengthDrivetrain(int numAxles, bool articulated, VehicleCode vc, RegistrationClass regCode,  bool? lowEntry, int? passCntLow, double? height,
 		VehicleClass expecteClass, double expectedLength)
@@ -102,6 +103,7 @@ public class BusDeclarationDataTest
 	TestCase(HeatPumpType.none, HeaterType.WaterElectricHeater, true, HeatingDistributionCase.HeatingDistribution10),
 	TestCase(HeatPumpType.none, HeaterType.None, true, HeatingDistributionCase.HeatingDistribution11),
 	TestCase(HeatPumpType.none, HeaterType.None, false, HeatingDistributionCase.HeatingDistribution12),
+	Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void TestBusAuxHeatingDistributionCase(HeatPumpType heatPump, HeaterType heater, bool fuelHeater,
 		HeatingDistributionCase expectedCase)
@@ -126,6 +128,7 @@ public class BusDeclarationDataTest
 	TestCase(HeatingDistributionCase.HeatingDistribution10, HeatPumpType.none, HeaterType.WaterElectricHeater, true),
 	TestCase(HeatingDistributionCase.HeatingDistribution11, HeatPumpType.none, HeaterType.None, true),
 //	TestCase(HeatingDistributionCase.HeatingDistribution12, HeatPumpType.none, HeaterType.None, false),
+	Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void TestBusAuxHeatingDistribution(HeatingDistributionCase hdCase, HeatPumpType hpType, HeaterType heater, bool fuelHeater)
 	{
@@ -145,7 +148,8 @@ public class BusDeclarationDataTest
 		}
 	}
 
-	[Test]
+	[Test,
+	Category(Definitions.TESTCASE_MIGRATED)]
 	public void TestBusAusHeatingDistribution_ALL()
 	{
 		var heatpumps = EnumHelper.GetValues<HeatPumpType>().Where(x => !x.IsOneOf(HeatPumpType.not_applicable))

@@ -29,6 +29,9 @@ namespace TUGraz.VectoCore.InputData.Reader
 			IMultistageVIFInputData dataProvider,
 			IDeclarationReport report);
 
+		IVectoRunDataFactory CreateEngineOnlyRunDataFactory(string name, IEngineeringInputDataProvider dataProvider);
+
+		IVectoRunDataFactory CreateEngineeringRunDataFactory(string name, IEngineeringInputDataProvider dataProvider);
 	}
 
 
@@ -133,10 +136,25 @@ namespace TUGraz.VectoCore.InputData.Reader
 
 
 
-		public IVectoRunDataFactory CreateEngineeringRunDataFactory(IEngineeringInputDataProvider inputDataProvider)
+		public IVectoRunDataFactory CreateEngineeringRunDataFactory(IInputDataProvider inputDataProvider)
 		{
-			throw new NotImplementedException();
-		}
+			if (inputDataProvider == null)
+				throw new ArgumentNullException(nameof(inputDataProvider));
+
+			switch (inputDataProvider) {
+				case IVTPEngineeringInputDataProvider vtpProvider when vtpProvider.JobInputData.Vehicle.VehicleCategory.IsLorry():
+					return new EngineeringVTPModeVectoRunDataFactoryLorries(vtpProvider);
+				case IVTPEngineeringInputDataProvider vtpProvider when vtpProvider.JobInputData.Vehicle.VehicleCategory.IsBus():
+					return new EngineeringVTPModeVectoRunDataFactoryHeavyBusPrimary(vtpProvider);
+                case IEngineeringInputDataProvider engDataProvider when engDataProvider.JobInputData.JobType == VectoSimulationJobType.EngineOnlySimulation:
+					return _internalFactory.CreateEngineOnlyRunDataFactory(EngineOnlyVectoRunDataFactory.Name, engDataProvider);
+				case IEngineeringInputDataProvider engDataProvider:
+					return _internalFactory.CreateEngineeringRunDataFactory(EngineeringModeVectoRunDataFactory.Name, engDataProvider);
+				default:
+					throw new VectoException("Unknown InputData for Engineering Mode!");
+			}
+
+        }
 
 		private T CastReport<T>(object report)
 		{

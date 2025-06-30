@@ -59,8 +59,10 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Batter
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using Point = TUGraz.VectoCommon.Utils.Point;
+using NLog.Fluent;
 using System.Diagnostics;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
+using ElectricSystem = TUGraz.VectoCore.Models.Declaration.Auxiliaries.ElectricSystem;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
@@ -945,24 +947,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public static readonly MeterPerSecond StartSpeed = 8.KMPHtoMeterPerSecond();
 			public static readonly MeterPerSquareSecond StartAcceleration = 0.8.SI<MeterPerSquareSecond>();
 
-			public static readonly Second GearResidenceTime = 5.SI<Second>();
-			public static readonly Watt CurrentCardanPowerThresholdPropulsion = 5000.SI<Watt>();
-			public static readonly Watt AverageCardanPowerThresholdPropulsion = 1000.SI<Watt>();
-			public static readonly Second LookBackInterval = 4.SI<Second>();
-			public static readonly Second DriverAccelerationLookBackInterval = 2.SI<Second>();
-			public const double EngineSpeedHighDriveOffFactor = 1.05;
-			public const double DnT99L_highMin1 = 0.4;
-			public const double DnT99L_highMin2 = 0.5;
-
-			public const int AllowedGearRangeUp = 3;
-			public const int AllowedGearRangeDown = 3;
-
-			public const double TargetSpeedDeviationFactor = 0.1;
 
 			public static double RatingFactorCurrentGear = 0.97;
 			public static double RatingFactorCurrentGearAT = 0.97;
 
-			public static readonly MeterPerSquareSecond DriverAccelerationThresholdLow = 0.1.SI<MeterPerSquareSecond>();
 			public static double VelocityDropFactor = 1.0;
 			public static double AccelerationFactor = 0.5;
 
@@ -1095,50 +1083,114 @@ namespace TUGraz.VectoCore.Models.Declaration
 					case GearboxType.ATSerial:
 					case GearboxType.ATPowerSplit:
 						return TorqueConverter.ComputeShiftPolygon(fullLoadCurve, gearIdx == 0, gearIdx >= gears.Count - 1);
-					case GearboxType.DrivingCycle: break;
 					default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
 				}
 
-				return type.AutomaticTransmission()
-					? TorqueConverter.ComputeShiftPolygon(fullLoadCurve, gearIdx == 0, gearIdx >= gears.Count - 1)
-
-					// That's the same for all gears, so call the same method...
-					: ComputeManualTransmissionShiftPolygon(gearIdx, fullLoadCurve, gears, engine, axlegearRatio, dynamicTyreRadius);
 			}
-
-			public static ShiftPolygon ComputeElectricMotorShiftPolygon(int gearIdx,
-				ElectricMotorFullLoadCurve fullLoadCurveOrig, double emRatio, IList<ITransmissionInputData> gears,
-				double axlegearRatio, Meter dynamicTyreRadius, PerSecond downshiftMaxSpeed = null, PerSecond downshiftMinSpeed = null)
+			
+			
+			public static ShiftPolygon ComputeElectricMotorShiftPolygon(
+				int gearIdx, 
+				ElectricMotorData electricMotorData,
+				IList<ITransmissionInputData> gears, 
+				double? downshiftMaxSpeedFactor = null,
+				double? downShiftMinSpeedFactor = null)
 			{
-				var gbxMaxTq = gears[gearIdx].MaxTorque != null ? gears[gearIdx].MaxTorque / emRatio : null;
-				var gbxMaxSpeed = gears[gearIdx].MaxInputSpeed != null ? gears[gearIdx].MaxInputSpeed * emRatio : null;
-
-				var fullLoadCurve = gbxMaxTq == null
+				if ((downshiftMaxSpeedFactor != null && !downshiftMaxSpeedFactor.Value.IsBetween(0.0, 1.0)) ||
+					downShiftMinSpeedFactor != null && !downShiftMinSpeedFactor.Value.IsBetween(0.0, 1.0)) {
+					throw new VectoException("Invalid downshift factors: must be between 0.0 and 1.0");
+				}
+				
+				//EM FullloadCurve
+				var fullLoadCurveOrig = electricMotorData.EfficiencyData.VoltageLevels.First().FullLoadCurve;
+				
+				var emRatio = electricMotorData.RatioADC;
+				var lossMap = electricMotorData.TransmissionLossMap;
+				var emMaxSpeed = electricMotorData.EfficiencyData.MaxSpeed;
+				
+				//Transform EM Fullloadcurve to include ADC losses and ratio. Convert EM to Drivetrain
+				var fullLoadCurveTransformed = lossMap == null
 					? fullLoadCurveOrig
-					: LimitElectricMotorFullLoadCurve(fullLoadCurveOrig, gbxMaxTq);
+					: TransformFullLoadCurve(fullLoadCurveOrig, lossMap, emRatio);
+				var emMaxSpeedDt = emMaxSpeed / emRatio;
+				
+				
+				//From now on we are on the gbx_in side.
+				var gbxMaxTq = gears[gearIdx].MaxTorque != null ? gears[gearIdx].MaxTorque : null;
+				var gbxMaxSpeed = gears[gearIdx].MaxInputSpeed != null ? gears[gearIdx].MaxInputSpeed : null;
+				
+				
+				var fullLoadCurve = gbxMaxTq == null
+					? fullLoadCurveTransformed
+					: LimitElectricMotorFullLoadCurve(fullLoadCurveTransformed, gbxMaxTq);
+				
 				if (gears.Count < 2) {
 					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
 				}
-
+			
 				var downShift = new List<ShiftPolygon.ShiftPolygonEntry>();
 				var upShift = new List<ShiftPolygon.ShiftPolygonEntry>();
 				if (gearIdx > 0) {
-					var nMax = downshiftMaxSpeed ?? fullLoadCurve.NP80low;
-					var nMin = downshiftMinSpeed ?? 0.1 * fullLoadCurve.RatedSpeed;
-
-					downShift.AddRange(DownshiftLineDrive(fullLoadCurve, fullLoadCurveOrig, nMin, fullLoadCurve.NP80low));
-					downShift.AddRange(DownshiftLineDrag(fullLoadCurve, fullLoadCurveOrig, nMin, nMax));
-
+					var nMax = downshiftMaxSpeedFactor.HasValue
+						? downshiftMaxSpeedFactor.Value * fullLoadCurve.RatedSpeed
+						: fullLoadCurve.NP80low;
+					
+					var nMin = downShiftMinSpeedFactor.HasValue 
+						? downShiftMinSpeedFactor.Value * fullLoadCurve.RatedSpeed
+						: fullLoadCurve.RatedSpeed * 0.1;
+					
+					downShift.AddRange(DownshiftLineDrive(fullLoadCurve, fullLoadCurveTransformed, nMin, fullLoadCurve.NP80low));
+					downShift.AddRange(DownshiftLineDrag(fullLoadCurve, fullLoadCurveTransformed, nMin, nMax));
+			
 				}
 				if (gearIdx >= gears.Count - 1) {
-					return new ShiftPolygon(downShift, upShift);
+					return new ShiftPolygon(TransformShiftPolygonEntries(downShift, emRatio, lossMap), TransformShiftPolygonEntries(upShift, emRatio, lossMap));
 				}
-
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(fullLoadCurve.MaxSpeed * 0.9, gbxMaxSpeed)));
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(fullLoadCurve.MaxSpeed * 0.9, gbxMaxSpeed)));
-				return new ShiftPolygon(downShift, upShift);
+			
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
+				return new ShiftPolygon(TransformShiftPolygonEntries(downShift, emRatio, lossMap), TransformShiftPolygonEntries(upShift, emRatio, lossMap));
 			}
 
+
+			/// <summary>
+			/// Transforms the shiftpolygons from em side to drivetrain side (= gearbox in), considering the ADC ratio and losses
+			/// </summary>
+			/// <param name="entries"></param>
+			/// <param name="emRatio"></param>
+			/// <param name="lossMap"></param>
+			/// <returns></returns>
+			private static IList<ShiftPolygon.ShiftPolygonEntry> TransformShiftPolygonEntries(
+				IEnumerable<ShiftPolygon.ShiftPolygonEntry> entries, double emRatio, TransmissionLossMap lossMap)
+			{
+				return entries.ToList();
+			}
+
+			private static ElectricMotorFullLoadCurve TransformFullLoadCurve(ElectricMotorFullLoadCurve emFld,
+				TransmissionLossMap lossMap, double ratioAdc)
+			{
+				var fldCurve =
+					new ElectricMotorFullLoadCurve(
+						emFld.FullLoadEntries.Select(e => {
+								var drive = lossMap.GetOutTorqueAndSpeed(e.MotorSpeed, e.FullDriveTorque);
+								var generation = lossMap.GetOutTorqueAndSpeed(e.MotorSpeed, e.FullGenerationTorque);
+								return new ElectricMotorFullLoadCurve.FullLoadEntry() {
+									FullDriveTorque = drive.outTorque,
+									FullGenerationTorque = generation.outTorque,
+									MotorSpeed = drive.outAngularVelocity
+								};
+							}
+						).ToList());
+				
+				return fldCurve;
+			}
+			
+			/// <summary>
+			/// Limit the fullload curve to the max gearbox in torque
+			/// </summary>
+			/// <param name="emFld"></param>
+			/// <param name="maxTq"></param>
+			/// <returns></returns>
 			public static ElectricMotorFullLoadCurve LimitElectricMotorFullLoadCurve(ElectricMotorFullLoadCurve emFld, NewtonMeter maxTq)
 			{
 				var contTqFld = new ElectricMotorFullLoadCurve(new List<ElectricMotorFullLoadCurve.FullLoadEntry>() {
@@ -2060,7 +2112,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				(cdResult.FuelConsumptionFinal(f.FuelType).TotalFuelConsumptionCorrected / cdResult.Distance) * cdResult.WeightingFactor))
 					.ToDictionary(x => x.Item1, x => x.Item2);
 
-			var retVal = new WeightedResult() {
+            var retVal = new WeightedResult() {
 				Status = cdResult.Status == VectoRun.Status.PrimaryBusSimulationIgnore || csResult.Status == VectoRun.Status.PrimaryBusSimulationIgnore ? VectoRun.Status.PrimaryBusSimulationIgnore : VectoRun.Status.Success,
 				JobType = cdResult.VectoRunData.JobType,
 				OffVehicleCharging = cdResult.VectoRunData.VehicleData.OffVehicleCharging,
@@ -2079,7 +2131,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				FuelConsumption = D37_fuelConsumptionWeighted,
 				FuelConsumptionPerMeter = fcPerMeter,
 
-				CO2PerMeter = (D32_utilityFactor * (cdResult.CO2Total / cdResult.Distance)) + ((1 - D32_utilityFactor) * (csResult.CO2Total / csResult.Distance)),
+                CO2PerMeter = (D32_utilityFactor * (cdResult.CO2Total / cdResult.Distance)) + ((1 - D32_utilityFactor) * (csResult.CO2Total / csResult.Distance)),
 
 				AuxHeaterFuel = cdResult.AuxHeaterFuel,
 				ZEV_CO2 =
@@ -2341,7 +2393,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				FuelConsumptionPerMeter = fuels.Select(f => Tuple.Create(f,
 						entries.Sum(e => e.Weighted.FuelConsumptionPerMeter[f] * e.ChargeDepletingResult.WeightingFactor)))
 						.ToDictionary(x => x.Item1, x => x.Item2),
-				ElectricEnergyConsumption = entries.Sum(e => e.Weighted.ElectricEnergyConsumption * e.ChargeDepletingResult.WeightingFactor),
+                ElectricEnergyConsumption = entries.Sum(e => e.Weighted.ElectricEnergyConsumption * e.ChargeDepletingResult.WeightingFactor),
 				CO2PerMeter = entries.All(e => e.Weighted.CO2PerMeter != null) ? entries.Sum(e => (e.Weighted.CO2PerMeter) * e.ChargeDepletingResult.WeightingFactor) : null,
 				ActualChargeDepletingRange = entries.Sum(e => e.Weighted.ActualChargeDepletingRange * e.ChargeDepletingResult.WeightingFactor),
 				EquivalentAllElectricRange = entries.Sum(e => e.Weighted.EquivalentAllElectricRange * e.ChargeDepletingResult.WeightingFactor),

@@ -76,7 +76,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// Test if the cycle file can be read.
 		/// </summary>
 		/// <remarks>VECTO-177</remarks>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Pwheel_ReadCycle_Test()
 		{
 			var runData = new VectoRunData() {
@@ -105,8 +106,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var cycleFile = new MemoryStream(Encoding.UTF8.GetBytes(inputData));
 			var drivingCycle = DrivingCycleDataReader.ReadFromStream(cycleFile, CycleType.PWheel, "", false);
 
-			var gearbox = new CycleGearbox(container, runData);
-
+			var gearbox = new CycleGearbox(container);
 
 			var cycle = new PWheelCycle(container, drivingCycle);
 			cycle.Connect(new MockTnOutPort());

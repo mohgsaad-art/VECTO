@@ -1,15 +1,61 @@
-﻿using TUGraz.VectoCommon.InputData;
+﻿using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class MeasuredSpeedHybridsGearbox : Gearbox
+	public class TestPowertrainMeasuredSpeedHybridsGearbox : MeasuredSpeedHybridsGearbox, ITestPowertrainTransmission
     {
-        public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy) 
+		public TestPowertrainMeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(
+			container, strategy, false)
+		{
+			if (!container.IsTestPowertrain) {
+				throw new VectoException("This class shall not be used in a real powertrain!");
+			}
+        }
+
+		#region Implementation of ITestPowertrainGearbox
+
+		public GearshiftPosition SetGear {
+			set => Gear = value;
+		}
+
+		public GearshiftPosition SetNextGear {
+			set => _nextGear = value;
+		}
+
+		public bool SetDisengaged {
+			set => Disengaged = value;
+		}
+
+		public bool SetDisengageGearbox {
+			set => DisengageGearbox = value;
+		}
+
+		public Second SetEngageTime {
+			set => EngageTime = value;
+		}
+
+		#endregion
+    }
+
+    public class MeasuredSpeedHybridsGearbox : AbstractAMTGearbox
+    {
+		public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : this(container, strategy, false)
+		{
+			if (container.IsTestPowertrain) {
+				throw new VectoException(
+					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+			}
+        }
+
+        protected MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy) : base(container, strategy, false) 
         {}
 
         protected override void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)

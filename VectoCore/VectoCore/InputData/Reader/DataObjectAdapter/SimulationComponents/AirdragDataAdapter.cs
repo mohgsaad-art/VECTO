@@ -215,7 +215,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					DeclaredAirdragArea = mission.DefaultCDxA,
 					CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(
 						defaultCDxA, deltaCdxAIMC,
-                        GetDeclarationAirResistanceCurve(
+						GetDeclarationAirResistanceCurve(
 							mission.CrossWindCorrectionParameters, defaultCDxA, vehicleHeight),
 						CrossWindCorrectionMode.DeclarationModeCorrection),
 					CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection
@@ -234,7 +234,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
             retVal.CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(
 				cdxA, deltaCdxAIMC,
-                GetDeclarationAirResistanceCurve(
+				GetDeclarationAirResistanceCurve(
 					mission.CrossWindCorrectionParameters,
 					cdxA,
 					vehicleHeight),

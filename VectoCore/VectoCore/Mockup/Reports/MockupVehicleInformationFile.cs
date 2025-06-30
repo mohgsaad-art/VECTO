@@ -67,8 +67,6 @@ namespace TUGraz.VectoMockup.Reports
 			_vehicleInformationFileImplementation.WriteResult(result);
 		}
 
-		public XNamespace Tns => _vehicleInformationFileImplementation.Tns;
-
 		#endregion
 
 		#region Implementation of IXMLMockupReport

@@ -34,15 +34,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 {
-	public class FuelConsumptionMap : SimulationComponentData, IFuelConsumptionMap
+    public class FuelConsumptionMap : SimulationComponentData, IFuelConsumptionMap
 	{
 		[Required, ValidateObject] private readonly DelaunayMap _fuelMap;
 
@@ -112,13 +112,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				Torque = torque;
 				FuelConsumption = fuelConsumption;
 			}
-		}
-
-		[DebuggerDisplay("{Value} (extrapolated: {Extrapolated})")]
-		public class FuelConsumptionResult
-		{
-			public KilogramPerSecond Value;
-			public bool Extrapolated;
 		}
 
 		#region Implementation of IFuelConsumptionMap

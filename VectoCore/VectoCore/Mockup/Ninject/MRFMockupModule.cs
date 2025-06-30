@@ -642,12 +642,7 @@ namespace TUGraz.VectoMockup.Ninject
             return _manufacturerReportFactoryImplementation.GetPrimaryBusHVACSystemType_Conventional_HEV();
         }
 
-        public IMRFBusAuxiliariesType GetPrimaryBusHVACSystemType_PEV()
-        {
-            return _manufacturerReportFactoryImplementation.GetPrimaryBusHVACSystemType_PEV();
-        }
-
-        public IMRFBusAuxiliariesType GetConventionalCompletedBusAuxType()
+		public IMRFBusAuxiliariesType GetConventionalCompletedBusAuxType()
         {
             return _manufacturerReportFactoryImplementation.GetConventionalCompletedBusAuxType();
         }

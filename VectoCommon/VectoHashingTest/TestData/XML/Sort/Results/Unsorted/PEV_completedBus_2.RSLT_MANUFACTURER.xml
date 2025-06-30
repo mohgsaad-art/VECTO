@@ -16,10 +16,10 @@
       <VIN>VEH-1234567890</VIN>
       <VehicleCategory>M3</VehicleCategory>
       <AxleConfiguration>4x2</AxleConfiguration>
-      <TechnicalPermissibleMaximumLadenMass>3500</TechnicalPermissibleMaximumLadenMass>
+      <TechnicalPermissibleMaximumLadenMass unit="kg">3500</TechnicalPermissibleMaximumLadenMass>
       <VehicleGroup>32e</VehicleGroup>
       <VehicleGroupCO2>N/A</VehicleGroupCO2>
-      <CorrectedActualMass>500</CorrectedActualMass>
+      <CorrectedActualMass unit="kg">500</CorrectedActualMass>
       <ZeroEmissionVehicle>true</ZeroEmissionVehicle>
       <HybridElectricHDV>false</HybridElectricHDV>
       <ClassBus>II+III</ClassBus>

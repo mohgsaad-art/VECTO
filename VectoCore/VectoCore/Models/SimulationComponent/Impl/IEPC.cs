@@ -1,15 +1,51 @@
-﻿using TUGraz.VectoCommon.InputData;
+﻿using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 
-namespace TUGraz.VectoCore.Models.SimulationComponent.Impl{
+namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
+{
+
+	public class TestpowertrainIEPC : IEPC, ITestpowertrainElectricMotor
+	{
+		public TestpowertrainIEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : base(container, data, control, position, false)
+		{
+			if (!container.IsTestPowertrain) {
+				throw new VectoException(
+					"TestpowertrainIEPC component must not be used in real powertrain - use dedicated component instead");
+			}
+
+        }
+
+		public IElectricSystem GetElectricSystem => ElectricPower;
+		public ElectricMotorState GetPreviousState { get => PreviousState; }
+		public Joule SetThermalBuffer
+		{
+			set { ThermalBuffer = value; }
+		}
+		public bool SetDeRatingActive
+		{
+			set { DeRatingActive = value; }
+		}
+	}
 
 	public class IEPC : ElectricMotor
 	{
-		public IEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, PowertrainPosition position) : base(container, data, control, position) { }
+		public IEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : base(container, data, control, position, false)
+		{
+			if (container.IsTestPowertrain) {
+				throw new VectoException(
+					"IEPC component must not be used in test powertrain - use dedicated component instead");
+			}
+		}
+
+		protected IEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position, bool dummy) : base(container, data, control, position, false) { }
 
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)

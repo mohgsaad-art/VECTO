@@ -21,8 +21,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
     public abstract class CustomerInformationFile : AbstractCustomerReport
     {
         public static XNamespace Cif => Namespace;
-		
-        protected CustomerInformationFile(ICustomerInformationFileFactory cifFactory, IResultsWriterFactory resultWriterFactory) : base(cifFactory, resultWriterFactory) { }
+		protected CustomerInformationFile(ICustomerInformationFileFactory cifFactory, IResultsWriterFactory resultWriterFactory) : base(cifFactory, resultWriterFactory) { }
 	}
 
     #region LorryCIF

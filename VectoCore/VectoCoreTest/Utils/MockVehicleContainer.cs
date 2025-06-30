@@ -47,8 +47,8 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-		
-	public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, IMileageCounter, IGearboxInfo, IGearboxControl, IPowertainInfo, IUpdateable
+
+    public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, IMileageCounter, IGearboxInfo, IGearboxControl, IPowertainInfo, IUpdateable
 	{
 		// only CycleData Lookup is set / accessed...
 
@@ -83,6 +83,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public Second TractionInterruption => 1.SI<Second>();
 
 		public uint NumGears { get; set; }
+		public bool Disengaged { get; }
 
 		public MeterPerSecond StartSpeed { get; set; }
 		public MeterPerSquareSecond StartAcceleration { get; set; }
@@ -125,7 +126,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IHybridControllerCtl HybridControllerCtl { get; }
 		public IAngledriveInfo AngledriveInfo { get; }
 		public IDCDCConverter DCDCConverter { get; }
-		public WHRCharger WHRCharger { get; }
+		public IWHRCharger WHRCharger { get; }
 
 		public bool IsTestPowertrain => false;
 
@@ -382,6 +383,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public bool UpdateFrom(object other) {
 			return false;
+		}
+
+		#endregion
+
+		#region Implementation of ITnInProvider
+
+		public ITnInPort InPort()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
+		#region Implementation of ITnOutProvider
+
+		public ITnOutPort OutPort()
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion

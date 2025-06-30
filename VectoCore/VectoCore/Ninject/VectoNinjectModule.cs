@@ -45,7 +45,6 @@ using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.Manu
 using TUGraz.VectoCore.OutputData.XML.ComponentWriter;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1;
-using TUGraz.VectoCore.OutputData.XML.Engineering;
 
 using TUGraz.VectoCore.OutputData.XML.GroupWriter;
 using TUGraz.VectoMockup.Ninject;
@@ -69,29 +68,28 @@ namespace TUGraz.VectoCore
 
 		#region Overrides of NinjectModule
 
-		
-
-		public VectoNinjectModule()
-		{
-			
-		}
-		
-	
-
 		public override void Load()
 		{
-			
-			LoadModule<XMLInputDataNinjectModule>();
+			// necessary for injecting IShiftStrategyFactory into AbstractSimulationDataAdapter, PrimaryBusBase, CompletedBusDeclarationBase, SingleBusBase
+			// as the property there is private
+			Kernel.Settings.InjectNonPublic = true;
+			Kernel.Settings.InjectParentPrivateProperties = true;
 
-			LoadModule<XMLEngineeringWriterInjectModule>();
+            LoadModule<XMLInputDataNinjectModule>();
 
 			LoadModule<SimulatorFactoryNinjectModule>();
+
+			LoadModule<PowertrainComponentNinjectModule>();
 
 			LoadModule<XMLDeclarationReportFactoryNinjectModule>();	
 
 			LoadModule<VectoRunDataFactoryNinjectModule>();
 
+			LoadModule<ShiftStrategyNinjectModule>();
+
 			LoadModule<DeclarationDataAdapterNinjectModule>();
+
+			LoadModule<EngineeringDataAdapterNinjectModule>();
 
 			LoadModule<GroupWriterNinjectModule>();
 

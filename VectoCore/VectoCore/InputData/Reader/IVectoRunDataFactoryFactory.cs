@@ -6,10 +6,16 @@ namespace TUGraz.VectoCore.InputData
 {
     public interface IVectoRunDataFactoryFactory
     {
-		IVectoRunDataFactory CreateEngineeringRunDataFactory(IEngineeringInputDataProvider inputDataProvider);
+		/// <summary>
+		/// Creates a VectoRunDataFactory for engineering mode simulation based on the type of inputDataProvider
+		/// </summary>
+		/// <param name="inputDataProvider"></param>
+		/// <returns></returns>
+        IVectoRunDataFactory CreateEngineeringRunDataFactory(IInputDataProvider inputDataProvider);
+
 
 		/// <summary>
-		/// Creates a VectoRunDataFactory based on the type of inputDataProvider
+		/// Creates a VectoRunDataFactory for declaration mode simulation based on the type of inputDataProvider
 		/// </summary>
 		/// <param name="inputDataProvider"></param>
 		/// <param name="report"></param>

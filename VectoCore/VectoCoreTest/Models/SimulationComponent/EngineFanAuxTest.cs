@@ -46,7 +46,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		TestCase(500,    843.713),
 		TestCase(1000,   6749.700),
 		TestCase(1300,   14829.091),
-		TestCase(1500,   22780.238)
+		TestCase(1500,   22780.238),
+		Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestEngineFanPowerDemand(double fanSpeedRPM, double expectedPowerDemand)
 		{
@@ -59,7 +60,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
         [
         TestCase(14, 20),
         TestCase(28, 40),
-        TestCase(7, 10)
+        TestCase(7, 10),
+		Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void TestEngineFanPowerDemandWithElectricalPower(double fanElectricalPower, double expectedPowerDemand)
         {

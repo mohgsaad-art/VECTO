@@ -14,7 +14,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 {
-	public abstract class ModalDataPostProcessingCorrectionBase : IModalDataPostProcessor
+    public abstract class ModalDataPostProcessingCorrectionBase : IModalDataPostProcessor
 	{
 		#region Implementation of IModalDataPostProcessor
 

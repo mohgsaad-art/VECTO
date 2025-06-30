@@ -54,6 +54,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using MockDrivingCycle = TUGraz.VectoCore.Tests.Utils.MockDrivingCycle;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
@@ -74,7 +75,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 
 
-		[TestCase]
+		[TestCase, 
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DriverCoastingTest()
 		{
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 1);
@@ -94,8 +96,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				AirdragData = airdragData,
 				EngineData = engineData,
 				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
-				GearboxData = new GearboxData() { Type = GearboxType.AMT }
-			};
+				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
 			var mockCycle = new MockDrivingCycle(vehicleContainer, null);
@@ -144,7 +147,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			modData.Finish(VectoRun.Status.Success);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DriverCoastingTest2()
 		{
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 1);
@@ -162,10 +166,10 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				DriverData = driverData,
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				GearboxData = new GearboxData() { Type = GearboxType.AMT }
+				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				ExecutionMode = ExecutionMode.Engineering,
 
-
-			};
+            };
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
 
@@ -217,7 +221,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			modData.Finish(VectoRun.Status.Success);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DriverOverloadTest()
 		{
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFileHigh, 1);
@@ -240,12 +245,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				EngineData = engineData,
 				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				DriverData = driverData,
-				GearboxData = new GearboxData() { Type = GearboxType.AMT }
-			};
+				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
 
-            var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
+			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,5,0,0\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			
@@ -265,7 +271,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var driverPort = driver.OutPort();
 
-			driverPort.Initialize(0.SI<MeterPerSecond>(), 0.SI<Radian>());
+			driverPort.Initialize(5.KMPHtoMeterPerSecond(), 0.SI<Radian>());
 
 			var absTime = 0.SI<Second>();
 
@@ -288,7 +294,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.AreEqual(0.2900, modData.GetValues<SI>(ModalResultField.acc).Last().Value(), Tolerance);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DriverAccelerationTest()
 		{
 			var driverData = MockSimulationDataFactory.CreateDriverDataFromFile(JobFile);
@@ -364,7 +371,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.AreEqual(0.2, response.SimulationInterval.Value(), Tolerance);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DriverDecelerationTest()
 		{
 			var driverData = MockSimulationDataFactory.CreateDriverDataFromFile(JobFile);
@@ -501,7 +509,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		// ========================
 
-		protected virtual IDriver AddComponent(IDrivingCycle prev, IDriver next)
+		protected virtual IDriver AddComponent(IDistanceBasedDrivingCycle prev, IDriver next)
 		{
 			prev.InPort().Connect(next.OutPort());
 			return next;

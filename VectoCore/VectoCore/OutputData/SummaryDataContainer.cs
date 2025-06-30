@@ -52,9 +52,9 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.OutputData
 {
-	//public delegate void WriteSumData(IModalDataContainer data);
+    //public delegate void WriteSumData(IModalDataContainer data);
 
-	public interface ISumData
+    public interface ISumData
 	{
 		void Write(IModalDataContainer modData, VectoRunData runData);
 		void RegisterComponent(VectoSimulationComponent component, VectoRunData runData);
@@ -464,10 +464,10 @@ namespace TUGraz.VectoCore.OutputData
 					UpdateTableColumns(runData.EngineData);
 					CreateColumns(CO2Columns);
 					break;
-				case BusAuxiliariesAdapter _:
+				case IBusAuxiliariesAdapter _:
 					CreateColumns(BusAuxiliariesSignals);
 					break;
-				case EngineAuxiliary _:
+				case IEngineAuxiliary _:
 					break;
 				case IClutch _:
 					CreateColumns(ClutchColumns);
@@ -485,7 +485,7 @@ namespace TUGraz.VectoCore.OutputData
 					CreateGearTimeShareColumns(runData.GearboxData.GearList);
 					CreateGearRatioColumns(runData);
 					break;
-				case VTPCycle _:
+				case IVTPCycle _:
 					CreateColumns(VTPCycleColumns);
 					break;
 				case ITorqueConverter _:
@@ -959,13 +959,10 @@ namespace TUGraz.VectoCore.OutputData
 			
 		}
 
-
 		protected Dictionary<string, object> GetResultDictionary(IModalDataContainer modData, VectoRunData runData)
 		{
-
 			return new Dictionary<string, object>();
 		}
-
 
 		private void AddResultDictionary(Dictionary<string, object> row)
 		{
@@ -1060,7 +1057,6 @@ namespace TUGraz.VectoCore.OutputData
 					? SumDataFields.E_FORMAT
 					: SumDataFields.E_AUX_FORMAT, auxKey);
 		}
-
 
 		private static string FcCol(string col, string suffix)
 		{

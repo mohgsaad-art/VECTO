@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 
 		#region Overrides of AbstractMrfXmlGroup
 
+		[ExcludeFromCodeCoverage] // not used for buses
 		public override IList<XElement> GetElements(IDeclarationInputDataProvider inputData)
 		{
 			throw new NotImplementedException();

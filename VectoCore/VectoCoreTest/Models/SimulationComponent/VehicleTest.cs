@@ -49,10 +49,11 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
+using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class VehicleTest
 	{
@@ -68,7 +69,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
         }
 
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehiclePortTest()
 		{
 			
@@ -84,6 +86,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				AirdragData = airdragData,
 				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
+		
 		
 			var vehicle = new Vehicle(container, vehicleData, airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
@@ -114,7 +117,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			TestCase(60, 1, 0.5, 3.0, 1291.6202),
 			TestCase(60, 0.5, 0.5, 3.0, 1274.3082),
 			TestCase(72, 0.5, 0.5, 3.0, 1765.8214),
-			TestCase(72, 1, 3, 3.0, 2001.6463)
+			TestCase(72, 1, 3, 3.0, 2001.6463),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void VehicleAirResistanceTest(double vehicleSpeed, double acceleration, double dt, double height,
 			double expected)
@@ -144,7 +148,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.AreEqual(expected, avgForce.AirdragForce.Value(), Tolerance);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehicleAirDragPowerLossDeclarationTest()
 		{
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFileTruck);
@@ -160,7 +165,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
 
-			var vehicle = new Vehicle(container, vehicleData,airdragData);
+            var vehicle = new Vehicle(container, vehicleData,airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
 			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
@@ -190,6 +195,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		TestCase(5.19, 80, 1.109),
 		TestCase(5.19, 100, 1.075),
 		TestCase(5.19, 62.5, 1.163),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void VehicleAirDragSpeedDependentTest(double crossSectionArea, double velocity, double expectedFactor)
 		{

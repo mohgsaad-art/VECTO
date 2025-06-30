@@ -161,8 +161,8 @@
                   </MaxTorqueCurve>
                 </VoltageLevel>
                 <DragCurve>
-                  <Entry outShaftSpeed="0.00" dragTorque="10.00" />
-                  <Entry outShaftSpeed="4000.00" dragTorque="30.00" />
+                  <Entry outShaftSpeed="0.00" dragTorque="-10.00" />
+                  <Entry outShaftSpeed="4000.00" dragTorque="-30.00" />
                 </DragCurve>
                 <Conditioning>
                   <Entry coolantTempInlet="30" coolingPower="5000" />

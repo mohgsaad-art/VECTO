@@ -24,17 +24,19 @@ using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.ElectricSystem;
+using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.Impl.ElectricSystem;
 using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
 namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class ParallelHybridTest
 	{
@@ -1712,8 +1714,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			var engine = new StopStartCombustionEngine(container, runData.EngineData);
 			var gearbox = gearboxType.AutomaticTransmission()
-				? (IHybridControlledGearbox)new ATGearbox(container, ctl.ShiftStrategy)
-				: new Gearbox(container, ctl.ShiftStrategy);
+				? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy)
+				: new AMTGearbox(container, ctl.ShiftStrategy);
 			//var hybridStrategy = new DelegateParallelHybridStrategy();
 			ctl.Gearbox = gearbox;
 
@@ -1747,10 +1749,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				.AddComponent(clutch)
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, runData.ElectricMachinesData, container, es, ctl))
 				.AddComponent(engine, idleController);
-			PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
+			//AddAuxiliaries(engine, container, runData);
 
 			if (runData.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
-				if (gearbox is ATGearbox atGbx) {
+				if (gearbox is IAPTGearbox atGbx) {
 					atGbx.IdleController = idleController;
 					new ATClutchInfo(container);
 				}
@@ -1843,12 +1845,12 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
 				.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, 
 					runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
-				.AddComponent(new Gearbox(container, new AMTShiftStrategyOptimized(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container)))
 				.AddComponent(runData.Retarder.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, 
 					runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
 				.AddComponent(new SwitchableClutch(container, runData.EngineData))
 				.AddComponent(engine, engine.IdleController);
-			PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
+			//PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
 
             return container;
 		}
@@ -1865,20 +1867,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				StartSpeed = 2.SI<MeterPerSecond>(),
 				StartAcceleration = 0.6.SI<MeterPerSquareSecond>(),
 
-				StartVelocity = DeclarationData.GearboxTCU.StartSpeed,
-				//StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
-				GearResidenceTime = DeclarationData.GearboxTCU.GearResidenceTime,
-				DnT99L_highMin1 = DeclarationData.GearboxTCU.DnT99L_highMin1,
-				DnT99L_highMin2 = DeclarationData.GearboxTCU.DnT99L_highMin2,
-				AllowedGearRangeUp = gbx.Type.AutomaticTransmission() ? 1 : DeclarationData.GearboxTCU.AllowedGearRangeUp,
-				AllowedGearRangeDown = gbx.Type.AutomaticTransmission() ? 1: DeclarationData.GearboxTCU.AllowedGearRangeDown,
-				LookBackInterval = DeclarationData.GearboxTCU.LookBackInterval,
-				DriverAccelerationLookBackInterval = DeclarationData.GearboxTCU.DriverAccelerationLookBackInterval,
-				DriverAccelerationThresholdLow = DeclarationData.GearboxTCU.DriverAccelerationThresholdLow,
-				AverageCardanPowerThresholdPropulsion = DeclarationData.GearboxTCU.AverageCardanPowerThresholdPropulsion,
-				CurrentCardanPowerThresholdPropulsion = DeclarationData.GearboxTCU.CurrentCardanPowerThresholdPropulsion,
-				TargetSpeedDeviationFactor = DeclarationData.GearboxTCU.TargetSpeedDeviationFactor,
-				EngineSpeedHighDriveOffFactor = DeclarationData.GearboxTCU.EngineSpeedHighDriveOffFactor,
 				RatingFactorCurrentGear = gbx.Type.AutomaticTransmission()
 					? DeclarationData.GearboxTCU.RatingFactorCurrentGearAT
 					: DeclarationData.GearboxTCU.RatingFactorCurrentGear,

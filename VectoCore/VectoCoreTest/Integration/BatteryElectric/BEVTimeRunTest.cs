@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
@@ -26,16 +27,10 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         private const string IEPC3X_WHEEL2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed-Whl2\IEPC_ENG_Gbx3Whl2.vecto";
         private const string IEPC1X_WHEEL1_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx1Speed-Whl1/IEPC_ENG_Gbx1Whl1.vecto";
 
-		protected IPowertrainBuilder _powertrainBuilder;
-		private IModalDataFactory _modDataFactory;
-
 		[OneTimeSetUp]
         public void Init()
         {
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			_powertrainBuilder = kernel.Get<IPowertrainBuilder>();
-			_modDataFactory = kernel.Get<IModalDataFactory>();
 		}
 
         [Category("JRC")]
@@ -181,7 +176,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = new SimulatorFactoryEngineering(inputProvider, writer, false, _powertrainBuilder, _modDataFactory) { WriteModalResults = true };
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
+			factory.WriteModalResults = true;
 			factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];
@@ -206,7 +202,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = new SimulatorFactoryEngineering(inputProvider, writer, false, _powertrainBuilder, _modDataFactory) { WriteModalResults = true };
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
+			factory.WriteModalResults = true;
 			factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];

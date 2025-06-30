@@ -38,7 +38,7 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
-namespace TUGraz.IVT.VectoXML.Writer
+namespace TUGraz.VectoCore.OutputData.XML
 {
 	public abstract class AbstractXMLWriter
 	{

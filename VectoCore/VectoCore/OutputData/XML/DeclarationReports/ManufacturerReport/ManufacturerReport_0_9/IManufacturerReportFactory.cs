@@ -168,7 +168,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 		IMRFBusAuxiliariesType GetPrimaryBusElectricSystemType_PEV();
 		IMRFBusAuxiliariesType GetPrimaryBusHVACSystemType_Conventional_HEV();
 		IMRFBusAuxiliariesType GetPrimaryBusHVACSystemType_FCHV();
-		IMRFBusAuxiliariesType GetPrimaryBusHVACSystemType_PEV();
 
 		IMRFBusAuxiliariesType GetConventionalCompletedBusAuxType();
 		IMRFBusAuxiliariesType GetConventionalCompletedBus_HVACSystemType();

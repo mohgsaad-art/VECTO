@@ -1132,8 +1132,6 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		DataSource DataSource { get; }
 
-		XmlNode XMLSource { get; }
-
 		string FanTechnology { get; }
 
 		IList<string> SteeringPumpTechnology { get; }

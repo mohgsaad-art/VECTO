@@ -36,11 +36,12 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockDrivingCycle : VectoSimulationComponent, IDrivingCycleInfo
+    public class MockDrivingCycle : VectoSimulationComponent, IDrivingCycleInfo
 	{
 		private readonly IEnumerator<DrivingCycleData.DrivingCycleEntry> _left;
 		private readonly IEnumerator<DrivingCycleData.DrivingCycleEntry> _right;

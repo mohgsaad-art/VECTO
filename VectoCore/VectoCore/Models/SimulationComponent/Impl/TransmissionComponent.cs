@@ -38,7 +38,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public abstract class TransmissionComponent :
+    public abstract class TransmissionComponent :
 		StatefulVectoSimulationComponent<TransmissionComponent.TransmissionState>, IPowerTrainComponent, ITnInPort,
 		ITnOutPort
 	{

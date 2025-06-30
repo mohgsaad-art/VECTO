@@ -1,6 +1,6 @@
 ﻿using TUGraz.VectoCommon.Utils;
 
-namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Pneumatics {
+namespace TUGraz.VectoCommon.BusAuxiliaries {
 	/// <summary>
 	/// 		''' Encapsulates compressor map values
 	/// 		''' Flow Rate

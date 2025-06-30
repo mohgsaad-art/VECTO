@@ -3,15 +3,15 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics
 {
 
-	public class NoBattery : VectoSimulationComponent, ISimpleBattery
+    public class NoBattery : VectoSimulationComponent, ISimpleBattery
 	{
-		public NoBattery(IVehicleContainer dataBus) : base(dataBus) { }
+		public NoBattery(IVehicleContainer container) : base(container) { }
 
 		#region Implementation of ISimpleBatteryInfo
 

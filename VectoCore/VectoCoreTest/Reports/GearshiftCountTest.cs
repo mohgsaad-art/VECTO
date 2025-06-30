@@ -41,7 +41,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 	[Parallelizable(ParallelScope.All)]
 	public class GearshiftCountTest
 	{
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftup()
 		{
 			var rundata = new VectoRunData() {
@@ -69,7 +70,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruption()
 		{
 			var rundata = new VectoRunData()
@@ -98,7 +100,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(0, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftDown()
 		{
 			var rundata = new VectoRunData()
@@ -128,7 +131,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionStop()
 		{
 			var rundata = new VectoRunData()
@@ -157,7 +161,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionStopDriveOff()
 		{
 			var rundata = new VectoRunData()
@@ -188,7 +193,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftupAT()
 		{
 			var rundata = new VectoRunData()
@@ -218,7 +224,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftDownAT()
 		{
 			var rundata = new VectoRunData()

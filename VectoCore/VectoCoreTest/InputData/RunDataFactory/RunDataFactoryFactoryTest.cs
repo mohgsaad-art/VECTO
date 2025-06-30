@@ -84,7 +84,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 #region HeavyLorry
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.Conventional))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.Conventional)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ConventionalHeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -95,7 +96,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			
 		}
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S2))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_S2_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -105,8 +107,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S3))]
-
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_S3_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -116,7 +118,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S4))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_S4_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -126,7 +129,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S_IEPC))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_S_IEPC)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_S_IEPC_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -137,7 +141,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P1))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P1)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P1_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -146,7 +151,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.HEV_P1), expectedDataAdapter);
 		}
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P2))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P2_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -156,7 +162,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P2_5))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P2_5)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P2_5_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -166,7 +173,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P3))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P3_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -175,7 +183,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.HEV_P3), expectedDataAdapter);
 		}
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P4))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_P4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P4_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -184,7 +193,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.HEV_P4), expectedDataAdapter);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		//[TestCase(typeof(DeclarationDataAdapterHeavyLorry.HEV_))]
 		public void HEV_P_IHPC_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
@@ -199,7 +209,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E2))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void PEV_E2_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -207,8 +218,10 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 				.Lorry();
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.PEV_E2), expectedDataAdapter);
 		}
+
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E3))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void PEV_E3_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -216,8 +229,10 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 				.Lorry();
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.PEV_E3), expectedDataAdapter);
 		}
+
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E4))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void PEV_E4_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -225,8 +240,10 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 				.Lorry();
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.PEV_E4), expectedDataAdapter);
 		}
+
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E_IEPC))]
+		[TestCase(typeof(DeclarationDataAdapterHeavyLorry.PEV_E_IEPC)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void PEV_E_IEPC_HeavyLorryTest(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -235,7 +252,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			CreateRunDataFactory(input, typeof(DeclarationModeHeavyLorryRunDataFactory.PEV_E_IEPC), expectedDataAdapter);
 		}
 
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Exempted_HeavyLorryTest([Values]ArchitectureID architectureId, [Values]VectoSimulationJobType simType, [Values]bool checkDeclarationDataAdapter)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -253,7 +271,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         #endregion HeavyLorry
         #region PrimaryBus
         [TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.Conventional))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.Conventional)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void ConventionalPrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -263,7 +282,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S2))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S2_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -273,7 +293,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S3))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S3_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -283,7 +304,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S4))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S4_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -293,7 +315,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S_IEPC))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_S_IEPC)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S_IEPC_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -303,7 +326,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P1))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P1)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P1_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -314,7 +338,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P2))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P2_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -324,7 +349,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P2_5))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P2_5)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HEV_P2_5_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -334,7 +360,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
         [TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P3))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P3_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -344,7 +371,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P4))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.HEV_P4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P4_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -355,7 +383,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E2))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E2)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E2_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -366,7 +395,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E3))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E3)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E3_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -375,7 +405,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			CreateRunDataFactory(input, typeof(DeclarationModePrimaryBusRunDataFactory.PEV_E3), expectedDataAdapter);
 		}
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E4))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E4)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E4_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -385,7 +416,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 		[TestCase()]
-		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E_IEPC))]
+		[TestCase(typeof(DeclarationDataAdapterPrimaryBus.PEV_E_IEPC)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E_IEPC_PrimaryBus(Type expectedDataAdapter = null)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -395,7 +427,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		}
 
 
-		[Test]
+		[Test,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Exempted_PrimaryBusTest([Values] ArchitectureID architectureId, [Values] VectoSimulationJobType simType, [Values] bool checkDeclarationDataAdapter)
 		{
 			var input = new Mock<IDeclarationInputDataProvider>()
@@ -412,7 +445,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         #endregion PrimaryBus
         #region CompletedBus
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void ConventionalCompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -427,7 +461,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S2_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -443,7 +478,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S3_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -458,7 +494,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S4_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -473,7 +510,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_S_IEPC_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -488,7 +526,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P1_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -504,7 +543,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P2_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -520,7 +560,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P3_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -536,7 +577,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P2_5_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -552,7 +594,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void HEV_P4_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -568,7 +611,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E2_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -584,7 +628,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E3_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -598,7 +643,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 			}
         }
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E4_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()
@@ -613,7 +659,8 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
         }
 
         [TestCase()]
-		[TestCase(true)]
+		[TestCase(true),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void PEV_E_IEPC_CompletedBus(bool checkCompletedBusAdapters = false)
         {
             var input = new Mock<IMultistageVIFInputData>()

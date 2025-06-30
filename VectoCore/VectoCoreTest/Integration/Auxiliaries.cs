@@ -14,6 +14,7 @@ using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using System.Collections.Generic;
 using Ninject;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.SimulationComponent;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
@@ -25,8 +26,9 @@ namespace TUGraz.VectoCore.Tests.Integration
     {
 		private IPowertrainBuilder PowertrainBuilder;
 		public IModalDataFactory ModDataFactory;
+        private IShiftStrategyFactory ShiftStrategyFactory;
 
-        private const string TRACTOR_AT_JOB = @"TestData/Integration/ConventionalTimeruns/Class5_Tractor_4x2/Class5_Tractor_ENG_Aux.vecto";
+		private const string TRACTOR_AT_JOB = @"TestData/Integration/ConventionalTimeruns/Class5_Tractor_4x2/Class5_Tractor_ENG_Aux.vecto";
 
         private const string E2_JOB = @"TestData\Integration\Auxiliaries\GenericVehicleE2\BEV_ENG.vecto";
         private const string IEPC_GBX3_JOB = @"TestData\Integration\Auxiliaries\GenericIEPC\IEPC_Gbx3Speed\IEPC_ENG_Gbx3.vecto";
@@ -43,6 +45,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var kernel = new StandardKernel(new VectoNinjectModule());
 			PowertrainBuilder = kernel.Get<IPowertrainBuilder>();
 			ModDataFactory = kernel.Get<IModalDataFactory>();
+			ShiftStrategyFactory = kernel.Get<IShiftStrategyFactory>();
 		}
 
 
@@ -57,11 +60,10 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactoryEngineering(dataProvider, fileWriter, false, PowertrainBuilder, ModDataFactory) {
-				ModalResults1Hz = false,
-				WriteModalResults = true,
-				ActualModalData = false
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
 
 			jobContainer.AddRuns(runsFactory);
 			
@@ -88,12 +90,10 @@ namespace TUGraz.VectoCore.Tests.Integration
             var sumWriter = new SummaryDataContainer(fileWriter);
             var jobContainer = new JobContainer(sumWriter);
             var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-            var runsFactory = new SimulatorFactoryEngineering(dataProvider, fileWriter, false, PowertrainBuilder, ModDataFactory)
-            {
-                ModalResults1Hz = false,
-                WriteModalResults = true,
-                ActualModalData = false
-            };
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
 
             jobContainer.AddRuns(runsFactory);
 
@@ -135,12 +135,10 @@ namespace TUGraz.VectoCore.Tests.Integration
             var sumWriter = new SummaryDataContainer(fileWriter);
             var jobContainer = new JobContainer(sumWriter);
             var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-            var runsFactory = new SimulatorFactoryEngineering(dataProvider, fileWriter, false, PowertrainBuilder, ModDataFactory)
-            {
-                ModalResults1Hz = false,
-                WriteModalResults = true,
-                ActualModalData = false
-            };
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
 
             jobContainer.AddRuns(runsFactory);
 

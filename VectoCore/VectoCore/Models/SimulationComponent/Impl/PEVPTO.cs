@@ -11,7 +11,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class PEVPtoTransm : StatefulProviderComponent<PEVPtoTransm.State, ITnOutPort, ITnInPort, ITnOutPort>,
+    public class PEVPtoTransm : StatefulProviderComponent<PEVPtoTransm.State, ITnOutPort, ITnInPort, ITnOutPort>,
 		IPowerTrainComponent, ITnInPort, ITnOutPort
 	{
 		public class State

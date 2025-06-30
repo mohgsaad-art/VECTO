@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>TUGraz.Vecto.UnitTests</RootNamespace>
+	<AssemblyName>VectoUnitTest</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Moq" Version="4.18.4" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+    <ProjectReference Include="..\..\..\VectoCore\VectoCore\VectoCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestCases\Components\Angledrive\" />
+    <Folder Include="TestCases\DataAdapter\Engineering\" />
+    <Folder Include="TestCases\DeclarationDataTests\CO2StandardsGroups\" />
+    <Folder Include="TestCases\DeclarationDataTests\GenericModelParams\Vehicle\" />
+    <Folder Include="TestCases\Reports\MRF\" />
+    <Folder Include="TestCases\Reports\WeightedResultCalculation\" />
+    <Folder Include="Utils\DataAdapter\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

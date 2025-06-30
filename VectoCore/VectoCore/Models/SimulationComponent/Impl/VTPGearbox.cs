@@ -37,7 +37,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class VTPGearbox : CycleGearbox
 	{
-		public VTPGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData) { }
+		public VTPGearbox(IVehicleContainer container) : base(container) { }
 
 		protected override uint GetGearFromCycle()
 		{

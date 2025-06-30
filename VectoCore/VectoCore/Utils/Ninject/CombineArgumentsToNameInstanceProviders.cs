@@ -42,11 +42,15 @@ namespace TUGraz.VectoCore.Utils.Ninject
 		public delegate string CombineToName(params object[] arguments);
 
 		private Dictionary<MethodInfo, MethodSettings> _methodSettings = new Dictionary<MethodInfo, MethodSettings>();
-		/// <summary>
-		/// Constructor for CombineArgumentsToNameInstanceProvider
-		/// </summary>
-		
-		public CombineArgumentsToNameInstanceProvider(params MethodSettings[] settings) : this(false, settings)
+
+		private MethodSettings _fallbackMethodSetting;
+
+
+        /// <summary>
+        /// Constructor for CombineArgumentsToNameInstanceProvider
+        /// </summary>
+
+        public CombineArgumentsToNameInstanceProvider(params MethodSettings[] settings) : this(false, settings)
 		{
 			
 		}
@@ -54,24 +58,31 @@ namespace TUGraz.VectoCore.Utils.Ninject
 		public CombineArgumentsToNameInstanceProvider(bool fallback, params MethodSettings[] settings)
 		{
 			Fallback = fallback;
-			if (settings != null && settings.Any(s => s.methods == null))
-			{
-				throw new ArgumentException($"At least one method has to be specified in the MethodSetting");
-			}
+			if (settings != null) {
+				var settingsWithoutMethods = settings.Where(s => s.methods == null).ToArray();
+				if (settingsWithoutMethods.Length > 1) {
+					throw new ArgumentException("only one fallback for method settings allowed (i.e. MethodInfo[] is null)");
+				}
 
-
-			if (settings != null)
-			{
+				if (settingsWithoutMethods.Length > 0) {
+					_fallbackMethodSetting = settingsWithoutMethods.First();
+				}
+				
 				foreach (var setting in settings)
 				{
-					foreach (var method in setting.methods)
+					if (setting.methods == null) {
+						continue;
+					}
+                    foreach (var method in setting.methods)
 					{
+						
 						_methodSettings.Add(method, setting);
 					}
 				}
 
 			}
         }
+
 
 		#region Overrides of StandardInstanceProvider
 
@@ -83,7 +94,7 @@ namespace TUGraz.VectoCore.Utils.Ninject
 			}
 			catch (Exception e) {
 				var name = GetName(methodInfo, arguments);
-				throw new VectoException("failed to create instance for '{1}' via '{0}' version '{2}' name'{3}'", e, methodInfo, methodInfo.ReturnType.Name, arguments[0].ToString(), name);
+				throw new VectoException("failed to create instance for '{1}' via '{0}' version '{2}' name '{3}'", e, methodInfo, methodInfo.ReturnType.Name, arguments[0].ToString(), name);
 				
 				//throw e;
 			}
@@ -92,6 +103,10 @@ namespace TUGraz.VectoCore.Utils.Ninject
 		protected override string GetName(MethodInfo methodInfo, object[] arguments)
 		{
 			if (!GetMethodSettings(methodInfo, arguments, out var methodSettings)) {
+				if (_fallbackMethodSetting != null) {
+					return _fallbackMethodSetting.combineToNameDelegate.Invoke(arguments
+						.Take(_fallbackMethodSetting.takeArguments).ToArray());
+				}
 				return base.GetName(methodInfo, arguments);
 			}
 
@@ -119,6 +134,10 @@ namespace TUGraz.VectoCore.Utils.Ninject
 		{
 			
 			if (!GetMethodSettings(methodInfo, arguments, out var methodSettings)) {
+				if (_fallbackMethodSetting != null) {
+					return base.GetConstructorArguments(methodInfo, arguments).Skip(_fallbackMethodSetting.skipArguments).ToArray();
+                }
+
 				return base.GetConstructorArguments(methodInfo, arguments);
 			}
 

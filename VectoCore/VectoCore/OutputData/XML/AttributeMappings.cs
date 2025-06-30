@@ -30,12 +30,11 @@
 */
 
 using System.Collections.Generic;
-using System.Security;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 
-namespace TUGraz.IVT.VectoXML
+namespace TUGraz.VectoCore.OutputData.XML
 {
 	internal static class AttributeMappings
 	{

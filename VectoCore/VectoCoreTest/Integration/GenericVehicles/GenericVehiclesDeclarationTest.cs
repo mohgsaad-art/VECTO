@@ -127,9 +127,9 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 		[Category("Integration")]
 		[
-			TestCase(E2_JOB , "LongHaul", 155.2775),
-			TestCase(E2_JOB , "RegionalDelivery", 106.2072),
-			TestCase(E2_JOB, "UrbanDelivery", 85.2745),
+			TestCase(E2_JOB , "LongHaul", 155.2822),
+			TestCase(E2_JOB , "RegionalDelivery", 106.2029),
+			TestCase(E2_JOB, "UrbanDelivery", 85.2476),
 
 			//TestCase(E2_CONST30_JOB , "LongHaul", 754.9479),
 			//TestCase(E2_CONST30_JOB , "RegionalDelivery", 754.9479),
@@ -190,7 +190,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		[
             //TestCase(SINGLEBUS_31B_FM, "Coach", 863.6492), // primary vehicle cycle pruning -> cycle is not configured for the current vehicle.
             TestCase(SINGLEBUS_31B_FM, "HeavyUrban", 1829.2873),
-			TestCase(SINGLEBUS_31B_FM, "Interurban", 1039.4657),
+			TestCase(SINGLEBUS_31B_FM, "Interurban", 1040.0068),
 
 			TestCase(SINGLEBUS_34F_FM, "Coach", 781.6859),
             //TestCase(SINGLEBUS_34F_FM, "HeavyUrban", 1860.2187), // primary vehicle cycle pruning -> cycle cycle is not configured for the current vehicle.

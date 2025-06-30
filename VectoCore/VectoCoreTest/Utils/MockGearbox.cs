@@ -43,7 +43,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockGearbox : VectoSimulationComponent, IGearbox, ITnInPort, ITnOutPort, IClutchInfo
+    public class MockGearbox : VectoSimulationComponent, IGearbox, ITnInPort, ITnOutPort, IClutchInfo
 	{
 		private ITnOutPort _outPort;
 		private bool _clutchClosed;
@@ -73,6 +73,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public Second TractionInterruption => 1.SI<Second>();
 
 		public uint NumGears { get; set; }
+		public bool Disengaged { get; }
 
 		public MeterPerSecond StartSpeed => 2.SI<MeterPerSecond>();
 

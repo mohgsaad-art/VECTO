@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" schemaVersion="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD\VectoDeclarationJob.xsd">
+	<v2.0:Vehicle id="VEH-1234567890" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType">
+		<Manufacturer>Some Manufacturer</Manufacturer>
+		<ManufacturerAddress>Some Manufacturer Address</ManufacturerAddress>
+		<VIN>VEH-1234567890</VIN>
+		<Date>2021-06-30T22:00:00Z</Date>
+		<Model>Sample Bus Model</Model>
+		<LegislativeCategory>M3</LegislativeCategory>
+		<CorrectedActualMass>500</CorrectedActualMass>
+		<TechnicalPermissibleMaximumLadenMass>3500</TechnicalPermissibleMaximumLadenMass>
+		<AirdragModifiedMultistep>true</AirdragModifiedMultistep>
+		<ClassBus>II+III</ClassBus>
+		<NumberPassengerSeatsLowerDeck>1</NumberPassengerSeatsLowerDeck>
+		<NumberPassengersStandingLowerDeck>10</NumberPassengersStandingLowerDeck>
+		<NumberPassengerSeatsUpperDeck>11</NumberPassengerSeatsUpperDeck>
+		<NumberPassengersStandingUpperDeck>2</NumberPassengersStandingUpperDeck>
+		<BodyworkCode>CB</BodyworkCode>
+		<LowEntry>false</LowEntry>
+		<HeightIntegratedBody>2500</HeightIntegratedBody>
+		<VehicleLength>9500</VehicleLength>
+		<VehicleWidth>2500</VehicleWidth>
+		<EntranceHeight>2000</EntranceHeight>
+		<DoorDriveTechnology>electric</DoorDriveTechnology>
+		<VehicleDeclarationType>final</VehicleDeclarationType>
+		<ADAS xsi:type="ADAS_Conventional_Type">
+			<EngineStopStart>true</EngineStopStart>
+			<EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
+			<EcoRollWithEngineStop>false</EcoRollWithEngineStop>
+			<PredictiveCruiseControl>none</PredictiveCruiseControl>
+			<APTEcoRollReleaseLockupClutch>true</APTEcoRollReleaseLockupClutch>
+		</ADAS>
+		<Components xsi:type="Components_Conventional_CompletedBusType">
+			<AirDrag>
+				<v2.0:Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<v2.0:Manufacturer>Generic Manufacturer</v2.0:Manufacturer>
+					<v2.0:Model>Generic Model</v2.0:Model>
+					<v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+					<v2.0:Date>2017-03-24T15:00:00Z</v2.0:Date>
+					<v2.0:AppVersion>Vecto AirDrag x.y</v2.0:AppVersion>
+					<v2.0:CdxA_0>6.31</v2.0:CdxA_0>
+					<v2.0:TransferredCdxA>6.32</v2.0:TransferredCdxA>
+					<v2.0:DeclaredCdxA>6.34</v2.0:DeclaredCdxA>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#CabinX23h">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>NroIsfnT7+1zYG5CTHxpclh0ZaRZvGyrfFPmWdKbFbg=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</AirDrag>
+			<Auxiliaries>
+				<Data xsi:type="AUX_Conventional_CompletedBusType">
+					<ElectricSystem>
+						<LEDLights>
+							<Interiorlights>false</Interiorlights>
+							<Dayrunninglights>true</Dayrunninglights>
+							<Positionlights>true</Positionlights>
+							<Brakelights>true</Brakelights>
+							<Headlights>false</Headlights>
+						</LEDLights>
+					</ElectricSystem>
+					<HVAC>
+						<SystemConfiguration>6</SystemConfiguration>
+						<HeatPumpTypeDriverCompartment>
+							<Cooling>none</Cooling>
+							<Heating>none</Heating>
+						</HeatPumpTypeDriverCompartment>
+						<HeatPumpTypePassengerCompartment>
+							<Cooling>non R-744 3-stage</Cooling>
+							<Heating>none</Heating>
+						</HeatPumpTypePassengerCompartment>
+						<AuxiliaryHeaterPower>50000</AuxiliaryHeaterPower>
+						<DoubleGlazing>false</DoubleGlazing>
+						<AdjustableAuxiliaryHeater>true</AdjustableAuxiliaryHeater>
+						<SeparateAirDistributionDucts>true</SeparateAirDistributionDucts>
+					</HVAC>
+				</Data>
+			</Auxiliaries>
+		</Components>
+	</v2.0:Vehicle>
+</tns:VectoInputDeclaration>

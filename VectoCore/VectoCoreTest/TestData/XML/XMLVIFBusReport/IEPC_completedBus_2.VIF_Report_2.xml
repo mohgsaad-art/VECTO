@@ -77,12 +77,12 @@
                 </MaxTorqueCurve>
               </VoltageLevel>
               <DragCurve gear="1">
-                <Entry outShaftSpeed="0.00" dragTorque="10.00" />
-                <Entry outShaftSpeed="4000.00" dragTorque="30.00" />
+                <Entry outShaftSpeed="0.00" dragTorque="-10.00" />
+                <Entry outShaftSpeed="4000.00" dragTorque="-30.00" />
               </DragCurve>
               <DragCurve gear="2">
-                <Entry outShaftSpeed="0.00" dragTorque="15.00" />
-                <Entry outShaftSpeed="4500.00" dragTorque="35.00" />
+                <Entry outShaftSpeed="0.00" dragTorque="-15.00" />
+                <Entry outShaftSpeed="4500.00" dragTorque="-35.00" />
               </DragCurve>
             </Data>
           </IEPC>

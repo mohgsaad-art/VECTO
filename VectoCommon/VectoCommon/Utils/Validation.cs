@@ -94,7 +94,7 @@ namespace TUGraz.VectoCommon.Utils
 				return results;
 
 			if (_validationHistory.ContainsKey(entity)) 
-				return results;
+				return _validationHistory[entity];
 
 			
 

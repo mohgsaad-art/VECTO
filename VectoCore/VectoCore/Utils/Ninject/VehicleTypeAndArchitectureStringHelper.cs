@@ -101,6 +101,7 @@ namespace TUGraz.VectoCore.Utils.Ninject
 		}
 
 		#endregion
+
 		public struct VehicleClassification
 		{
 			private const string _singlebus = "SingleBus";
@@ -303,4 +304,15 @@ namespace TUGraz.VectoCore.Utils.Ninject
 			}
 		}
 	}
+
+	public class UseFirstArgumentStringHelper
+	{
+		public CombineArgumentsToNameInstanceProvider.CombineToName CreateName { get; } = arguments => {
+			if (arguments.Length > 0) {
+				return arguments[0].ToString();
+			}
+
+			return null;
+		};
+    }
 }

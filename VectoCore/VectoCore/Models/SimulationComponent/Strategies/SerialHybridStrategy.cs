@@ -11,15 +11,15 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
-    public class SerialHybridStrategyAT : AbstractSerialHybridStrategy<APTNGearbox>
+    public class SerialHybridStrategyAT : AbstractSerialHybridStrategy
 	{
 		public SerialHybridStrategyAT(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
 
@@ -30,14 +30,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.UpdateComponents();
 
 			if (TestPowertrain.Gearbox != null) {
-				var gearboxInfo = DataBus.GearboxInfo as APTNGearbox ?? throw new VectoException("AT Gearbox Required!");
+				if (!(DataBus.GearboxInfo is IAPTNGearbox)) {
+					throw new VectoException("AT Gearbox Required!");
+				}
+				var gearboxInfo = DataBus.GearboxInfo;
 				var currentGear = DataBus.VehicleInfo.VehicleStopped ? gearboxInfo.NextGear : DataBus.GearboxInfo.Gear;
-				TestPowertrain.Gearbox.Disengaged = gearboxInfo.Disengaged;
-				TestPowertrain.Gearbox.DisengageGearbox = gearboxInfo.DisengageGearbox;
-				TestPowertrain.Gearbox.Gear = currentGear;
-				TestPowertrain.Gearbox._nextGear = gearboxInfo.NextGear;
+				TestPowertrain.Gearbox.SetDisengaged = gearboxInfo.Disengaged;
+				TestPowertrain.Gearbox.SetDisengageGearbox = gearboxInfo.DisengageGearbox;
+				TestPowertrain.Gearbox.SetGear = currentGear;
+				TestPowertrain.Gearbox.SetNextGear = gearboxInfo.NextGear;
 			}
-			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
 			TestPowertrain.Gearbox?.UpdateFrom(DataBus.GearboxInfo);
@@ -68,7 +71,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 	// =======================================================================
 
 
-	public class SerialHybridStrategy : AbstractSerialHybridStrategy<Gearbox>
+	public class SerialHybridStrategy : AbstractSerialHybridStrategy
 	{
 
 		public SerialHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
@@ -79,14 +82,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.UpdateComponents();
 
 			if (TestPowertrain.Gearbox != null) {
-				var g = DataBus.GearboxInfo as Gearbox ?? throw new VectoException("AMT Gearbox Required!");
-				TestPowertrain.Gearbox.Disengaged = g.Disengaged;
-				TestPowertrain.Gearbox.DisengageGearbox = g.DisengageGearbox;
-				TestPowertrain.Gearbox.Gear = DataBus.VehicleInfo.VehicleStopped || g.Disengaged ? g.NextGear : DataBus.GearboxInfo.Gear;
-				TestPowertrain.Gearbox._nextGear = g.NextGear;
+				if (!(DataBus.GearboxInfo is IAMTGearbox || DataBus.GearboxInfo is IPEVGearbox || DataBus.GearboxInfo is IIEPCGearbox)) {
+					throw new VectoException("AMT Gearbox Required!");
+                }
+				var g = DataBus.GearboxInfo ?? throw new VectoException("AMT Gearbox Required!");
+				TestPowertrain.Gearbox.SetDisengaged = g.Disengaged;
+				TestPowertrain.Gearbox.SetDisengageGearbox = g.DisengageGearbox;
+				TestPowertrain.Gearbox.SetGear = DataBus.VehicleInfo.VehicleStopped || g.Disengaged ? g.NextGear : DataBus.GearboxInfo.Gear;
+				TestPowertrain.Gearbox.SetNextGear = g.NextGear;
 			}
 
-			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
 			TestPowertrain.Gearbox?.UpdateFrom(DataBus.GearboxInfo);
@@ -116,7 +122,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 	// =======================================================================
 
-	public abstract class AbstractSerialHybridStrategy<T> : LoggingObject, IHybridControlStrategy where T : class, IHybridControlledGearbox, IGearbox
+	public abstract class AbstractSerialHybridStrategy : LoggingObject, IHybridControlStrategy
 	{
 
 		public enum StateMachineState
@@ -151,7 +157,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected StrategyState CurrentState = new StrategyState();
 		protected StrategyState PreviousState = new StrategyState();
 
-		protected ITestPowertrain<T> TestPowertrain;
+		protected ITestPowertrain TestPowertrain;
 		protected ITestGenset TestGenSet;
 		protected GenSetCharacteristics GenSetCharacteristics;
 
@@ -185,15 +191,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			GenSetCharacteristics = new GenSetCharacteristics(minGensetPower);
 			runData.GenSet = new VectoRunData.GenSetData() { GenSetCharacteristics = GenSetCharacteristics };
 
-			// create testcontainer
-			var testContainer = runData.JobType == VectoSimulationJobType.IEPC_S
-				? container.SimplePowertrainBuilder.BuildSimpleIEPCHybridPowertrain(runData)
-				: container.SimplePowertrainBuilder.BuildSimpleSerialHybridPowertrain(runData);
-
-			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain<T>(testContainer, DataBus);
+			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, true);
 			
-			var gensetContainer = container.SimplePowertrainBuilder.BuildSimpleGenSet(runData);
-			TestGenSet = container.SimplePowertrainBuilder.CreateTestGenset(gensetContainer, DataBus);
+			TestGenSet = container.SimplePowertrainBuilder.CreateTestGenset(container);
 
 			container.AddPreprocessor(new GensetPreprocessor(GenSetCharacteristics, TestGenSet, runData.EngineData,
 				runData.ElectricMachinesData.FirstOrDefault(x => x.Item1 == PowertrainPosition.GEN)?.Item2, container));

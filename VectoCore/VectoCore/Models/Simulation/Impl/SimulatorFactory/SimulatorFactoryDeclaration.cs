@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			IVectoRunDataFactoryFactory runDataFactoryFactory,
 			IPowertrainBuilder ptBuilder,
 			IModalDataFactory modDataFactory
-        ) : base(ExecutionMode.Declaration, writer, validate, ptBuilder, modDataFactory)
+		) : base(ExecutionMode.Declaration, writer, validate, ptBuilder, modDataFactory)
 		{
 			_xmlInputDataReader = xmlInputDataReader;
 			_simFactoryFactory = simulatorFactoryFactory;
@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			IVectoRunDataFactoryFactory runDataFactoryFactory,
 			IPowertrainBuilder ptBuilder,
 			IModalDataFactory modDataFactory
-        ) : this(
+		) : this(
 			dataProvider: dataProvider,
 			declarationReport: null,
 			writer: writer,

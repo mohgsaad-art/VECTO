@@ -56,7 +56,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		[TestCase(12000, 1256, 48, -148, 5649.8149)]
 		[TestCase(12000, 800, 148, 148, 5939.985)]
 		[TestCase(12000, 800, -48, -148, 5939.985)]
-		[TestCase(12000, 800, 48, -148, 5939.985)]
+		[TestCase(12000, 800, 48, -148, 5939.985),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestNoSmartAuxDuringDrive(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
@@ -83,7 +84,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		[TestCase(12000, 800, -14, -13, 5939.9854)]
 		[TestCase(12000, 800, -14, -15, 5939.9854)]
 		[TestCase(12000, 800, -35, -14, 5939.9854)]
-		[TestCase(12000, 800, 35, -14, 5939.9854)]
+		[TestCase(12000, 800, 35, -14, 5939.9854),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestNoSmartAuxDuringCoasting(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
@@ -107,7 +109,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		[TestCase(12000, 1256, -48, -28, 8516.9257)] // smart PS active - power demand below engine drag
 		[TestCase(12000, 1256, 48, -28, 5649.8149)] // no smart aux active - positive power demand
 		[TestCase(12000, 800, -48, -28, 7844.2956)] // smart PS active - power demand below engine drag
-		[TestCase(12000, 800, 48, -28, 5939.985)] // no smart aux active - positive power demand
+		[TestCase(12000, 800, 48, -28, 5939.985),
+		Category(Definitions.TESTCASE_MIGRATED)] // no smart aux active - positive power demand
 		public void TestSmartAuxDuringBrake(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
@@ -126,7 +129,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		}
 
 		[Test,
-		TestCase(19000)]
+		TestCase(19000),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void AuxDemandContinuityTest(double vehicleWeight)
 		{
 			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);

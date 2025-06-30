@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -22,10 +21,10 @@ using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
-	/// <summary>
-	/// Create MRF and CIF of the complete(d) step
-	/// </summary>
-	public class XMLDeclarationReportCompletedVehicle : XMLDeclarationReport
+    /// <summary>
+    /// Create MRF and CIF of the complete(d) step
+    /// </summary>
+    public class XMLDeclarationReportCompletedVehicle : XMLDeclarationReport
 	{
 		#region Constructors
 		//public XMLDeclarationReportCompletedVehicle(IReportWriter writer) : base(writer) { }

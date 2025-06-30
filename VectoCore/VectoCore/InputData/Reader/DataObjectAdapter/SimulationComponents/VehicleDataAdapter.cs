@@ -372,7 +372,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 	}
 
 
-	internal class CompletedBusSpecificVehicleDataAdapter : IVehicleDataAdapter
+	public class CompletedBusSpecificVehicleDataAdapter : IVehicleDataAdapter
 	{
 		protected IVehicleDataAdapter completedBusGenericDataAdapter = new CompletedBusGenericVehicleDataAdapter();
 

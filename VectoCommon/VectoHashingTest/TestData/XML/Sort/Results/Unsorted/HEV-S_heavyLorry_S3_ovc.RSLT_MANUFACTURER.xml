@@ -9,10 +9,10 @@
       <VehicleTypeApprovalNumber>ASDF</VehicleTypeApprovalNumber>
       <VehicleCategory>N3</VehicleCategory>
       <AxleConfiguration>4x2</AxleConfiguration>
-      <TechnicalPermissibleMaximumLadenMass>12000</TechnicalPermissibleMaximumLadenMass>
+      <TechnicalPermissibleMaximumLadenMass unit="kg">12000</TechnicalPermissibleMaximumLadenMass>
       <VehicleGroup>2</VehicleGroup>
       <VehicleGroupCO2>N/A</VehicleGroupCO2>
-      <CorrectedActualMass>6000</CorrectedActualMass>
+      <CorrectedActualMass unit="kg">6000</CorrectedActualMass>
       <VocationalVehicle>false</VocationalVehicle>
       <ZeroEmissionVehicle>false</ZeroEmissionVehicle>
       <HybridElectricHDV>true</HybridElectricHDV>

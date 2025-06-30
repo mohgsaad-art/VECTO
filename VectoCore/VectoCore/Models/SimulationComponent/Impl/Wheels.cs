@@ -39,7 +39,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class Wheels : StatefulProviderComponent<Wheels.WheelsState, IFvOutPort, ITnInPort, ITnOutPort>, IWheels,
+    public class Wheels : StatefulProviderComponent<Wheels.WheelsState, IFvOutPort, ITnInPort, ITnOutPort>, IWheels,
 		IFvOutPort, ITnInPort, IUpdateable
 	{
 		private readonly KilogramSquareMeter _totalWheelsInertia;
@@ -53,8 +53,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public WheelsState Clone() => (WheelsState)MemberwiseClone();
 		}
 
-		public Wheels(IVehicleContainer cockpit, Meter rdyn, KilogramSquareMeter totalWheelsInertia)
-			: base(cockpit)
+		public Wheels(IVehicleContainer container, Meter rdyn, KilogramSquareMeter totalWheelsInertia)
+			: base(container)
 		{
 			DynamicTyreRadius = rdyn;
 			_totalWheelsInertia = totalWheelsInertia;

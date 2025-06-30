@@ -324,7 +324,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						: (runData.AngledriveData == null ? ModalResultField.P_axle_in : ModalResultField.P_angle_in);
 					var eGbxIn = data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, x => x > 0);
 					var eGbxOut = data.TimeIntegral<WattSecond>(gbxOutSignal, x => x > 0);
-					AverageGearboxEfficiency = eGbxOut / eGbxIn;
+					AverageGearboxEfficiency = eGbxOut.Value() / eGbxIn.Value();
 				} else {
 					AverageGearboxEfficiency = double.NaN;
 				}
@@ -332,7 +332,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				if (data.HasAxlegear) {
 					var eAxlIn = data.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, x => x > 0);
 					var eAxlOut = data.TimeIntegral<WattSecond>(ModalResultField.P_brake_in, x => x > 0);
-					AverageAxlegearEfficiency = eAxlOut == null || eAxlIn == null ? double.NaN : eAxlOut / eAxlIn;
+					AverageAxlegearEfficiency = eAxlOut == null || eAxlIn == null ? double.NaN : eAxlOut.Value() / eAxlIn.Value();
 				} else {
 					AverageAxlegearEfficiency = double.NaN;
 				}

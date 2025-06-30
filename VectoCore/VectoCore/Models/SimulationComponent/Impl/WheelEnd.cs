@@ -13,15 +13,15 @@ using TUGraz.VectoCore.OutputData;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class WheelEnd : 
-        StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, IUpdateable, IPowerTrainComponent
+        StatefulVectoSimulationComponent<SimpleComponentState>, IWheelEnd, ITnInPort, ITnOutPort, IUpdateable
     {
         protected ITnOutPort _nextComponent;
         protected NewtonMeter _deltaFrictionTorque;
-        
+
         public WheelEnd(IVehicleContainer container, WheelEndData wheelEndData) : base(container)
-        { 
+        {
             _deltaFrictionTorque = wheelEndData?.DeltaFrictionTorque ?? 0.SI<NewtonMeter>();
-		}
+        }
 
         public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
             bool dryRun)

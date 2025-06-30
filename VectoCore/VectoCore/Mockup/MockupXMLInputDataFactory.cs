@@ -30,11 +30,6 @@ namespace TUGraz.VectoMockup
 			return ret;
 		}
 
-		protected override IEngineeringInputDataProvider ReadEngineeringJob(XmlDocument xmlDoc, string source)
-		{
-			throw new VectoException("Engineering Mode is not supported in Mockup Vecto");
-		}
-
 		protected override IDeclarationInputDataProvider ReadDeclarationJob(XmlDocument xmlDoc, string source, bool allowDeprecated)
 		{
 			var ret = base.ReadDeclarationJob(xmlDoc, source, allowDeprecated);

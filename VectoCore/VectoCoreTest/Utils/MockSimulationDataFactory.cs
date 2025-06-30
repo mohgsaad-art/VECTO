@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 							DynamicTyreRadius = 0.5.SI<Meter>()
 						},
 						AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-					}, null);
+					});
 
 				//gearboxInput, engineData, (IGearshiftEngineeringInputData)gearboxInput,
 				//((IAxleGearInputData)gearboxInput).Ratio, 0.5.SI<Meter>(),

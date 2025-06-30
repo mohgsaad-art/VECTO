@@ -16,15 +16,44 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class ElectricMotor : StatefulProviderComponent<ElectricMotorState, ITnOutPort, ITnInPort, ITnOutPort>, 
+    public class TestPowertrainElectricMotor : ElectricMotor, ITestpowertrainElectricMotor
+	{
+		public TestPowertrainElectricMotor(IVehicleContainer container, ElectricMotorData data,
+			IElectricMotorControl control, PowertrainPosition position) : base(container, data, control, position, false)
+		{
+			if (!container.IsTestPowertrain) {
+				throw new VectoException(
+					"TestpowertrainElectricMotor component must not be used in real powertrain - use dedicated component instead");
+			}
+        }
+
+		#region Implementation of ITestpowertrainElectricMotor
+
+		public IElectricSystem GetElectricSystem => ElectricPower;
+		public ElectricMotorState GetPreviousState => PreviousState;
+		public Joule SetThermalBuffer
+		{
+			set { ThermalBuffer = value; }
+		}
+		public bool SetDeRatingActive
+		{
+			set { DeRatingActive = value; }
+		}
+
+		#endregion
+	}
+
+
+    public class ElectricMotor : StatefulProviderComponent<ElectricMotorState, ITnOutPort, ITnInPort, ITnOutPort>, 
 		IPowerTrainComponent, IElectricMotor, ITnOutPort, ITnInPort, IUpdateable
 	{
 
 		protected internal IElectricSystem ElectricPower;
-		internal IElectricMotorControl Control { get; set; }
+		public IElectricMotorControl Control { get; }
 		protected ElectricMotorData ModelData;
 		private PerSecond _maxSpeed;
-
+		private PerSecond _ratedSpeed;
+		
 		protected internal Joule ThermalBuffer = 0.SI<Joule>();
 		
 
@@ -32,10 +61,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public bool EmOff => PreviousState.EMTorque == null /*|| PreviousState.EMTorque.IsEqual(0)*/
 			? true : false;
 
-		public BusAuxiliariesAdapter BusAux { protected get; set; }
+		public IBusAuxiliariesAdapter BusAux { protected get; set; }
+
+		public ElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : this(container, data, control, position, false)
+		{
+			if (container.IsTestPowertrain) {
+				throw new VectoException(
+					"ElectricMotor component must not be used in test powertrain - use dedicated component instead");
+			}
+        }
 
 
-		public ElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, PowertrainPosition position) : base(container)
+		protected ElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, PowertrainPosition position, bool dummy) : base(container)
 		{
 			Control = control;
 			ModelData = data;
@@ -55,12 +93,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Error("Overload buffer for thermal de-rating is zero or negative! Please check electric motor data!");
 			}
 		}
-
 		public double[] TransmissionRatioPerGear { get; set; }
-
 		public PowertrainPosition Position { get; }
-		public PerSecond MaxSpeed => _maxSpeed ?? (_maxSpeed = ModelData.EfficiencyData.MaxSpeed / ModelData.RatioADC);
-
+		public PerSecond MaxSpeedDt => _maxSpeed ?? (_maxSpeed = ModelData.EfficiencyData.MaxSpeed / ModelData.RatioADC);
+		public PerSecond RatedSpeedDt => _ratedSpeed ?? (_ratedSpeed = ModelData.EfficiencyData.VoltageLevels.First().FullLoadCurve.RatedSpeed / ModelData.RatioADC);
 		public Watt DragPower(Volt volt, PerSecond electricMotorSpeed, GearshiftPosition gear)
 		{
 			return ModelData.DragCurveLookup(electricMotorSpeed, gear) * electricMotorSpeed;
@@ -470,10 +506,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected virtual PerSecond GetMotorSpeedLimit(Second absTime)
 		{
 			if (DataBus.GearboxInfo == null || DataBus.GearboxInfo.Gear.Gear == 0) {
-				return MaxSpeed;
+				return MaxSpeedDt;
 			}
 
-			return VectoMath.Min(DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.Gear.Gear)?.MaxSpeed, MaxSpeed);
+			return VectoMath.Min(DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.Gear.Gear)?.MaxSpeed, MaxSpeedDt);
 		}
 
         private NewtonMeter GetMaxRecuperationTorque(Volt volt, Second dt, PerSecond avgSpeed, GearshiftPosition gear)
@@ -543,7 +579,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 
-		protected internal NewtonMeter ConvertEmTorqueToDrivetrain(PerSecond emSpeed, NewtonMeter emTorque, bool dryRun)
+		public NewtonMeter ConvertEmTorqueToDrivetrain(PerSecond emSpeed, NewtonMeter emTorque, bool dryRun)
 		{
 			var dtTorque = ModelData.TransmissionLossMap.GetOutTorque(emSpeed, emTorque, DataBus.IsTestPowertrain || dryRun);
 
@@ -684,7 +720,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			ElectricPower = powersupply;
 		}
 
-		protected internal PerSecond ConvertEmSpeedToDrivetrain(PerSecond emSpeed)
+		public PerSecond ConvertEmSpeedToDrivetrain(PerSecond emSpeed)
 		{
 			return emSpeed / ModelData.RatioADC;
 		}

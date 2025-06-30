@@ -41,6 +41,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
+using DummyDriverInfo = TUGraz.VectoCore.Tests.Utils.DummyDriverInfo;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
@@ -226,7 +227,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_wh_left>,<tq_wh_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CO>,<NOx>,<THC>,<PN>,<CO2>", CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<Pel_fan>,<tq_wh_left>,<tq_wh_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<PN>,<CO2>", CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_wh_left>,<tq_wh_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<PN>,<CO2>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_wh_left>,<tq_wh_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<fc_DIESEL CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<PN>,<CO2>", CycleType.VTP)
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_wh_left>,<tq_wh_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<fc_DIESEL CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<PN>,<CO2>", CycleType.VTP),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void DrivingCycle_AutoDetect(string cycle, CycleType type)
 		{
@@ -251,7 +253,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CO>,<NOx>,<PN>", 
 				CycleType.VTP),
-		]
+			Category(Definitions.TESTCASE_MIGRATED)
+        ]
 		public void DrivingCycle_AutoDetect_Exception(string cycle, CycleType type)
 		{
 			AssertHelper.Exception<VectoException>(() => TestCycleDetect(cycle, type));
@@ -316,6 +319,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("<t>,<v>,<grad>,<n>,<gear>\n1,1,1,1,1", CycleType.MeasuredSpeedGear, 1),
 			TestCase("<n>,<Padd>,<gear>,<v>,<grad>,<t>\n1,1,1,1,1,1", CycleType.MeasuredSpeedGear, 1),
 			TestCase("t,v,grad,Padd,n,gear\n1,1,1,1,1,1", CycleType.MeasuredSpeedGear, 1),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void DrivingCycle_Read(string cycle, CycleType type, int entryCount)
 		{
@@ -337,6 +341,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase(
 				"<t>,<v>,<gear>,<Pwheel>,<s>,<grad>,<Padd>,<n>,<gear>,<vair_res>,<vair_beta>,<Aux_HVAC>,<Aux_HP>\n1,1,1,1,1,1,1,1,1",
 				CycleType.MeasuredSpeedGear),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void DrivingCycle_Read_Exception(string cycle, CycleType type)
 		{
@@ -379,7 +384,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("<s>,<V>,<grad>,<stop>,<PADD>,<vAir_res>,<vAir_Beta>,<Aux_ELE>,<Aux_SP>\n1,1,1,0,1,1,1,1,1",
 				CycleType.DistanceBased),
 			TestCase("<S>,<v>,<stop>,<pAdd>,<Vair_res>,<vair_BETA>,<Aux_ELE>,<Aux_SP>\n1,1,0,1,1,1,1,1",
-				CycleType.DistanceBased)
+				CycleType.DistanceBased),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void DrivingCycleDetect_CaseInsensitive(string cycle, CycleType type)
 		{
@@ -398,7 +404,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("<s>,<V>,<grad>,<stop>,<PADD>,<vAir_res>,<vAir_Beta>,<Aux_ELE>,<Aux_SP>\n1,1,1,0,1,1,1,1,1",
 				CycleType.DistanceBased, 2),
 			TestCase("<S>,<v>,<stop>,<pAdd>,<Vair_res>,<vair_BETA>,<Aux_ELE>,<Aux_SP>\n1,1,0,1,1,1,1,1",
-				CycleType.DistanceBased, 2)
+				CycleType.DistanceBased, 2),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void DrivingCycleRead_CaseInsensitive(string cycle, CycleType type, int entryCount)
 		{
@@ -406,7 +413,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DrivingCycleRead_CompressEntries_TargetSpeedOnly()
 		{
 			var cycle = "<s>,<v>,<Grad>,<STOP>\n" +
@@ -422,7 +430,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			Assert.AreEqual(99, drivingCycle.Entries[2].Distance.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DrivingCycleRead_CompressEntries_TargetSpeedVAirBeta1()
 		{
 			var cycle = "<s>,<v>,<Grad>,<STOP>,vair_res,vair_beta\n" +
@@ -441,7 +450,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			Assert.AreEqual(99, drivingCycle.Entries[4].Distance.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DrivingCycleRead_CompressEntries_TargetSpeedVAirBeta2()
 		{
 			var cycle = "<s>,<v>,<Grad>,<STOP>,vair_res,vair_beta\n" +

@@ -48,7 +48,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		private const string ResourceNamespace = "TUGraz.VectoCore.Resources.Declaration.";
 
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void FilterRedundantEntries()
 		{
 			var data = new[] {
@@ -72,7 +73,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(9, cycleData.Entries[2].Distance.Value());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void HandleStopTimes()
 		{
 			var data = new[] {
@@ -99,7 +101,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(5, cycleData.Entries[1].StoppingTime.Value());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void StopTimeWhenVehicleSpeedIsNotZero()
 		{
 			var data = new[] {
@@ -111,7 +114,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			AssertHelper.Exception<VectoException>(() => SimpleDrivingCycles.CreateCycleData(data));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void DistanceNotStrictlyIncreasing()
 		{
 			var data = new[] {
@@ -123,7 +127,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			AssertHelper.Exception<VectoException>(() => SimpleDrivingCycles.CreateCycleData(data));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CycleAltitudeTest()
 		{
 			var missionType = "LongHaul";

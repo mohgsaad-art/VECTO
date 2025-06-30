@@ -716,7 +716,8 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		public const string SampleTyreXML = @"TestData/XML/XMLReaderDeclaration/SchemaVersion2.5/TyreSample.xml";
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWheelsSupportedInXML()
 		{
 			var tyreDimensions = DeclarationData.Wheels.GetWheelsDimensions();
@@ -751,6 +752,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		TestCase("9 R12x"), // invalid suffix
 		TestCase("9R12"), // invalid space
 		//TestCase("9  R12"), // allowed, as xs:token already combines multiple whitespaces
+		Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestInvalidWheelsDimensionString(string dim)
 		{

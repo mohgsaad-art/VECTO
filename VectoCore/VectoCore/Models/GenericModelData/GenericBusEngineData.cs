@@ -18,7 +18,7 @@ using DeclarationDataAdapterHeavyLorry = TUGraz.VectoCore.InputData.Reader.DataO
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public class GenericBusEngineData
+    public class GenericBusEngineData
 	{
 		#region Constants
 
@@ -77,6 +77,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					VehicleDataAdapter.VehMaxTorque(gear, numGears, limits, fullLoadCurves[0].MaxTorque));
 				fullLoadCurves[(uint)gear.Gear] = AbstractSimulationDataAdapter.IntersectFullLoadCurves(fullLoadCurves[0], maxTorque);
 			}
+			// TODO MQ 2024-10-22: IMO IPEC component is not relevant here!
+			// a vehicle with an IEPC will never have a combustion engine in the powertrain!
 			if (primaryVehicle.Components.IEPC?.Gears != null)
 				foreach (var gear in primaryVehicle.Components.IEPC.Gears)
 				{

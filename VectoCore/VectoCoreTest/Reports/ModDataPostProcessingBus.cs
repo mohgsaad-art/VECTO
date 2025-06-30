@@ -33,7 +33,7 @@ using TUGraz.VectoCore.Tests.Models.Declaration.BusAux;
 namespace TUGraz.VectoCore.Tests.Reports
 {
 
-	[TestFixture]
+    [TestFixture]
 	public class ModDataPostProcessingBus
 	{
 		private const OvcHevMode CD_Mode = OvcHevMode.ChargeDepleting;

@@ -26,7 +26,8 @@ public class HybridStrategyDataAdapterTest
 	[TestCase("SerialHybridStrategyParamsTest C", 0.6, 0.2, 11000, 778.61, 2000,  OvcHevMode.ChargeDepleting, true, 0.39, 0.634065732)]
 	[TestCase("SerialHybridStrategyParamsTest D", 0.7375, 0.2625, 11273.9176, 778.61, 247500,  OvcHevMode.ChargeSustaining, false, 0.624646591, 0.307641364)]
 	[TestCase("SerialHybridStrategyParamsTest E", 0.6, 0.2, 11000, 778.61, 80000,  OvcHevMode.ChargeSustaining, false, 0.582967134, 0.234065732)]
-	[TestCase("SerialHybridStrategyParamsTest F", 0.6, 0.2, 11000, 778.61, 2000,  OvcHevMode.ChargeSustaining, true, 0.268131464, 0.634065732)]
+	[TestCase("SerialHybridStrategyParamsTest F", 0.6, 0.2, 11000, 778.61, 2000,  OvcHevMode.ChargeSustaining, true, 0.268131464, 0.634065732),
+	Category(Definitions.TESTCASE_MIGRATED)]
 	public void SerialHybridStrategyTest(string testName, double bat_soc_max, double bat_soc_min, double vehicle_mass,
 		double nominalVoltage, double nominalCapacity, OvcHevMode mode,
 		bool exception, double expected_target_soc, double expected_min_soc)
@@ -82,7 +83,8 @@ public class HybridStrategyDataAdapterTest
 	//[TestCase(40000.00000000000000	,10.00000000000000	,1000.00000000000000	,25.00000000000000,	0.77784206083558,	0.62853936105471,	0.70714213564177,	1.00000000000000,	true)] //fallback 30 kmh
 	[TestCase(1000.00000000000000 	,10.00000000000000	,1000.00000000000000	,25.00000000000000,	0.12338337323207,	0.99240946348263,	0.70714213564177,	1.00000000000000,	false)]
 	[TestCase(40000.00000000000000	,10.00000000000000	,1000.00000000000000	,25.00000000000000,	0.33348329959851,	0.94280904158206,	0.70714213564177,	1.00000000000000,	false)]
-	[TestCase(40000.00000000000000	,10.00000000000000	,1000.00000000000000	,3.00000000000000	,0.96230240877072	,0.27216552697591	,0.70714213564177	,1.00000000000000	,true)]
+	[TestCase(40000.00000000000000	,10.00000000000000	,1000.00000000000000	,3.00000000000000	,0.96230240877072	,0.27216552697591	,0.70714213564177	,1.00000000000000	,true),
+	Category(Definitions.TESTCASE_MIGRATED)]
 	public void SerialHybridSuperCapTest(double mass_kg, double U_min_V, double U_max_V, double C_F, double exp_soc_min, double exp_soc_target, double exp_soc_initial, double exp_soc_max, bool exception = false)
 	{
 		var dataAdapter = new SerialHybridStrategyParameterDataAdapter();

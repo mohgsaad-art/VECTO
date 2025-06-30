@@ -51,34 +51,8 @@ Public Class XMLExportJobDialog
 	End Sub
 
 	Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
-		If (String.IsNullOrWhiteSpace(tbDestination.Text) OrElse Not Directory.Exists(tbDestination.Text)) Then
-			MessageBox.Show("Output directory is invalid", "Invalid Output", MessageBoxButtons.OK)
-			Exit Sub
-		End If
-
-		If (_mode = ExecutionMode.Engineering) Then
-			Dim engineeringData As IEngineeringInputDataProvider = CType(_data, IEngineeringInputDataProvider)
-			If (engineeringData Is Nothing OrElse engineeringData.JobInputData().SavedInDeclarationMode) Then
-				Throw New Exception("Input data is not in engineering mode!")
-			End If
-
-		    Dim kernel As IKernel = new StandardKernel(new VectoNinjectModule)
-		    dim writer As IXMLEngineeringWriter = kernel.Get(of IXMLEngineeringWriter)()
-		    writer.Configuration = new WriterConfiguration() With { .SingleFile = true, .BasePath = tbDestination.Text }
-			Dim document As XDocument =writer.Write(engineeringData)
-			document.Save(Path.Combine(tbDestination.Text, engineeringData.JobInputData().JobName + ".xml"))
-			MessageBox.Show("Successfully exported")
-			Close()
-		Else
-			Dim declarationData As IDeclarationInputDataProvider = CType(_data, IDeclarationInputDataProvider)
-			If (declarationData Is Nothing OrElse Not declarationData.JobInputData().SavedInDeclarationMode) Then
-				Throw New Exception("Input data is not in declaration mode")
-			End If
-			Dim document As XDocument =
-					New XMLDeclarationWriter(tbVendor.Text).GenerateVectoJob(declarationData)
-			document.Save(Path.Combine(tbDestination.Text, declarationData.JobInputData().JobName + ".xml"))
-			MessageBox.Show("Successfully exported")
-			Close()
-		End If
+	    MsgBox("XML Export is lo nonger supported")
+	    Close()
+		
 	End Sub
 End Class

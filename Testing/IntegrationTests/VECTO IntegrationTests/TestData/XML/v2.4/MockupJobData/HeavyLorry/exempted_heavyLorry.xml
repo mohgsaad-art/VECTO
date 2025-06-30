@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration schemaVersion="2.0" 
+xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" 
+xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" 
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
+xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
+	<v2.0:Vehicle id="VEH-1234567890" xsi:type="Vehicle_Exempted_HeavyLorryDeclarationType">
+		<Manufacturer>Some Manufacturer</Manufacturer>
+		<ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
+		<Model>Sample Bus Model</Model>
+		<VIN>VEH-1234567890</VIN>
+		<Date>2020-01-09T11:00:00Z</Date>
+		<LegislativeCategory>N2</LegislativeCategory>
+		<ChassisConfiguration>Tractor</ChassisConfiguration>
+		<AxleConfiguration>6x2</AxleConfiguration>
+		<CorrectedActualMass>7500</CorrectedActualMass>
+		<TechnicalPermissibleMaximumLadenMass>15400</TechnicalPermissibleMaximumLadenMass>
+		<ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+		<SleeperCab>true</SleeperCab>
+		<SumNetPower>350000</SumNetPower>
+		<Technology>FCV Article 9 exempted</Technology>
+	</v2.0:Vehicle>
+</tns:VectoInputDeclaration>

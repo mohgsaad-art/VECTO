@@ -1231,6 +1231,7 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 		TestCase(JobGrp32b, 3, 20, 5, 17, 9, 49.572, TestName = "CompleteBus PassengerCount IU generic RL"),
 		TestCase(JobGrp32b, 6, 20, 5, 17, 9, 37, TestName = "CompleteBus PassengerCount CO specific RL"),
 		TestCase(JobGrp32b, 7, 20, 5, 17, 9, 38.556, TestName = "CompleteBus PassengerCount CO generic RL"),
+		Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestPassengerCountAllocationCompletedBus(string jobName, int runIdx, int pSeatsLower, int pStdLower, int pSeatsUpper, int pStdUpper,  double expectedPassengers)
 		{

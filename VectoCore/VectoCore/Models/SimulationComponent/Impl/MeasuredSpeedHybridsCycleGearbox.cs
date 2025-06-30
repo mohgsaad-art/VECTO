@@ -9,7 +9,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class MeasuredSpeedHybridsCycleGearbox : CycleGearbox, IHybridControlledGearbox
     {
-        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData)
+        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container) : base(container)
         {
             LastDownshift = -double.MaxValue.SI<Second>();
             LastUpshift = -double.MaxValue.SI<Second>();
@@ -23,7 +23,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public bool SwitchToNeutral
 		{
-			set => Disengaged = value ? DataBus.AbsTime : null;
+			set => DisengagedTstmp = value ? DataBus.AbsTime : null;
 		}
 
         protected override PerSecond CalculateInAngularSpeed(PerSecond outAngularVelocity)

@@ -12,6 +12,17 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
+	public class TestpowertrainCombustionEngine : StopStartCombustionEngine, ITestpowertrainCombustionEngine
+	{
+		public TestpowertrainCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
+
+		#region Implementation of ITestpowertrainCombustionEngine
+
+		public IAuxPort GetEngineAux => EngineAux;
+
+		#endregion
+	}
+
 	public class StopStartCombustionEngine : CombustionEngine
 	{
 		protected WattSecond EngineStartEnergy;
@@ -248,13 +259,4 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		#endregion
 	}
 
-	public class SimplePowerrtrainCombustionEngine : StopStartCombustionEngine
-	{
-		public SimplePowerrtrainCombustionEngine(
-			IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(
-			container, modelData, pt1Disabled)
-		{ }
-
-		public EngineState EnginePreviousState => PreviousState;
-	}
 }

@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IDCDCConverter DCDCConverter { get; protected set; }
 
-		public WHRCharger WHRCharger { get; protected set; }
+		public IWHRCharger WHRCharger { get; protected set; }
 
 		public IElectricSystemInfo ElectricSystemInfo { get; protected set; }
 
@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 			}
 
-			return _kernel.Get<IVehicleContainerFactory>().CreateVehicleContainer(runData, modData, writeSumData);
+			return _kernel.Get<IPowertrainBuilder>().Build(runData, modData, writeSumData);
 
         }
 
@@ -189,7 +189,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (component is IEngineInfo c17){
 				EngineInfo = c17;
 				commitPriority = 2;
-				HasCombustionEngine = !(component is DummyEngineInfo); // true;
+				HasCombustionEngine = !(component is IDummyEngineInfo); // true;
 			}
 			if (component is IGearboxInfo c18) {
 				GearboxInfo = c18;
@@ -207,7 +207,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				commitPriority = 6;
 			}
 			if (component is PTOCycleController c21) { commitPriority = 99; }
-			if (component is VTPCycle c22) { commitPriority = 0; }
+			if (component is IVTPCycle c22) { commitPriority = 0; }
 			if (component is IElectricMotorInfo c23) {
 				if (c23.Position == PowertrainPosition.HybridPositionNotSet) {
 					return;
@@ -220,7 +220,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				HasElectricMotor = true;
 			}
 
-			if (component is WHRCharger c25) {
+			if (component is IWHRCharger c25) {
 				WHRCharger = c25;
 			}
 			

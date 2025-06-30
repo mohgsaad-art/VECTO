@@ -21,10 +21,10 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 
-	/// <summary>
-	/// Container Class for Auxiliaries which are connected to the DCDC system.
-	/// </summary>
-	public class ElectricAuxiliaries : VectoSimulationComponent, IElectricAuxPort
+    /// <summary>
+    /// Container Class for Auxiliaries which are connected to the DCDC system.
+    /// </summary>
+    public class ElectricAuxiliaries : VectoSimulationComponent, IElectricAuxPort
 	{
 		private IDictionary<string, Func<IDataBus, Watt>> _auxData = new Dictionary<string, Func<IDataBus, Watt>>();
 		private IDictionary<string, string> _auxColumnName = new Dictionary<string, string>();

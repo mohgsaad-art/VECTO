@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Resources;
@@ -259,9 +260,13 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 					new XElement(TNS + XMLNames.Report_ExemptedVehicle));
 			}
 
+			[ExcludeFromCodeCoverage] // not used
 			protected override IResultGroupWriter ResultSuccessWriter => null;
+
+			[ExcludeFromCodeCoverage] // not used
 			protected override IResultGroupWriter ResultErrorWriter => null;
-			
+
+			[ExcludeFromCodeCoverage] // not used
 			public override Common.IReportResultsSummaryWriter SummaryWriter => null;
 
 

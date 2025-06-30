@@ -30,8 +30,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0.5, 1, 7000, new[] { 0.50020169, 0.50020169, 0.50020169 }),
 		TestCase(0.35, 1, 14000, new[] { 0.350404181979, 0.350404181979, 0.350404181979 }),
-		TestCase(0.75, 1, -14500, new[] { 0.7495793463, 0.7495793463, 0.7495793463 })
-
+		TestCase(0.75, 1, -14500, new[] { 0.7495793463, 0.7495793463, 0.7495793463 }),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBatterySystemRequest_2Serial(double initialSoC, double simInterval, double powerDemand, double[] expectedSoC)
 		{
@@ -71,7 +71,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0.5, 1, 7000, new[] { 0.50020169, 0.50020169, 0.50020169 }),
 		TestCase(0.35, 1, 14000, new[] { 0.350404181979, 0.350404181979, 0.350404181979 }),
-		TestCase(0.75, 1, -14500, new[] { 0.7495793463, 0.7495793463, 0.7495793463 })
+		TestCase(0.75, 1, -14500, new[] { 0.7495793463, 0.7495793463, 0.7495793463 }),
+			Category(Definitions.TESTCASE_MIGRATED)
 
 		]
 		public void TestBatterySystemRequest_2Parallel(double initialSoC, double simInterval, double powerDemand, double[] expectedSoC)
@@ -117,13 +118,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0.5, 1, 60000, new[] {10.0, 20, 30}, new[] { 0.500693147221155, 0.500692716960012, 0.500693147221155, 0.5006930038 }),
         TestCase(0.35, 1, 14000, new[] { 2.33333333, 4.666666666, 7 }, new[] { 0.350161966207795, 0.350161942625547, 0.350161966207795, 0.3501619583470 }),
-        TestCase(0.75, 1, -14500, new[] { -2.4166666666, -4.833333333, -7.25 },  new[] { 0.749832099811648, 0.749832074409512, 0.749832099811648, 0.74983209134426 })
+        TestCase(0.75, 1, -14500, new[] { -2.4166666666, -4.833333333, -7.25 },  new[] { 0.749832099811648, 0.749832074409512, 0.749832099811648, 0.74983209134426 }),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBatterySystemRequest_3Strings_1_Balanced(double initialSoC, double simInterval, double powerDemand, double[] expectedPowerDemand, double[] expectedSoC)
 		{
-			var inputData = JSONInputDataFactory.ReadREESSData(componentFile, false);
-			Assert.NotNull(inputData);
-
 			var dao = new EngineeringDataAdapter();
 			var tmp = new MockBatteryInputData() {
 				_electricStorageElements = new List<IElectricStorageDeclarationInputData>() {
@@ -181,12 +180,10 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			TestCase(new[] { 0.48, 0.52, 0.5 }, 10, -60000, new[] { -9.536424, -20.662252, -29.801325 }, new[] { 0.473365599320166, 0.512806980835123, 0.493088648222347, 0.496374250942909 }),
 		//TestCase(0.35, 1, 14000, new[] { 2.33333333, 4.666666666, 7 }, new[] { 0.350161966207795, 0.350161942625547, 0.350161966207795, 0.3501619583470 }),
 		//TestCase(0.75, 1, -14500, new[] { -2.4166666666, -4.833333333, -7.25 }, new[] { 0.749832099811648, 0.749832074409512, 0.749832099811648, 0.74983209134426 })
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBatterySystemRequest_3Strings_1_Unbalanced(double[] initialSoC, double simInterval, double powerDemand, double[] expectedPowerDemand, double[] expectedSoC)
 		{
-			var inputData = JSONInputDataFactory.ReadREESSData(componentFile, false);
-			Assert.NotNull(inputData);
-
 			var dao = new EngineeringDataAdapter();
 			var tmp = new MockBatteryInputData() {
 				_electricStorageElements = new List<IElectricStorageDeclarationInputData>() {
@@ -249,12 +246,10 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			TestCase(0.5, 1, -60000, new[] { -3.75078419, -6.24921581, -20, -30 }, new[] { 0.499304248566401, 0.499536165710934, 0.499303810709253, 0.499304248566401, 0.499304102614018 }),
 		//TestCase(0.35, 1, 14000, new[] { 2.33333333, 4.666666666, 7 }, new[] { 0.350161966207795, 0.350161942625547, 0.350161966207795, 0.3501619583470 }),
 		//TestCase(0.75, 1, -14500, new[] { -2.4166666666, -4.833333333, -7.25 }, new[] { 0.749832099811648, 0.749832074409512, 0.749832099811648, 0.74983209134426 })
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBatterySystemRequest_3Strings_2_Balanced(double initialSoC, double simInterval, double powerDemand, double[] expectedPowerDemand, double[] expectedSoC)
 		{
-			var inputData = JSONInputDataFactory.ReadREESSData(componentFile, false);
-			Assert.NotNull(inputData);
-
 			var dao = new EngineeringDataAdapter();
 			var tmp = new MockBatteryInputData() {
 				_electricStorageElements = new List<IElectricStorageDeclarationInputData>() {

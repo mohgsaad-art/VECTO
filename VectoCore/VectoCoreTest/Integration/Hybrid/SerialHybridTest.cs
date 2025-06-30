@@ -28,15 +28,16 @@ using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.ElectricSystem;
+using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.Impl.ElectricSystem;
 using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 using Moq;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 
 
 namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 {
-	[TestFixture,
+    [TestFixture,
 	Parallelizable(ParallelScope.All)]
 	public class SerialHybridTest
 	{
@@ -728,8 +729,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					throw new VectoException("invalid powertrain position");
 				case PowertrainPosition.BatteryElectricE2:
 					var gearbox = gearboxType.AutomaticTransmission()
-						? (IHybridControlledGearbox)new ATGearbox(container, ctl.ShiftStrategy)
-						: new Gearbox(container, ctl.ShiftStrategy);
+						? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy)
+						: new AMTGearbox(container, ctl.ShiftStrategy);
 					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearData))
 						.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
 						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder 
@@ -777,7 +778,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			ctl.GenSet.AddComponent(GetElectricMachine(PowertrainPosition.GEN, runData.ElectricMachinesData, container,
 					es, ctl))
 				.AddComponent(engine, idleController);
-			PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
+			//PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
 
 			return container;
 		}
@@ -803,20 +804,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				StartSpeed = 2.SI<MeterPerSecond>(),
 				StartAcceleration = 0.6.SI<MeterPerSquareSecond>(),
 
-				StartVelocity = DeclarationData.GearboxTCU.StartSpeed,
-				//StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
-				GearResidenceTime = DeclarationData.GearboxTCU.GearResidenceTime,
-				DnT99L_highMin1 = DeclarationData.GearboxTCU.DnT99L_highMin1,
-				DnT99L_highMin2 = DeclarationData.GearboxTCU.DnT99L_highMin2,
-				AllowedGearRangeUp = gbx.Type.AutomaticTransmission() ? 1 : DeclarationData.GearboxTCU.AllowedGearRangeUp,
-				AllowedGearRangeDown = gbx.Type.AutomaticTransmission() ? 1 : DeclarationData.GearboxTCU.AllowedGearRangeDown,
-				LookBackInterval = DeclarationData.GearboxTCU.LookBackInterval,
-				DriverAccelerationLookBackInterval = DeclarationData.GearboxTCU.DriverAccelerationLookBackInterval,
-				DriverAccelerationThresholdLow = DeclarationData.GearboxTCU.DriverAccelerationThresholdLow,
-				AverageCardanPowerThresholdPropulsion = DeclarationData.GearboxTCU.AverageCardanPowerThresholdPropulsion,
-				CurrentCardanPowerThresholdPropulsion = DeclarationData.GearboxTCU.CurrentCardanPowerThresholdPropulsion,
-				TargetSpeedDeviationFactor = DeclarationData.GearboxTCU.TargetSpeedDeviationFactor,
-				EngineSpeedHighDriveOffFactor = DeclarationData.GearboxTCU.EngineSpeedHighDriveOffFactor,
 				RatingFactorCurrentGear = gbx.Type.AutomaticTransmission()
 					? DeclarationData.GearboxTCU.RatingFactorCurrentGearAT
 					: DeclarationData.GearboxTCU.RatingFactorCurrentGear,

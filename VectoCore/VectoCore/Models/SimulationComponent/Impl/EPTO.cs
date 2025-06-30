@@ -9,7 +9,7 @@ using Constants = TUGraz.VectoCore.Configuration.Constants;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public interface IEPTO
+    public interface IEPTO
 	{
 		bool EPTOOn(IDataBus dataBus);
 	}

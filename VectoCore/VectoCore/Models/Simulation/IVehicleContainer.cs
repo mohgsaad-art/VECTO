@@ -100,7 +100,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 	public interface ISimpleVehicleContainer : IVehicleContainer
 	{
-		IDriverDemandOutPort VehiclePort { get; }
+		//IDriverDemandOutPort VehiclePort { get; }
 
 		ITnOutPort GearboxOutPort { get; }
 
@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		IReadOnlyCollection<VectoSimulationComponent> SimulationComponents();
 
-		void UpdateComponents(IDataBus realContainer);
+        void UpdateComponents(IDataBus realContainer);
 
 	}
 }

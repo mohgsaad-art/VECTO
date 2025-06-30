@@ -182,7 +182,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		}
 
-        public static void ReportDeviations(String distanceSumPath, int distanceSumRow, SimulatorFactory factory, 
+        public static void ReportDeviations(String distanceSumPath, int distanceSumRow, ISimulatorFactory factory, 
 			Dictionary<String, double> metrics)
         { 
 			String sumFilePath = WriteSumFile(factory);

@@ -28,6 +28,7 @@ using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9.ResultWriter;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1.ResultWriter;
+using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -68,15 +69,13 @@ public class TestXMLResultsWriting
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 2, VectoSimulationJobType.ParallelHybridVehicle, false, false, typeof(CIFResultsWriter.HEVNonOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 2, VectoSimulationJobType.SerialHybridVehicle, true, false, typeof(CIFResultsWriter.HEVOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 2, VectoSimulationJobType.BatteryElectricVehicle, true, false, typeof(CIFResultsWriter.PEVBus)),
-	]
-	[
+
 		TestCase(VehicleCategory.RigidTruck, 3, VectoSimulationJobType.ConventionalVehicle, false, true, typeof(CIFResultsWriter.ExemptedVehicle)),
 		TestCase(VehicleCategory.RigidTruck, 3, VectoSimulationJobType.ConventionalVehicle, false, false, typeof(CIFResultsWriter.ConventionalLorry)),
 		TestCase(VehicleCategory.Tractor, 3, VectoSimulationJobType.ConventionalVehicle, false, false, typeof(CIFResultsWriter.ConventionalLorry)),
 		TestCase(VehicleCategory.RigidTruck, 3, VectoSimulationJobType.ParallelHybridVehicle, false, false, typeof(CIFResultsWriter.HEVNonOVCLorry)),
 		TestCase(VehicleCategory.RigidTruck, 3, VectoSimulationJobType.SerialHybridVehicle, true, false, typeof(CIFResultsWriter.HEVOVCLorry)),
 		TestCase(VehicleCategory.RigidTruck, 3, VectoSimulationJobType.BatteryElectricVehicle, true, false, typeof(CIFResultsWriter.PEVLorry)),
-
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.ConventionalVehicle, false, true, typeof(CIFResultsWriter.ExemptedVehicle)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.ConventionalVehicle, false, false, typeof(CIFResultsWriter.ConventionalBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.ConventionalVehicle, false, false, typeof(CIFResultsWriter.ConventionalBus)),
@@ -84,6 +83,7 @@ public class TestXMLResultsWriting
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.SerialHybridVehicle, true, false, typeof(CIFResultsWriter.HEVOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.BatteryElectricVehicle, true, false, typeof(CIFResultsWriter.PEVBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, 3, VectoSimulationJobType.FCHV, false, false, typeof(CIFResultsWriter.FCHVNonOVCBus)),
+		Category(Definitions.TESTCASE_MIGRATED),
 	]
     public void Test_CIF_ReportResultInstance(VehicleCategory vehicleCategory, int amdm, VectoSimulationJobType jobType,  bool ovc,
 		bool exempted, Type expectedResultWriterType)
@@ -136,9 +136,10 @@ public class TestXMLResultsWriting
 
 		TestCase(VectoSimulationJobType.FCHV, 3, true, false, true, TestName = "CIF_ReportResult_WritingResults_3Amd: Lorry FCHV OVC SUCCESS"),
 		TestCase(VectoSimulationJobType.FCHV, 3, false, false, true, TestName = "CIF_ReportResult_WritingResults_3Amd: Lorry FCHV non-OVC SUCCESS"),
-
+		Category(Definitions.TESTCASE_MIGRATED),
         TestCase(VectoSimulationJobType.ParallelHybridVehicle, 3, true, true, true, TestName = "CIF_ReportResult_WritingResults_3Amd: Lorry HEV exempted"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, true, true, true, TestName = "CIF_ReportResult_WritingResults_3Amd: Lorry Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
     public void Test_CIF_ReportResult_WritingResults_Lorry(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
 	{
@@ -211,9 +212,9 @@ public class TestXMLResultsWriting
 		TestCase(VectoSimulationJobType.BatteryElectricVehicle, 2, true, false, false, TestName = "CIF_ReportResult_WritingResults_2Amd: CompletedBus PEV ERROR"),
 
 		TestCase(VectoSimulationJobType.ParallelHybridVehicle, 2, true, true, true, TestName = "CIF_ReportResult_WritingResults_2Amd: CompletedBus HEV exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
-
-    [
+	[
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, false, false, true, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus Conv SUCCESS"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, false, false, true, FuelType.NGCI, FuelType.DieselCI, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus Conv DualFuel SUCCESS"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, false, false, true, FuelType.NGPI, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus Conv LNG SUCCESS"),
@@ -237,12 +238,14 @@ public class TestXMLResultsWriting
 		TestCase(VectoSimulationJobType.FCHV, 3, false, false, true, FuelType.DieselCI, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus FCHV non-OVC SUCCESS"),
 
         TestCase(VectoSimulationJobType.ParallelHybridVehicle, 3, true, true, true, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus HEV exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
     public void TestReportResult_WritingResults_CompletedBus(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
 	{
 		var vehicleCategory = VehicleCategory.HeavyBusCompletedVehicle;
 		var ovcmode = ovc ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
 		var runData = GetMockRunData(vehicleCategory, jobType, ovc, exempted, ovcmode, fuels);
+		runData.InputData = GetMockInputData(amdm);
 		var modData = GetMockModData(success ? VectoRun.Status.Success : VectoRun.Status.Aborted, fuels);
 
 		var resultEntries = new List<IResultEntry>();
@@ -324,6 +327,7 @@ public class TestXMLResultsWriting
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.ParallelHybridVehicle, 2, false, false, typeof(MRFResultsWriter.HEVNonOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.SerialHybridVehicle, 2, true, false, typeof(MRFResultsWriter.HEVOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.BatteryElectricVehicle, 2, true, false, typeof(MRFResultsWriter.PEVBus)),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	[
 		TestCase(VehicleCategory.RigidTruck, VectoSimulationJobType.ConventionalVehicle, 3, false, true, typeof(MRFResultsWriter.ExemptedVehicle)),
@@ -338,6 +342,7 @@ public class TestXMLResultsWriting
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.ParallelHybridVehicle, 3, false, false, typeof(MRFResultsWriter.HEVNonOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.SerialHybridVehicle, 3, true, false, typeof(MRFResultsWriter.HEVOVCBus)),
 		TestCase(VehicleCategory.HeavyBusCompletedVehicle, VectoSimulationJobType.BatteryElectricVehicle, 3, true, false, typeof(MRFResultsWriter.PEVBus)),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
     public void Test_MRF_ReportResultInstance(VehicleCategory vehicleCategory, VectoSimulationJobType jobType, int amdm, bool ovc,
 		bool exempted, Type expectedResultWriterType)
@@ -367,6 +372,7 @@ public class TestXMLResultsWriting
 
 		TestCase(VectoSimulationJobType.ParallelHybridVehicle, 2, true, true, true, TestName = "MRF_ReportResult_WritingResults_2Amd: Lorry HEV exempted"),
 		TestCase(VectoSimulationJobType.ConventionalVehicle, 2, true, true, true, TestName = "MRF_ReportResult_WritingResults_2Amd: Lorry Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
     [
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, false, false, true, TestName = "MRF_ReportResult_WritingResults_3Amd: Lorry Conv SUCCESS"),
@@ -393,6 +399,7 @@ public class TestXMLResultsWriting
 
         TestCase(VectoSimulationJobType.ParallelHybridVehicle, 3, true, true, true, TestName = "MRF_ReportResult_WritingResults_3Amd: Lorry HEV exempted"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, true, true, true, TestName = "MRF_ReportResult_WritingResults_3Amd: Lorry Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
     public void Test_MRF_ReportResult_WritingResults_Lorry(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
 	{
@@ -471,6 +478,7 @@ public class TestXMLResultsWriting
 
 		TestCase(VectoSimulationJobType.ParallelHybridVehicle, 2, true, true, true, TestName = "MRF_ReportResult_WritingResults_2Amd: CompletedBus HEV exempted"),
 		TestCase(VectoSimulationJobType.ConventionalVehicle, 2, true, true, true, TestName = "MRF_ReportResult_WritingResults_2Amd: CompletedBus Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
     [
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, false, false, true, TestName = "MRF_ReportResult_WritingResults_3Amd: CompletedBus Conv SUCCESS"),
@@ -498,6 +506,7 @@ public class TestXMLResultsWriting
 
         TestCase(VectoSimulationJobType.ParallelHybridVehicle, 3, true, true, true, TestName = "MRF_ReportResult_WritingResults_3Amd: CompletedBus HEV exempted"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 3, true, true, true, TestName = "MRF_ReportResult_WritingResults_3Amd: CompletedBus Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
     public void Test_MRF_ReportResult_WritingResults_Bus(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
 	{
@@ -578,6 +587,7 @@ public class TestXMLResultsWriting
 		TestCase(VehicleCategory.HeavyBusPrimaryVehicle, VectoSimulationJobType.ParallelHybridVehicle, 2, false, false, typeof(VIFResultsWriter.HEVNonOVCBus)),
 		TestCase(VehicleCategory.HeavyBusPrimaryVehicle, VectoSimulationJobType.SerialHybridVehicle, 2, true, false, typeof(VIFResultsWriter.HEVOVCBus)),
 		TestCase(VehicleCategory.HeavyBusPrimaryVehicle, VectoSimulationJobType.BatteryElectricVehicle, 2, true, false, typeof(VIFResultsWriter.PEVBus)),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void Test_VIF_ReportResultInstance(VehicleCategory vehicleCategory, VectoSimulationJobType jobType, int amdm, bool ovc,
 		bool exempted, Type expectedResultWriterType)
@@ -607,6 +617,7 @@ public class TestXMLResultsWriting
 
 		TestCase(VectoSimulationJobType.ParallelHybridVehicle, 2, true, true, true, TestName = "VIF_ReportResult_WritingResults_2Amd: PrimaryBus HEV exempted"),
 		TestCase(VectoSimulationJobType.ConventionalVehicle, 2, true, true, true, TestName = "VIF_ReportResult_WritingResults_2Amd: PrimaryBus Conv exempted"),
+		Category(Definitions.TESTCASE_MIGRATED)
 	]
 	public void Test_VIF_ReportResult_WritingResults_Bus(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
 	{
@@ -649,7 +660,8 @@ public class TestXMLResultsWriting
 
 	// ---------
 
-	[TestCase()]
+	[TestCase(),
+	Category(Definitions.TESTCASE_MIGRATED)]
 	public void TestCalculateOVCWeightedResult(params FuelType[] fuels)
 	{
 		var jobType = VectoSimulationJobType.ParallelHybridVehicle;
@@ -686,7 +698,8 @@ public class TestXMLResultsWriting
 
     // ---------
 
-	[TestCase()]
+	[TestCase(),
+	Category(Definitions.TESTCASE_MIGRATED)]
 	public void TestCalculateOVCWeightedResultIMC(params FuelType[] fuels)
 	{
 		var jobType = VectoSimulationJobType.ParallelHybridVehicle;
@@ -909,6 +922,7 @@ public class TestXMLResultsWriting
 		modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_terminal_ES, It.IsAny<Func<SI, bool>>()))
 			.Returns<ModalResultField,
 				Func<SI, bool>>((_, f) => batteryEntries.Select(x => x.Item2).Where(x => f(x)).Sum());
+		modData.Setup(x => x.GetValues<SI>(ModalResultField.REESSStateOfCharge)).Returns(() => new[] { 50.SI(), 50.SI() });
 
         if (runStatus != VectoRun.Status.Success) {
 			modData.Setup(x => x.Error).Returns("TestCase Error!");
@@ -1022,6 +1036,29 @@ public class TestXMLResultsWriting
 		};
 		mock.Setup(i => i.JobInputData.Vehicle.DataSource).Returns(vehicleDataSource);
 
-		return mock.Object;
+		var pack = new Mock<IBatteryPackDeclarationInputData>();
+		var b1 = new Mock<IElectricStorageDeclarationInputData>();
+		var bat = new Mock<IElectricStorageSystemDeclarationInputData>();
+		pack.Setup(p => p.StorageType).Returns(REESSType.Battery);
+		pack.Setup(p => p.MinSOC).Returns(0.2);
+		pack.Setup(p => p.MaxSOC).Returns(0.8);
+		pack.Setup(p => p.MaxCurrentMap).Returns(InputDataHelper.InputDataAsTableData("SoC, I_charge, I_discharge", new[] { "0, 300, 300", "100, 500, 500" }));
+		pack.Setup(p => p.Capacity).Returns(7.5.SI(Unit.SI.Ampere.Hour).Cast<AmpereSecond>());
+		pack.Setup(p => p.InternalResistanceCurve)
+			.Returns(InputDataHelper.InputDataAsTableData("SoC, Ri-2, Ri-10, Ri-20",
+				new[] { "0, 20, 20, 20", "100, 20, 20, 20" }));
+		pack.Setup(p => p.VoltageCurve)
+			.Returns(InputDataHelper.InputDataAsTableData("SoC, V", new[] { "0, 600", "100, 650" }));
+		pack.Setup(p => p.DataSource).Returns(new DataSource() {
+			SourceType = DataSourceType.XMLFile
+		});
+		b1.Setup(b => b.Count).Returns(1);
+		b1.Setup(b => b.StringId).Returns(0);
+		b1.Setup(b => b.REESSPack).Returns(pack.Object);
+		bat.Setup(b => b.ElectricStorageElements).Returns(new[] { b1.Object });
+
+		mock.Setup(i => i.JobInputData.Vehicle.Components.ElectricStorage).Returns(bat.Object);
+
+        return mock.Object;
 	}
 }

@@ -41,8 +41,7 @@ public class BatteryDataAdapterTest
 	[TestCase(0.40, 0.60, 0.4050, 0.5950, 0.1900, VectoSimulationJobType.SerialHybridVehicle, false)]
 	[TestCase(null, null, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false)]
 	[TestCase(0.15, 0.85, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false)]
-
-
+	[Category(Definitions.TESTCASE_MIGRATED)]
 	public void GenericSOCTest(
 		double inputMinSoc,
 		double inputMaxSoc,

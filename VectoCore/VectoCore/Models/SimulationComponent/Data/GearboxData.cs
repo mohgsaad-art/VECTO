@@ -100,6 +100,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			internal set => _disengageWhenHaltingSpeed = value;
 		}
 
+		public string ShiftStrategy { get; set; }
+
 		private GearList CreateGearList()
 		{
 			var gearList = new List<GearshiftPosition>();

@@ -5,12 +5,26 @@ using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class GensetChargerAdapter : IElectricChargerPort
+	public class TestpowertrainGensetChargerAdapter : GensetChargerAdapter, ITestpowertrainGensetChargerAdapter
+    {
+		public TestpowertrainGensetChargerAdapter(IElectricMotor motor) : base(motor, false)
+		{
+			// check that it is used in testpowertrain
+		}
+	}
+
+
+    public class GensetChargerAdapter : IElectricChargerPort
 	{
 		protected IElectricSystem es;
 		protected Watt PowerGenerated;
 
-		public GensetChargerAdapter(ElectricMotor motor)
+		public GensetChargerAdapter(IElectricMotor motor) : this(motor, false)
+		{
+			// check if not used in testpowertrain
+		}
+
+		protected GensetChargerAdapter(IElectricMotor motor, bool dummy)
 		{
 			es = new ChargeElectricSystem(this);
 			motor?.Connect(es);
@@ -72,6 +86,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			public void Connect(IElectricChargerPort charger)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			#endregion
+
+			#region Implementation of IBatteryConnector
+
+			public void Connect(IElectricEnergyStorage battery)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			#endregion
+
+			#region Implementation of IElectricAuxConnector
+
+			public void Connect(IElectricAuxPort aux)
 			{
 				throw new System.NotImplementedException();
 			}

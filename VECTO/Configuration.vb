@@ -15,6 +15,7 @@ Imports Newtonsoft.Json.Linq
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCore.InputData.FileIO.JSON
 Imports TUGraz.VectoCore.Models.Declaration
+Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.Utils
 
 Public Class Configuration

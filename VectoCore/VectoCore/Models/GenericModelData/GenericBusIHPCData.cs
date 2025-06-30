@@ -116,7 +116,9 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 			result.Columns.Add(ElectricMotorMapReader.Fields.MotorSpeed);
 			result.Columns.Add(ElectricMotorMapReader.Fields.Torque);
 			result.Columns.Add(ElectricMotorMapReader.Fields.PowerElectrical);
-			foreach (DataRow row in normalizedMap.Rows)
+
+			///Efficiency maps are saved in rpm
+            foreach (DataRow row in normalizedMap.Rows)
 			{
 				var motorSpeed = row.ParseDouble(MotorSpeedNorm) * ratedPoint.NRated;
 				var torque = row.ParseDouble(TorqueNorm) * ratedPoint.TRated;

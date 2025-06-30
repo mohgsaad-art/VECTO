@@ -60,20 +60,11 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			Bind<IResultGroupWriter>().To<ResultSimulationParameterVIFBusWriter>().When(AccessedViaVIFResultsWriterFactory)
 				.NamedLikeFactoryMethod((IVIFResultsWriterFactory c) => c.GetBusSimulationParameterWriter(null, XNamespace.None));
 
-			Bind<IResultGroupWriter>().To<VehiclePerformanceVIFWriter>().When(AccessedViaVIFResultsWriterFactory)
-				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetVehiclePerformanceBus(null, XNamespace.None));
-			Bind<IResultGroupWriter>().To<VehiclePerformanceVIFWriter>().When(AccessedViaVIFResultsWriterFactory)
-				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetVehiclePerformancePEVBus(null, XNamespace.None));
-
 			Bind<IFuelConsumptionWriter>().To<VIFFuelConsumptionWriter>().When(AccessedViaVIFResultsWriterFactory)
 				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetFuelConsumptionBus(null, XNamespace.None));
 			Bind<IElectricEnergyConsumptionWriter>().To<VIFElectricEnergyConsumptionWriter>().When(AccessedViaVIFResultsWriterFactory)
 				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetElectricEnergyConsumptionBus(null, XNamespace.None));
-			Bind<ICO2Writer>().To<VIFCO2Writer>().When(AccessedViaVIFResultsWriterFactory)
-				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetCO2ResultBus(null, XNamespace.None));
-			Bind<ICO2Writer>().To<VIFCO2Writer>().When(AccessedViaVIFResultsWriterFactory)
-				.NamedLikeFactoryMethod((IMRFResultsWriterFactory c) => c.GetCO2ResultPEVBus(null, XNamespace.None));
-
+			
 			Bind<IResultGroupWriter>().To<VIFErrorResultWriter>().When(AccessedViaVIFResultsWriterFactory)
 				.NamedLikeFactoryMethod((IVIFResultsWriterFactory c) => c.GetBusErrorResultWriter(null, XNamespace.None));
 			Bind<IResultSequenceWriter>().To<VIFResultErrorMissionWriter>().When(AccessedViaVIFResultsWriterFactory)

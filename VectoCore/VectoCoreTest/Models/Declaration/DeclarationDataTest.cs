@@ -88,7 +88,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VectoSimulationJobType.ConventionalVehicle, 0.005, GearboxType.MT, 3.06),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 0.006, GearboxType.MT, 3.33),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 0.006, GearboxType.ATPowerSplit, 3.23),
-        TestCase(VectoSimulationJobType.SerialHybridVehicle, 0.006, null, 2.03)
+        TestCase(VectoSimulationJobType.SerialHybridVehicle, 0.006, null, 2.03),
+		Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void EngineInertiaTest(VectoSimulationJobType jobType, double displacement, GearboxType? gbxType,
             double inertia)
@@ -104,7 +105,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
         [TestCase("285/60 R22.5", 10.6, 0.914, 3.03, 0.440766),
 		TestCase("285/70 R19.5", 7.9, 0.895, 3.05, 0.434453),
-		TestCase("395/85 R20", 27.9, 1.18, 3.05, 0.572798)]
+		TestCase("395/85 R20", 27.9, 1.18, 3.05, 0.572798),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WheelDataTest(string wheels, double inertia, double wheelsDiameter, double circumferenceFactor,
 			double expectedDynamicRadius)
 		{
@@ -138,6 +140,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			TestCase(1775, 0.21),
 			TestCase(1900, 0.155),
 			TestCase(2250, 0.11),
+            Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void PT1Test(double rpm, double expectedPt1)
 		{
@@ -148,7 +151,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 		[TestCase(200),
 		TestCase(0),
-		TestCase(13000),]
+		TestCase(13000),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void PT1ExceptionsTest(double rpm)
 		{
 			// EXTRAPOLATE 
@@ -156,7 +160,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			Assert.IsTrue(tmp.Extrapolated);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WHTCTest()
 		{
 			var whtc = DeclarationData.WHTCCorrection;
@@ -178,7 +183,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			}
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WHTCLookupTestLongHaul()
 		{
 			var expected = 1.0057;
@@ -192,7 +198,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			Assert.AreEqual(expected, lookup, 1e-8);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WHTCLookupTestRegionalDelivery()
 		{
 			var expected = 1.02708700;
@@ -214,7 +221,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			TestCase("TractorSemitrailer", 0.030042, 0.040817, -0.00213),
 			TestCase("CoachBus", -0.000794, 0.02109, -0.00109),
 			TestCase("MediumLorriesRigid", -0.0015, 0.0086, -0.00029),
-			TestCase("MediumLorriesVan", 0.0032, 0.00532, -0.00028)]
+			TestCase("MediumLorriesVan", 0.0032, 0.00532, -0.00028),
+			Category(Definitions.TESTCASE_MIGRATED)]
 
 		public void AirDrag_WithStringKey(string key, double a1, double a2, double a3)
 		{
@@ -232,7 +240,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			TestCase("RigidTrailer", 0.017125, 0.072275, -0.004148),
 			TestCase("CoachBus", -0.000794, 0.02109, -0.00109),
 			TestCase("MediumLorriesRigid", -0.0015, 0.0086, -0.00029),
-			TestCase("MediumLorriesVan", 0.0032, 0.00532, -0.00028)]
+			TestCase("MediumLorriesVan", 0.0032, 0.00532, -0.00028),
+			Category(Definitions.DUPLICATE)]
 		public void AirDrag_WithVehicleCategory(string parameterSet, double a1, double a2, double a3)
 		{
 			var value = DeclarationData.AirDrag.Lookup(parameterSet);
@@ -252,7 +261,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase("TractorSemitrailer", 6.46, 103, 3.6, 6.99454230),
 		TestCase("TractorSemitrailer", 6.46, 105, 3.9, 6.99177143),
 		TestCase("TractorSemitrailer", 6.46, 115, 4.0, 6.92267778),
-		TestCase("TractorSemitrailer", 6.46, 130, 4.0, 6.83867361),]
+		TestCase("TractorSemitrailer", 6.46, 130, 4.0, 6.83867361),
+		Category(Definitions.TESTCASE_MIGRATED),]
 		public void CrossWindCorrectionTest(string parameterSet, double crossSectionArea, double kmph, double height,
 			double expected)
 		{
@@ -266,7 +276,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			AssertHelper.AreRelativeEqual(expected, tmp.Value(), toleranceFactor: 1e-3);
 		}
 
-		[TestCase("TractorSemitrailer", 5.8, 4.0)]
+		[TestCase("TractorSemitrailer", 5.8, 4.0),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CrossWindGetDeclarationAirResistance(string parameterSet, double cdxa0, double height)
 		{
 			var curve =
@@ -295,6 +306,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[
 			TestCase("TractorSemitrailer", 6.46, -0.1, 3.0),
 			TestCase("TractorSemitrailer", 6.46, 200.1, 3.0),
+			Category(Definitions.TESTCASE_MIGRATED),
 		]
 		public void CrossWindCorrectionExceptionTest(string parameterSet, double crossSectionArea, double kmph,
 			double height)
@@ -309,7 +321,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				crossWindCorrectionCurve.EffectiveAirDragArea(kmph.KMPHtoMeterPerSecond()));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CrossWindAreaCdxANotSet_DeclarationMode()
 		{
 			var airDrag = new AirdragData() {
@@ -322,7 +335,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				"In Speed Dependent (Declaration Mode) Crosswind Correction the CdxA Value can be empty.");
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CrossWindAreaCdxANotSet_Other()
 		{
 			foreach (var correctionMode in EnumHelper.GetValues<CrossWindCorrectionMode>()) {
@@ -363,7 +377,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase(VehicleClass.Class55, MissionType.UrbanDelivery, "Standard technology - LED headlights, all", 550,
 			0.7)]
         [TestCase(VehicleClass.Class55, MissionType.LongHaul, "Standard technology", 720, 0.7),
-        TestCase(VehicleClass.Class55, MissionType.LongHaul, "Standard technology - LED headlights, all", 660, 0.7)]
+        TestCase(VehicleClass.Class55, MissionType.LongHaul, "Standard technology - LED headlights, all", 660, 0.7),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxElectricSystemTest(VehicleClass hdvClass, MissionType mission, string technology, double value,
 			double efficiency)
 		{
@@ -376,7 +391,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase(VehicleClass.Class6, MissionType.LongHaul, "Standard technology - Flux-Compensator")]
 		//Medium Lorry
 		//[TestCase(VehicleClass.Class55, MissionType.LongHaul, "Standard technology"),
-		[TestCase(VehicleClass.Class55, MissionType.UrbanDelivery, "Standard technology - Flux-Compensator")]
+		[TestCase(VehicleClass.Class55, MissionType.UrbanDelivery, "Standard technology - Flux-Compensator"),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		//TestCase(VehicleClass.Class55, MissionType.LongHaul, "Standard technology - LED headlights, all")]
 
 		public void AuxElectricSystem_NotExistingError(VehicleClass hdvClass, MissionType mission, string technology)
@@ -394,13 +410,15 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase("drive shaft and/or more than 2 gear wheels - multi-disc clutch", 450),
         TestCase("drive shaft and/or more than 2 gear wheels - multi-disc clutch, oil pump", 3100),
         TestCase("PTO which includes 1 or more additional gearmesh(es), without disconnect clutch", 1500),
-        TestCase("only one engaged gearwheel above oil level", 0)]
+        TestCase("only one engaged gearwheel above oil level", 0),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxPTOTransmissionTest(string technology, double value)
         {
             AssertHelper.AreRelativeEqual(value, DeclarationData.PTOTransmission.Lookup(technology).PowerDemand.Value());
         }
 
-        [TestCase("Superfluid")]
+        [TestCase("Superfluid"),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxPTOTransmission_NotExistingError(string technology)
         {
             AssertHelper.Exception<VectoException>(() => { DeclarationData.PTOTransmission.Lookup(technology); });
@@ -435,10 +453,10 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleClass.Class51, "Belt driven or driven via transm. - On/off clutch", new[] { 0, 440, 397, 0, 0 }),
         TestCase(VehicleClass.Class51, "Hydraulic driven - Variable displacement pump", new[] { 0, 444, 320, 0, 0 }),
         TestCase(VehicleClass.Class51, "Hydraulic driven - Constant displacement pump", new[] { 0, 538, 385, 0, 0 }),
-        TestCase(VehicleClass.Class51, "Electrically driven - Electronically controlled", new[] { 0, 308, 231, 0, 0 })
+        TestCase(VehicleClass.Class51, "Electrically driven - Electronically controlled", new[] { 0, 308, 231, 0, 0 }),
+		Category(Definitions.TESTCASE_MIGRATED)
         ]
-
-        public void AuxFanTechTest(VehicleClass vehicleClass, string technology, int[] expected)
+		public void AuxFanTechTest(VehicleClass vehicleClass, string technology, int[] expected)
         {
             for (var i = 0; i < _missions.Length; i++)
             {
@@ -451,7 +469,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
         [TestCase(VehicleClass.Class1, "Superfluid Hydraulic", MissionType.LongHaul, TestName = "AuxFanTechError( wrong tech )"),
         TestCase(VehicleClass.Class1, "Hydraulic driven - Electronically controlled", MissionType.Coach,
-            TestName = "AuxFanTechError( wrong mission )")
+            TestName = "AuxFanTechError( wrong mission )"),
+		Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void AuxFanTechError(VehicleClass vehicleClass, string technology, MissionType missionType)
         {
@@ -474,7 +493,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase(VehicleClass.Class10, new[] { 350, 200, 150, -1, 200 }),
 		TestCase(VehicleClass.Class11, new[] { 350, 200, 150, 300, 200 }),
 		TestCase(VehicleClass.Class12, new[] { 350, 200, 150, -1, 200 }),
-		TestCase(VehicleClass.Class16, new[] { 350, 200, 150, -1, 200 })]
+		TestCase(VehicleClass.Class16, new[] { 350, 200, 150, -1, 200 }),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxHeatingVentilationAirConditionTest_Default(VehicleClass vehicleClass, int[] expected)
         {
             for (var i = 0; i < expected.Length; i++)
@@ -511,7 +531,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleClass.Class10, new[] { 0, 0, 0, 0, 0 }),
         TestCase(VehicleClass.Class11, new[] { 0, 0, 0, 0, 0 }),
         TestCase(VehicleClass.Class12, new[] { 0, 0, 0, 0, 0 }),
-        TestCase(VehicleClass.Class16, new[] { 0, 0, 0, 0, 0 })]
+        TestCase(VehicleClass.Class16, new[] { 0, 0, 0, 0, 0 }),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxHeatingVentilationAirConditionTest_None(VehicleClass vehicleClass, int[] expected)
         {
             for (var i = 0; i < expected.Length; i++)
@@ -521,7 +542,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             }
         }
 
-        [TestCase()]
+        [TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void AuxHeatingVentilationAirConditionTechnologyTest()
         {
             var tech = DeclarationData.HeatingVentilationAirConditioning.GetTechnologies();
@@ -560,6 +582,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase("Large Supply + visco clutch + AMS", new[] { 800, 800, 800, 800, 700 }),
         TestCase("Large Supply + mech. clutch + AMS", new[] { 300, 500, 500, 500, 400 }),
         TestCase("Vacuum pump", new[] { 190, 160, 130, 130, 130 }),
+		Category(Definitions.TESTCASE_MIGRATED),
         ]
         public void AuxPneumaticSystemTest(string technology, int[] expected)
         {
@@ -637,6 +660,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				"Full electric steering gear",
 				"Full electric steering gear",
 				"Full electric steering gear"),
+			Category(Definitions.TESTCASE_MIGRATED),
         ]
         public void Aux_SteeringPumpLookupValues(MissionType mission, VehicleClass hdvClass, double expectedMech, double expectedElectric, string axle1,
             string axle2, string axle3, string axle4)
@@ -647,7 +671,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             AssertHelper.AreRelativeEqual(expectedElectric, result.electricPumps);
 		}
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)] 
         public void Aux_SteeringpumpMultipleLookups()
         {
             // testcase to illustrate modification of lookup-data for steering pump
@@ -680,6 +705,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(MissionType.RegionalDelivery, VehicleClass.Class2, TestName = "Aux_SteeringPumpLookupFail class 2( Null Techs )"),
         TestCase(MissionType.RegionalDelivery, VehicleClass.Class2, new string[0],
             TestName = "Aux_SteeringPumpLookupFail class 2 ( 0 Techs )"),
+		Category(Definitions.TESTCASE_MIGRATED),
         ]
         public void Aux_SteeringPumpLookupFail(MissionType mission, VehicleClass hdvClass, params string[] tech)
         {
@@ -690,6 +716,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             TestCase(0),
             TestCase(1000),
             TestCase(3500),
+			Category(Definitions.TESTCASE_MIGRATED),
             //TestCase(7500)
         ]
         public void SegmentWeightOutOfRange4X2(double weight)
@@ -711,7 +738,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             TestCase(0),
             TestCase(1000),
             TestCase(3500),
-            TestCase(7500)
+            TestCase(7500),
+			Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void SegmentWeightOutOfRange4X4(double weight)
         {
@@ -796,6 +824,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 7500, 0, false, VehicleClass.Class16),
 		TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 99000, 0, false, VehicleClass.Class16),
+            Category(Definitions.TESTCASE_MIGRATED),
         ]
         public void SegmentLookupTest(VehicleCategory category, AxleConfiguration axleConfiguration, double grossWeight,
             double curbWeight, bool vocational, VehicleClass expectedClass)
@@ -827,7 +856,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_6x4, 7500, 0, false, VehicleClass.Class11, 85),
         TestCase(VehicleCategory.Tractor, AxleConfiguration.AxleConfig_6x4, 7500, 0, false, VehicleClass.Class12, 85),
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 7500, 0, false, VehicleClass.Class16, 85),
-        ]
+		Category(Definitions.TESTCASE_MIGRATED),]
         public void SegmentDesignSpeedTest(VehicleCategory category, AxleConfiguration axleConfiguration, double grossWeight,
             double curbWeight, bool vocational, VehicleClass expectedClass, double speed)
         {
@@ -885,7 +914,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleCategory.Tractor, AxleConfiguration.AxleConfig_6x4, 12000, 0, false, VehicleClass.Class12, null, 7500,
             TestName = "SegmentLookupBodyWeight Class12"),
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 12000, 0, false, VehicleClass.Class16, null, null,
-            TestName = "SegmentLookupBodyWeight Class16")]
+            TestName = "SegmentLookupBodyWeight Class16"),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SegmentLookupBodyTest(VehicleCategory category, AxleConfiguration axleConfiguration, double grossWeight,
             double curbWeight, bool vocational, VehicleClass expectedClass, int? expectedBodyWeight, int? expectedTrailerWeight)
         {
@@ -975,7 +1005,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleCategory.Tractor, AxleConfiguration.AxleConfig_6x4, 12000, 0, false, VehicleClass.Class12, 4.0,
             TestName = "SegmentLookupHeight Class12"),
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 12000, 0, false, VehicleClass.Class16, 3.6,
-            TestName = "SegmentLookupHeight Class16")]
+            TestName = "SegmentLookupHeight Class16"),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void SegmentLookupHeightTest(VehicleCategory category, AxleConfiguration axleConfiguration, double grossWeight,
             double curbWeight, bool vocational, VehicleClass expectedClass, double expectedHeight)
         {
@@ -1023,7 +1054,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         TestCase(VehicleCategory.Tractor, AxleConfiguration.AxleConfig_6x4, 99000, 0, false, VehicleClass.Class12,
             new[] { 91.0, 140.5, 91.0, 140.5, 0.0 }),
         TestCase(VehicleCategory.RigidTruck, AxleConfiguration.AxleConfig_8x4, 99000, 0, false, VehicleClass.Class16,
-            new[] { 101.4, 142.9, 51.9, 142.9, 0.0, })
+            new[] { 101.4, 142.9, 51.9, 142.9, 0.0, }),
+		Category(Definitions.TESTCASE_MIGRATED)
         ]
         public void SegmentLookupCargoVolumeTest(VehicleCategory category, AxleConfiguration axleConfiguration,
             double grossWeight,
@@ -1042,7 +1074,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// trailer in longhaul, always pc formula
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment2Test()
         {
             var vehicleData = new
@@ -1116,7 +1148,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// trailer in longhaul, always pc formula
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment2TestHeavy()
         {
             var vehicleData = new
@@ -1190,7 +1222,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// normal pc formula, no trailer
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment3Test()
         {
             var vehicleData = new
@@ -1244,7 +1276,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// fixed reference weight, trailer only in longhaul
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment4Test()
         {
             var vehicleData = new
@@ -1333,7 +1365,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// fixed reference weight, trailer only in longhaul
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment4VocationalTest()
         {
             var vehicleData = new
@@ -1390,7 +1422,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 5: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment5Test()
         {
             var vehicleData = new
@@ -1494,7 +1526,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 5: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment5VocationalTest()
         {
             var vehicleData = new
@@ -1535,7 +1567,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 9: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment9Test()
         {
             var vehicleData = new
@@ -1642,7 +1674,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 9: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment9VocationalTest()
         {
             var vehicleData = new
@@ -1700,7 +1732,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 10: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment10Test()
         {
             var vehicleData = new
@@ -1791,7 +1823,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 10: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment10VocationalTest()
         {
             var vehicleData = new
@@ -1833,7 +1865,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 11: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment11Test()
         {
             var vehicleData = new
@@ -1955,7 +1987,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 10: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment12Test()
         {
             var vehicleData = new
@@ -2063,7 +2095,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         /// <summary>
         /// Segment 9: fixed reference weight, trailer always used
         /// </summary>
-        [TestCase]
+        [TestCase, Category(Definitions.TESTCASE_MIGRATED)]
         public void Segment16Test()
         {
             var vehicleData = new
@@ -2104,7 +2136,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		/// <summary>
 		/// Segment 53: medium lorry
 		/// </summary>
-		[TestCase]
+		[TestCase, Category(Definitions.TESTCASE_MIGRATED)]
 		public void Segment53Test()
 		{
 			var vehicleData = new {
@@ -2159,7 +2191,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		/// <summary>
 		/// Segment 54: medium lorry
 		/// </summary>
-		[TestCase]
+		[TestCase, Category(Definitions.TESTCASE_MIGRATED)]
 		public void Segment54Test()
 		{
 			var vehicleData = new {
@@ -2276,7 +2308,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             EqualAcceleration(data, 140, 0.5, -0.5);
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void Declaration_WheelsForT1_Class2()
         {
             var dataProvider =
@@ -2299,7 +2332,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             CollectionAssert.AreEqual(bodyOnly, runs[5].VehicleData.AxleData.Select(a => a.Inertia.Value()));
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void Declaration_WheelsForT2_Class4()
         {
             var dataProvider =
@@ -2324,7 +2358,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             CollectionAssert.AreEqual(bodyOnly, runs[7].VehicleData.AxleData.Select(a => a.Inertia.Value()));
         }
 
-        [TestCase]
+        [TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void Declaration_WheelsForDefault_Class5()
         {
             var dataProvider =
@@ -2361,7 +2396,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(false, false, false, PredictiveCruiseControlType.None, "0"),
 		TestCase(true, false, false, PredictiveCruiseControlType.None, "1"),
 		TestCase(true, false, false, PredictiveCruiseControlType.Option_1_2_3, "7/2"),
-		TestCase(true, true, false, PredictiveCruiseControlType.Option_1_2, "10/1")]
+		TestCase(true, true, false, PredictiveCruiseControlType.Option_1_2, "10/1"), 
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestADASCombinationLookup(bool engineStopStart, bool ecoRollWOEngineStop, bool ecoRollWEngineStop, PredictiveCruiseControlType pcc,
 	string expectedADASGroup)
 		{
@@ -2370,7 +2406,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		}
 
 		[TestCase(true, true, true, PredictiveCruiseControlType.Option_1_2),
-		TestCase(true, true, true, PredictiveCruiseControlType.None)]
+		TestCase(true, true, true, PredictiveCruiseControlType.None), 
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestInvalidADASCombinationLookup(
 			bool engineStopStart, bool ecoRollWOEngineStop, bool ecoRollWEngineStop, PredictiveCruiseControlType pcc)
 		{
@@ -2384,7 +2421,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase(false, false, true, PredictiveCruiseControlType.Option_1_2),
 		TestCase(false, false, true, PredictiveCruiseControlType.Option_1_2_3),
 		TestCase(true, false, true, PredictiveCruiseControlType.Option_1_2),
-		TestCase(true, false, true, PredictiveCruiseControlType.Option_1_2_3),
+		TestCase(true, false, true, PredictiveCruiseControlType.Option_1_2_3), 
+		Category(Definitions.TESTCASE_MIGRATED),
 			]
 		public void TestInvalidATADASCombinationLookup(bool engineStopStart, bool ecoRollWOEngineStop, bool ecoRollWEngineStop, PredictiveCruiseControlType pcc)
 		{
@@ -2418,7 +2456,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             TestCase("Petrol PI", null, 1.0),
             TestCase("Ethanol PI", null, 0.993174),
             TestCase("NG PI", TankSystem.Liquefied, 0.918533),
-            TestCase("NG PI", TankSystem.Compressed, 0.939583)
+            TestCase("NG PI", TankSystem.Compressed, 0.939583),
+			Category(Definitions.TESTCASE_MIGRATED)
             ]
         public void TestNCVCorrection(string fuelTypeStr, TankSystem? tankSystem, double expectedCorrectionFactor)
         {
@@ -2429,6 +2468,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         }
 
         [
+		Category(Definitions.TESTCASE_MIGRATED),
 
             TestCase(WeightingGroup.Group51, 0, 0, 0.25, 0.25, 0.25, 0.25),
             TestCase(WeightingGroup.Group52, 0, 0, 0.25, 0.25, 0.25, 0.25),
@@ -2458,6 +2498,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			TestCase(WeightingGroup.Group11, 0, 0, 0.15, 0.35, 0, 0, 0, 0, 0.15, 0.35, TestName = "TestMissionProfileWeights Grp 11"),
 			TestCase(WeightingGroup.Group12, 0, 0, 0.21, 0.49, 0, 0, 0, 0, 0.09, 0.21, TestName = "TestMissionProfileWeights Grp 12"),
 			TestCase(WeightingGroup.Group16, 0, 0, 0, 0, 0, 0, 0, 0, 0.3, 0.7, TestName = "TestMissionProfileWeights Grp 16"),
+			Category(Definitions.TESTCASE_MIGRATED),
 		]
 		public void TestMissionProfileWeights(WeightingGroup group, double eLhLow, double eLhRef, double eRdLow, double eRdRef, double eUdLow, double eUdRef, double eMuLow = 0, double eMuRef = 0, double eCoLow = 0, double eCoRef = 0, double elhEmsLow = 0, double eLhEmsRef = 0, double eRdEmsLow = 0, double eRdEmsRef = 0)
 		{
@@ -2506,7 +2547,9 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             TestCase(0.005049, "B"),
             TestCase(0.00505, "C"),
             TestCase(0.00507, "C"),
-            ]
+			Category(Definitions.TESTCASE_MIGRATED),
+            Category(Definitions.DEPRECATED)
+		]
         public void TestTyreLabelLookup(double rrc, string expectedClass)
         {
             var tyreClass = DeclarationData.Wheels.TyreClass.Lookup(rrc);
@@ -2518,7 +2561,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
         [TestCase(VehicleClass.Class1s, MissionType.RegionalDelivery, 2)]
 		[TestCase(VehicleClass.Class1, MissionType.RegionalDelivery, 2)]
 		[TestCase(VehicleClass.Class16, MissionType.Construction, 2)]
-		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 4)]
+		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 4),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupChargingEventsLorry(VehicleClass hdvClass, MissionType mission, double expected)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2528,7 +2572,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class1s, MissionType.RegionalDelivery, 0.5)]
 		[TestCase(VehicleClass.Class1, MissionType.RegionalDelivery, 0.5)]
 		[TestCase(VehicleClass.Class16, MissionType.Construction, 0.5)]
-		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 0.5)]
+		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 0.5),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehicleOperationLookupChargingDurationLorry(VehicleClass hdvClass, MissionType mission, double expected)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2538,7 +2583,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class1s, MissionType.RegionalDelivery, 250)]
 		[TestCase(VehicleClass.Class1, MissionType.RegionalDelivery, 250)]
 		[TestCase(VehicleClass.Class16, MissionType.Construction, 100)]
-		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 250)]
+		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 250),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehicleOperationLookupMaxChargingPowerLorry(VehicleClass hdvClass, MissionType mission, double expected)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2548,7 +2594,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class1s, MissionType.RegionalDelivery, 80000, 320)]
 		[TestCase(VehicleClass.Class1, MissionType.RegionalDelivery, 80000, 320)]
 		[TestCase(VehicleClass.Class16, MissionType.Construction, 60000, 240)]
-		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 60000, 240)]
+		[TestCase(VehicleClass.Class53, MissionType.UrbanDelivery, 60000, 240),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehicleOperationLookupMileageLorry(VehicleClass hdvClass, MissionType mission, double expectedAnnual, double expectedDaily)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2617,7 +2664,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			Assert.AreEqual(expectedShare, val.ShareInMotionCharging.ShareWireless);
 		}
 
-        [TestCaseSource(nameof(VehicleOperationTestSourceLorry))]
+        [TestCaseSource(nameof(VehicleOperationTestSourceLorry)),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VehicleOperationLookupMileage(VehicleClass hdvClass, MissionType mission)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2657,7 +2705,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
         [TestCase(VehicleClass.Class53, MissionType.LongHaul)]
 		[TestCase(VehicleClass.Class16, MissionType.UrbanDelivery)]
-		[TestCase(VehicleClass.Class1s, MissionType.Coach)]
+		[TestCase(VehicleClass.Class1s, MissionType.Coach),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationHeavyLorryFail(VehicleClass hdvClass, MissionType mission)
 		{
 			Assert.Throws<VectoException>(() => {
@@ -2675,7 +2724,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class31a, MissionType.Urban, 10)]
 		[TestCase(VehicleClass.Class31e, MissionType.Suburban, 10)]
 		[TestCase(VehicleClass.Class32a, MissionType.Coach, 2)]
-		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 5)]
+		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 5),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupChargingEventsBus(VehicleClass hdvClass, MissionType mission, double expected)
         {
             var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2689,7 +2739,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class31a, MissionType.Urban, 0.17)]
 		[TestCase(VehicleClass.Class31e, MissionType.Suburban, 0.17)]
 		[TestCase(VehicleClass.Class32a, MissionType.Coach, 0.75)]
-		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 0.17)]
+		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 0.17),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupChargingDurationBus(VehicleClass hdvClass, MissionType mission, double expected)
         {
             var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2703,7 +2754,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class31a, MissionType.Urban, 450)]
 		[TestCase(VehicleClass.Class31e, MissionType.Suburban, 450)]
 		[TestCase(VehicleClass.Class32a, MissionType.Coach, 300)]
-		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 300)]
+		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 300),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupMaxChargingPowerBus(VehicleClass hdvClass, MissionType mission, double expected)
         {
             var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2717,7 +2769,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase(VehicleClass.Class31a, MissionType.Urban, 60000, 240)]
 		[TestCase(VehicleClass.Class31e, MissionType.Suburban, 60000, 240)]
 		[TestCase(VehicleClass.Class32a, MissionType.Coach, 100000, 400)]
-		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 80000, 320)]
+		[TestCase(VehicleClass.Class32b, MissionType.Interurban, 80000, 320),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupMileageBus(VehicleClass hdvClass, MissionType mission, double expectedAnnual, double expectedDaily)
         {
             var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
@@ -2725,8 +2778,10 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
             Assert.AreEqual(expectedDaily * 1000, val.Mileage.DailyMileage.Value()); //stored in meter
         }
 
-		[TestCaseSource(nameof(VehicleOperationTestSourcePrimaryBus))]
-        [TestCaseSource(nameof(VehicleOperationTestSourceCompletedBus))]
+		[TestCaseSource(nameof(VehicleOperationTestSourcePrimaryBus)),
+		Category(Definitions.TESTCASE_MIGRATED)]
+        [TestCaseSource(nameof(VehicleOperationTestSourceCompletedBus)),
+		Category(Definitions.TESTCASE_MIGRATED)]
         public void VehicleOperationLookupMileageBus(VehicleClass hdvClass, MissionType mission)
 		{
 			var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);

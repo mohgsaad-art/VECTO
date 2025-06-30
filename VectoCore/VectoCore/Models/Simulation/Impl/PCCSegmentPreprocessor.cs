@@ -5,6 +5,7 @@ using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Utils;
@@ -13,30 +14,29 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
 	public class PCCSegmentPreprocessor : ISimulationPreprocessor
 	{
-		protected ISimpleVehicleContainer Container;
+		protected ITestPowertrain TestPowertrain;
 		protected PCCSegments PCCSegments;
 		protected DriverData.PCCData PCCDriverData;
 
 		public PCCSegmentPreprocessor(
-			ISimpleVehicleContainer simpleContainer, PCCSegments segments, DriverData.PCCData driverDataPCC)
+			ITestPowertrain testPowertrain, PCCSegments segments, DriverData.PCCData driverDataPCC)
 		{
-			Container = simpleContainer;
+			TestPowertrain = testPowertrain;
 			PCCSegments = segments;
 			PCCDriverData = driverDataPCC;
 		}
 
 		public void RunPreprocessing()
 		{
+			var runData = TestPowertrain.Container.RunData;
 			var slopes = new Dictionary<MeterPerSecond, Radian>();
-			var maxOverspeed = VectoMath.Max(Container.RunData.DriverData.OverSpeed.OverSpeed, Container.RunData.DriverData.PCC.OverspeedUseCase3);
-			var maxSpeed = VectoMath.Min(Container.VehicleInfo.MaxVehicleSpeed, Container.RunData.Cycle.Entries.Max(x => x.VehicleTargetSpeed)+maxOverspeed);
+			var maxOverspeed = VectoMath.Max(runData.DriverData.OverSpeed.OverSpeed, runData.DriverData.PCC.OverspeedUseCase3);
+			var maxSpeed = VectoMath.Min(TestPowertrain.Container.VehicleInfo.MaxVehicleSpeed, runData.Cycle.Entries.Max(x => x.VehicleTargetSpeed)+maxOverspeed);
 			
-			var preProcessor = new PCCEcoRollEngineStopPreprocessor(Container, slopes, PCCDriverData.MinSpeed, maxSpeed);
+			var preProcessor = new PCCEcoRollEngineStopPreprocessor(TestPowertrain, slopes, PCCDriverData.MinSpeed, maxSpeed);
 			preProcessor.RunPreprocessing();
 
 			//DebugWriteLine($"Slopes:\n{slopes.Select(p => $"{p.Key.AsKmph:F}\t{p.Value.ToInclinationPercent():P}").Join("\n")}");
-
-			var runData = Container.RunData;
 
 			var combustionEngineDrag = runData.EngineData?.FullLoadCurves[0].FullLoadEntries.Average(x =>
 											x.EngineSpeed.Value() * x.TorqueDrag.Value()).SI<Watt>()
@@ -58,7 +58,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			PCCSegment pccSegment = null;
 			var targetSpeedChanged = 0.SI<Meter>();
 
-			foreach (var (start, end) in Container.RunData.Cycle.Entries.Pairwise()) {
+			foreach (var (start, end) in runData.Cycle.Entries.Pairwise()) {
 				// pcc is only applicable on highway sections
 				if (!start.Highway) {
 					pccSegment = null;

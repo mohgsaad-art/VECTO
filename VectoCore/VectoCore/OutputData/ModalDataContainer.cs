@@ -46,7 +46,6 @@ using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
@@ -74,7 +73,7 @@ namespace TUGraz.VectoCore.OutputData
 		//	new Dictionary<int, Dictionary<ModalResultField, DataColumn>>();
 
 
-		private readonly Dictionary<String, SI> _timeIntegrals = new Dictionary<string, SI>();
+		private readonly Dictionary<string, SI> _timeIntegrals = new Dictionary<string, SI>();
 		
 		private readonly Dictionary<FuelType, KilogramPerWattSecond> _engLine = new Dictionary<FuelType, KilogramPerWattSecond>();
 		
@@ -103,11 +102,11 @@ namespace TUGraz.VectoCore.OutputData
 			params IModalDataFilter[] filter) : this(runData, writer, addReportResult, filter, null) { }
 
 		
-		public ModalDataContainer(VectoRunData runData, IModalDataWriter writer,
+        public ModalDataContainer(VectoRunData runData, IModalDataWriter writer,
 			Action<ModalDataContainer> addReportResult,
 			IModalDataFilter[] filter, IModalDataPostProcessorFactory postProcessorFactory)
 		{
-			_runData = runData;
+            _runData = runData;
 			_writer = writer;
 
 			_filters = filter ?? new IModalDataFilter[0];

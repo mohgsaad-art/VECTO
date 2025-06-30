@@ -30,6 +30,7 @@ public class DriverDataTest
 	TestCase(VehicleClass.Class16),
 	TestCase(VehicleClass.Class53),
 	TestCase(VehicleClass.Class54),
+		Category(Definitions.TESTCASE_MIGRATED)
     ]
 	public void TestLorryDeclarationDriverData(VehicleClass group)
 	{

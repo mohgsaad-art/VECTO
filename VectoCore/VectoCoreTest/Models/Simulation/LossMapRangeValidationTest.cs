@@ -78,7 +78,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// <summary>
 		/// VECTO-173
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void LossMapValid()
 		{
 			var gearboxData = CreateGearboxData(GearboxDirectLoss, GearboxIndirectLoss);
@@ -117,7 +118,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// <summary>
 		/// VECTO-173
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void LossMapInvalidAxle()
 		{
 			var gearboxData = CreateGearboxData(GearboxDirectLoss, GearboxIndirectLoss);
@@ -131,7 +133,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// <summary>
 		/// VECTO-173
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void LossMapLimited()
 		{
 			var gearboxData = CreateGearboxData(GearboxLimited, GearboxLimited);
@@ -161,7 +164,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// <summary>
 		/// VECTO-173
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void LossMapAxleLossMapMissing()
 		{
 			var gearboxData = CreateGearboxData(GearboxDirectLoss, GearboxIndirectLoss);
@@ -253,7 +257,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// <summary>
 		/// VECTO-230
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLossMapValuesWithEfficiency()
 		{
 			var lossMap = TransmissionLossMapReader.Create(0.95, 1.0, "Dummy");

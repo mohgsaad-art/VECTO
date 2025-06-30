@@ -154,6 +154,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData {
 
 		[TestCase(@"TestData/XML/XMLReaderDeclaration/SchemaVersion2.4/Distributed/ComponentData/ElectricMachineSystem_Std_Overload.xml", 600063.423)]
 		[TestCase(@"TestData/XML/XMLReaderDeclaration/SchemaVersion2.4/Distributed/ComponentData/ElectricMachineSystem_Std_Overload2.xml", 600063.423)]
+		[Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestElectricMotorOverloadBufferTest(string testFile, double expectedOvlBfr)
 		{
 			var kernel = new StandardKernel(new VectoNinjectModule());

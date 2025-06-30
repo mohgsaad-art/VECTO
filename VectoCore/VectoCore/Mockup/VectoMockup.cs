@@ -8,7 +8,6 @@ using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.OutputData.XML.ComponentWriter;
-using TUGraz.VectoCore.OutputData.XML.Engineering;
 using TUGraz.VectoCore.OutputData.XML.GroupWriter;
 
 namespace VectoMockup

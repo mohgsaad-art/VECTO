@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 	{
 		public abstract class CompletedBusDeclarationBase : AbstractSimulationDataAdapter, ISpecificCompletedBusDeclarationDataAdapter
         {
-			protected readonly IAirdragDataAdapter _airdragDataAdapter = new CompletedBusSpecificAirdragDataAdapter();
+			protected virtual IAirdragDataAdapter AirdragDataAdapter => new CompletedBusSpecificAirdragDataAdapter();
 
 			protected virtual IVehicleDataAdapter VehicleDataAdapter { get; } = new CompletedBusSpecificVehicleDataAdapter();
 
@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 			public virtual AirdragData CreateAirdragData(IVehicleDeclarationInputData completedVehicle, Mission mission,
 				Segment segment, OvcHevMode ovcMode)
 			{
-				return _airdragDataAdapter.CreateAirdragData(completedVehicle, mission, segment, ovcMode);
+				return AirdragDataAdapter.CreateAirdragData(completedVehicle, mission, segment, ovcMode);
 			}
 
 			
@@ -104,6 +104,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 			protected override IVehicleDataAdapter VehicleDataAdapter { get; } =
 				new ExemptedCompletedBusSpecificVehicleDataAdapter();
 
+			#region Overrides of CompletedBusDeclarationBase
+
+			protected override IAirdragDataAdapter AirdragDataAdapter => null;
+
+			protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter => null;
+
+			#endregion
 		}
 	}
 }

@@ -41,7 +41,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 	[Parallelizable(ParallelScope.All)]
 	public class VectoMathTest
 	{
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void VectoMath_Min()
 		{
 			var smaller = 0.SI();
@@ -71,7 +72,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		[TestCase(0, -1, 0, 1, -1, 0, 1, 0, 0, 0),
 		TestCase(0, 0, 10, 0, 0, 5, 10, 5, double.NaN, double.NaN),
 		TestCase(0, 0, 0, 10, 5, 0, 10, 5, double.NaN, double.NaN),
-		TestCase(0, 0, 1, 1, 1, 0, 0, 1, 0.5, 0.5)]
+		TestCase(0, 0, 1, 1, 1, 0, 0, 1, 0.5, 0.5),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void IntersectionTest(double p0x, double p0y, double p1x, double p1y, double p2x, double p2y, double p3x,
 			double p3y, double isx, double isy)
 		{
@@ -90,7 +92,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		[TestCase(1, 2, 0, 5, new[] { -2.6906474480286136 }),
 		TestCase(5, -3, 2, 10, new[] { -1.0 }),
-		TestCase(5, -30, 2, 10, new[] { -0.5238756689475912, 0.6499388479175676, 5.873936821030023 })]
+		TestCase(5, -30, 2, 10, new[] { -0.5238756689475912, 0.6499388479175676, 5.873936821030023 }),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CubicSolverTest(double a, double b, double c, double d, double[] expected)
 		{
 			var results = VectoMath.CubicEquationSolver(a, b, c, d);
@@ -113,8 +116,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 		TestCase(5, 0, -20, 0, 15, new[] { 1.73205080756888, 1, -1.73205080756888, -1 }),
 		TestCase(1, 1, 1, 1, 1, new double[] { }), // only complex solutions
 		TestCase(1, 2, -14, 2, 1, new[] { 2.76090563295441601, 0.362199992663244539, -0.203258341626567109, -4.91984728399109344 }),
-		TestCase(16, 8, -16, -8, 1, new[] { 0.1045284632676534713998341548025, 0.9781476007338056379285667478696, -0.91354545764260089550212757198532, -0.66913060635885821382627333068678 })
-			]
+		TestCase(16, 8, -16, -8, 1, new[] { 0.1045284632676534713998341548025, 0.9781476007338056379285667478696, -0.91354545764260089550212757198532, -0.66913060635885821382627333068678 }),
+		Category(Definitions.TESTCASE_MIGRATED)
+        ]
 		public void Polynom4SolverTest(double a, double b, double c, double d, double e, double[] expected)
 		{
 			var results = VectoMath.Polynom4Solver(a, b, c, d, e);
@@ -132,7 +136,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLeastSquaresFittingExact()
 		{
 			var entries = new[] {
@@ -147,7 +152,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.AreEqual(0.4, k, 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLeastSquaresFittingEx1()
 		{
 			var entries = new[] {

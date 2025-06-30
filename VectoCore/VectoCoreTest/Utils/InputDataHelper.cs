@@ -32,6 +32,8 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -50,7 +52,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 			return cycleData;
 		}
 
-		public static string GetRandomFilename(string jobFile)
+		public static TableData InputDataAsTableData(string header, params string[] entries)
+		{
+			return VectoCSVFile.ReadStream(InputDataAsStream(header, entries));
+		}
+
+        public static string GetRandomFilename(string jobFile)
 		{
 			var path = Path.GetDirectoryName(Path.GetFullPath(jobFile));
 			var filename = Path.GetFileNameWithoutExtension(jobFile);

@@ -49,7 +49,6 @@ using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.NinjectModules;
 using TUGraz.VectoCore.Models.Simulation;
 
 namespace TUGraz.VectoCore.Tests.XML
@@ -927,24 +926,5 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(0.834, essData.UtilityFactorStandstill);
 		}
 
-
-		[TestCase, Ignore("Egnineering XML not supported")]
-		public void TestXMLInputEngineeringVersion1_0TestExtensions()
-		{
-			// load overrides of test xml types
-			if (!_kernel.HasModule(typeof(XMLEngineeringReaderTestOverrides).FullName)) {
-				_kernel.Load(new XMLEngineeringReaderTestOverrides());
-			}
-
-			var inputDataProvider = XMLInputReader.CreateEngineering(EngineeringSampleFile_10TestExtensions_Full);
-
-			Assert.NotNull(inputDataProvider);
-
-			Assert.AreEqual("Generic Eninge", inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.Model);
-			Assert.AreEqual(1.0, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCEngineering, 1e-6);
-
-			Assert.AreEqual(2200, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.RatedSpeedDeclared.AsRPM, 1e-6);
-
-		}
 	}
 }

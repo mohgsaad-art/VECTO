@@ -54,6 +54,8 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 
 namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 {
@@ -101,8 +103,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				Cycle = cycleData,
 				Aux = new List<VectoRunData.AuxData>(),
 				SimulationType = SimulationType.DistanceCycle,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
-			};
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_SimpleGearbox");
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
@@ -115,7 +118,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 
@@ -179,8 +182,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				Retarder = new RetarderData() {Type = RetarderType.None },
 				SimulationType = SimulationType.DistanceCycle,
 				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
-				Aux = new List<VectoRunData.AuxData>()
-			};
+				Aux = new List<VectoRunData.AuxData>(),
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 			var fileWriter = new FileOutputWriter("Coach_FullPowertrain");
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
@@ -193,7 +197,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 
@@ -272,8 +276,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				DriverData = driverData,
 				Cycle = cycleData,
 				Aux = new List<VectoRunData.AuxData>(),
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
-			};
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_LowSpeed");
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
@@ -285,7 +290,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 

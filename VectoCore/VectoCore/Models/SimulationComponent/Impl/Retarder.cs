@@ -40,11 +40,16 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	/// <summary>
-	/// Retarder component.
-	/// </summary>
-	public class Retarder : StatefulProviderComponent<SimpleComponentState, ITnOutPort, ITnInPort, ITnOutPort>,
-		IPowerTrainComponent, ITnInPort, ITnOutPort
+	public interface IRetarder : IPowerTrainComponent
+	{
+
+	}
+
+    /// <summary>
+    /// Retarder component.
+    /// </summary>
+    public class Retarder : StatefulProviderComponent<SimpleComponentState, ITnOutPort, ITnInPort, ITnOutPort>,
+		IRetarder, ITnInPort, ITnOutPort
 	{
 		private readonly RetarderLossMap _lossMap;
 		private readonly double _ratio;

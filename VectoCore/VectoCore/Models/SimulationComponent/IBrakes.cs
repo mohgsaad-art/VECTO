@@ -33,7 +33,7 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
-	public interface IBrakes: IUpdateable
+	public interface IBrakes: IPowerTrainComponent, IUpdateable
 	{
 		Watt BrakePower { get; set; }
 	}

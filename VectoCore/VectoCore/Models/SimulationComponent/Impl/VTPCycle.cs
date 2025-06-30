@@ -44,7 +44,9 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	internal class VTPCycle : PWheelCycle
+	public interface IVTPCycle : IPWheelCycle {}
+
+	internal class VTPCycle : PWheelCycle, IVTPCycle
 	{
 		protected uint StartGear;
 

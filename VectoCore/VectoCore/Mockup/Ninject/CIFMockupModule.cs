@@ -214,11 +214,6 @@ namespace TUGraz.VectoMockup.Ninject
             return _cifFactory.GetConventionalLorryVehicleSequenceGroupWriter();
         }
 
-		public IReportOutputGroup GetConventionalCompletedBusVehicleSequenceGroupWriter()
-		{
-			return _cifFactory.GetConventionalCompletedBusVehicleSequenceGroupWriter();
-		}
-
 		public IReportOutputGroup GetEngineGroup()
         {
             return _cifFactory.GetEngineGroup();

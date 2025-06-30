@@ -21,7 +21,8 @@ Overrun            , 1.000 , 0.950 , 0.000
 Drag               , 5.000 , 0.900 , -1511.216
 
 		 */
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGenericATSerialTCData()
 		{
 			var maxEngineTorque = 1120.SI<NewtonMeter>();
@@ -80,7 +81,8 @@ Coupling point      , 0.621 , 1.101 , 56.67
 Overrun             , 0.690 , 0.942 , 0.00
 Drag                , 3.450 , 1.304 , -1511.22
 		*/
-        [TestCase()]
+        [TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGenericATPowerSplitTCData()
 		{
 			var maxEngineTorque = 1120.SI<NewtonMeter>();

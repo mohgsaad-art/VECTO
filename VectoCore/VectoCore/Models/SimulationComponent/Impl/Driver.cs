@@ -48,7 +48,7 @@ using DriverData = TUGraz.VectoCore.Models.SimulationComponent.Data.DriverData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public enum DrivingAction
+    public enum DrivingAction
 	{
 		Halt = 0,
 		Roll = 2,

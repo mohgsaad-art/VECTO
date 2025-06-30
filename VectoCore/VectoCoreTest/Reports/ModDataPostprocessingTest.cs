@@ -33,7 +33,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 	public class ModDataPostprocessingTest
 	{
 		private double busAuxAlternatorEff = 0.753;
-		private AmpereSecond BatCapacity = 10000.SI<AmpereSecond>();
+        private AmpereSecond BatCapacity = 10000.SI<AmpereSecond>();
 		const double dcdc_efficiency = 0.926;
 		const double UF_ESS_Driving = 0.821;
 		const double UF_ESS_Standstill = 0.753;
@@ -49,7 +49,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSStandstill_ModDataCorrection()
 		{
 			var runData = GetRunData();
@@ -210,7 +211,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSDriving_ModDataCorrection()
 		{
 			var runData = GetRunData();
@@ -371,7 +373,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcEssDrivingOff + fcEssDrivingOn, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSEngineStart_ModDataCorrection()
 		{
 			var runData = GetRunData();
@@ -538,7 +541,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcEssStandStillOff + fcEssStandStillOn + fcEngineStart, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxPsESSStandstill_ModDataCorrection()
 		{
 			var runData = GetRunData(true);
@@ -760,7 +764,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxPsESSDriving_ModDataCorrection()
 		{
 			var runData = GetRunData(true);
@@ -991,6 +996,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		TestCase(500, 0, 4000, AlternatorType.None),
 		TestCase(500, 500, 4000, AlternatorType.None),
 		TestCase(500, 0, 550, AlternatorType.None),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBusAuxSmartES_ModDataCorrection(double p_es_cons, double p_es_gen, double p_es_smartgen,
 			AlternatorType alternatorType)
@@ -1202,7 +1208,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxDCDCMissingConventional_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.None);
@@ -1392,7 +1399,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcDCDCMissing, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxDCDCMissingHEV_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
@@ -1806,6 +1814,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase(0.5), // lower actual average air demand
 		TestCase(0.7),  // no difference in air demand
 		TestCase(0.8),  // higher actual average air demand
+			Category(Definitions.TESTCASE_MIGRATED)
                  ]
 		public void TestBusAuxPSDemand_ModDataCorrection(double nlConsumedCorrected)
 		{
@@ -1999,7 +2008,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcPSAir + fcPSICEOffDriving + fcESS, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElTruckAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData();
@@ -2129,7 +2139,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElBusAuxAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Conventional);
@@ -2283,7 +2294,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElBusAuxNoAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
@@ -2439,7 +2451,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRMech_ModDataCorrection()
 		{
 			var runData = GetRunData();

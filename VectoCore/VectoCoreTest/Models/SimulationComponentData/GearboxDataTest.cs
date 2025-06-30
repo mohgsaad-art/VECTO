@@ -59,7 +59,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		}
 
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearboxDataReadTest()
 		{
 			var axleData = MockSimulationDataFactory.CreateAxleGearDataFromFile(GearboxFile);
@@ -90,6 +91,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		[TestCase("Test7", @"TestData/Components/24t Coach.vgbx", 520, 14.55574, "A", 15225.52, 4308.41207504272)]
 		[TestCase("Test8", @"TestData/Components/24t Coach.vgbx", 520, 4.601774, "A", -1240.225, 1362.09738254547)]
 		[TestCase("Test9", @"TestData/Components/24t Coach.vgbx", 520, 3.934339, "A", -698.5989, 1164.5405292511)]
+		[Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestInterpolation(string testName, string gearboxDataFile, double rDyn, double v, string gear,
 			double powerGbxOut, double gbxPowerLoss)
 		{
@@ -115,7 +117,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(gbxPowerLoss, loss.Value(), 0.1, testName);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLossMap_IN_10_CONST_Interpolation_Extrapolation()
 		{
 			var data = new DataTable();
@@ -203,7 +206,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		//	AssertHelper.AreRelativeEqual(40, map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>(), true));
 		//}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLossMap_IN_Interpolation_Extrapolation()
 		{
 			var data = new DataTable();
@@ -294,7 +298,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		//	AssertHelper.Exception<VectoException>(() => { map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>()); });
 		//}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestFullLoadCurveIntersection()
 		{
 			var engineFldString = new[] {
@@ -325,7 +330,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		/// <summary>
 		///		VECTO-190
 		/// </summary>
-		[TestCase]
+		[TestCase, 
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestFullLoadSorting()
 		{
 			var gbxFldString = new[] {
@@ -342,7 +348,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(750, maxTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLossMapExtension()
 		{
 			var gbxFile = @"TestData/Components/Indirect Gear.vtlm";
@@ -370,7 +377,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsFalse(lookupExt.Extrapolated);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAxlegearLossMapExtension()
 		{
 			var lossMapFile = @"TestData/Components/Axle.vtlm";
@@ -398,7 +406,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsFalse(lookupExt.Extrapolated);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLossMapExtensionNegativeRegressionSlope()
 		{
 			var entries = new[] {

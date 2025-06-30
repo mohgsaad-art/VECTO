@@ -31,6 +31,7 @@
 
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
@@ -40,6 +41,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 	public interface ICombustionEngine : ITnOutProvider, IAuxOutProvider, IEngineInfo, IEngineControl, IUpdateable, ITnOutPort
     {
 		IIdleController IdleController { get; }
+		IWHRCharger WHRCharger { get; set; }
+	}
+
+	public interface ITestpowertrainCombustionEngine : ICombustionEngine
+	{
+		IAuxPort GetEngineAux { get; }
 	}
 
 	

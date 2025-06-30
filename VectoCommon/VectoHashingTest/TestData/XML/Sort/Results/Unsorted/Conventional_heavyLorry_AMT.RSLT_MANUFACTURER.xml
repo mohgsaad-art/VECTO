@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <mrf:VectoOutput xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns:mrf0.9="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.9" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.9" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput V:\VectoCore\VectoCore\Resources\XSD/VectoOutputManufacturer.xsd">
   <mrf:Data xsi:type="ConventionalLorryManufacturerOutputDataType" id="MRF-a2bc418720814ac18b11">
     <Vehicle>
@@ -9,10 +9,10 @@
       <VehicleTypeApprovalNumber>ASDF</VehicleTypeApprovalNumber>
       <VehicleCategory>N3</VehicleCategory>
       <AxleConfiguration>4x2</AxleConfiguration>
-      <TechnicalPermissibleMaximumLadenMass>12000</TechnicalPermissibleMaximumLadenMass>
+      <TechnicalPermissibleMaximumLadenMass unit="kg">12000</TechnicalPermissibleMaximumLadenMass>
       <VehicleGroup>2</VehicleGroup>
       <VehicleGroupCO2>N/A</VehicleGroupCO2>
-      <CorrectedActualMass>6000</CorrectedActualMass>
+      <CorrectedActualMass unit="kg">6000</CorrectedActualMass>
       <VocationalVehicle>false</VocationalVehicle>
       <ZeroEmissionVehicle>false</ZeroEmissionVehicle>
       <HybridElectricHDV>false</HybridElectricHDV>

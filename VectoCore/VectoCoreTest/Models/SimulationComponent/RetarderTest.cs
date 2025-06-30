@@ -59,8 +59,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 
 		[TestCase(0, 10, 10.002),
-		 TestCase(100, 1000, 12)
-			]
+		 TestCase(100, 1000, 12),
+			Category(Definitions.TESTCASE_MIGRATED) // new name: RetarderRequestTest
+            ]
 		public void RetarderBasicTest(double cardanTorque, double cardanSpeed, double expectedRetarderLoss)
 		{
 			var vehicle = VehicleContainer.CreateVehicleContainer(null, null, null);
@@ -90,11 +91,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			//Assert.AreEqual(112, nextRequest.Torque.Value(), Delta);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RetarderSubsequentRequestTest()
 		{
 			var vehicle = VehicleContainer.CreateVehicleContainer(null, null, null);
-			var retarderData = RetarderLossMapReader.ReadFromFile(RetarderLossMapFile);
+            var retarderData = RetarderLossMapReader.ReadFromFile(RetarderLossMapFile);
 			var retarder = new Retarder(vehicle, retarderData, 1.0);
 
 			var nextRequest = new MockTnOutPort();
@@ -122,12 +124,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0, 10, 20.008),
 		 TestCase(100, 1000, 36),
-		 TestCase(50, 1550, 55.56) // extrapolated
-		]
+		 TestCase(50, 1550, 55.56), // extrapolated
+		Category(Definitions.TESTCASE_MIGRATED) // only migrated non-extrapolating testcases, new name: RetarderRequestTest
+        ]
 		public void RetarderRatioTest(double cardanTorque, double cardanSpeed, double expectedRetarderLoss)
 		{
 			var vehicle = VehicleContainer.CreateVehicleContainer(null, null, null);
-			var retarderData = RetarderLossMapReader.ReadFromFile(RetarderLossMapFile);
+            var retarderData = RetarderLossMapReader.ReadFromFile(RetarderLossMapFile);
 			var retarder = new Retarder(vehicle, retarderData, 2.0);
 
 			var nextRequest = new MockTnOutPort();
@@ -146,7 +149,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED) // new name: RetarderDeclarationNoExtrapolationTest
+        ]
 		public void RetarderDeclarationTest()
 		{
 			var retarderData = RetarderLossMapReader.ReadFromFile(RetarderLossMapFile);
@@ -163,7 +168,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: n:5100 (min:0, max:2300), ratio:2");
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void RetarderDataSorting()
 		{
 			var retarderEntries = new[] {
@@ -223,7 +229,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			#endregion
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void CreateRetarderTest()
 		{
 			var adapter = new EngineeringDataAdapter();

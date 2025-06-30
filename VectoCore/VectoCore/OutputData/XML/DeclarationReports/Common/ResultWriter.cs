@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
@@ -167,8 +168,9 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 
 		public LorryHEVOVCResultWriter(ICommonResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
 
-		#region Implementation of IResultGroupWriter
+        #region Implementation of IResultGroupWriter
 
+		[ExcludeFromCodeCoverage()] // OVC writing class is never used for writing non-OVC
 		public override XElement GetElement(IResultEntry entry)
 		{
 			throw new NotImplementedException();
@@ -351,8 +353,9 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 
 		public BusHEVOVCMRFResultWriter(ICommonResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
 
-		#region Implementation of IResultGroupWriter
+        #region Implementation of IResultGroupWriter
 
+		[ExcludeFromCodeCoverage()] // OVC writing class is never used for writing non-OVC
 		public override XElement GetElement(IResultEntry entry)
 		{
 			throw new NotImplementedException();
