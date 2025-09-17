@@ -9,7 +9,7 @@ namespace TUGraz.VECTO
 		static void Main(string[] args)
 		{
 			try {
-				var startHelper = new StarterHelper(isConsoleApp: false, StarterHelper.NET48, StarterHelper.NET60, StarterHelper.NET80);
+				var startHelper = new StarterHelper(isConsoleApp: false, StarterHelper.NET48, StarterHelper.NET80);
 				startHelper.Start(args);
 			} catch (Exception e) {
 				MessageBox.Show(e.Message);

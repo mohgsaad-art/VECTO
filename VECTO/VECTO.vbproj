@@ -9,10 +9,10 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 	<MyType>WindowsForms</MyType>
-		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
-		<TargetFrameworks Condition="'$(Configuration)' == 'Release'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
-		<TargetFrameworks Condition="'$(Configuration)' == 'Deploy'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
-		<TargetFrameworks Condition="'$(Configuration)' == 'MockupDeploy'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks Condition="'$(Configuration)' == 'Release'">net48;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks Condition="'$(Configuration)' == 'Deploy'">net48;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks Condition="'$(Configuration)' == 'MockupDeploy'">net48;net8.0-windows</TargetFrameworks>
 		<DefineTrace>false</DefineTrace>
 
 		<Configurations>Debug;Release;MockupDebug;MockupRelease</Configurations>
@@ -25,9 +25,6 @@
 		<DefineConstants>$(DefineConstants),MOCKUP</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
-	  <DebugType>full</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net6.0-windows|AnyCPU'">
 	  <DebugType>full</DebugType>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0-windows|AnyCPU'">
