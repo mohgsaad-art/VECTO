@@ -1,0 +1,276 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Deploy" />
+    <BuildType Name="MockupDebug" />
+    <BuildType Name="MockupDeploy" />
+    <BuildType Name="MockupRelease" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/TestProjects/">
+    <Project Path="Testing/IntegrationTests/VECTO IntegrationTests/VECTO IntegrationTests.csproj">
+      <BuildType Solution="Deploy|*" Project="Debug" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Testing/UnitTests/Vecto UnitTests/VECTO UnitTests.csproj">
+      <BuildType Solution="Deploy|*" Project="Debug" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="../vecto-SchemaDocumentation/ParameterDocumentation/ParameterDocumentation.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+    <Project Path="../vecto-SchemaDocumentation/ParameterDocumentationTest/ParameterDocumentationTest.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+    <Project Path="Tools/DeclarationCycleZip/DeclarationCycleZip.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+    <Project Path="Tools/GraphDrawer/GraphDrawer.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+    <Project Path="Tools/HashingCmdStart/HashingCmdStart.csproj">
+      <BuildDependency Project="HashingCmd/HashingCmd.csproj" />
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Tools/HashingToolStart/HashingToolStart.csproj">
+      <BuildDependency Project="HashingTool/HashingTool.csproj" />
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Tools/LicenceHeader/LicenceHeader.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+    <Project Path="Tools/VECTOConsoleStart/VECTOConsoleStart.csproj">
+      <BuildDependency Project="VectoConsole/VectoConsole.csproj" />
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Tools/VECTOMultistepStart/VECTOMultistep.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Tools/VECTOStart/VECTOStart.csproj">
+      <BuildDependency Project="../VECTO-Article10_DEV/Article10Notifications/Article10Notifications.csproj" />
+      <BuildDependency Project="../VECTO-Bugreports_DEV/BugReportTests/VectoCore BugReportTests.csproj" />
+      <BuildDependency Project="../vecto-SchemaDocumentation/ParameterDocumentation/ParameterDocumentation.csproj" />
+      <BuildDependency Project="../vecto-SchemaDocumentation/ParameterDocumentationTest/ParameterDocumentationTest.csproj" />
+      <BuildDependency Project="HashingCmd/HashingCmd.csproj" />
+      <BuildDependency Project="HashingTool/HashingTool.csproj" />
+      <BuildDependency Project="Tools/DeclarationCycleZip/DeclarationCycleZip.csproj" />
+      <BuildDependency Project="Tools/GraphDrawer/GraphDrawer.csproj" />
+      <BuildDependency Project="Tools/HashingCmdStart/HashingCmdStart.csproj" />
+      <BuildDependency Project="Tools/HashingToolStart/HashingToolStart.csproj" />
+      <BuildDependency Project="Tools/LicenceHeader/LicenceHeader.csproj" />
+      <BuildDependency Project="Tools/VECTOConsoleStart/VECTOConsoleStart.csproj" />
+      <BuildDependency Project="Tools/VECTOMultistepStart/VECTOMultistep.csproj" />
+      <BuildDependency Project="Tools/XMLConverterCmdLineStart/XMLConverterCmdLineStart.csproj" />
+      <BuildDependency Project="VECTO/VECTO.vbproj" />
+      <BuildDependency Project="VECTO3GUI2020/VECTO3GUI2020.csproj" />
+      <BuildDependency Project="Vecto3GUI2020Test/Vecto3GUI2020Test.csproj" />
+      <BuildDependency Project="VECTOAux/VectoAuxiliariesTests/VectoAuxiliariesTests.vbproj" />
+      <BuildDependency Project="VectoCommon/VectoCommon/VectoCommon.csproj" />
+      <BuildDependency Project="VectoCommon/VectoHashing/VectoHashing.csproj" />
+      <BuildDependency Project="VectoCommon/VectoHashingTest/VectoHashingTest.csproj" />
+      <BuildDependency Project="VectoConsole/VectoConsole.csproj" />
+      <BuildDependency Project="VectoCore/ModelbasedTests/ModelbasedTests.csproj" />
+      <BuildDependency Project="VectoCore/VectoCore/VectoCore.csproj" />
+      <BuildDependency Project="VectoCore/VectoCoreTest/VectoCoreTest.csproj" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="Tools/XMLConverterCmdLineStart/XMLConverterCmdLineStart.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/VECTO 3/">
+    <Project Path="../VECTO-Bugreports_DEV/BugReportTests/VectoCore BugReportTests.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+    </Project>
+    <Project Path="VECTOAux/VectoAuxiliariesTests/VectoAuxiliariesTests.vbproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+    </Project>
+    <Project Path="VectoCore/VectoCore/VectoCore.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDeploy|*" Project="MockupRelease" />
+    </Project>
+    <Project Path="VectoCore/VectoCoreTest/VectoCoreTest.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/VectoCommon/">
+    <Project Path="VectoCommon/VectoCommon/VectoCommon.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="VectoCommon/VectoCommonTests/VectoCommonTests.csproj">
+      <BuildType Solution="Deploy|*" Project="Debug" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="VectoCommon/VectoHashing/VectoHashing.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+    </Project>
+    <Project Path="VectoCommon/VectoHashingTest/VectoHashingTest.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/VectoMockup/">
+    <Project Path="VectoMockup/VectoMockupTest/VectoMockupTest.csproj">
+      <BuildType Solution="Deploy|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Release" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Debug|*" Project="false" />
+      <Build Solution="Deploy|*" Project="false" />
+      <Build Solution="MockupDeploy|*" Project="false" />
+      <Build Solution="MockupRelease|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/XMLConverter/">
+    <Project Path="XMLConverterCmdLine/XMLConverterCmdLine.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+    </Project>
+    <Project Path="XMLConverterLibrary/XMLConverterLibrary.csproj">
+      <BuildType Solution="Deploy|*" Project="Release" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+    </Project>
+    <Project Path="XMLConverterLibraryTests/XMLConverterLibraryTests.csproj">
+      <BuildType Solution="Deploy|*" Project="Debug" />
+      <BuildType Solution="MockupDebug|*" Project="Debug" />
+      <BuildType Solution="MockupDeploy|*" Project="Debug" />
+      <BuildType Solution="MockupRelease|*" Project="Release" />
+      <Build Solution="Deploy|*" Project="false" />
+    </Project>
+  </Folder>
+  <Project Path="../VECTO-Article10_DEV/Article10Notifications/Article10Notifications.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDebug|*" Project="Debug" />
+    <BuildType Solution="MockupDeploy|*" Project="Release" />
+    <BuildType Solution="MockupRelease|*" Project="Release" />
+  </Project>
+  <Project Path="HashingCmd/HashingCmd.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDebug|*" Project="Debug" />
+    <BuildType Solution="MockupDeploy|*" Project="Release" />
+    <BuildType Solution="MockupRelease|*" Project="Release" />
+  </Project>
+  <Project Path="HashingTool/HashingTool.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDebug|*" Project="Debug" />
+    <BuildType Solution="MockupDeploy|*" Project="Release" />
+    <BuildType Solution="MockupRelease|*" Project="Release" />
+  </Project>
+  <Project Path="VECTO/VECTO.vbproj">
+    <BuildDependency Project="HashingCmd/HashingCmd.csproj" />
+    <BuildDependency Project="HashingTool/HashingTool.csproj" />
+    <BuildDependency Project="VectoConsole/VectoConsole.csproj" />
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDeploy|*" Project="MockupRelease" />
+  </Project>
+  <Project Path="VECTO3GUI2020/VECTO3GUI2020.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDeploy|*" Project="MockupRelease" />
+  </Project>
+  <Project Path="Vecto3GUI2020Test/Vecto3GUI2020Test.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDebug|*" Project="Debug" />
+    <BuildType Solution="MockupDeploy|*" Project="Release" />
+    <BuildType Solution="MockupRelease|*" Project="Release" />
+    <Build Solution="Deploy|*" Project="false" />
+    <Build Solution="MockupDeploy|*" Project="false" />
+    <Build Solution="MockupRelease|*" Project="false" />
+  </Project>
+  <Project Path="VectoConsole/VectoConsole.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDeploy|*" Project="MockupRelease" />
+    <BuildType Solution="MockupRelease|*" Project="Debug" />
+  </Project>
+  <Project Path="VectoCore/ModelbasedTests/ModelbasedTests.csproj">
+    <BuildType Solution="Deploy|*" Project="Release" />
+    <BuildType Solution="MockupDebug|*" Project="Debug" />
+    <BuildType Solution="MockupDeploy|*" Project="Release" />
+    <BuildType Solution="MockupRelease|*" Project="Release" />
+    <Build Solution="Deploy|*" Project="false" />
+    <Build Solution="MockupDeploy|*" Project="false" />
+    <Build Solution="MockupRelease|*" Project="false" />
+  </Project>
+</Solution>
