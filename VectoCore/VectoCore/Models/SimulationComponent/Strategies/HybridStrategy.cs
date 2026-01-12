@@ -2150,7 +2150,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return tmp;
 		}
 
-		private void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
+		protected void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
 		{
 			tmp.IgnoreReason = 0;
 			if (resp == null) {
