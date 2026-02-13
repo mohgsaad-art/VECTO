@@ -405,6 +405,7 @@ TestCase(8, 4, 15000, 200, true),]
 		//TestPowertrain
 		ptBuilder.Setup(p => p.CreateTestPowertrain(
 				It.IsAny<IVehicleContainer>(),
+				It.IsAny<bool>(), 
 				It.IsAny<bool>()))
 			.Returns(testPowertrain.Object);
 

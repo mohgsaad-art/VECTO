@@ -95,7 +95,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
+	public ITorqueSplitter CreateTorqueSplitter(bool useSimpleTorqueSplitter, IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
 	{
 		throw new NotImplementedException();
 	}
@@ -368,7 +368,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer,
-		AxleNumber axleNumber)
+		AxleNumber axleNumber, bool useSimpleTorqueSplitter = false)
 	{
 		throw new NotImplementedException();
 	}

@@ -71,8 +71,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_powerDemands = new Dictionary<IElectricPowerJunctionBoxPort, Watt>();
 		}
 
-		public ITnOutPort CurrentTorqueSplitterNextComponent {  get; set; }
-
 		protected void AddPort(IElectricPowerJunctionBoxPort component)
 		{
 			if (!_powerDemands.ContainsKey(component))
@@ -93,16 +91,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, IElectricPowerJunctionBoxPort port, bool dryRun = false)
 		{
-			if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
+            if (_powerDemands[port] == null)
+            {
+                _powerDemands[port] = powerDemand;
+            }
+
+            if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
 			{
 				return _electricPower.Request(absTime, dt, powerDemand, dryRun);
 			}
-
-            if (_powerDemands[port] == null)
-			{
-				_powerDemands[port] = powerDemand;	
-			}
-
+            
 			return _powerDemands.Any(x => x.Value == null)
 				? new ElectricSystemNotReadyResponse(this)
 				: _electricPowerResponse = _electricPowerResponse ?? _electricPower.Request(absTime, dt, _powerDemands.Values.Sum(), dryRun);

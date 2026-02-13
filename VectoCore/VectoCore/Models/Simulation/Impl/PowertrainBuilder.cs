@@ -1089,7 +1089,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 .AddComponent(ctl)
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(false, container, junctionBox));
 
             foreach (var pt in powertrains)
             {
@@ -1191,7 +1191,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 .AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(false, container, junctionBox));
             foreach (var pt in powertrains)
             {
                 powertrain.AddComponent(pt);

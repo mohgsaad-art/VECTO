@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					It.IsAny<VectoSimulationJobType>()))
 				.Returns((IVehicleContainer container, bool createDriver, VectoSimulationJobType jobType) =>
 					_simplePowertrainBuilder.CreateTestPowertrain(container, createDriver, jobType));
-            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>()))
+            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Returns((IVehicleContainer container, bool createDriver) =>
                     _simplePowertrainBuilder.CreateTestPowertrain(container, createDriver));
             return retVal.Object;

@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
         IElectricPowerJunctionBox CreateElectricPowerJunctionBox(IVehicleContainer container);
 
-		ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox);
+		ITorqueSplitter CreateTorqueSplitter(bool useSimpleTorqueSplitter, IVehicleContainer container, IElectricPowerJunctionBox junctionBox);
 
         IAxlegear CreateAxleGear(IVehicleContainer container, IPowertrainContainer powertrainContainer,
 	        AxleGearData modelData);
@@ -149,7 +149,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 		/// </summary>
 		/// <returns></returns>
 		IPowertrainContainer CreatePowertrainContainer(IVehicleContainer vehicleContainer);
-		ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer, AxleNumber axleNumber);
+		ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer, AxleNumber axleNumber, bool useSimpleTorqueSplitter = false);
 		ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer);
 	}
 

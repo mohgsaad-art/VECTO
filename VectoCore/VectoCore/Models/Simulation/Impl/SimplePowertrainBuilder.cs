@@ -42,9 +42,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return new TestPowertrain(testContainer, realContainer, createDriver);
 		}
 
-		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver)
+		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, bool useSimpleTorqueSplitter = false)
 		{
-			var testContainer = BuildSimplePowertrain(realContainer, null);
+			var testContainer = BuildSimplePowertrain(realContainer, null, useSimpleTorqueSplitter);
 			return new TestPowertrain(testContainer, realContainer, createDriver);
 		}
 
@@ -55,9 +55,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		}
 
 		public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleContainer,
-			AxleNumber axleNumber)
+			AxleNumber axleNumber, bool useSimpleTorqueSplitter = false)
 		{
-			return ComponentFactory.CreateSimplePowertrainContainer(simpleContainer, axleNumber);
+			return ComponentFactory.CreateSimplePowertrainContainer(simpleContainer, axleNumber, useSimpleTorqueSplitter);
 		}
 
 		public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleContainer)
@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 
 		protected ISimpleVehicleContainer BuildSimplePowertrain(IVehicleContainer realContainer,
-			VectoSimulationJobType? overrideJobType)
+			VectoSimulationJobType? overrideJobType, bool useSimpleTorqueSplitter = false)
 		{
 			var jobType = overrideJobType.HasValue ? overrideJobType.Value : realContainer.RunData.JobType;
 			var runData = realContainer.RunData;
@@ -92,9 +92,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case VectoSimulationJobType.IEPC_S:
 					return BuildSimpleIEPCHybridPowertrain(realContainer);
 				case VectoSimulationJobType.Multiple_PEV:
-					return BuildSimplePowertrainMultiplePEV(realContainer);
+					return BuildSimplePowertrainMultiplePEV(realContainer, useSimpleTorqueSplitter);
 				case VectoSimulationJobType.Multiple_FCHV:
-					return BuildSimplePowertrainMultipleFCHV(realContainer);
+					return BuildSimplePowertrainMultipleFCHV(realContainer, useSimpleTorqueSplitter);
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -681,7 +681,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-        public ISimpleVehicleContainer BuildSimplePowertrainMultiplePEV(IVehicleContainer realContainer)
+        public ISimpleVehicleContainer BuildSimplePowertrainMultiplePEV(IVehicleContainer realContainer, bool useSimpleTorqueSplitter = false)
 		{			
 			var data = realContainer.RunData;
             var container = GetVehicleContainer(realContainer);
@@ -711,7 +711,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(useSimpleTorqueSplitter, container, junctionBox));
 
             var dcdc = ComponentFactory.CreateDCDCConverter(container, data.DCDCData.DCDCEfficiency);
 
@@ -849,10 +849,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		public ISimpleVehicleContainer BuildSimplePowertrainMultipleFCHV(IVehicleContainer realContainer)
+		public ISimpleVehicleContainer BuildSimplePowertrainMultipleFCHV(IVehicleContainer realContainer, bool useSimpleTorqueSplitter = false)
 		{
 			var data = realContainer.RunData;
-			var container = BuildSimplePowertrainMultiplePEV(realContainer);
+			var container = BuildSimplePowertrainMultiplePEV(realContainer, useSimpleTorqueSplitter);
 
             var es = container.ElectricSystemInfo as ElectricSystem;
 

@@ -579,7 +579,7 @@ public class ATShiftStrategyOptimizedTests
 			out simplePt);
 
 		vehicleContainer.Setup(c => c.SimplePowertrainBuilder.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>())).Returns(testPowertrain.Object);
+			It.IsAny<bool>(), It.IsAny<bool>())).Returns(testPowertrain.Object);
 
 		//VehicleInfo
 		vehicleContainer.Setup(c => c.VehicleInfo)

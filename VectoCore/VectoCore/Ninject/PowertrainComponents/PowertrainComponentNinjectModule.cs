@@ -542,7 +542,8 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
             Bind<IBrakes>().To<Brakes>().Named(namingHelper.Prefix);
 			Bind<IElectricPowerJunctionBox>().To<ElectricPowerJunctionBox>().Named(namingHelper.Prefix);
-			Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.Prefix);
+			Bind<ITorqueSplitter>().To<OptimizedTorqueSplitter>().Named(namingHelper.TorqueSplitterName(false));
+            Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.TorqueSplitterName(true));
             Bind<IAxlegear>().To<AxleGear>().Named(namingHelper.Prefix);
             Bind<IAngledrive>().To<Angledrive>().Named(namingHelper.Prefix);
             Bind<IRetarder>().To<Retarder>().Named(namingHelper.Prefix);
@@ -581,8 +582,12 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 		private IInstanceProvider GetMethodSettings(ComponentBindingNameHelper namingHelper)
 		{
 			return new CombineArgumentsToNameInstanceProvider(false,
-				// method settings for creating name bindings for combustion engine
-				GetMethodSettings(namingHelper.CreatICEName, 1, typeof(IPowertrainComponentFactory).GetMethod(
+                // method settings for creating name bindings for torque splitter
+                GetMethodSettings(namingHelper.CreateTorqueSplitterName, 1, typeof(IPowertrainComponentFactory).GetMethod(
+                    nameof(IPowertrainComponentFactory
+                        .CreateTorqueSplitter))),
+                // method settings for creating name bindings for combustion engine
+                GetMethodSettings(namingHelper.CreatICEName, 1, typeof(IPowertrainComponentFactory).GetMethod(
 					nameof(IPowertrainComponentFactory
 						.CreateCombustionEngine))),
 				GetMethodSettings(namingHelper.CreatICENameBatteryOnlyHybrid, 1, typeof(IPowertrainComponentFactory).GetMethod(
@@ -697,7 +702,11 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
 		public string CreateGearboxInfoName(object[] arguments) => CheckArguments<bool>(arguments, GearboxInfoName);
 
-		public string GearboxInfoName(bool engineOnly) => $"{_prefix}_{(engineOnly ? "EngOnly" : "Full")}";
+        public string CreateTorqueSplitterName(object[] arguments) => CheckArguments<bool>(arguments, TorqueSplitterName);
+
+        public string TorqueSplitterName(bool useSimpleTorqueSplitter) => $"{_prefix}_{(useSimpleTorqueSplitter ? "Simple" : "Optimized")}";
+
+        public string GearboxInfoName(bool engineOnly) => $"{_prefix}_{(engineOnly ? "EngOnly" : "Full")}";
 
 		public string CreatICEName(object[] arguments) => CheckArguments<CycleType>(arguments, ICEName);
 
