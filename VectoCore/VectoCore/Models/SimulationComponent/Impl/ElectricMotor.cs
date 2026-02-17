@@ -596,7 +596,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var elPower = ModelData.EfficiencyData.LookupElectricPower(volt, avgSpeed, maxTorqueRecuperate, gear);
 			if (elPower.ElectricalPower?.IsSmallerOrEqual(0) ?? true) {
-				return null;
+				return null;	
 			}
 			return maxTorqueRecuperate;
 		}
