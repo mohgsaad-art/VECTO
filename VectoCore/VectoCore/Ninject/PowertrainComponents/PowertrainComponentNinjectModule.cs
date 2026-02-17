@@ -160,7 +160,10 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 			Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
 				VectoSimulationJobType.ParallelHybridVehicle, CycleType.DistanceBased, GearboxType.AMT,
 				PowertrainPosition.HybridP2));
-			Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
+            Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
+                VectoSimulationJobType.ParallelHybridVehicle, CycleType.DistanceBased, GearboxType.AMT,
+                PowertrainPosition.HybridP2_5));
+            Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
 				VectoSimulationJobType.IHPC, CycleType.DistanceBased, GearboxType.IHPC, PowertrainPosition.IHPC));
 			Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
 				VectoSimulationJobType.IHPC, CycleType.DistanceBased, GearboxType.IHPC, PowertrainPosition.HybridP2));

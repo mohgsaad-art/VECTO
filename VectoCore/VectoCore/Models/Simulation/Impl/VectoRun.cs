@@ -125,7 +125,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         ve.Data[ErrorCode.ERROR_CODE] = ErrorCode.FUELCELL_POWERMAP_GENERATION_FAILED;
                         throw ve;
                     }
-
                     response = DoSimulationStep();
                     debug.Add($"[VR.R] ---- ITERATION {iterationCount++} ---- ", response);
                     if (response is ResponseSuccess) {

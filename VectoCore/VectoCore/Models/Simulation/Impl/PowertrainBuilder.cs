@@ -542,6 +542,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (data.BatteryOnlyHybridMode && data.OVCMode == OvcHevMode.ChargeDepleting) {
 				switch (data.ElectricMachinesSinglePwt.First().Item1) {
 					case PowertrainPosition.HybridP2:
+					case PowertrainPosition.HybridP2_5:
 					case PowertrainPosition.IHPC:
 						return BuildFullPowertrainParallelHybridBatteryOnlyModeP2(data, modData, sumWriter);
 					case PowertrainPosition.HybridP3:
