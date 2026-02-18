@@ -1147,6 +1147,10 @@ namespace TUGraz.VectoCore.Models.Declaration
                     : voltageLevelData.FullLoadCurve;
 
                 var emRatio = electricMotorData.RatioADC;
+                if ((electricMotorData.RatioPerGear?.Any() ?? false) && electricMotorData.RatioPerGear.Length >= gearIdx)
+                {
+                    emRatio *= electricMotorData.RatioPerGear[gearIdx];
+                }
 				var lossMap = electricMotorData.TransmissionLossMap;
 				var emMaxSpeed = electricMotorData.EfficiencyData.MaxSpeed;
 				
