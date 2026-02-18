@@ -37,7 +37,7 @@ namespace TUGraz.VectoCommon.InputData
 				case VectoSimulationJobType.ConventionalVehicle:
 					return Conventional;
 				case VectoSimulationJobType.ParallelHybridVehicle:
-				case VectoSimulationJobType.SerialHybridVehicle:
+				case VectoSimulationJobType.SerialHybridVehicle:	
 				case VectoSimulationJobType.IHPC:
 				case VectoSimulationJobType.IEPC_S:
 				case VectoSimulationJobType.Multiple_SHEV:

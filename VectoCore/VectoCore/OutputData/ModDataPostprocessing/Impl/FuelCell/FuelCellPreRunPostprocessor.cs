@@ -549,8 +549,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			es.Connect(batSystem);
 
 
-            var infBattery = new TracingInfinityBatterySystem(batData);
-			infBattery.Initialize((batSystem.MaxSoC + batSystem.MinSoC) / 2);
+   //         var infBattery = new TracingInfinityBatterySystem(batData);
+			//infBattery.Initialize((batSystem.MaxSoC + batSystem.MinSoC) / 2);
 
 
 
