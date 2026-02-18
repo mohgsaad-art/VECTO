@@ -601,6 +601,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 		private void WriteEntriesToFile(Meter windowSize, FCCalcEntry[] fcCalcEntries, double initSoc,
             WattSecond deltaEnergyBatInt, bool success)
         {
+#if DEBUG
 			lock (fileLock)
             {
 				if (!_writeModalResults)
@@ -622,14 +623,14 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
                     }
                 }
             }
-
+#endif
 		}
 
-        /// <summary>
-        /// Check if fuelcell can supply enough power over the cycle.
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckFCPower(FuelCellSystemData fcData, BatterySystemData batData, out string msg)
+		/// <summary>
+		/// Check if fuelcell can supply enough power over the cycle.
+		/// </summary>
+		/// <returns></returns>
+		public bool CheckFCPower(FuelCellSystemData fcData, BatterySystemData batData, out string msg)
         {
             msg = "";
 			var minFcPower = 0.SI<Watt>(); //values below min power will be handled with time slicing

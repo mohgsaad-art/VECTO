@@ -914,7 +914,7 @@ namespace TUGraz.VectoCore.OutputData
 					.Select(x => $"{x.GetName()}_{batKey}"));
 			}
 
-			return dataColumns.Where(x => Data.Columns.Contains(x)).ToArray();
+			return dataColumns.Where(x => Data.Columns.Contains(x)).Distinct().ToArray();
 		}
 
 		[Obsolete]
