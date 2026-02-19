@@ -530,7 +530,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			if (Equals(nextGear, currentGear) && currentGear.Gear > GearboxModelData.Gears.Keys.Min()) {
 				nextGear = CheckEarlyDownshift(absTime, dt, outTorque, outAngularVelocity, currentGear, response);
 			}
-			return nextGear;
+            if (!Equals(nextGear, currentGear) && nextGear.Gear == GearboxModelData.Gears.Keys.Min())
+            {
+                nextGear = CheckEarlyDownshift(absTime, dt, outTorque, outAngularVelocity, currentGear, response);
+            }
+            return nextGear;
 		}
 
 		protected virtual GearshiftPosition DoCheckDownshiftBase(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
