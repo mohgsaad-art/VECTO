@@ -41,6 +41,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 				if (weightedResult == null)
 				{
 					results.Add(null);
+					isVocational = !isVocational;
 					continue;
 				}
 
