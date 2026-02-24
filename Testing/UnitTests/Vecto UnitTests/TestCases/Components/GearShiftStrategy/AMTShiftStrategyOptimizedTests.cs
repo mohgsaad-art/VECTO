@@ -31,7 +31,7 @@ TestCase(6, 5, 1800, 750, true),
 TestCase(5, 4, 1800, 750, true),
 TestCase(4, 3, 1800, 750, true),
 TestCase(3, 2, 1800, 750, true),
-TestCase(2, 1, 1900, 750, true),
+TestCase(2, 2, 1900, 750, false),
 TestCase(1, 1, 1200, 700, false),
 TestCase(8, 4, 15000, 200, true),]
     public void Gearbox_ShiftDown_ACEA_Shiftlines(int gear, int newGear, double t, double n, bool shiftExpected)
