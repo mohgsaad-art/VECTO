@@ -1491,11 +1491,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return null;
 			}
 
-			var APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
-                    && ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+			var GearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.MT || DataBus.GearboxInfo().GearboxType is GearboxType.AMT || 
+					DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+                    && ((DataBus.GearboxInfo().LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
             // handle the SpeedLimitExceeded Response and Gearshift Response separately in case it occurs in one of the requests in the second try
-            for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded || (response is ResponseOverload && APTGearShiftCondition)); i++) {
+            for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded || (response is ResponseOverload && GearShiftCondition)); i++) {
 				switch (response) {
 					case ResponseGearShift _:
 						response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
@@ -1516,8 +1517,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						break;
 
 				}
-				APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
-					&& ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+                GearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.MT || DataBus.GearboxInfo().GearboxType is GearboxType.AMT ||
+                    DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+                    && ((DataBus.GearboxInfo().LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
             }
 
