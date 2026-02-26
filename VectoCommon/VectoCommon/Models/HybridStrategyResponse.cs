@@ -105,9 +105,10 @@ namespace TUGraz.VectoCommon.Models {
 		BatteryAboveMaxSoc = 1 << 9,
 		BatterySoCTooLow = 1 << 10,
 		VehicleSpeedBelowMinSpeedAfterGearshift = 1 << 11,
-		MaxPropulsionTorqueExceeded = 1 << 12,
-		NoResponseAvailable = 1 << 13,
-		Evaluated = 1 << 14,
+		ClutchSlipping = 1 << 12,
+		MaxPropulsionTorqueExceeded = 1 << 13,
+		NoResponseAvailable = 1 << 14,
+		Evaluated = 1 << 15,
 	}
 
 	public static class HybridConfigurationIgnoreReasonHelper
@@ -153,6 +154,10 @@ namespace TUGraz.VectoCommon.Models {
 					case HybridConfigurationIgnoreReason.BatterySoCTooLow:
 						retVal.Add("battery SoC too low");
 						break;
+					case HybridConfigurationIgnoreReason.ClutchSlipping:
+						retVal.Add("clutch is slipping");
+						break;
+
 					default: throw new ArgumentOutOfRangeException(nameof(x), x, null);
 				}
 			}
@@ -218,6 +223,11 @@ namespace TUGraz.VectoCommon.Models {
 		public static bool BatteryBelowMinSoC(this HybridConfigurationIgnoreReason x)
 		{
 			return (x & HybridConfigurationIgnoreReason.BatteryBelowMinSoC) != 0;
+		}
+
+		public static bool ClutchSlipping(this HybridConfigurationIgnoreReason x)
+		{
+			return (x & HybridConfigurationIgnoreReason.ClutchSlipping) != 0;
 		}
 
 		public static bool AllOK(this HybridConfigurationIgnoreReason x)

@@ -79,7 +79,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 				_certificationNumber = inputData.CertificationNumber;
 				_digestValue = inputData.DigestValue;
 	
-			} catch (Exception e){
+			} catch (Exception){
 				//TODO ignoring for now
 			}
 		}

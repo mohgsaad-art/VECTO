@@ -7,6 +7,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Utils;
 
@@ -21,7 +22,15 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 
 		public bool AbortSimulation(IVehicleContainer container, Exception exception)
 		{
-			if (container.RunData.Mission.MissionType != MissionType.Interurban) {
+            if (container.RunData.JobType.IsFCHV() 
+				&& container.RunData.Mission.MissionType.IsOneOf(MissionType.Coach, MissionType.Interurban) 
+				&& exception.Data.Contains(ErrorCode.ERROR_CODE)
+				&& exception.Data[ErrorCode.ERROR_CODE].ToString() == ErrorCode.FUELCELL_POWERMAP_GENERATION_FAILED)
+            {
+                return false;
+            }
+
+            if (container.RunData.Mission.MissionType != MissionType.Interurban) {
 				// for now only consider interurban cycle
 				return true;
 			}
@@ -52,7 +61,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 		protected virtual Radian GetMaxGradability(IVehicleContainer container)
 		{
 			ITestPowertrain testContainer = null;
-            switch (container.PowertrainInfo.VehicleArchitecutre) {
+            switch (container.PowertrainInfo.VehicleArchitecture) {
 				//case VectoSimulationJobType.ConventionalVehicle:
 				//	PowertrainBuilder.BuildSimplePowertrain(container.RunData, testContainer);
 				//	break;
@@ -73,7 +82,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 					testContainer = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false);
 					break;
 				default:
-					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecutre} to calculate gradability");
+					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecture} to calculate gradability");
 			}
 
 			testContainer.UpdateComponents();
@@ -92,20 +101,20 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 			var vehicle = testPowertrain.Vehicle;
 			var acceleration = DeclarationData.GearboxTCU.StartAcceleration * 0.5;
 
-            foreach (var motor in testPowertrain.ElectricMotors.Values) {
+            foreach (var motor in testPowertrain.ElectricMotors) {
 				if (motor.Control is ITestPowertrainElectricMotorControl emCtl) {
 					emCtl.EmOff = false;
 				}
 			}
 
-			if (testPowertrain.Container.HasGearbox) {
-				var gbx = testPowertrain.Gearbox;
-				gbx.SetGear = testPowertrain.Container.RunData.GearboxSinglePwt.GearList.First();
-			}
-			
+			foreach (var gbx in testPowertrain.Gearboxes)
+			{
+				gbx.SetGear = testPowertrain.Container.RunData.GetGearboxData().First(x => x.Item1 == (gbx as IGearboxInfo).AxleNumber).Item2.GearList.First();
+            }
+
 			vehicle.Initialize(0.KMPHtoMeterPerSecond(), gradient);
 
-			var architecture = testPowertrain.Container.VehicleArchitecutre;
+			var architecture = testPowertrain.Container.VehicleArchitecture;
             var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient, true);
 			var delta = GetDelta(initialResponse as ResponseDryRun, architecture);
 

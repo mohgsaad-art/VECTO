@@ -20,7 +20,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
 	public class FCHVAMTShiftStrategy : PEVAMTShiftStrategy
 	{
-		public static string Name => "AMT - EffShift (FCHV)";
+		public new static string Name => "AMT - EffShift (FCHV)";
 
 		public FCHVAMTShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false)
 		{
@@ -32,7 +32,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 	{
 		public new static string Name => "AMT - EffShift (P-HEV Battery only)";
 
-		public ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.BatteryElectricVehicle, false) { }
+        public ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer container) : base(container,
+            VectoSimulationJobType.BatteryElectricVehicle, false)
+        {
+            SetupVelocityDropPreprocessor(container.SimplePowertrainBuilder);
+        }
 
 		//protected ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer dataBus, bool dummy) : base(dataBus, VectoSimulationJobType.BatteryElectricVehicle, dummy) { }
 
@@ -131,7 +135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			_jobtype = jobType;
 			TestPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, true, jobType);
 
-			foreach (var motor in TestPowertrain.ElectricMotors.Values) {
+			foreach (var motor in TestPowertrain.ElectricMotors) {
 				if (motor.Control is ITestPowertrainElectricMotorControl emCtl) {
 					emCtl.EmOff = false; //Make sure em is switched on
 				}
@@ -592,8 +596,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 			TestPowertrain.UpdateComponents();
 			
-			TestPowertrain.Gearbox.SetDisengaged = false;
-			TestPowertrain.Gearbox.SetGear = tryNextGear;
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetDisengaged = false;
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = tryNextGear;
 
 			TestPowertrain.Container.GearboxOutPort.Initialize(outTorque, outAngularVelocity);
 			var response = (ResponseDryRun)TestPowertrain.Container.GearboxOutPort.Request(
@@ -611,11 +615,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 			foreach (var gear in GearList.Reverse()) {
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 
@@ -652,11 +656,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
                 //var response = _gearbox.Initialize(absTime, gear, outTorque, outAngularVelocity);
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 

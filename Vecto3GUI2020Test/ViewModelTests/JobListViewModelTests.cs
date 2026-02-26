@@ -49,7 +49,7 @@ namespace Vecto3GUI2020Test.ViewModelTests
 			Assert.AreNotEqual(0, _jobListViewModel.Jobs.Count);
 			_jobListViewModel.Jobs[0].Selected = true;
 
-			_jobListViewModel.RunSimulationExecute();
+			await _jobListViewModel.RunSimulationExecute();
 			TestContext.Write("Canceling Simulation ... ");
 			Assert.IsTrue(_jobListViewModel.SimulationRunning);
 			_jobListViewModel.CancelSimulation.Execute(null);

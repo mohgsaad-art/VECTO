@@ -373,10 +373,10 @@ namespace TUGraz.VectoCore.Models.Declaration
                 case VectoSimulationJobType.Multiple_PEV:
                 case VectoSimulationJobType.Multiple_SHEV:
 					return
-						(vehicleData.Components?.AxlePowertrainInputData
+						(vehicleData.Components?.AxlePowertrainInputData?
 							.Where(x => x.ElectricMotor != null)
 							.Sum(x => x.ElectricMotor.ElectricMachine.R85RatedPower * x.ElectricMotor.Count) ?? 0.SI<Watt>()) +
-						(vehicleData.Components?.AxlePowertrainInputData
+						(vehicleData.Components?.AxlePowertrainInputData?
 							.Where(x => x.IEPCInputData != null)
 							.Sum(x => x.IEPCInputData.R85RatedPower) ?? 0.SI<Watt>()) +
 						(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
@@ -1147,6 +1147,10 @@ namespace TUGraz.VectoCore.Models.Declaration
                     : voltageLevelData.FullLoadCurve;
 
                 var emRatio = electricMotorData.RatioADC;
+                if ((electricMotorData.RatioPerGear?.Any() ?? false) && electricMotorData.RatioPerGear.Length >= gearIdx)
+                {
+                    emRatio *= electricMotorData.RatioPerGear[gearIdx];
+                }
 				var lossMap = electricMotorData.TransmissionLossMap;
 				var emMaxSpeed = electricMotorData.EfficiencyData.MaxSpeed;
 				

@@ -25,8 +25,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
         {
 			if (entry.Status == VectoRun.Status.PrimaryBusSimulationIgnore) {
 				return GetElementIgnore(
-					fc.TotalFuelConsumptionCorrected,
-					fc.Fuel,
+					fc?.TotalFuelConsumptionCorrected ?? 0.SI<Kilogram>(),
+					fc?.Fuel ?? FuelData.H2,
 					entry.Distance,
 					entry.Payload,
 					entry.CargoVolume,

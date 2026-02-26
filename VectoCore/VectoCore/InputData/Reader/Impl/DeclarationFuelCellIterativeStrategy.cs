@@ -56,7 +56,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 				/// Comment from [1]: In the real run we don't use a charge sustaining battery
 				runData.BatteryData.ChargeSustainingBatterySystem = false;
-				runData.ModFileSuffix += runData.Loading;
+				runData.ModFileSuffix = $"_{runData.Loading}";
 				runData.Iteration++;
 			};
 
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 				/// Comment from [1]: In the real run we don't use a charge sustaining battery
 				runData.BatteryData.ChargeSustainingBatterySystem = false;
-				runData.ModFileSuffix += runData.Loading;
+				runData.ModFileSuffix = $"_{runData.Loading}";
 				runData.Iteration++;
 			};
 
@@ -125,12 +125,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 							// Pre-run, iteration 0.
 							new PreRunOptions()
 							{
-//#if TRACE_FC
-//								WriteModAndSumData = true,
-//#else
-//								WriteModAndSumData = false
-//#endif
+#if DEBUG
 								WriteModAndSumData = true,
+#else
+								WriteModAndSumData = false,
+#endif
 							},
 
 							// Real run, iteration 1.

@@ -114,11 +114,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PCCSegments = new PCCSegments();
 
 			PowertrainArchitecture = data.JobType;
-			//TODO (SD): testpowertrain for jobs with multiple powertrains
-			if ((ADAS.PredictiveCruiseControl != PredictiveCruiseControlType.None) && !PowertrainArchitecture.IsMultiplePowertrains()) {
+			
+			if (ADAS.PredictiveCruiseControl != PredictiveCruiseControlType.None) {
 				// create a dummy powertrain for pre-processing and estimations
-				var jobType = data.JobType;
-				var testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, jobType);
+				var testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, data.JobType);
 				container.AddPreprocessor(new PCCSegmentPreprocessor(testPowertrain, PCCSegments, data?.DriverData.PCC));
 			}
 		}
@@ -254,7 +253,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 												((NextDrivingAction.TriggerDistance - NextDrivingAction.ActionDistance) / DataBus.VehicleInfo.VehicleSpeed)
 												.IsSmaller(
 													Constants.SimulationSettings.LowerBoundTimeInterval / 2) 
-													&& !DataBus.PowertrainInfo.VehicleArchitecutre.IsMultiplePowertrains()
+													&& !DataBus.PowertrainInfo.VehicleArchitecture.IsMultiplePowertrains()
 													&& (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || !DataBus.ClutchesInfo.First().ClutchClosed(absTime));
 					
 					if (brakingIntervalShort && remainingDistance.IsEqual(ds)) {
@@ -1361,7 +1360,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							response = Driver.DrivingActionBrake(absTime, ds, targetVelocity, gradient);
 							debug.Add("[DMB-DB-6] Brake", response);
 						}
-					} else {
+                        if (DataBus.ClutchesInfo.First().ClutchClosed(absTime))
+                        {
+                            response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                            debug.Add("[DMB-DB-6-1] Coast", response);
+                            if (response is ResponseGearShift)
+                            {
+                                response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-2] Coast", response);
+                            }
+							if ((response is ResponseOverload) || (response is ResponseDrivingCycleDistanceExceeded))
+							{
+                                response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-3] Accelerate", response);
+                            }
+                        }
+                    } else {
 						Log.Info("Brake -> Overload -> Clutch is closed - Trying brake action again");
 						DataBus.Brakes.BrakePower = 0.SI<Watt>();
 						DataBus.HybridControllerCtl?.RepeatDrivingAction(absTime);
@@ -1374,6 +1388,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							if (DataBus.GearboxInfo().GearEngaged(absTime)) {
 								response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
 								debug.Add("[DMB-DB-8] Accelerate", response);
+								if (response is ResponseOverload)
+								{
+									Log.Info("Brake -> Overload --> Accelerate -> Overload -> trying coast action");
+									response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+									debug.Add("[DMB-DB-8-1] Coast", response);
+								}
 							} else {
 								response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 								debug.Add("[DMB-DB-9] Roll", response);
@@ -1471,11 +1491,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return null;
 			}
 
-			var APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
-                    && ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+			var GearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.MT || DataBus.GearboxInfo().GearboxType is GearboxType.AMT || 
+					DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+                    && ((DataBus.GearboxInfo().LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
             // handle the SpeedLimitExceeded Response and Gearshift Response separately in case it occurs in one of the requests in the second try
-            for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded || (response is ResponseOverload && APTGearShiftCondition)); i++) {
+            for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded || (response is ResponseOverload && GearShiftCondition)); i++) {
 				switch (response) {
 					case ResponseGearShift _:
 						response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
@@ -1496,8 +1517,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						break;
 
 				}
-				APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
-					&& ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+                GearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.MT || DataBus.GearboxInfo().GearboxType is GearboxType.AMT ||
+                    DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+                    && ((DataBus.GearboxInfo().LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
             }
 

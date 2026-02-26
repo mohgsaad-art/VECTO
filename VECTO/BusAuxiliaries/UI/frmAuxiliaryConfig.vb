@@ -1367,31 +1367,31 @@ Public Class frmAuxiliaryConfig
         'ResultCards
 
         'IDLE
-        Dim idleBinding As BindingList(Of SmartResult)
+        'Dim idleBinding As BindingList(Of SmartResult)
         'idleBinding = New BindingList(Of SmartResult)(CType( auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results, List(Of SmartResult)))
-        idleBinding.AllowNew = True
-        idleBinding.AllowRemove = True
-        gvResultsCardIdle.DataSource = idleBinding
-        AddHandler gvResultsCardIdle.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
-        AddHandler gvResultsCardIdle.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
+        'idleBinding.AllowNew = True
+        'idleBinding.AllowRemove = True
+        'gvResultsCardIdle.DataSource = idleBinding
+        'AddHandler gvResultsCardIdle.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
+        'AddHandler gvResultsCardIdle.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
 
         'TRACTION
-        Dim tractionBinding As BindingList(Of SmartResult)
+        'Dim tractionBinding As BindingList(Of SmartResult)
         'tractionBinding = New BindingList(Of SmartResult)(CType(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results, List(Of SmartResult)))
-        tractionBinding.AllowNew = True
-        tractionBinding.AllowRemove = True
-        gvResultsCardTraction.DataSource = tractionBinding
-        AddHandler gvResultsCardTraction.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
-        AddHandler gvResultsCardTraction.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
+        'tractionBinding.AllowNew = True
+        'tractionBinding.AllowRemove = True
+        'gvResultsCardTraction.DataSource = tractionBinding
+        'AddHandler gvResultsCardTraction.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
+        'AddHandler gvResultsCardTraction.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
 
         'OVERRUN
-        Dim overrunBinding As BindingList(Of SmartResult)
+        'Dim overrunBinding As BindingList(Of SmartResult)
         'overrunBinding = New BindingList(Of SmartResult)(CType(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results, List(Of SmartResult)))
-        overrunBinding.AllowNew = True
-        overrunBinding.AllowRemove = True
-        gvResultsCardOverrun.DataSource = overrunBinding
-        AddHandler gvResultsCardOverrun.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
-        AddHandler gvResultsCardOverrun.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
+        'overrunBinding.AllowNew = True
+        'overrunBinding.AllowRemove = True
+        'gvResultsCardOverrun.DataSource = overrunBinding
+        'AddHandler gvResultsCardOverrun.CellParsing, new DataGridViewCellParsingEventHandler (AddressOf TextToSI(of Ampere))
+        'AddHandler gvResultsCardOverrun.CellFormatting, new DataGridViewCellFormattingEventHandler(AddressOf SIToText)
 
 
         'Pneumatic Auxillaries Binding

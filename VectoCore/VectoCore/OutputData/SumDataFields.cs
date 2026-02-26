@@ -1445,7 +1445,7 @@ namespace TUGraz.VectoCore.OutputData
 			{ ETA_IEPC_DRIVE_FORMAT, (r, m, em, ax) => new ConvertedSI(m.ElectricMotorEfficiencyDrive(em, ax), "") },
 			{ ETA_IEPC_GEN_FORMAT, (r, m, em, ax) => new ConvertedSI(m.ElectricMotorEfficiencyGenerate(em, ax), "") },
 			{ E_IEPC_OFF_Loss_Format, (r, m, em, ax) => m.ElectricMotorOffLosses(em, ax).ConvertToKiloWattHour() },
-			{ E_IEPC_LOSS_FORMAT, (r, m, em, ax) => m.ElectricMotorLosses(em, ax).ConvertToKiloWattHour() },
+			{ E_IEPC_LOSS_FORMAT, (r, m, em, ax) => m.ElectricMotorLosses(em, ax)?.ConvertToKiloWattHour() },
 			{ E_IEPC_OFF_TIME_SHARE, (r, m, em, ax) => (ConvertedSI)m.ElectricMotorOffTimeShare(em, ax) },
 			{ EM_RATED_POWER, (r, m, em, ax) => r.VehicleData.InputData.Components.IEPC?.TotalRatedPowerCalculated.ConvertToKiloWatt() ?? 0.SI<Watt>().ConvertToKiloWatt() },
 			{ EM_RATED_SPEED_HI, (r, m, em, ax) => r.VehicleData.InputData.Components?.IEPC?.VoltageLevels.MaxBy(v  => v.VoltageLevel)?.ContinuousTorqueSpeed.AsRPM ?? 0 },
@@ -1465,7 +1465,7 @@ namespace TUGraz.VectoCore.OutputData
 						return m.Data.FuelCellComponentIds.Aggregate(0.SI<KilogramPerSecond>(),
 							(a, id) => {
 								var singleFc =
-									(m.TimeIntegral<Kilogram>(ModalResultField.FC_FCS.Format(id)) / m.Duration) ??
+									(m.Duration.IsGreater(0) ? (m.TimeIntegral<Kilogram>(ModalResultField.FC_FCS.Format(id)) / m.Duration) : null) ??
 									0.SI<KilogramPerSecond>();
 								return a + singleFc;
 							}).ConvertToGrammPerHour();
@@ -1476,47 +1476,47 @@ namespace TUGraz.VectoCore.OutputData
 						return m.Data.FuelCellComponentIds.Aggregate(0.SI<KilogramPerMeter>(),
 							(a, id) => {
 								var singleFc =
-									(m.TimeIntegral<Kilogram>(ModalResultField.FC_FCS.Format(id)) / m.Distance) ??
+									(m.Distance.IsGreater(0) ? (m.TimeIntegral<Kilogram>(ModalResultField.FC_FCS.Format(id)) / m.Distance) : null) ??
 									0.SI<KilogramPerMeter>();
 								return a + singleFc;
 							}).ConvertToGrammPerKiloMeter();
 					})
 				}, {
 					FuelCellFields.FCFINAL_H, SumFunc((r, m) =>
-						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2).FC_FINAL_H.ConvertToGrammPerHour())
+						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2)?.FC_FINAL_H.ConvertToGrammPerHour())
 				}, {
 					FuelCellFields.FCFINAL_KM, SumFunc((r, m) =>
-						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2).FC_FINAL_KM
+						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2)?.FC_FINAL_KM
 							.ConvertToGrammPerKiloMeter())
 				}, {
 					FuelCellFields.K_FCSLine, SumFunc((r, m) =>
-						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2).FuelCellLine
+						m.CorrectedModalData.FuelConsumptionCorrection(FuelData.H2)?.FuelCellLine
 							.ConvertToGramPerKiloWattHour())
 				}, {
 					FuelCellFields.P_FCS, SumFunc((r, m) => {
-						var p_fcs = m.TimeIntegral<WattSecond>(ModalResultField.P_FCSystem) / m.Duration;
-						return p_fcs.ConvertToKiloWatt();
+						var p_fcs = (m.Duration.IsGreater(0)) ? (m.TimeIntegral<WattSecond>(ModalResultField.P_FCSystem) / m.Duration) : null;
+						return p_fcs?.ConvertToKiloWatt();
 					})
 				}, {
 					FuelCellFields.E_FCS, SumFunc((r, m) => {
 						var e_fcs = m.TimeIntegral<WattSecond>(ModalResultField.P_FCSystem);
-						return e_fcs.ConvertToKiloWattHour();
+						return e_fcs?.ConvertToKiloWattHour();
 					})
 				}, {
 					FuelCellFields.FC_HEV_SOC_CORR_H, SumFunc((r, m) => m.CorrectedModalData
-						.FuelConsumptionCorrection(FuelData.H2).FC_REESS_SOC_CORR_H
+						.FuelConsumptionCorrection(FuelData.H2)?.FC_REESS_SOC_CORR_H
 						.ConvertToGrammPerHour())
 				}, {
 					FuelCellFields.FC_HEV_SOC_CORR_KM, SumFunc((r, m) => m.CorrectedModalData
-						.FuelConsumptionCorrection(FuelData.H2).FC_REESS_SOC_CORR_KM
+						.FuelConsumptionCorrection(FuelData.H2)?.FC_REESS_SOC_CORR_KM
 						.ConvertToGrammPerKiloMeter())
 				}, {
 					FuelCellFields.FC_HEV_SOC_H, SumFunc((r, m) => m.CorrectedModalData
-						.FuelConsumptionCorrection(FuelData.H2).FC_REESS_SOC_H
+						.FuelConsumptionCorrection(FuelData.H2)?.FC_REESS_SOC_H
 						.ConvertToGrammPerHour())
 				}, {
 					FuelCellFields.FC_HEV_SOC_KM, SumFunc((r, m) => m.CorrectedModalData
-						.FuelConsumptionCorrection(FuelData.H2).FC_REESS_SOC_KM
+						.FuelConsumptionCorrection(FuelData.H2)?.FC_REESS_SOC_KM
 						.ConvertToGrammPerKiloMeter())
 				},
 			};

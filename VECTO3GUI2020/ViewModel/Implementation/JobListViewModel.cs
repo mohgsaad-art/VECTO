@@ -52,8 +52,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 
 
 
-		private BackgroundWorker fileReadingBackgroundWorker;
-
 		private object _jobsLock = new Object();
         private ObservableCollection<IDocumentViewModel> _jobs = new ObservableCollection<IDocumentViewModel>();
         public ObservableCollection<IDocumentViewModel> Jobs{ get => _jobs; set => SetProperty(ref _jobs, value);}
@@ -267,7 +265,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 
 		private Task<IDocumentViewModel> LoadJsonFile([NotNull] string fileName)
 		{
-			IDocumentViewModel result = null;
 			try {
 				var inputData = JSONInputDataFactory.ReadJsonJob(fileName, true);
 				return Task.FromResult(_multiStageViewModelFactory.CreateDocumentViewModel(inputData));
@@ -794,10 +791,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		private ICommand _moveJobDownCommand;
 		private ICommand _viewXMLCommand;
 		private IDocumentViewModel _selectedJob;
-		private IAsyncRelayCommand _addJobAsync;
 		private IAsyncRelayCommand<IDocumentViewModel> _simulationCommand;
 		private IRelayCommand<bool> _newVifCommand;
-		private ICommand _newMultiStageFileCommand;
 		private ICommand _openNewFilePopUpCommand;
 		private ICommand _newCompletedInputCommand;
 		private ICommand _newExemptedCompletedInputCommand;
@@ -918,7 +913,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		{
 			get
 			{
-				return _newMultiStageFileCommand ?? new RelayCommand(NewManufacturingStageFileExecute, () => { return true; });
+				return new RelayCommand(NewManufacturingStageFileExecute, () => { return true; });
 			}
 		}
 
@@ -931,7 +926,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		{
 			get
 			{
-				return _addJobAsync ?? new AsyncRelayCommand(AddJobExecuteAsync
+				return new AsyncRelayCommand(AddJobExecuteAsync
 					, () => true);
 			}
 		}

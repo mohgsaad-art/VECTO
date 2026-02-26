@@ -1,11 +1,14 @@
 ﻿using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 
@@ -15,12 +18,15 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid;
 [Parallelizable(ParallelScope.All)]
 public class IHPCTest
 {
-	[OneTimeSetUp]
+    private StandardKernel _kernel;
+
+    [OneTimeSetUp]
 	public void RunBeforeAnyTests()
 	{
 		Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		//InitGraphWriter();
-	}
+        _kernel = new StandardKernel(new VectoNinjectModule());
+        //InitGraphWriter();
+    }
 
 	public const string IHPCTEst_12speed = @"TestData/Hybrids/GenericIHPC/12SpeedGbx/IHPC Group 5.vecto";
 
@@ -58,8 +64,8 @@ public class IHPCTest
 		var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
 		var writer = new FileOutputWriter(jobFile);
-		var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-		factory.Validate = false;
+		var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+        factory.Validate = false;
 		factory.WriteModalResults = true;
 
 		var sumContainer = new SummaryDataContainer(writer);

@@ -458,7 +458,7 @@ public class ATShiftStrategyOptimizedTests
 		var testPt =
 			vehicleContainer.Object.SimplePowertrainBuilder.CreateTestPowertrain(vehicleContainer.Object, false);
 		
-		var mockGb = Mock.Get(testPt.Gearbox);
+		var mockGb = Mock.Get(testPt.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN));
 		mockGb.Setup(g => g.Request(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PerSecond>(), true)).Returns(dryRunResponse);
 		
@@ -687,7 +687,7 @@ public class ATShiftStrategyOptimizedTests
 
 
 		testPt.Setup(t => t.Container).Returns(simpleContainer.Object);
-		testPt.Setup(t => t.Gearbox).Returns(testGearbox.Object);
+		testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 		//Vehicle
 		var vehicle = new Mock<ITestPowertrainVehicle>();

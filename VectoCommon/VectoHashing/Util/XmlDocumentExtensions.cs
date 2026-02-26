@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Linq;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -47,5 +49,26 @@ namespace TUGraz.VectoHashing.Util
 				return XDocument.Load(reader, options);
 			}
 		}
+
+        public static XmlDocument RemoveComments(this XmlDocument document)
+		{
+			if (document == null)
+			{
+				return null; 
+			}
+
+			XmlDocument clone = new XmlDocument();
+            clone.LoadXml(document.OuterXml);
+
+            var comments = clone.SelectNodes("//comment()").Cast<XmlComment>().ToList() ?? new List<XmlComment>();
+
+            foreach (var comment in comments)
+            {
+                comment.ParentNode?.RemoveChild(comment);
+            }
+
+			return clone;
+        }
+        
 	}
 }

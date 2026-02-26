@@ -107,13 +107,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			graphWriter.Series1Label = "Hybrid";
 			graphWriter.PlotIgnitionState = true;
 
-			if (PlotGraphs) {
-				graphWriter.Enable();
-			} else {
-				graphWriter.Disable();
-			}
+			var enabled = PlotGraphs ? graphWriter.Enable() : graphWriter.Disable();
 
-			return graphWriter;
+            return graphWriter;
 		}
 
 		// --------------------------------------
@@ -308,8 +304,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
 			var writer = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputProvider, writer, null, null, false);
+            factory.Validate = false;
 			factory.WriteModalResults = true;
 
 			var sumContainer = new SummaryDataContainer(writer);
@@ -344,8 +340,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
 			var writer = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+            factory.Validate = false;
 			factory.WriteModalResults = true;
 
 			var sumContainer = new SummaryDataContainer(writer);
@@ -1063,8 +1059,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			ExecutionMode mode = ExecutionMode.Engineering)
 		{
 			var writer = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(mode, inputProvider, writer);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(mode, inputProvider, writer, null, null, false);
+            factory.Validate = false;
 			factory.WriteModalResults = true;
 			factory.SerializeVectoRunData = true;
 
@@ -1839,11 +1835,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			}
 			var fileWriter = new FileOutputWriter(modFileName);
 			var modDataFilter = new IModalDataFilter[] { }; //new IModalDataFilter[] { new ActualModalDataFilter(), };
-			var modData = new ModalDataContainer(runData, fileWriter, null, modDataFilter)
-			{
-				WriteModalResults = true,
-			};
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, sumData); 
+            var kernel = new StandardKernel(new VectoNinjectModule());
+            var modData = kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, modDataFilter);
+			modData.WriteModalResults = true;
+			var container = kernel.Get<IPowertrainBuilder>().Build(runData, modData, sumData); 
 			
 			var strategy = gearboxType.AutomaticTransmission()
 				? (IHybridControlStrategy) new HybridStrategyAT(runData, container)
@@ -1868,10 +1863,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			ctl.Engine = engine;
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-
-			var aux = new HighVoltageElectricAuxiliary(container);
-			aux.AddConstant("P_aux_el", pAuxEl.SI<Watt>());
-			es.Connect(aux);
 
 			cycle
 				.AddComponent(new Driver(container, runData.DriverData, new DefaultDriverStrategy(container)))
@@ -1969,18 +1960,15 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			};
 			var fileWriter = new FileOutputWriter(modFileName);
 			var modDataFilter = new IModalDataFilter[] { }; //new IModalDataFilter[] { new ActualModalDataFilter(), };
-			var modData = new ModalDataContainer(runData, fileWriter, null, modDataFilter)
-			{
-				WriteModalResults = true,
-			};
+            var kernel = new StandardKernel(new VectoNinjectModule());
+			var modData = kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, modDataFilter);
+			modData.WriteModalResults = true;
 
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, sumData);
+			var container = kernel.Get<IPowertrainBuilder>().Build(runData, modData, sumData);
 			
 			var engine = new StopStartCombustionEngine(container, runData.EngineData);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
-			var aux = new HighVoltageElectricAuxiliary(container);
-			aux.AddConstant("P_aux_el", pAuxEl.SI<Watt>());
 			cycle
 				.AddComponent(new Driver(container, runData.DriverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, runData.VehicleData, runData.AirdragData))

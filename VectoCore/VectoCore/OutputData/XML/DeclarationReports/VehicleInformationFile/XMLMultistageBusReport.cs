@@ -75,8 +75,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		protected XNamespace v10 = "urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0";
 		
 		private XElement _primaryVehicle;
-		private List<XElement> _manufacturingStages;
-		private List<XAttribute> _namespaceAttributes;
+		private List<XElement> _manufacturingStages = new List<XElement>();
+		private List<XAttribute> _namespaceAttributes = new List<XAttribute>();
 		
 		private IPrimaryVehicleInformationInputDataProvider _primaryVehicleInputData;
 		private IList<IManufacturingStageInputData> _manufacturingStageInputData;
@@ -89,8 +89,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		public XMLMultistageBusReport()
 		{
 			throw new VectoException("do not use anymore!");
-			_manufacturingStages = new List<XElement>();
-			_namespaceAttributes = new List<XAttribute>();
 		}
 		
 		public virtual void Initialize(VectoRunData modelData)

@@ -97,6 +97,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
         public void TriggerGearshift(Second absTime, Second dt)
         {
+            GearShiftTriggered?.Invoke();
             throw new NotImplementedException();
         }
 

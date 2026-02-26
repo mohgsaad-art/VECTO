@@ -31,6 +31,7 @@
 
 using System.Globalization;
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -45,6 +46,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Integration;
 using TUGraz.VectoCore.Tests.Utils;
@@ -56,7 +58,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class DistanceBasedDrivingCycleTest
 	{
-		public const string ShortCycle = @"TestData/Cycles/Coach_24t_xshort.vdri";
+        private StandardKernel _kernel;
+
+        public const string ShortCycle = @"TestData/Cycles/Coach_24t_xshort.vdri";
 
 		public const double Tolerance = 0.0001;
 
@@ -64,7 +68,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase,
 		Category(Definitions.TESTCASE_MIGRATED)]
@@ -80,7 +85,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				" 20,  30, -0.1,   0"
 			};
 			var cycleData = SimpleDrivingCycles.CreateCycleData(data);
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
@@ -170,7 +175,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var cycleData = DrivingCycleDataReader.ReadFromFile(ShortCycle, CycleType.DistanceBased, false);
 
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration

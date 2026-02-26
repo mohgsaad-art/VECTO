@@ -49,11 +49,9 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		private readonly IViewModelBase _parentViewModel;
 		private ViewMode _viewMode;
 		private object _previousContent;
-		private bool _showCheckBox;
-
+		
 		private Type _type;
 
-		private Type _underlyingTargetType;
 		private readonly string _propertyName;
 		private bool _isReadOnly;
 		private bool _valueFieldIsEditable;

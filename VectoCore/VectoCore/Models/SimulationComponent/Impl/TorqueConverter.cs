@@ -259,6 +259,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (dryOperatingPointMin != null) {
 				var avgOutSpeedMin = (PreviousState.OutAngularVelocity + dryOperatingPointMin.OutAngularVelocity) / 2.0;
 				deltaMin = (outTorque - dryOperatingPointMin.OutTorque) * avgOutSpeedMin;
+				if (engineResponse.DeltaDragLoad.IsSmaller(0.0) && engineResponse.DeltaDragLoad.IsSmaller(deltaMin * 10)){
+					deltaMin = engineResponse.DeltaDragLoad / 10.0;
+                }
 			}
 
 			return new ResponseDryRun(this) {

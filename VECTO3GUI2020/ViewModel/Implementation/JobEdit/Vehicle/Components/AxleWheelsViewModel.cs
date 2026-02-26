@@ -24,8 +24,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
         public ObservableCollection<IComponentViewModel> AxleViewModels { get; set; } = new ObservableCollection<IComponentViewModel>();
         private IList<IAxleDeclarationInputData> _axlesInputData;
-		private XmlNode _xmlSource;
-
+		
 		public AxleWheelsViewModel(IXMLAxlesDeclarationInputData inputData, IComponentViewModelFactory vmFactory)
         {
             _inputData = inputData as IXMLAxlesDeclarationInputData;
@@ -50,7 +49,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
 		public int? NumSteeredAxles => null;
 
-		public XmlNode XMLSource => _xmlSource;
+		public XmlNode XMLSource => null;
 	}
 
     public class AxleWheelsViewModel_v1_0 : AxleWheelsViewModel

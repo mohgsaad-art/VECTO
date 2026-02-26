@@ -10,6 +10,7 @@ using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
@@ -26,7 +27,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class ElectricMotorTest
 	{
-		public const string MotorFile = @"TestData/Hybrids/ElectricMotor/GenericEMotor.vem";
+        private StandardKernel _kernel;
+
+        public const string MotorFile = @"TestData/Hybrids/ElectricMotor/GenericEMotor.vem";
 		public const string MotorFile_v2 = @"TestData/Hybrids/ElectricMotor/GenericEMotorV2.vem";
 		public const string BatFile = @"TestData/Hybrids/Battery/GenericBattery.vbat";
 
@@ -34,7 +37,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
 		[TestCase(1),
@@ -437,7 +441,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			//modData.AddElectricMotor(PowertrainPosition.HybridP2);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			
-			var container = VehicleContainer.CreateVehicleContainer(null, modData, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(null, modData, null);
 			new EngineOnlyGearboxInfo(container);
 
 			var battery = new Battery(container, batteryData.Batteries.First().Item2);

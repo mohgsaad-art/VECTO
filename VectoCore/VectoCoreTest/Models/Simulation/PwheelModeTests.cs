@@ -64,13 +64,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	public class PwheelModeTests
 	{
 		protected IPowertrainBuilder PowertrainBuilder;
+        private StandardKernel _kernel;
 
         [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			PowertrainBuilder = kernel.Get<IPowertrainBuilder>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			PowertrainBuilder = _kernel.Get<IPowertrainBuilder>();
         }
 
 
@@ -100,7 +101,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
-			var container = VehicleContainer.CreateVehicleContainer(runData, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, null, null);
 			var inputData = @"<t>,<Pwheel>,<gear>,<n>,<Padd>
 							   1,89,2,1748,1.300
 							   2,120,2,1400,0.4";
@@ -209,9 +210,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
 
-			jobContainer.AddRuns(runsFactory);
+            jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
 
 			jobContainer.WaitFinished();
@@ -238,9 +239,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-
-			jobContainer.AddRuns(runsFactory);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
 
 			jobContainer.WaitFinished();

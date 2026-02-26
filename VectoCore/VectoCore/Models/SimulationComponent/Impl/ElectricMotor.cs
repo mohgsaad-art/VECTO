@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     public class TestPowertrainElectricMotor : ElectricMotor, ITestpowertrainElectricMotor
 	{
 		public TestPowertrainElectricMotor(IVehicleContainer container, ElectricMotorData data,
-			IElectricMotorControl control, PowertrainPosition position) : base(container, data, control, position, false, Constants.NOT_IN_AXLE_POWERTRAIN)
+			IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(container, data, control, position, false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException(
@@ -417,9 +417,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
                 // electric motor only
 				var speedLimit = GetMotorSpeedLimit(absTime);
-				var remainingPower = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand);
 
-				if (dryRun) {
+                var remainingPowerDrive = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
+                var remainingPowerBrk = VectoMath.Min(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxChargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
+
+                var remainingPower = remainingPowerDrive;
+
+                if (remainingPowerBrk.IsSmaller(0.0))
+                {
+                    remainingPower = remainingPowerBrk;
+                }
+
+                if (dryRun) {
 					retVal = new ResponseDryRun(this) {
 						DeltaEngineSpeed = outAngularVelocity - speedLimit,
                         Engine = { EngineSpeed = avgDtSpeed},
@@ -532,8 +541,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					((inTorqueDt - outTorque) * avgDtSpeed - emTorque * avgEmSpeed)
 					/ avgDtSpeed;
 
-				CurrentState.ElectricPowerToBattery = retVal.ElectricSystem?.ConsumerPower;
-
+				CurrentState.ElectricPowerToBattery = (AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? retVal.ElectricSystem?.ConsumerPower : electricPower;
 			}
 			return retVal;
 		}
@@ -588,7 +596,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var elPower = ModelData.EfficiencyData.LookupElectricPower(volt, avgSpeed, maxTorqueRecuperate, gear);
 			if (elPower.ElectricalPower?.IsSmallerOrEqual(0) ?? true) {
-				return null;
+				return null;	
 			}
 			return maxTorqueRecuperate;
 		}

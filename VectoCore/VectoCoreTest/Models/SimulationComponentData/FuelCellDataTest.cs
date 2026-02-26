@@ -560,7 +560,7 @@ public class FuelCellDataTest
 				var total = fc1 + fc2;
 				return (total, fc1, fc2);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return (double.NaN, double.NaN, double.NaN);
 			}

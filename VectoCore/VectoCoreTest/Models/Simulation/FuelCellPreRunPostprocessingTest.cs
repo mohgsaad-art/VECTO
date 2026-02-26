@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Moq;
+using Ninject;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
-using TUGraz.VectoCore.Utils;
-using NUnit.Framework.Internal;
-using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.Models.Connector.Ports.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation;
 
@@ -28,14 +32,21 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation;
 [TestFixture]
 public class FuelCellPreRunPostprocessingT
 {
+    private StandardKernel _kernel;
 
-	[TestCase()]
+    [TestCase()]
 	public void FuelCellPreRunPostprocessingTest()
 	{
 
 	}
 
-	internal class PostProcessingEntry
+    [OneTimeSetUp]
+    public void RunBeforeAnyTests()
+    {
+        _kernel = new StandardKernel(new VectoNinjectModule());
+    }
+
+    internal class PostProcessingEntry
 	{
 		public Meter dist;
 		public Meter simulationDistance;
@@ -47,11 +58,11 @@ public class FuelCellPreRunPostprocessingT
 	public void TestFuelCellWindowIterator_1(bool compareWithGeneric)
 	{
 		// apply a constant value - the sum of all windows has to be the same
-		var modData = new ModalDataContainer(new VectoRunData() {
+		var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(new VectoRunData() {
 			Cycle = new DrivingCycleData() {
 				CycleType = CycleType.DistanceBased,
 			}
-		}, null, null);
+		}, null, null, null) as ModalDataContainer;
 		modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 		modData.Data.CreateColumns(ModalResults.DriverSignals);
 
@@ -117,11 +128,11 @@ public class FuelCellPreRunPostprocessingT
 	{
 		// apply a sine wave (4 full waves) and the window size matches the period of the sine wave
 		// the sum has to be 0. window size shall be an even number
-		var modData = new ModalDataContainer(new VectoRunData() {
+		var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(new VectoRunData() {
 			Cycle = new DrivingCycleData() {
 				CycleType = CycleType.DistanceBased,
 			}
-		}, null, null);
+		}, null, null, null) as ModalDataContainer;
 		modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 		modData.Data.CreateColumns(ModalResults.DriverSignals);
 		for (var i = 1; i <= 104; i++) {
@@ -372,14 +383,14 @@ public class FuelCellPreRunPostprocessingT
             Assert.AreEqual(expectedWnd * 1000, solution.Value(), 1e-3);
 	}
 
-	private static (ModalDataContainer modData, VectoRunData RunData) RunFCHV_PEV_Simulation(string jobFile, int cycleIdx)
+	private (ModalDataContainer modData, VectoRunData RunData) RunFCHV_PEV_Simulation(string jobFile, int cycleIdx)
 	{
 		var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
 
 		var writer = new FileOutputWriter(jobFile);
-		var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-		factory.Validate = false;
+		var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+        factory.Validate = false;
 		factory.WriteModalResults = true;
 
 		var sumContainer = new SummaryDataContainer(writer);

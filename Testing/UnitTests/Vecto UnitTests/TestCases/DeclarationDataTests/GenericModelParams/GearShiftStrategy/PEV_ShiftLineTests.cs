@@ -22,7 +22,6 @@ public class PEV_ShiftLineTests
     [TestCase]
     public void ComputePEVShiftLinesADC()
     {
-		var axlegearRatio = 2.64;
 		var r_dyn = 0.421.SI<Meter>();
 
 		var expectedDownshiftNoADC = new[] {
@@ -174,7 +173,6 @@ public class PEV_ShiftLineTests
 	[TestCase]
     public void ComputePEVShiftLines()
     {
-		var axlegearRatio = 2.64;
 		var r_dyn = 0.421.SI<Meter>();
 
 		var expectedDownshift = new[] {

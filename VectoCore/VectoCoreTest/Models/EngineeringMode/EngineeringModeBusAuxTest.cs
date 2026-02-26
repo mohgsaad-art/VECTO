@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 				: JSONInputDataFactory.ReadJsonJob(jobFile);
 
 			var sumContainer = new SummaryDataContainer(writer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			factory.SumData = sumContainer; //ActualModalData = true,
 			factory.Validate = false;
@@ -835,7 +835,7 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 
 		public const string EngineFileHigh = @"TestData/Components/24t Coach_high.veng";
 
-		public static MockVehicleContainer CreatePowerTrain(AlternatorType alternatorType, double initialSoC,
+		public MockVehicleContainer CreatePowerTrain(AlternatorType alternatorType, double initialSoC,
 			double? reessSoC, bool connectEsToReess)
 		{
 			//var gearboxData = CreateGearboxData();
@@ -859,9 +859,8 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 			};
 
 
-			var modData = new ModalDataContainer(runData, null, null) {
-				WriteModalResults = false
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, null, null, null);
+			modData.WriteModalResults = false;
 
 			var container = new MockVehicleContainer() {
 				CycleData = new CycleData() { LeftSample = cycleData.Entries.First() },
@@ -888,7 +887,6 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 
 			if (reessSoC.HasValue) {
 				// hybrid powertrain
-				var packCount = 2;
 				runData.BatteryData = new BatterySystemData() {
 					Batteries = new List<Tuple<int, BatteryData>>() {
 						Tuple.Create(0, new BatteryData() {

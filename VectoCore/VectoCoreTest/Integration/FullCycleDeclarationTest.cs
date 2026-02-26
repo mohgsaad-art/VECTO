@@ -32,17 +32,20 @@
 using System.Data;
 using System.IO;
 using System.Linq;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using NUnit.Framework;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
@@ -50,7 +53,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 	[Parallelizable(ParallelScope.All)]
 	public class FullCycleDeclarationTest
 	{
-		public const string LongHaulTruckDeclarationJob =
+        private StandardKernel _kernel;
+
+        public const string LongHaulTruckDeclarationJob =
 			@"TestData/Integration/DeclarationMode/40t Truck/40t_Long_Haul_Truck.vecto";
 
 		public const string DeliveryTruckDeclarationJob =
@@ -69,7 +74,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[Category("LongRunning")]
 		[TestCase]
@@ -183,8 +189,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(LongHaulTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter(LongHaulTruckDeclarationJob);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
@@ -216,11 +222,11 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(LongHaulTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter("Truck40t_Mod1Hz_Test.vecto");
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
 			factory.ModalResults1Hz = false;
-			var factory1Hz = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			factory1Hz.WriteModalResults = true;
+			var factory1Hz = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            factory1Hz.WriteModalResults = true;
 			factory1Hz.ModalResults1Hz = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
@@ -298,7 +304,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeliveryTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter(DeliveryTruckDeclarationJob);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
 			factory.WriteModalResults = true;
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
@@ -328,7 +334,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeliveryTruck8GearDeclarationJob);
 			var fileWriter = new FileOutputWriter(DeliveryTruck8GearDeclarationJob);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
 			factory.WriteModalResults = true;
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
@@ -351,7 +357,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(Class9RigidTruckPTOJob);
 			var fileWriter = new FileOutputWriter(Class9RigidTruckPTOJob);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
 			factory.WriteModalResults = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
@@ -372,7 +378,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(Class5TractorDeclPrimaryRetarder);
 			var fileWriter = new FileOutputWriter(Class5TractorDeclPrimaryRetarder);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
 			factory.WriteModalResults = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);

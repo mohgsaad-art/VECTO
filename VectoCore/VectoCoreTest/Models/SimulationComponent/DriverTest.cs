@@ -33,26 +33,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
+using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
-using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
-using NUnit.Framework;
-using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.InputData.Reader.Impl;
 using MockDrivingCycle = TUGraz.VectoCore.Tests.Utils.MockDrivingCycle;
+using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
@@ -60,7 +63,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class DriverTest
 	{
-		public const string JobFile = @"TestData/Jobs/24t Coach EngineOnly.vecto";
+        private StandardKernel _kernel;
+
+        public const string JobFile = @"TestData/Jobs/24t Coach EngineOnly.vecto";
 		public const string EngineFile = @"TestData/Components/24t Coach.veng";
 		public const string EngineFileHigh = @"TestData/Components/24t Coach_high.veng";
 		public const string AccelerationFile = @"TestData/Components/Coach.vacc";
@@ -70,7 +75,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
 		[TestCase, 
@@ -97,8 +103,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				GearboxSinglePwt = new GearboxData() { Type = GearboxType.AMT },
 				ExecutionMode = ExecutionMode.Engineering,
             };
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 			var mockCycle = new MockDrivingCycle(vehicleContainer, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 
@@ -168,8 +174,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				ExecutionMode = ExecutionMode.Engineering,
 
             };
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 
 			var mockCycle = new MockDrivingCycle(vehicleContainer, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -246,8 +252,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				GearboxSinglePwt = new GearboxData() { Type = GearboxType.AMT },
 				ExecutionMode = ExecutionMode.Engineering,
             };
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,5,0,0\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
@@ -298,7 +304,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var driverData = MockSimulationDataFactory.CreateDriverDataFromFile(JobFile);
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				DriverData = driverData,
 				Cycle = cycleData,
 				VehicleData = new VehicleData() { VehicleCategory = VehicleCategory.RigidTruck },
@@ -375,7 +381,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var driverData = MockSimulationDataFactory.CreateDriverDataFromFile(JobFile);
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0\n110,20,0,0\n120,21,0,0\n130,22,0,0\n140,23,0,0\n150,24,0,0\n160,25,0,0\n170,26,0,0\n180,27,0,0\n190,28,0,0\n200,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				VehicleData = new VehicleData() { VehicleCategory = VehicleCategory.RigidTruck },
 				Cycle = cycleData,
 				DriverData = driverData

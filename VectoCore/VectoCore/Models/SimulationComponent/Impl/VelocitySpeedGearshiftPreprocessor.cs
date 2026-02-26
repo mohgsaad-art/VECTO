@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoException("no vehicle found...");
 			}
 
-            var gearbox = TestPowertrain.Gearbox;
+            var gearbox = TestPowertrain.Gearboxes.FirstOrDefault();
 			if (gearbox == null) {
 				throw new VectoException("no gearbox found...");
 			}

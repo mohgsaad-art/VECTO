@@ -61,6 +61,7 @@ Imports TUGraz.VectoCore.Utils
 ''' <remarks></remarks>
 
 Public Class MainForm
+    Private _kernel As IKernel = New StandardKernel(New VectoNinjectModule())
     Private _jobListView As FileListView
     Private _cycleListView As FileListView
 
@@ -142,7 +143,7 @@ Public Class MainForm
         ElectricMotorFileBrowser = New FileBrowser("vem")
         IEPCFileBrowser = New FileBrowser("viepc")
         IEPCFLCFileBrowser = New FileBrowser("viepcp")
-        IEPCDragFileBrowser = new FileBrowser("viepcd")
+        IEPCDragFileBrowser = New FileBrowser("viepcd")
         IEPCPowerMapFileBrowser = New FileBrowser("viepco")
         REESSFileBrowser = New FileBrowser("vreess")
         FuelCellComponentFileBrowser = New FileBrowser("vfcc")
@@ -167,10 +168,10 @@ Public Class MainForm
         PropulsionTorqueLimitFileBrowser = New FileBrowser("vtqp")
         ModalResultsFileBrowser = New FileBrowser("vmod")
 
-        IHPCFileBrowser = new FileBrowser("vem")
-        IHPCPowerMapFileBrowser = new FileBrowser("vemo")
-        IHPCFullLoadCurveFileBrowser = new FileBrowser("vemp")
-        IHPCDragCurveFileBrowser = new FileBrowser("vemd")
+        IHPCFileBrowser = New FileBrowser("vem")
+        IHPCPowerMapFileBrowser = New FileBrowser("vemo")
+        IHPCFullLoadCurveFileBrowser = New FileBrowser("vemp")
+        IHPCDragCurveFileBrowser = New FileBrowser("vemd")
 
         '-------------------------------------------------------
         TextFileBrowser.Extensions = New String() {"txt"}
@@ -217,12 +218,12 @@ Public Class MainForm
         FuelCellComponentFileBrowser.Extensions = New String() {"vfcc"}
         MassFlowMapFileBrowser.Extensions = New String() {"vfcm"}
 
-        IHPCFileBrowser.Extensions = New String(){"vem"}
-        IHPCPowerMapFileBrowser.Extensions = New String(){"vemo"}
-        IHPCFullLoadCurveFileBrowser.Extensions = New String(){"vemp"}
-        IHPCDragCurveFileBrowser.Extensions = New String(){"vemd"}
-        
-        IEPCFileBrowser.Extensions = New String () {"viepc"}
+        IHPCFileBrowser.Extensions = New String() {"vem"}
+        IHPCPowerMapFileBrowser.Extensions = New String() {"vemo"}
+        IHPCFullLoadCurveFileBrowser.Extensions = New String() {"vemp"}
+        IHPCDragCurveFileBrowser.Extensions = New String() {"vemd"}
+
+        IEPCFileBrowser.Extensions = New String() {"viepc"}
         IEPCFLCFileBrowser.Extensions = New String() {"viepcp"}
         IEPCDragFileBrowser.Extensions = New String() {"viepcd"}
         IEPCPowerMapFileBrowser.Extensions = New String() {"viepco"}
@@ -335,11 +336,11 @@ Public Class MainForm
 
     ' ReSharper disable once UnusedMember.Global -- used via Logging Framework! 
     Public Shared Sub LogMethod(level As String, message As String)
-        If VectoWorkerV3 Is Nothing Then 
+        If VectoWorkerV3 Is Nothing Then
             Debug.WriteLine("{0}, {1}", level, message)
             Return
         End If
-        
+
         If VectoWorkerV3.IsBusy AndAlso Not VectoWorkerV3.CancellationPending Then
             If level = "Warn" Then
                 VectoWorkerV3.ReportProgress(100,
@@ -802,7 +803,7 @@ lbFound:
 
     Private Sub OpenLogToolStripMenuItem_Click(sender As Object, e As EventArgs) _
         Handles OpenLogToolStripMenuItem.Click
-        Process.Start(new ProcessStartInfo(Path.Combine(MyAppPath, "log.txt")) with {.UseShellExecute = true})
+        Process.Start(New ProcessStartInfo(Path.Combine(MyAppPath, "log.txt")) With {.UseShellExecute = True})
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) _
@@ -1025,7 +1026,7 @@ lbFound:
 
         'list of finished runs
         Dim finishedRuns As List(Of Integer) = New List(Of Integer)
-        
+
         For Each jobFile As String In JobFileList
             Try
                 sender.ReportProgress(0,
@@ -1053,13 +1054,13 @@ lbFound:
                             Case XMLNames.VectoOutputMultistep
                                 Using reader As XmlReader = XmlReader.Create(jobFile)
                                     Dim vifInput = DirectCast(xmlInputReader.Create(reader), IMultistepBusInputDataProvider)
-                                    Dim declarationVif = new XMLDeclarationVIFInputData(vifInput, Nothing)
+                                    Dim declarationVif = New XMLDeclarationVIFInputData(vifInput, Nothing)
                                     input = declarationVif
                                     Dim count As Integer = 0
-                                    If(declarationVif.MultistageJobInputData.JobInputData.ManufacturingStages IsNot Nothing)
+                                    If (declarationVif.MultistageJobInputData.JobInputData.ManufacturingStages IsNot Nothing) Then
                                         count = declarationVif.MultistageJobInputData.JobInputData.ManufacturingStages.Count
                                     End If
-                                    fileWriter = new FileOutputVIFWriter(outFile, count)
+                                    fileWriter = New FileOutputVIFWriter(outFile, count)
 
 
                                 End Using
@@ -1074,8 +1075,7 @@ lbFound:
                     Continue For
                 End If
 
-                Dim runsFactory As ISimulatorFactory = SimulatorFactory.CreateSimulatorFactory(mode, input, fileWriter)
-                'Remove
+                Dim runsFactory As ISimulatorFactory = _kernel.Get(Of ISimulatorFactoryFactory)().Factory(mode, input, fileWriter, Nothing, Nothing)
 
                 runsFactory.WriteModalResults = Cfg.ModOut
                 runsFactory.ModalResults1Hz = Cfg.Mod1Hz
@@ -1083,7 +1083,7 @@ lbFound:
                 runsFactory.ActualModalData = cbActVmod.Checked
                 runsFactory.SerializeVectoRunData = cbSaveVectoRunData.Checked
 
-                For Each run as integer In jobContainer.AddRuns(runsFactory)
+                For Each run As Integer In jobContainer.AddRuns(runsFactory)
                     fileWriters.Add(run, fileWriter)
                 Next
 
@@ -1108,7 +1108,7 @@ lbFound:
         Next
 
         sender.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
-                                 .Message = _
+                                 .Message =
                                  $"Starting Simulation ({JobFileList.Count} Jobs, {jobContainer.GetProgress().Count _
                                  } Runs)"})
 
@@ -1127,23 +1127,23 @@ lbFound:
             Dim sumProgress As Double = progress.Sum(Function(pair) pair.Value.Progress)
             Dim duration As Double = (DateTime.Now() - start).TotalSeconds
 
-           
-                sender.ReportProgress(Convert.ToInt32((sumProgress*100.0)/progress.Count),
-                                  New VectoProgress With {.Target = "Status",
-                                     .Message = $"Duration: {duration:0}s, Current Progress: {(sumProgress/progress.Count):P} ({ _
-                                     String.Join(", ", progress.Select(Function(pair) $"{pair.Value.Progress,4:P}"))})"})
 
-            Dim justFinished As Dictionary(Of Integer, JobContainer.ProgressEntry) = New Dictionary(Of Integer,JobContainer.ProgressEntry)(
+            sender.ReportProgress(Convert.ToInt32((sumProgress * 100.0) / progress.Count),
+                              New VectoProgress With {.Target = "Status",
+                                 .Message = $"Duration: {duration:0}s, Current Progress: {(sumProgress / progress.Count):P} ({ _
+                                 String.Join(", ", progress.Select(Function(pair) $"{pair.Value.Progress,4:P}"))})"})
+
+            Dim justFinished As Dictionary(Of Integer, JobContainer.ProgressEntry) = New Dictionary(Of Integer, JobContainer.ProgressEntry)(
                 progress.Where(Function(proc) proc.Value.Done AndAlso Not finishedRuns.Contains(proc.Key)).ToDictionary(Function(pair) pair.Key, Function(pair) pair.Value))
-                    
+
             PrintRuns(justFinished, fileWriters)
             finishedRuns.AddRange(justFinished.Select(Function(pair) pair.Key))
             Thread.Sleep(100)
         End While
 
-        Dim remainingRuns As Dictionary(Of Integer, JobContainer.ProgressEntry) = New Dictionary(Of Integer,JobContainer.ProgressEntry)(jobContainer.GetProgress().Where(
+        Dim remainingRuns As Dictionary(Of Integer, JobContainer.ProgressEntry) = New Dictionary(Of Integer, JobContainer.ProgressEntry)(jobContainer.GetProgress().Where(
             Function(proc) proc.Value.Done AndAlso Not finishedRuns.Contains(proc.Key)).ToDictionary(Function(pair) pair.Key, Function(pair) pair.Value))
-                
+
         PrintRuns(remainingRuns, fileWriters)
 
         finishedRuns.Clear()
@@ -1154,7 +1154,7 @@ lbFound:
                                      .Message = String.Format("{0,-60} {1,8:P} {2,10:F2}s - {3}",
                                                               $"{progressEntry.Value.RunName} {progressEntry.Value.CycleName} {progressEntry.Value.RunSuffix}",
                                                               progressEntry.Value.Progress,
-                                                              progressEntry.Value.ExecTime/1000.0,
+                                                              progressEntry.Value.ExecTime / 1000.0,
                                                               IIf(progressEntry.Value.Success, "Success", "Aborted"))})
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
@@ -1165,15 +1165,15 @@ lbFound:
         Next
 
         For Each job As String In JobFileList
-            dim w as FileOutputWriter = new FileOutputWriter(GetOutputDirectory(job))
+            Dim w As FileOutputWriter = New FileOutputWriter(GetOutputDirectory(job))
 
-            For Each entry as KeyValuePair(Of string, string) In _
-                new Dictionary(Of string, string) _
-                    from {{w.XMLFullReportName, "XML Manufacturer Report"}, {w.XMLCustomerReportName, "XML Customer Report"},
+            For Each entry As KeyValuePair(Of String, String) In
+                New Dictionary(Of String, String) _
+                    From {{w.XMLFullReportName, "XML Manufacturer Report"}, {w.XMLCustomerReportName, "XML Customer Report"},
                         {w.XMLVTPReportName, "VTP Report"}, {w.XMLMonitoringReportName, "XML Monitoring Report"}}
                 If File.Exists(entry.Key) Then
                     sender.ReportProgress(100, New VectoProgress With {.Target = "ListBox",
-                                             .Message = String.Format("{2} for '{0}' written to {1}", Path.GetFileName(job),entry.Key, entry.Value),
+                                             .Message = String.Format("{2} for '{0}' written to {1}", Path.GetFileName(job), entry.Key, entry.Value),
                                              .Link = "<XML>" + entry.Key})
                 End If
             Next
@@ -1188,33 +1188,33 @@ lbFound:
         sender.ReportProgress(100, New VectoProgress With {.Target = "ListBox",
                                  .Message = $"Simulation Finished in {(DateTime.Now() - start).TotalSeconds:0}s"})
 
-#if CERTIFICATION_RELEASE
+#If CERTIFICATION_RELEASE Then
         dim message as string = nothing
-#else
-#if RELEASE_CANDIDATE
+#Else
+#If RELEASE_CANDIDATE Then
         dim message as string = "RELEASE CANDIDATE - NOT FOR CERTIFICATION!"
-#else
-        dim message as string = "DEVELOPMENT VERSION - NOT FOR CERTIFICATION!"
+#Else
+        Dim message As String = "DEVELOPMENT VERSION - NOT FOR CERTIFICATION!"
 #End If
-#end if
-        if Not string.IsNullOrWhitespace(message) then
-            sender.ReportProgress(100,  New VectoProgress With {.Target = "ListBoxWarning",
+#End If
+        If Not String.IsNullOrWhiteSpace(message) Then
+            sender.ReportProgress(100, New VectoProgress With {.Target = "ListBoxWarning",
                                      .Message = message})
         End If
     End Sub
 
     Private Function GetOutputDirectory(jobFile As String) As String
 
-        dim outFile as String = jobfile
-        If (Not string.IsNullOrWhiteSpace(tbOutputFolder.Text)) Then
-            Dim outPath as string = tbOutputFolder.Text
-            if (path.IsPathRooted(outPath)) Then
+        Dim outFile As String = jobFile
+        If (Not String.IsNullOrWhiteSpace(tbOutputFolder.Text)) Then
+            Dim outPath As String = tbOutputFolder.Text
+            If (Path.IsPathRooted(outPath)) Then
                 outFile = Path.Combine(outPath, Path.GetFileName(jobFile))
-            Else 
-                outFile = Path.Combine(path.GetDirectoryName(jobFile), outPath, path.GetFileName(jobFile))
+            Else
+                outFile = Path.Combine(Path.GetDirectoryName(jobFile), outPath, Path.GetFileName(jobFile))
             End If
-            If (Not directory.Exists(path.GetDirectoryName(outFile))) then
-                Directory.CreateDirectory(path.GetDirectoryName(outFile))
+            If (Not Directory.Exists(Path.GetDirectoryName(outFile))) Then
+                Directory.CreateDirectory(Path.GetDirectoryName(outFile))
             End If
         End If
         Return outFile
@@ -1224,9 +1224,9 @@ lbFound:
     Private Shared Sub PrintRuns(progress As Dictionary(Of Integer, JobContainer.ProgressEntry),
                                  fileWriters As Dictionary(Of Integer, FileOutputWriter))
         For Each p As KeyValuePair(Of Integer, JobContainer.ProgressEntry) In progress
-            Dim modFilename As String = if(fileWriters.ContainsKey(p.Key) , fileWriters(p.Key).GetModDataFileName(p.Value.RunName, p.Value.CycleName,
+            Dim modFilename As String = If(fileWriters.ContainsKey(p.Key), fileWriters(p.Key).GetModDataFileName(p.Value.RunName, p.Value.CycleName,
                                                                               p.Value.RunSuffix +
-                                                                              If(Cfg.Mod1Hz, "_1Hz", "")) , "")
+                                                                              If(Cfg.Mod1Hz, "_1Hz", "")), "")
 
 
             Dim runName As String = $"{p.Value.RunName} {p.Value.CycleName} {p.Value.RunSuffix}"
@@ -1413,7 +1413,7 @@ lbFound:
                 ShowVectoJobForm(jobType)
                 VectoJobForm.VectoNew()
             Catch ex As VectoException
-                MsgBox(ex.Message,MsgBoxStyle.OkOnly, "Error creating new Vecto job")
+                MsgBox(ex.Message, MsgBoxStyle.OkOnly, "Error creating new Vecto job")
                 Exit Sub
             End Try
         ElseIf filePathOrType = "<VTP>" Then
@@ -1509,9 +1509,9 @@ lbFound:
 
             ToolStripProgBarJob.Value = .ProgJobInt
 
-            If .ProgOverallStartInt > - 1 Then
+            If .ProgOverallStartInt > -1 Then
                 ToolStripProgBarOverall.Value =
-                    CInt(.ProgOverallStartInt + (.PgroOverallEndInt - .ProgOverallStartInt)*.ProgJobInt/100)
+                    CInt(.ProgOverallStartInt + (.PgroOverallEndInt - .ProgOverallStartInt) * .ProgJobInt / 100)
             End If
 
         End With
@@ -1572,7 +1572,7 @@ lbFound:
 
             Case MessageType.Warn
 
-                lv0.BackColor = Color.Khaki				 'FromArgb(218, 125, 0) 'DarkOrange
+                lv0.BackColor = Color.Khaki              'FromArgb(218, 125, 0) 'DarkOrange
                 lv0.ForeColor = Color.Black
 
             Case Else
@@ -1626,7 +1626,7 @@ lbFound:
                     txt = txt.Replace("\", "/")
                     txt = "file:///" & txt
                     Try
-                        Process.Start(new ProcessStartInfo(txt) With {.UseShellExecute = True})
+                        Process.Start(New ProcessStartInfo(txt) With {.UseShellExecute = True})
                     Catch ex As Exception
                         MsgBox("Cannot open link!")
                     End Try
@@ -1640,7 +1640,7 @@ lbFound:
                     Microsoft.VisualBasic.Left(CStr(LvMsg.SelectedItems(0).Tag), 5) = "<RUN>" Then
                     txt = CStr(LvMsg.SelectedItems(0).Tag).Replace("<RUN>", "")
                     Try
-                        Process.Start(new ProcessStartInfo(txt) With {.UseShellExecute = true})
+                        Process.Start(New ProcessStartInfo(txt) With {.UseShellExecute = True})
                     Catch ex As Exception
                         GUIMsg(MessageType.Err, "Could not run '" & txt & "'!")
                     End Try
@@ -1776,7 +1776,7 @@ lbFound:
             _scr = 0
             _pnDir = 0
             _pnDirCl = 10
-            _pnDirC = 0	' StrDirCL
+            _pnDirC = 0 ' StrDirCL
             _ctrlCl = 5
             _ctrlC = _ctrlCl
             _pnDirRnd = 5
@@ -1859,7 +1859,7 @@ lbFound:
                                                  Space(ColLim - 30) & "         " & Space(10) & "*|       |*")
             End Select
             Exit Sub
-            LbRace:
+LbRace:
 
             _pRbAlt = Not _pRbAlt
 
@@ -1887,17 +1887,17 @@ lbFound:
                     Abort()
                     Exit Sub
                 End If
-                _scr += 5*_diffLvl
+                _scr += 5 * _diffLvl
             End If
 
             _scr += _diffLvl
             _diffC += 1
 
             'Erhöhe Schwierigkeitsgrad
-            If _diffC = (_diffLvl + 3)*4 Then
+            If _diffC = (_diffLvl + 3) * 4 Then
                 _diffC = 0
                 _diffLvl += 1
-                If _diffLvl > 2 And _diffLvl < 7 Then _mainForm.TmProgSec.Interval = 300 - (_diffLvl)*30
+                If _diffLvl > 2 And _diffLvl < 7 Then _mainForm.TmProgSec.Interval = 300 - (_diffLvl) * 30
                 _scr += 100
                 Select Case _diffLvl
                     Case 3
@@ -1981,10 +1981,10 @@ lbFound:
             _ctrls(RowLim + 1) = 0
             _ctrlC += 1
             If _ctrlC < _ctrlCl Then Exit Sub
-            Select Case CInt(Int((_ctrlRnd*Rnd()) + 1))
+            Select Case CInt(Int((_ctrlRnd * Rnd()) + 1))
                 Case 1, 2
                     _ctrlC = 0
-                    x = CInt(Int((7*Rnd()) + 1))
+                    x = CInt(Int((7 * Rnd()) + 1))
                     _ctrls(RowLim + 1) = x
             End Select
         End Sub
@@ -2027,7 +2027,7 @@ lbFound:
                 s = s.Insert(_ctrls(RowLim + 1) + 1, "X")
             End If
             Select Case _xPanel - _pnls(RowLim)
-                Case - 1
+                Case -1
                     s = Replace(s, "|", "\")
                 Case 1
                     s = Replace(s, "|", "/")
@@ -2039,15 +2039,15 @@ lbFound:
             _pnDirC += 1
             If _pnDirC < _pnDirCl Then GoTo Lb1
             _pnDirC = 0
-            Select Case CInt(Int((_pnDirRnd*Rnd()) + 1))
+            Select Case CInt(Int((_pnDirRnd * Rnd()) + 1))
                 Case 1
                     _pnDir = 1
                 Case 2
-                    _pnDir = - 1
+                    _pnDir = -1
                 Case Else
                     _pnDir = 0
             End Select
-            Lb1:
+Lb1:
             _xPanel += _pnDir
             If _xPanel > ColLim Then
                 _xPanel = ColLim
@@ -2098,7 +2098,7 @@ lbFound:
             Dim builder As StringBuilder = New StringBuilder()
             For Each selectedItem As ListViewItem In LvMsg.SelectedItems
                 builder.AppendLine(String.Join(", ",
-                                               selectedItem.SubItems.Cast (Of ListViewItem.ListViewSubItem).Select(
+                                               selectedItem.SubItems.Cast(Of ListViewItem.ListViewSubItem).Select(
                                                    Function(item) item.Text)))
             Next
             Clipboard.SetText(builder.ToString())
@@ -2146,10 +2146,10 @@ lbFound:
                 Case ".vecto"
                     input = JSONInputDataFactory.ReadJsonJob(f)
                 Case ".xml"
-                    Dim xDocument As XDocument = xDocument.Load(f)
+                    Dim xDocument As XDocument = XDocument.Load(f)
                     Dim rootNode As String = If(xDocument Is Nothing, "", xDocument.Root.Name.LocalName)
-                    Dim kernel as IKernel = New StandardKernel(new VectoNinjectModule)
-                    Dim xmlInputReader as IXMLInputDataReader = kernel.Get(Of IXMLInputDataReader)
+                    Dim kernel As IKernel = New StandardKernel(New VectoNinjectModule)
+                    Dim xmlInputReader As IXMLInputDataReader = kernel.Get(Of IXMLInputDataReader)
                     Select Case rootNode
                         Case XMLNames.VectoInputEngineering
                             input = xmlInputReader.CreateEngineering(f)
@@ -2180,7 +2180,7 @@ lbFound:
         'End Try
     End Sub
 
-    Private Sub LvGEN_MouseClick(sender As Object, e As MouseEventArgs) Handles  LvGEN.MouseDown
+    Private Sub LvGEN_MouseClick(sender As Object, e As MouseEventArgs) Handles LvGEN.MouseDown
         If e.Button = MouseButtons.Right Then
             _conMenTarget = LvGEN
             _conMenTarJob = True
@@ -2251,8 +2251,8 @@ lbFound:
         OpenVECTOeditor("<New>", VectoSimulationJobType.IEPC_S)
     End Sub
 
-    Private Sub tbInitSOCinPercent_TextChanged(sender As Object, e As EventArgs) 
-        
+    Private Sub tbInitSOCinPercent_TextChanged(sender As Object, e As EventArgs)
+
     End Sub
 
     Private Sub JobEditorFCHVehicle_Click(sender As Object, e As EventArgs) Handles JobEditorFCHVehicle.Click

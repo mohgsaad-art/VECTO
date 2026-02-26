@@ -54,10 +54,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
     public class VehicleContainer : LoggingObject, IVehicleContainer, IPowertainInfo
 	{
-		private static object _kernelLock = new object();
-		private static IKernel _kernel; //Kernel is only used when the VehicleContainer is created with the Factory Method.
-
-        private List<Tuple<int, VectoSimulationComponent>> _components =
+		private List<Tuple<int, VectoSimulationComponent>> _components =
 			new List<Tuple<int, VectoSimulationComponent>>();
 
 		public virtual IEngineInfo EngineInfo { get; protected internal set; }
@@ -70,7 +67,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             ? GearboxesCtl.FirstOrDefault()
             : GearboxesCtl.FirstOrDefault(x => x.AxleNumber == axleNumber);
 
-        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			? AxlegearsInfo.FirstOrDefault()
+			: AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+
         public virtual IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => Retarders.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }
@@ -145,22 +145,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			WriteSumData = writeSumData;
 			RunData = runData;
 		}
-
-		[Obsolete("Creation of VehicleContainer should be done with VehicleContainerFactory NInject Factory", false)]
-		public static IVehicleContainer CreateVehicleContainer(VectoRunData runData, IModalDataContainer modData,
-			ISumData writeSumData)
-		{
-			if (_kernel == null) {
-				lock (_kernelLock) {
-					if (_kernel == null) {
-						_kernel = new StandardKernel(new VectoNinjectModule());
-					}
-				}
-			}
-
-			return _kernel.Get<IPowertrainBuilder>().Build(runData, modData, writeSumData);
-
-        }
 
         #region IVehicleContainer
 
@@ -428,7 +412,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual bool HasElectricMotor { get; private set; }
 
-		public VectoSimulationJobType VehicleArchitecutre => RunData.JobType;
+		public VectoSimulationJobType VehicleArchitecture => RunData.JobType;
 
 		public virtual bool HasCombustionEngine { get; private set; }
 

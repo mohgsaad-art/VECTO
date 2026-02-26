@@ -961,7 +961,7 @@ Public Class frmHVACTool
 	Private Sub frmHVACTool_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
 
 
-		Dim result As DialogResult
+		'Dim result As DialogResult
 
 		'If UserHitCancel then bail
 		If UserHitCancel Then
@@ -1324,31 +1324,31 @@ Public Class frmHVACTool
 	'TechList Helpers
 	Private Sub FillTechLineEditPanel(index As Integer)
 
-		Dim techline As SSMTechnology
-		Dim benefitName, category As Object
-		benefitName = gvTechBenefitLines.Rows(index).Cells("BenefitName").Value
-		category = gvTechBenefitLines.Rows(index).Cells("Category").Value
+		'Dim techline As SSMTechnology
+		'Dim benefitName, category As Object
+		'benefitName = gvTechBenefitLines.Rows(index).Cells("BenefitName").Value
+		'category = gvTechBenefitLines.Rows(index).Cells("Category").Value
 
-		'techline =
-		'	ssmTOOL.TechList.TechLines.First(Function(f) f.BenefitName.Equals(benefitName) AndAlso f.Category.Equals(category))
+		''techline =
+		''	ssmTOOL.TechList.TechLines.First(Function(f) f.BenefitName.Equals(benefitName) AndAlso f.Category.Equals(category))
 
-		txtIndex.Text = index.ToString()
-		cboCategory.Text = techline.Category
-		txtBenefitName.Text = techline.BenefitName
-		'cboLineType.Text = If(techline.LineType = 0, "Normal", "ActiveVentilation")
-		txtLowFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorH)
-		txtLowFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorV)
-		txtLowFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorC)
-		txtSemiLowFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorH)
-		txtSemiLowFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorV)
-		txtSemiLowFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorC)
-		txtRaisedFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorH)
-		txtRaisedFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorV)
-		txtRaisedFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorC)
-		chkActiveVH.Checked = techline.ActiveVH
-		chkActiveVV.Checked = techline.ActiveVV
-		chkActiveVC.Checked = techline.ActiveVC
-		'chkOnVehicle.Checked = techline.OnVehicle
+		'txtIndex.Text = index.ToString()
+		'cboCategory.Text = techline.Category
+		'txtBenefitName.Text = techline.BenefitName
+		''cboLineType.Text = If(techline.LineType = 0, "Normal", "ActiveVentilation")
+		'txtLowFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorH)
+		'txtLowFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorV)
+		'txtLowFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.LowFloorC)
+		'txtSemiLowFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorH)
+		'txtSemiLowFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorV)
+		'txtSemiLowFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.SemiLowFloorC)
+		'txtRaisedFloorH.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorH)
+		'txtRaisedFloorV.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorV)
+		'txtRaisedFloorC.Text = String.Format(CultureInfo.InvariantCulture, "{0}", techline.RaisedFloorC)
+		'chkActiveVH.Checked = techline.ActiveVH
+		'chkActiveVV.Checked = techline.ActiveVV
+		'chkActiveVC.Checked = techline.ActiveVC
+		''chkOnVehicle.Checked = techline.OnVehicle
 	End Sub
 
 	Private Function GetTechLineFromPanel() As SSMTechnology

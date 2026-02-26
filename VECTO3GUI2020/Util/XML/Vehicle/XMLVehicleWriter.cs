@@ -148,9 +148,8 @@ namespace VECTO3GUI2020.Util.XML.Vehicle
 				XMLDeclaration_Conventional_CompletedBus_DataProviderV27.XSD_TYPE)
 		};
 
-		private readonly IGroupWriterFactory _groupWriterFactory;
-		private readonly bool _conventional;
-		private readonly IComponentWriterFactory _componentWriterFactory;
+		private new readonly IGroupWriterFactory _groupWriterFactory;
+		private new readonly IComponentWriterFactory _componentWriterFactory;
 
 		public override string VehicleType => XMLDeclaration_Conventional_CompletedBus_DataProviderV27.XSD_TYPE;
 

@@ -37,6 +37,7 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Ninject;
@@ -81,8 +82,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = false;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;

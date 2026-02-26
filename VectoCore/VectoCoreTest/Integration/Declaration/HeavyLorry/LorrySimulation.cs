@@ -195,8 +195,8 @@ public class LorrySimulation
 		dataProvider = _xmlReader.CreateDeclaration(filePath);
 		fileWriter = new FileOutputWriter(filePath);
 
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-		sumWriter = new SummaryDataContainer(fileWriter);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+        sumWriter = new SummaryDataContainer(fileWriter);
 		runsFactory.SumData = sumWriter;
 		return runsFactory;
 	}
@@ -337,8 +337,6 @@ public class LorrySimulation
 				Assert.IsFalse(tableData.Columns.Contains(name), name);
 			}
 		}
-
-		void AssertOrder(TableData tableData, List<string> ordered) { }
 
 		void SearchForPattern(TableData tableData, List<string> pattern)
 		{
@@ -1124,9 +1122,8 @@ public class LorrySimulation
 		}
 
 		var fileWriter = new FileOutputWriter(path);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(executionMode, inputData, fileWriter,
-			writeReports ? null : new NullDeclarationReport()); //, writeReports ? null : new NullDeclarationReport());
-		DisableIterativeRuns(runsFactory);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(executionMode, inputData, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        DisableIterativeRuns(runsFactory);
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
 
@@ -1344,10 +1341,9 @@ public class LorrySimulation
 		var dataProvider = _xmlReader.CreateDeclaration(filePath);
 		inputData = dataProvider;
 		fileWriter = new FileOutputWriter(filePath);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter,
-			writeReports ? null : new NullDeclarationReport());
-		//runsFactory.ActualModalData = true;
-		runsFactory.SerializeVectoRunData = true;
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        //runsFactory.ActualModalData = true;
+        runsFactory.SerializeVectoRunData = true;
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter);
 

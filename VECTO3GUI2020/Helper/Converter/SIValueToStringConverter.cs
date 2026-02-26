@@ -10,8 +10,8 @@ namespace VECTO3GUI2020.Helper.Converter
 	{
 		private SI _si;
 		private ConvertedSI _convertedSI;
-		private Type _sourceType;
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value == null) {
 				return value;
@@ -50,7 +50,7 @@ namespace VECTO3GUI2020.Helper.Converter
 
 				}
 			}
-			catch (Exception e) {
+			catch (Exception) {
 				return value;
 			}
 

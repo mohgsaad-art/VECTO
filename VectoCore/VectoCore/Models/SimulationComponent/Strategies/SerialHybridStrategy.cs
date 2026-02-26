@@ -60,23 +60,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		{
 			TestPowertrain.UpdateComponents();
 
-			if (TestPowertrain.Gearbox != null) {
+			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
 				var gearboxInfo = DataBus.GearboxesInfo.FirstOrDefault() as IAPTNGearbox 
 					?? throw new VectoException("AT Gearbox Required!");
 				var currentGear = DataBus.VehicleInfo.VehicleStopped ? gearboxInfo.NextGear : gearboxInfo.Gear;
-				TestPowertrain.Gearbox.SetDisengaged = gearboxInfo.Disengaged;
-				TestPowertrain.Gearbox.SetDisengageGearbox = (gearboxInfo as IGearboxInfo).DisengageGearbox;
-				TestPowertrain.Gearbox.SetGear = currentGear;
-				TestPowertrain.Gearbox.SetNextGear = gearboxInfo.NextGear;
+				TestPowertrain.Gearboxes.First().SetDisengaged = gearboxInfo.Disengaged;
+				TestPowertrain.Gearboxes.First().SetDisengageGearbox = (gearboxInfo as IGearboxInfo).DisengageGearbox;
+				TestPowertrain.Gearboxes.First().SetGear = currentGear;
+				TestPowertrain.Gearboxes.First().SetNextGear = gearboxInfo.NextGear;
 			}
 			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
-			TestPowertrain.Gearbox?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
+			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
 			
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
-			TestPowertrain.ElectricMotor.UpdateFrom(DataBus.GetElectricMotors()
-				.Single(e => e.Position == TestPowertrain.ElectricMotor.Position));
+			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
 
             var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
 			TestPowertrain.HybridController.ApplyStrategySettings(new HybridStrategyResponse {
@@ -110,25 +110,25 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		{
 			TestPowertrain.UpdateComponents();
 
-			if (TestPowertrain.Gearbox != null) {
+			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
 				var g = DataBus.GearboxesInfo.FirstOrDefault();
 				if (!(g is IAMTGearbox || g is IPEVGearbox || g is IIEPCGearbox)) {
 					throw new VectoException("AMT Gearbox Required!");
 				}
-				TestPowertrain.Gearbox.SetDisengaged = g.Disengaged;
-				TestPowertrain.Gearbox.SetDisengageGearbox = g.DisengageGearbox;
-				TestPowertrain.Gearbox.SetGear = DataBus.VehicleInfo.VehicleStopped || g.Disengaged ? g.NextGear : g.Gear;
-				TestPowertrain.Gearbox.SetNextGear = g.NextGear;
+				TestPowertrain.Gearboxes.First().SetDisengaged = g.Disengaged;
+				TestPowertrain.Gearboxes.First().SetDisengageGearbox = g.DisengageGearbox;
+				TestPowertrain.Gearboxes.First().SetGear = DataBus.VehicleInfo.VehicleStopped || g.Disengaged ? g.NextGear : g.Gear;
+				TestPowertrain.Gearboxes.First().SetNextGear = g.NextGear;
 			}
 
 			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
-			TestPowertrain.Gearbox?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
+			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
 
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
-			TestPowertrain.ElectricMotor.UpdateFrom(DataBus.GetElectricMotors()
-				.Single(e => e.Position == TestPowertrain.ElectricMotor.Position));
+			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
 
 
 			var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
@@ -196,9 +196,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		public VelocityRollingLookup VelocityDropData { get; }
 
-		public event Action GearShiftTriggered;
-
-		public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
+        public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
 		{
 			DataBus = container;
 			ModelData = runData;
@@ -342,7 +340,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						GensetState.MaximalPointDeRated
 						: GensetState.MaximalPoint;
 					genSetOperatingPoint = MaxGensetPower(absTime, dt, drivetrainDemand, maxPowerGenset, gensetState);
-					emTorque = TestPowertrain.ElectricMotor.GetTorqueForElectricPower(
+					emTorque = TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).GetTorqueForElectricPower(
 						DataBus.BatteryInfo.InternalVoltage, drivetrainDemand.Response.ElectricSystem.MaxPowerDrive,
 						drivetrainDemand.Response.ElectricMotor.AngularVelocity, dt, DataBus.GearboxesInfo.FirstOrDefault()?.Gear ?? new GearshiftPosition(0), dryRun);
 					if (emTorque == null) {

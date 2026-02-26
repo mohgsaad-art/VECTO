@@ -10,7 +10,8 @@
     <PublishTrimmed>false</PublishTrimmed>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
-
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
     <Configurations>Debug;Release;MockupDebug</Configurations>
 </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">

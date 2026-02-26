@@ -32,31 +32,32 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Integration;
-using TUGraz.VectoCore.Tests.Utils;
-using System.IO;
-using Ninject;
-using TUGraz.VectoCommon.BusAuxiliaries;
-using TUGraz.VectoCore.InputData;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Models.Simulation;
+using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Reports
@@ -90,7 +91,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					CycleType = CycleType.DistanceBased
 				}
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
 			var initialSpeed = initialSpeedVal.KMPHtoMeterPerSecond();
@@ -174,8 +175,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-			runsFactory.WriteModalResults = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = false;
 			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);
@@ -188,8 +189,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			jobName = @"TestData/Integration/EngineeringMode/P1_Group5_AMT/P1_Group5_s2c0_rep_Payload_ESSoff.vecto";
 			fileWriter = new FileOutputWriter(jobName);
 			inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-			runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-			runsFactory.WriteModalResults = false;
+			runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = false;
 			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);
@@ -237,7 +238,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		{
 			var writer = new FileOutputWriter(filename);
 			var inputData = xmlInputReader.CreateDeclaration(filename);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			var jobContainer = new JobContainer(new MockSumWriter());
 
@@ -385,7 +386,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			}
 		}
 
-		private static void RunSimulation(string jobName, ExecutionMode mode)
+		private void RunSimulation(string jobName, ExecutionMode mode)
 		{
 			var fileWriter = new FileOutputWriter(jobName);
 			var sumData = new SummaryDataContainer(fileWriter);
@@ -393,8 +394,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var jobContainer = new JobContainer(sumData);
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(mode, inputData, fileWriter);
-			runsFactory.WriteModalResults = true;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(mode, inputData, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);
 			var modData = new List<Tuple<ModalResults, double>>();
@@ -883,9 +884,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var jobContainer = new JobContainer(sumData);
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
 
-			var runsFactory =
-				SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-			runsFactory.WriteModalResults = true;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);
 			var modData = new List<Tuple<ModalResults, Meter>>();

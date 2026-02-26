@@ -8,6 +8,7 @@ using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Ninject;
@@ -59,8 +60,8 @@ public class HeavyLorrySimulation
 		var filePath = Path.Combine(BASE_DIR, jobFile);
 		var dataProvider = _xmlReader.CreateDeclaration(filePath);
 		var fileWriter = new FileOutputWriter(filePath);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-		runsFactory.WriteModalResults = true;
+		var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+        runsFactory.WriteModalResults = true;
 		var jobContainer = new JobContainer(new MockSumWriter()){};
 		//var jobContainer = new JobContainer(new MockSumWriter()) { };
 		jobContainer.AddRuns(runsFactory);

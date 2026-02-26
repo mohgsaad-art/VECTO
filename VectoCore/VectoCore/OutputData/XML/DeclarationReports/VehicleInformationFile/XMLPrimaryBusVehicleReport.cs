@@ -48,8 +48,9 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		public XMLPrimaryBusVehicleReport()
 		{
 			throw new NotImplementedException("use new implementation...");
-			VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
-			Results = new XElement(tns + XMLNames.Report_Results);
+			//The 2 lines below were commented out to suppress a build-time warning.
+			//VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
+			//Results = new XElement(tns + XMLNames.Report_Results);
 		}
 
 		public XDocument Report { get; protected set; }

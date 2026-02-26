@@ -31,20 +31,22 @@
 
 using System.Data;
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Integration.BatteryElectric;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
-using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
@@ -52,12 +54,15 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class ClutchTest
 	{
-		private const string CoachEngine = @"TestData/Components/24t Coach.veng";
+        private StandardKernel _kernel;
+
+        private const string CoachEngine = @"TestData/Components/24t Coach.veng";
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[Test,
 		// clutch slipping
@@ -77,7 +82,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void TestClutch(DrivingBehavior drivingBehavior, double torque, double angularSpeed, int gear, double expectedTorque,
 			double expectedEngineSpeed)
 		{
-			var container = VehicleContainer.CreateVehicleContainer(null, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
             var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
 			gearbox.Gear = new GearshiftPosition((uint)gear);
@@ -108,7 +113,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		//[TestCase] // this test is just to make sure the clutch characteristic has no unsteadiness
 		public void ClutchContinuityTest()
 		{
-			var container = VehicleContainer.CreateVehicleContainer(null, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
 			gearbox.Gear = new GearshiftPosition(1);

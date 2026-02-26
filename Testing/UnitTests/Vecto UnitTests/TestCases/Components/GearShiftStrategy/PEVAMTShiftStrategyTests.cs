@@ -563,20 +563,20 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			simplePt = GetSimplePowertrain(ratios, container, out var gbx);
 			var simplePtObj = simplePt.Object;
 			testPt.Setup(t => t.ElectricMotors).Returns(() => {
-				var dict = new Dictionary<PowertrainPosition, ITestpowertrainElectricMotor>();
+				var list = new List<ITestpowertrainElectricMotor>();
 				foreach (var (k, v) in simplePtObj.ElectricMotors) {
 					if (v is ITestpowertrainElectricMotor testEm) {
-						dict[k] = testEm;
+						list.Add(testEm);
 					} else {
 						throw new Exception("Expected TestElectricMotor in simple powertrain");
 					}
 				}
-				return dict;
+				return list;
 			});
 
 			testPt.Setup(t => t.Container).Returns(simplePt.Object);
 			
-			testPt.Setup(t => t.Gearbox).Returns(gbx.Object);
+			testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 			return testPt;
 		}
 
@@ -599,7 +599,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 					response
 						.Setup(mr => mr.RESSPowerDemand).Returns(powerDemand);
 					var reessResponse = new Mock<IRESSResponse>();
-					reessResponse.SetupGet(r => r.MaxDischargePower).Returns(0.SI<Watt>());
+                    reessResponse.SetupGet(r => r.MaxChargePower).Returns(0.SI<Watt>());
+                    reessResponse.SetupGet(r => r.MaxDischargePower).Returns(0.SI<Watt>());
 					reessResponse.SetupGet(r => r.PowerDemand).Returns(0.SI<Watt>());
 					response.SetupGet(r => r.RESSResponse).Returns(reessResponse.Object);
 
@@ -843,7 +844,6 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 				};
 			}
-			var axlRatio = 3.240355;
 			var gearsInput = gearboxData.Gears.Select(x => {
 				var r = new Mock<ITransmissionInputData>();
 				r.Setup(g => g.Ratio).Returns(x.Value.Ratio);

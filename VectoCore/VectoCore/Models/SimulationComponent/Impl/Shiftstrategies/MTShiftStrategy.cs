@@ -110,11 +110,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                 //var response = _gearbox.Initialize(absTime, gear, outTorque, outAngularVelocity);
 
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 
@@ -159,11 +159,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
                 //var response = _gearbox.Initialize(absTime, gear, outTorque, outAngularVelocity);
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 
@@ -228,7 +228,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			PerSecond outAngularVelocity, GearshiftPosition currentGear)
 		{
 			TestPowertrain.UpdateComponents();
-			var testGearbox = TestPowertrain.Gearbox;
+			var testGearbox = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN);
 			var tmpGear = testGearbox.Gear;
 
 			

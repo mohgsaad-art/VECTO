@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -7,8 +8,10 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.FileIO
@@ -17,12 +20,14 @@ namespace TUGraz.VectoCore.Tests.FileIO
 	[Parallelizable(ParallelScope.All)]
 	public class JsonReadHybridTest
 	{
+        private StandardKernel _kernel;
 
-		[OneTimeSetUp]
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase()]
 		public void TestReadBatteryPack()
@@ -319,9 +324,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 		{
 			var inputProvider = JSONInputDataFactory.ReadJsonJob(@"TestData/Hybrids/GenericVehicle_Group2_P2/Class2_RigidTruck_ParHyb_ENG.vecto");
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, null);
-
-			var sumContainer = new SummaryDataContainer(null);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, null, null, null, false);
+            var sumContainer = new SummaryDataContainer(null);
 			var jobContainer = new JobContainer(sumContainer);
 
 			factory.SumData = sumContainer;
@@ -346,9 +350,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 		{
 			var inputProvider = JSONInputDataFactory.ReadJsonJob(@"TestData/BatteryElectric/GenericVehicleB4/BEV_ENG.vecto");
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, null);
-
-			var sumContainer = new SummaryDataContainer(null);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, null, null, null, false);
+            var sumContainer = new SummaryDataContainer(null);
 			var jobContainer = new JobContainer(sumContainer);
 
 			factory.SumData = sumContainer;

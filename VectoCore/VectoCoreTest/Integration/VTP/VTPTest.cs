@@ -29,19 +29,22 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
@@ -53,11 +56,14 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 	[Parallelizable(ParallelScope.All)]
 	public class VTPTest
 	{
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void Init()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase(@"TestData/Integration/VTPMode/GenericVehicle/class_5_generic vehicle.vecto"),
 		 TestCase(@"TestData/Integration/VTPMode/GenericVehicle/class_5_generic vehicle_noGear.vecto"),
@@ -69,8 +75,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = true;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;
@@ -117,8 +123,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = true;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;
@@ -148,9 +154,9 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 
 			TestContext.WriteLine($"declared CO2 = {declared}, cvtp = {cvtp}");
 
-			Assert.AreEqual(expectedDeclaredCO2, declared, 1e-8);
-			Assert.AreEqual(expectedCVTP, cvtp, 1e-4);
-			Assert.AreEqual(status, (cvtp < 1.075) ? "Passed" : "Failed");
+			Assert.That(declared, Is.EqualTo(expectedDeclaredCO2).Within(1e-8));
+            Assert.That(cvtp, Is.EqualTo(expectedCVTP).Within(1e-4));
+            Assert.AreEqual(status, (cvtp < 1.075) ? "Passed" : "Failed");
 		}
 
 		[Category("LongRunning")]
@@ -162,8 +168,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter, new JobArchiveBuilder());
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = true;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;
@@ -208,8 +214,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = true;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;
@@ -242,8 +248,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = true;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;

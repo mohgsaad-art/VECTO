@@ -29,9 +29,12 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
@@ -45,7 +48,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		[TestCase]
 		public void VechicleContainerHasEngine()
 		{
-			var vehicle = VehicleContainer.CreateVehicleContainer(null, null, null);
+            var kernel = new StandardKernel(new VectoNinjectModule());
+            var vehicle = kernel.Get<IPowertrainBuilder>().Build(null, null, null);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0);
 			var engine = new CombustionEngine(vehicle, engineData);
 

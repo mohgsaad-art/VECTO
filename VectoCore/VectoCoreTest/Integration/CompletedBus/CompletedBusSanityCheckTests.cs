@@ -13,6 +13,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Ninject;
@@ -26,7 +27,9 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 	[Parallelizable(ParallelScope.All)]
 	public class CompletedBusSanityCheckTests
 	{
-		private IXMLInputDataReader _xmlInputReader;
+        private StandardKernel _kernel;
+
+        private IXMLInputDataReader _xmlInputReader;
 		public const string CompletedFile32 = @"TestData/Integration/Buses/FactorMethod/vecto_vehicle-completed_heavyBus_41.xml";
 		//public const string CompletedFile33b1 = @"TestData/Integration/Buses/FactorMethod/CompletedHeavyBus_33b1.RSLT_VIF.xml";
         public const string CompletedFile33b1 = @"TestData/Integration/Buses/FactorMethod/vecto_vehicle-completed_heavyBus_42.xml";
@@ -36,8 +39,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			_xmlInputReader = kernel.Get<IXMLInputDataReader>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			_xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
         [TestCase(CompletedFile33b1, BusHVACSystemConfiguration.Configuration8, false, TestName = "CompletedBus AirDistribution sanitycheck error, grp 33b1 cfg 8/false"),
@@ -67,8 +70,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 			//var inputData = new MockCompletedBusInputData(XmlReader.Create(PifFile_33_34), modified);
 			//var inputData = _xmlInputReader.CreateDeclaration(modified);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, new XMLDeclarationVIFInputData(modified, null),  writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, new XMLDeclarationVIFInputData(modified, null), writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 
 			AssertHelper.Exception<VectoException>(() => {
@@ -116,8 +119,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
             //var inputData = new MockCompletedBusInputData(XmlReader.Create(PifFile_33_34), modified);
 			//var inputData = new MockCompletedBusInputData(modified);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, new XMLDeclarationVIFInputData(modified, null), writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, new XMLDeclarationVIFInputData(modified, null), writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 
 			//AssertHelper.Exception<VectoException>(() => {
@@ -157,8 +160,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 			var filename = Guid.NewGuid().ToString().Substring(0, 20);
 			var writer = new FileOutputVIFWriter(filename, 0);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			var jobContainer = new JobContainer(new MockSumWriter());
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            var jobContainer = new JobContainer(new MockSumWriter());
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 			jobContainer.WaitFinished();

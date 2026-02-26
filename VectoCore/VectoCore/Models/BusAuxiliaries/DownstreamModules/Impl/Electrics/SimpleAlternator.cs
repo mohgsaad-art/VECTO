@@ -31,5 +31,10 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electric
             return (other != null) && (other._efficiency == _efficiency);
         }
 
+        public override int GetHashCode()
+        {
+            return _efficiency.GetHashCode();
+        }
+
     }
 }

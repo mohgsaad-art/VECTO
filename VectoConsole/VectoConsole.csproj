@@ -7,6 +7,8 @@
     <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
 
     <Configurations>Debug;Release;MockupDebug</Configurations>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
     <DebugType>full</DebugType>

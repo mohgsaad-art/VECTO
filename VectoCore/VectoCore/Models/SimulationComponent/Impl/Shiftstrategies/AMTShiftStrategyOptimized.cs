@@ -77,7 +77,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		private void SetupVelocityDropPreprocessor(IVehicleContainer dataBus)
 		{
 			var runData = dataBus.RunData;
-			if (!(TestPowertrain.Gearbox is IAMTGearbox)) {
+			if (!(TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN) is IAMTGearbox)) {
 				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl().GetType().FullName);
 			}
 
@@ -117,11 +117,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                 //var response = _gearbox.Initialize(absTime, gear, outTorque, outAngularVelocity);
 
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+                TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 
@@ -166,11 +166,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 				//var response = _gearbox.Initialize(absTime, gear, outTorque, outAngularVelocity);
 				TestPowertrain.UpdateComponents();
-				TestPowertrain.Gearbox.SetGear = gear;
-				TestPowertrain.Gearbox.SetNextGear = gear;
+				TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+				TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetNextGear = gear;
 
-				var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-				response = TestPowertrain.Gearbox.Request(absTime,
+				var response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Initialize(outTorque, outAngularVelocity);
+				response = TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime,
 					Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
 					true);
 
@@ -530,7 +530,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			if (Equals(nextGear, currentGear) && currentGear.Gear > GearboxModelData.Gears.Keys.Min()) {
 				nextGear = CheckEarlyDownshift(absTime, dt, outTorque, outAngularVelocity, currentGear, response);
 			}
-			return nextGear;
+            if (!Equals(nextGear, currentGear) && nextGear.Gear == GearboxModelData.Gears.Keys.Min())
+            {
+                nextGear = CheckEarlyDownshift(absTime, dt, outTorque, outAngularVelocity, currentGear, response);
+            }
+            return nextGear;
 		}
 
 		protected virtual GearshiftPosition DoCheckDownshiftBase(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
@@ -610,8 +614,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			LogEnabled = false;
 			TestPowertrain.UpdateComponents();
-            TestPowertrain.Gearbox.SetDisengaged = false;
-			TestPowertrain.Gearbox.SetGear = tryNextGear;
+            TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetDisengaged = false;
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = tryNextGear;
 
 			TestPowertrain.Container.GearboxOutPort.Initialize(outTorque, outAngularVelocity);
 			var response = (ResponseDryRun)TestPowertrain.Container.GearboxOutPort.Request(

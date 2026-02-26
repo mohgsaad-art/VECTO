@@ -20,7 +20,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public IDataBus RealContainer;
 
         public ITestPowertrainVehicle Vehicle { get; }
-        public ITestPowertrainTransmission Gearbox { get; }
+        public IList<ITestPowertrainTransmission> Gearboxes { get; }
 
         public ISimpleHybridController HybridController { get; }
         public IRESSInfo BatterySystem { get; }
@@ -29,14 +29,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public ITestpowertrainCombustionEngine CombustionEngine { get; }
         public IAuxPort EngineAux { get; }
-        public ITestpowertrainElectricMotor ElectricMotor { get; }
+        public ITestpowertrainElectricMotor GetElectricMotor(int axleNumber) => ElectricMotors.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public ITestpowertrainGensetChargerAdapter Charger { get; }
-        public Dictionary<PowertrainPosition, IElectricMotor> ElectricMotorsUpstreamTransmission { get; } = new Dictionary<PowertrainPosition, IElectricMotor>();
-        public Dictionary<PowertrainPosition, ITestpowertrainElectricMotor> ElectricMotors { get; } = new Dictionary<PowertrainPosition, ITestpowertrainElectricMotor>();
-		//public ITestPowertrainElectricMotorControl ElectricMotorControl { get; }
-        public ITorqueConverter TorqueConverter { get; }
+        public IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; } = new List<IElectricMotor>();
+        public IList<ITestpowertrainElectricMotor> ElectricMotors { get; } = new List<ITestpowertrainElectricMotor>();
+		
+        public IList<ITorqueConverter> TorqueConverters { get; }
         public IDCDCConverter DCDCConverter { get; }
         public IWHRCharger WHRCharger;
+
+        public ITestPowertrainTransmission GetGearbox(int axleNumber) => Gearboxes.FirstOrDefault(x => (x as IGearboxInfo).AxleNumber == axleNumber);
 
         public TestPowertrain(ISimpleVehicleContainer container, IDataBus realContainer, bool createDriver)
         {
@@ -44,40 +46,49 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             RealContainer = realContainer;
 
             Vehicle = Container.VehicleInfo as ITestPowertrainVehicle;
-            Gearbox = Container.GearboxCtl() as ITestPowertrainTransmission;
-
+            Gearboxes = Container.GearboxesCtl.Where(x => x is ITestPowertrainTransmission).Select(x => x as ITestPowertrainTransmission).ToList();
+            
             HybridController = Container.HybridController as ISimpleHybridController;
             BatterySystem = container.BatteryInfo;
 
             Clutch = Container.ClutchesInfo.FirstOrDefault() as IClutch;
             CombustionEngine = Container.EngineInfo as ITestpowertrainCombustionEngine;
             EngineAux = CombustionEngine?.GetEngineAux;
-            ElectricMotor = container.ElectricMotorsInfo.FirstOrDefault() as ITestpowertrainElectricMotor;
-            Charger =
-                ((ElectricMotor?.GetElectricSystem as ITestpowertrainElectricSystem)?.Charger.FirstOrDefault(x =>
-                    x is ITestpowertrainGensetChargerAdapter)) as ITestpowertrainGensetChargerAdapter;
+            
             foreach (var motor in container.ElectricMotorsInfo) {
                 var em = motor as ITestpowertrainElectricMotor;
-                var pos = motor.Position;
                 if (em != null) {
-                    ElectricMotors[pos] = em;
+                    ElectricMotors.Add(em);
                 }
+
+                var pos = motor.Position;
                 if (pos == PowertrainPosition.HybridP1 || pos == PowertrainPosition.HybridP2 || pos == PowertrainPosition.IHPC ||
                     pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP3) {
-                    ElectricMotorsUpstreamTransmission[pos] = motor as IElectricMotor;
+                    ElectricMotorsUpstreamTransmission.Add(motor as IElectricMotor);
                 }
             }
 
-            if (Gearbox != null && Gearbox.GearboxType.AutomaticTransmission() && Gearbox.GearboxType != GearboxType.APTN && Gearbox.GearboxType != GearboxType.IHPC) {
-                TorqueConverter = Container.TorqueConverterInfo() as ITorqueConverter;
-                if (TorqueConverter == null) {
-                    throw new VectoException("Torque converter missing for automatic transmission: {0}", Container.TorqueConverterInfo()?.GetType().FullName);
+            Charger =
+                ((ElectricMotors.FirstOrDefault()?.GetElectricSystem as ITestpowertrainElectricSystem)?.Charger.FirstOrDefault(x =>
+                    x is ITestpowertrainGensetChargerAdapter)) as ITestpowertrainGensetChargerAdapter;
+
+            TorqueConverters = new List<ITorqueConverter>();
+            foreach (var gearbox in Gearboxes)
+            {
+                if (gearbox.GearboxType.AutomaticTransmission() && (gearbox.GearboxType != GearboxType.APTN) && (gearbox.GearboxType != GearboxType.IHPC))
+                {
+                    var torqueConverter = Container.TorqueConverterInfo((gearbox as IGearboxInfo).AxleNumber) as ITorqueConverter;
+                    if (torqueConverter != null)
+                    {
+                        TorqueConverters.Add(torqueConverter);
+                    }
+                    else
+                    {
+                        throw new VectoException(
+                            "Torque converter missing for automatic transmission: {0}", Container.TorqueConverterInfo((gearbox as IGearboxInfo).AxleNumber)?.GetType().FullName);
+                    }
                 }
             }
-
-            //if (HybridController == null) {
-            //	throw new VectoException("Unknown HybridController in TestContainer: {0}", Container.HybridController?.GetType().FullName);
-            //}
 
             var busAux = container.RunData.BusAuxiliaries;
             if (busAux != null && busAux.ElectricalUserInputsConfig.ConnectESToREESS) {
@@ -99,7 +110,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             if (Brakes == null) {
                 throw new VectoException("Unknown or missing brakes in TestContainer: {0}", Container.Brakes?.GetType().FullName);
             }
-            //Brakes = new MockBrakes(container);
         }
 
         public void UpdateComponents() => Container.UpdateComponents(RealContainer);

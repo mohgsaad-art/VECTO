@@ -833,7 +833,6 @@ public class BusAuxDemandESSAlternatorTypeTests
 
         if (reessSoC.HasValue) {
             // hybrid powertrain
-            var packCount = 2;
             runData.BatteryData = new BatterySystemData() {
                 Batteries = new List<Tuple<int, BatteryData>>() {
                         Tuple.Create(0, new BatteryData() {

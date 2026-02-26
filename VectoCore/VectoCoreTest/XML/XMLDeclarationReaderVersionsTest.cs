@@ -137,8 +137,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			var writer = new FileOutputWriter(jobFile);
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
 			
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));
 			jobContainer.AddRuns(factory);
@@ -168,8 +168,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			//var sumWriter = new SummaryDataContainer(fileWriter);
 			//var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.ModalResults1Hz = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = false;
 			runsFactory.ActualModalData = false;
 			runsFactory.Validate = false;

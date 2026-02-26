@@ -496,7 +496,7 @@ public class MTShiftStrategyTests
 		var simplePt = GetSimplePowertrain(runData, out var gbx);
 
 		testPt.Setup(c => c.Container).Returns(simplePt.Object);
-		testPt.Setup(c => c.Gearbox).Returns(gbx.Object);
+		testPt.Setup(c => c.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		testPt.Setup(c => c.UpdateComponents());
 		
 		

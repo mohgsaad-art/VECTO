@@ -13,8 +13,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
     {
         #region Members
         private IJobListViewModel _jobListVm;
-        private IMainViewModel _bottomView;
-
+        
 		private Dictionary<string, IMainViewModel> _viewModels = new Dictionary<string, IMainViewModel>(StringComparer.InvariantCultureIgnoreCase);
 		private readonly AboutViewModel _aboutViewModel;
 		private IWindowHelper _windowHelper;
@@ -75,12 +74,11 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 
 		#region Commands
 
-		private ICommand _openSettings;
 		private ICommand _switchTopView;
 		public ICommand OpenSettings
         {
             get{
-                return _openSettings ?? (ICommand)new RelayCommand(OpenSettingsExecute);
+                return (ICommand)new RelayCommand(OpenSettingsExecute);
             }
             private set
             {

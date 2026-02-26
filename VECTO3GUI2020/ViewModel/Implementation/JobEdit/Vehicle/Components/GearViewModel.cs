@@ -14,8 +14,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 {
     public abstract class GearViewModel : ViewModelBase, IComponentViewModel, IGearViewModel
     {
-        IComponentViewModelFactory _vmFactory;
-		protected IXMLGearData _inputData;
+        protected IXMLGearData _inputData;
 
 
 
@@ -138,7 +137,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
     public class GearViewModel_v2_0 : GearViewModel_v1_0
     {
-        public static readonly string VERSION = typeof(XMLGearDataV20).FullName;
+        public new static readonly string VERSION = typeof(XMLGearDataV20).FullName;
 
 
 		public GearViewModel_v2_0(IXMLGearData inputData) : base(inputData)

@@ -36,7 +36,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json;
-using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -46,7 +45,6 @@ using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModFilter;
@@ -58,9 +56,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 	{
 		private static int _jobNumberCounter;
 
-		private static object _kernelLock = new object();
-		private static IKernel _kernel; //Kernel is only used when the SimulatorFactory is created with the Factory Method.
-        
 		protected IFollowUpSimulatorFactoryCreator _followUpSimulatorFactoryCreator = null;
 
 		protected bool _simulate = true;
@@ -72,9 +67,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		protected IPowertrainBuilder PowertrainBuilder { get; }
 
 		protected IModalDataFactory ModDataFactory { get; }
-
-
-		#region Constructors and Factory Methods to instantiate Instances of SimulatorFactory without NInject (should only be used in Testcases that are not updated yet)
 
 		protected SimulatorFactory(ExecutionMode mode, IOutputDataWriter writer, bool validate, IPowertrainBuilder ptBuilder, IModalDataFactory modDataFactory)
 		{
@@ -94,21 +86,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			ThreadPool.SetMinThreads(workerThreads, completionThreads);
 
 		}
-
-        [Obsolete("Creation of new SimulatorFactories should be done with SimulatorFactoryFactory NInject Factory", false)]
-		public static ISimulatorFactory CreateSimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer, IDeclarationReport declarationReport = null, IVTPReport vtpReport=null, bool validate = true)
-		{
-			if (_kernel == null) {
-				lock (_kernelLock) {
-					if (_kernel == null) {
-						_kernel = new StandardKernel(new VectoNinjectModule());
-					}
-				}
-			}
-			return _kernel.Get<ISimulatorFactoryFactory>().Factory(mode, dataProvider, writer, declarationReport, vtpReport, validate);
-		}
-
-		#endregion
 
 		public ISimulatorFactory FollowUpSimulatorFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries)
 		{

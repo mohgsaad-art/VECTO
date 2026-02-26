@@ -191,7 +191,6 @@ public class XMLCompletedBusVehicleWriterTest
 
 	public static void WriteDocument(XDocument document, out string writtenXml)
 	{
-		string documentString = "";
 		using (var memoryWriter = new MemoryStream())
 		{
 			using (var xmlWriter = new XmlTextWriter(memoryWriter, Encoding.UTF8))
@@ -235,7 +234,7 @@ public class XMLCompletedBusVehicleWriterTest
 				{
 					completedBusFiles.Add(file);
 				}
-			} catch (Exception ex) {
+			} catch (Exception) {
 				//ignore;
 			}
 		}

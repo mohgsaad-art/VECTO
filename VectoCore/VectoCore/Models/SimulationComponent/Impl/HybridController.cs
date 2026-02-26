@@ -201,15 +201,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					continue;
 				}
 
-				if (retVal is ResponseOverload && DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
-					engaged != gearbox.GearEngaged(absTime)) {
-					retryCount++;
-					retry = true;
-					Strategy.OperatingpointChangedDuringRequest(absTime, dt, outTorque, outAngularVelocity, dryRun,
-						retVal);
-					continue;
-				}
-
 				if (retVal is ResponseInvalidOperatingPoint) {
 					retryCount++;
 					retry = true;

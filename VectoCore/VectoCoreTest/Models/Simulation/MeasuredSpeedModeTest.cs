@@ -68,13 +68,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	public class MeasuredSpeedModeTest
 	{
 		private IPowertrainBuilder PowertrainBuilder;
+        private StandardKernel _kernel;
 
-		[OneTimeSetUp]
+        [OneTimeSetUp]
 		public void Init()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			PowertrainBuilder = kernel.Get<IPowertrainBuilder>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			PowertrainBuilder = _kernel.Get<IPowertrainBuilder>();
 		}
 
 		/// <summary>
@@ -195,10 +196,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				"Line 1: The number of values is not correct. Expected 7 Columns, Got 2 Columns");
 		}
 
-		private static void TestCycleRead(string inputData, CycleType cycleType, bool autoCycle = true,
+		private void TestCycleRead(string inputData, CycleType cycleType, bool autoCycle = true,
 			bool crossWindRequired = false)
 		{
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData(), null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData(), null, null);
 
 			if (autoCycle) {
 				var cycleTypeCalc = DrivingCycleDataReader.DetectCycleType(VectoCSVFile.ReadStream(inputData.ToStream()));
@@ -373,7 +374,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = PowertrainBuilder.Build(data, new MockModalDataContainer());
 		}
 
-		private static void RunJob(string jobFile, string expectedModFile, string actualModFile, string expectedSumFile,
+		private void RunJob(string jobFile, string expectedModFile, string actualModFile, string expectedSumFile,
 			string actualSumFile, bool actualModData = false)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -381,8 +382,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-			runsFactory.ActualModalData = actualModData;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            runsFactory.ActualModalData = actualModData;
 			runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);

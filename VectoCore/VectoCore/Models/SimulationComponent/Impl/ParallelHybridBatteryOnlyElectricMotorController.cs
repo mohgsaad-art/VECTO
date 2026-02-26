@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			TestPowertrain.UpdateComponents();
 
 			var emPos = ElectricMotorsOff.Keys.First();
-			var emCtl = TestPowertrain.ElectricMotors[emPos].Control as ITestPowertrainElectricMotorControl;
+			var emCtl = TestPowertrain.ElectricMotors.First(x => x.Position == emPos).Control as ITestPowertrainElectricMotorControl;
 
             emCtl.EmOff = false;
 
@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					//};
 					//TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 					emCtl.EMTorque = emTq;
-					var retVal = TestPowertrain.ElectricMotor.Request(absTime, dt, outTorque,
+					var retVal = TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime, dt, outTorque,
 							outAngularVelocity, true);
 					//retVal.HybridController.StrategySettings = cfg;
 					return retVal;
@@ -146,7 +146,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			var gear = DataBus.GearboxInfo().Gear;
 			var emPos = ElectricMotorsOff.Keys.First();
-			var emCtl = TestPowertrain.ElectricMotors[emPos].Control as ITestPowertrainElectricMotorControl;
+			var emCtl = TestPowertrain.ElectricMotors.First(x => x.Position == emPos).Control as ITestPowertrainElectricMotorControl;
 
             TestPowertrain.UpdateComponents();
 
@@ -154,7 +154,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			emCtl.EMTorque = null;
 			
 			var emOffResponse =
-				TestPowertrain.ElectricMotor.Request(absTime, dt, outTorque, outAngularVelocity, true);
+				TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime, dt, outTorque, outAngularVelocity, true);
 
 			return emOffResponse;
 		}

@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			Kilogram payload, CubicMeter volume, double? passengers)
 		{
 			return new[] {
-				(elEnergy / distance).ConvertToMegaJoulePerKiloMeter(),
+				((elEnergy ?? 0.SI<WattSecond>()) / distance).ConvertToMegaJoulePerKiloMeter(),
 			};
 		}
 

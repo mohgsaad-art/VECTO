@@ -29,13 +29,14 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using Moq;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -44,11 +45,13 @@ using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 
@@ -58,7 +61,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	[Parallelizable(ParallelScope.All)]
 	public class LossMapRangeValidationTest
 	{
-		public const string ShiftPolygonFile = @"TestData/Components/ShiftPolygons.vgbs";
+        private StandardKernel _kernel;
+
+        public const string ShiftPolygonFile = @"TestData/Components/ShiftPolygons.vgbs";
 		public const string AccelerationFile = @"TestData/Components/Truck.vacc";
 		public const string EngineFile = @"TestData/Components/40t_Long_Haul_Truck.veng";
 		public const string AxleGearLossMap = @"TestData/Components/Axle 40t Truck.vtlm";
@@ -73,7 +78,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		/// <summary>
 		/// VECTO-173
@@ -295,8 +301,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWithLossMapEfficiency_Engineering()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/12t Delivery Truck Engineering Efficiency.vecto");
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, null);
-			var jobContainer = new JobContainer(null);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, dataProvider, null, null, null, false);
+            var jobContainer = new JobContainer(null);
 			jobContainer.AddRuns(runsFactory);
 		}
 
@@ -310,8 +316,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(jobFileName);
 
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFileName);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
-			var jobContainer = new JobContainer(new MockSumWriter());
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, dataProvider, fileWriter, null, null, false);
+            var jobContainer = new JobContainer(new MockSumWriter());
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
@@ -328,8 +334,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWith_Axle_LossMapEfficiency_Declaration()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/40t_Long_Haul_Truck with AxleEfficiency.vecto");
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
-			var jobContainer = new JobContainer(null);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
+            var jobContainer = new JobContainer(null);
 
 			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));
 		}
@@ -341,7 +347,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWith_Gear_LossMapEfficiency_Declaration()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/40t_Long_Haul_Truck with GearEfficiency.vecto");
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
 			var jobContainer = new JobContainer(null);
 
 			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));

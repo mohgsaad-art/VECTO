@@ -242,8 +242,6 @@ public class ReportResultTestUtils
 
 	public static IDeclarationInputDataProvider GetMockInputData(int amdm, bool ovc)
 	{
-		var xmlType = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24 + ":FOO";
-
 		var mock = new Mock<IDeclarationInputDataProvider>();
 		var inputDataSource = new DataSource() {
 			SourceType = DataSourceType.XMLFile

@@ -38,6 +38,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
@@ -88,8 +89,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            factory.Validate = false;
 
 			var runs = factory.SimulationRuns().ToArray();
 			Assert.AreEqual(10, runs.Length);
@@ -100,8 +101,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		{
 			var inputDataProvider = xmlInputReader.CreateDeclaration(SampleVehicleDecl);
 			
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            factory.Validate = false;
 
 			var runs = factory.SimulationRuns().ToArray();
 

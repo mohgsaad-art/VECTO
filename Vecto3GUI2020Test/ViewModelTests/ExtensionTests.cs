@@ -14,7 +14,6 @@ namespace Vecto3GUI2020Test.ViewModelTests
 		public void TestGetValuesAsObservableCollectionEnumExtension()
 		{
 
-			VehicleCode? vehicleCode = null;
 			var collection1 = EnumHelper.GetValuesAsObservableCollectionExcluding<Enum, VehicleCode>(VehicleCode.NOT_APPLICABLE, VehicleCode.CF);
 
 			Assert.False(collection1.Contains(VehicleCode.NOT_APPLICABLE));

@@ -93,6 +93,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			private readonly Meter _distance;
 			private readonly string _reason;
 			public Meter Distance => _distance;
+
+			public string Reason => _reason;
 		}
 
 
@@ -166,13 +168,25 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 			ApplyBatterySafetyMargin(batData, rawFcCalcEntries, maxWindowSize);
 
-			if (TryWithFullDistance(fcData, ref batData, out var result)) {
-				StartSoC = result.InitSoc;
-				WindowSize = maxWindowSize;
-				BinarySearchIterations = 0;
-				return result;
+            SearchResult searchResult = null;
+			try
+			{
+                if (TryWithFullDistance(fcData, ref batData, out var result))
+                {
+                    StartSoC = result.InitSoc;
+                    WindowSize = maxWindowSize;
+                    BinarySearchIterations = 0;
+                    return result;
+                }
+
+                searchResult = BinarySearchFuelCellPowerDemand(fcData, batData);
+            }
+			catch (Exception ex)
+			{
+				searchResult = new SearchResult(false, 0.0, 0.SI<Meter>(), rawFcCalcEntries.ToArray(), ex.Message);
 			}
-			return BinarySearchFuelCellPowerDemand(fcData, batData);
+
+			return searchResult;
 		}
 
 		private SearchResult BinarySearchFuelCellPowerDemand(FuelCellSystemData fcData, BatterySystemData batData)
@@ -197,9 +211,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 							return result;
 						} catch (Exception ex) {
 							Log.Warn(ex, $"Failed to calculate fuel cell power for distance ${distance}");
-						}
-
-						return new SearchResult(false, batData.InitialSoC, distance, Array.Empty<FCCalcEntry>(), "error during calculation");
+                            return new SearchResult(false, batData.InitialSoC, distance, Array.Empty<FCCalcEntry>(), ex.Message);
+                        }
 					},
 					acceptFunction:
 					(distance, result) => {
@@ -214,8 +227,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 					},
 					abortCriterion: (d, o) => {
 						if (d < minWindowSize) {
-							throw new VectoSearchAbortedException(
-								$"Window size < {minWindowSize}, battery is too small");
+							throw new VectoSearchAbortedException($"Window size < {minWindowSize}, {(o as SearchResult).Reason}");
 						}
 
 						if (!accepted.Any() || !rejected.Any()) {
@@ -589,6 +601,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 		private void WriteEntriesToFile(Meter windowSize, FCCalcEntry[] fcCalcEntries, double initSoc,
             WattSecond deltaEnergyBatInt, bool success)
         {
+#if DEBUG
 			lock (fileLock)
             {
 				if (!_writeModalResults)
@@ -610,14 +623,14 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
                     }
                 }
             }
-
+#endif
 		}
 
-        /// <summary>
-        /// Check if fuelcell can supply enough power over the cycle.
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckFCPower(FuelCellSystemData fcData, BatterySystemData batData, out string msg)
+		/// <summary>
+		/// Check if fuelcell can supply enough power over the cycle.
+		/// </summary>
+		/// <returns></returns>
+		public bool CheckFCPower(FuelCellSystemData fcData, BatterySystemData batData, out string msg)
         {
             msg = "";
 			var minFcPower = 0.SI<Watt>(); //values below min power will be handled with time slicing

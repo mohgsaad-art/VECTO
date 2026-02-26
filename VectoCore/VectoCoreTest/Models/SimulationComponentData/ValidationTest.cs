@@ -30,7 +30,6 @@
 */
 
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -38,6 +37,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -45,11 +46,13 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -63,11 +66,14 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 	[SuppressMessage("ReSharper", "UnusedMember.Local")]
 	public class ValidationTestClass
 	{
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
@@ -308,7 +314,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				ExecutionMode = ExecutionMode.Engineering,
             };
 
-            var container = VehicleContainer.CreateVehicleContainer(runData, null, null);
+            var container = _kernel.Get<IPowertrainBuilder>().Build(runData, null, null);
 			var data = new DistanceRun(container);
 
 			var results = data.Validate(ExecutionMode.Declaration, VectoSimulationJobType.ConventionalVehicle, null, null, false);
@@ -349,7 +355,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				}
 			};
 
-			var container = VehicleContainer.CreateVehicleContainer(
+			var container = _kernel.Get<IPowertrainBuilder>().Build(
 				new VectoRunData {
 					JobRunId = 0,
 					GearboxSinglePwt = gearboxData,

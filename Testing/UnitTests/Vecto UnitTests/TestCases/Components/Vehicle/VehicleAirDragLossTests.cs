@@ -106,7 +106,7 @@ public class VehicleAirDragLossTests
 		container.Setup(c => c.DrivingCycleInfo).Returns(cycle.Object);
 		container.Setup(c => c.RunData).Returns(runData);
 		var pi = new Mock<IPowertainInfo>();
-		pi.Setup(p => p.VehicleArchitecutre).Returns(VectoSimulationJobType.ConventionalVehicle);
+		pi.Setup(p => p.VehicleArchitecture).Returns(VectoSimulationJobType.ConventionalVehicle);
 		pi.Setup(p => p.HasCombustionEngine).Returns(true);
 		container.Setup(c => c.PowertrainInfo).Returns(pi.Object);
 		var eng = new Mock<IEngineInfo>();

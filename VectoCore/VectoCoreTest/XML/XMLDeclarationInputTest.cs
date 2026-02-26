@@ -36,25 +36,26 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Declaration.Auxiliaries;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using NUnit.Framework;
-using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry;
-using TUGraz.VectoCore.Models.Declaration.Auxiliaries;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using TUGraz.VectoCore.Ninject;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.VectoCore.Tests.XML
@@ -417,8 +418,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			var jobContainer = new JobContainer(sumData);
 			var dataProvider = xmlInputReader.CreateDeclaration(reader);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-			runsFactory.WriteModalResults = true;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);
 
@@ -578,8 +579,8 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("dummy"));
-			var jobContainer = new JobContainer(null);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("dummy"), null, null, false);
+            var jobContainer = new JobContainer(null);
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 		}

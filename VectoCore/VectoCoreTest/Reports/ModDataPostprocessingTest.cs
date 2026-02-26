@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
@@ -18,6 +19,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
@@ -41,11 +43,14 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		private const int _axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
 
+		private StandardKernel _kernel;
+
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
 		[TestCase(),
@@ -55,9 +60,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -217,9 +221,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -379,9 +382,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -547,9 +549,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -772,9 +773,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -1007,9 +1007,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: alternatorType);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name + $"_{p_es_cons}_{p_es_gen}_{p_es_smartgen}";
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
@@ -1218,9 +1218,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.None);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -1410,9 +1409,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -1602,9 +1600,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -1827,9 +1824,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name + $"_{nlConsumedCorrected}";
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -2024,9 +2020,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -2155,9 +2150,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.Conventional);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -2311,9 +2305,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 
@@ -2469,9 +2462,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -2600,9 +2592,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			var em = runData.GetEMData().First();
 

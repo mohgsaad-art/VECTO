@@ -7,6 +7,6 @@ namespace VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components
     {
         bool LabelVisible { get; set; }
         bool IsReadOnly { get; set; }
-		XmlNode XMLSource { get; }
+		new XmlNode XMLSource { get; }
 	}
 }

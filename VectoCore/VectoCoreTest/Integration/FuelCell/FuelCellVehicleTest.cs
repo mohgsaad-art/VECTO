@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using TUGraz.VectoCommon.Exceptions;
@@ -17,6 +18,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell;
@@ -30,23 +32,20 @@ namespace TUGraz.VectoCore.Tests.Integration.FuelCell
 	[Parallelizable(ParallelScope.Children)]
 	public class FuelCellVehicleTest
 	{
+        private StandardKernel _kernel;
 
-		protected const string FCHV_E2_JOB = @"TestData/H2_FCV/GenericVehicleE2 - FCHV/FCHV_singleFc.vecto";
+        protected const string FCHV_E2_JOB = @"TestData/H2_FCV/GenericVehicleE2 - FCHV/FCHV_singleFc.vecto";
 
 		protected const string FCHV_E2_JOB_300kW = @"TestData/H2_FCV/GenericVehicleE2 - FCHV/FCHV_singleFc_300kW_fc.vecto";
         protected const string FCHV_E2_JOB_multipleFC = @"TestData/H2_FCV/Group 2 FCHV 100kW FCS/Gr2_FCHV_100kW_FCS_10kWhBat_multipleFc.vecto";
 
 		protected const string FCHV_IEPC_JOB_1 = @"TestData/H2_FCV/FCHV_IEPC/IEPC_Gbx3Speed_FC/IEPC_ENG_Gbx3.vecto";
 
-		private string TEST_WORKING_DIR;
-
-        [OneTimeSetUp]
+		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
-			//TEST_WORKING_DIR = Directory.GetCurrentDirectory();
-			//Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
-
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase(FCHV_E2_JOB, 0, TestName = "FCHV E2 Job RD single FC")]
 		
@@ -64,12 +63,12 @@ namespace TUGraz.VectoCore.Tests.Integration.FuelCell
 			Assert.IsTrue(run.FinishedWithoutErrors);
 		}
 
-		private static IVectoRun GetRun(string jobFile, int cycleIdx, out IVehicleContainer pt, out IEngineeringInputDataProvider inputProvider, string fileWriterSuffix = "")
+		private IVectoRun GetRun(string jobFile, int cycleIdx, out IVehicleContainer pt, out IEngineeringInputDataProvider inputProvider, string fileWriterSuffix = "")
 		{
 			return GetRun(jobFile, cycleIdx, out pt, out inputProvider, null, fileWriterSuffix);
 		}
 
-		private static IVectoRun GetRun(string jobFile, int cycleIdx, out IVehicleContainer pt, out IEngineeringInputDataProvider inputProvider, Action<IEngineeringInputDataProvider> modifyInputData,string fileWriterSuffix = "")
+		private IVectoRun GetRun(string jobFile, int cycleIdx, out IVehicleContainer pt, out IEngineeringInputDataProvider inputProvider, Action<IEngineeringInputDataProvider> modifyInputData,string fileWriterSuffix = "")
 		{
 			inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile) as IEngineeringInputDataProvider;
 
@@ -82,8 +81,8 @@ namespace TUGraz.VectoCore.Tests.Integration.FuelCell
 			TestContext.Progress.WriteLine($"Creating job using {jobFile}");
 
 			
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-			factory.Validate = false;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+            factory.Validate = false;
 			factory.WriteModalResults = true;
 
 			var sumContainer = new SummaryDataContainer(writer);

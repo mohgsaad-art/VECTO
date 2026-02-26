@@ -123,8 +123,8 @@ public class RunDataFactoryTest
 		//var sumWriter = new SummaryDataContainer(fileWriter);
 		//var jobContainer = new JobContainer(sumWriter);
 		var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-		runsFactory.ModalResults1Hz = false;
+		var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+        runsFactory.ModalResults1Hz = false;
 		runsFactory.WriteModalResults = false;
 		runsFactory.ActualModalData = false;
 		runsFactory.Validate = false;

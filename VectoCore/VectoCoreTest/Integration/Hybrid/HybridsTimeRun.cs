@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 {
@@ -16,6 +19,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
     [Parallelizable(ParallelScope.All)]
     public class HybridsTimeRunTest
     {
+        private StandardKernel _kernel;
+
         private const string P2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P2_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
         private const string P3_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P3_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
         private const string P4_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P4_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
@@ -29,7 +34,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         public void Init()
         {
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
         /*
          * How to correct vdri data for time runs with gear
@@ -168,8 +174,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer, validate: false);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputProvider, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];
@@ -192,8 +198,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer, validate: false);
-			factory.SumData = new SummaryDataContainer(writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+            factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];
 			run.Run();

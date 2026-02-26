@@ -514,7 +514,7 @@ namespace TUGraz.VectoCore.OutputData
 			if (!data.HasGearbox) {
 				return 0.SI<Scalar>();
 			}
-			var prevGear = data.GetValues<uint>(ModalResultField.Gear, axleNumber.FormatAxleNumber()).First();
+			var prevGear = data.GetValues<uint>(ModalResultField.Gear, axleNumber.FormatAxleNumber())?.FirstOrDefault() ?? 0;
 			var lastGear = prevGear;
 			var gearCount = 0;
 
@@ -592,7 +592,10 @@ namespace TUGraz.VectoCore.OutputData
 				{
 					retVal[i] = null;
 				}
-                retVal[i] = 100 * retVal[i] / duration;
+				else
+				{
+					retVal[i] = 100 * retVal[i] / duration;
+				}
 			}
 			return retVal;
 		}

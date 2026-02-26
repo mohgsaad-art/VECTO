@@ -159,7 +159,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 	public class ComponentsViewModel_v1_0 : ComponentsViewModel
 	{
 
-		public static new readonly string VERSION = typeof(XMLDeclarationComponentsDataProviderV10).FullName;
+		public static readonly string VERSION = typeof(XMLDeclarationComponentsDataProviderV10).FullName;
 
 		public ComponentsViewModel_v1_0(IXMLVehicleComponentsDeclaration inputData, IComponentViewModelFactory vmFactory) : base(inputData, vmFactory)
 		{

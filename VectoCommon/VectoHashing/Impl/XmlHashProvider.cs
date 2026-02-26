@@ -88,6 +88,15 @@ namespace TUGraz.VectoHashing.Impl
 				&& (VersioningUtil.CompareVersions(versionNodes[0].InnerText, "1.0.0") >= 0);
 		}
 
+		public static bool DoesReportHaveBadJobHashWithMonitoringData(XmlDocument xmlDoc)
+		{
+            var toolVersion = xmlDoc.SelectSingleNode("//*[local-name()='SimulationToolVersion']")?.InnerText;
+
+            return VersioningUtil.IsVersion(toolVersion)
+                && (VersioningUtil.CompareVersions(toolVersion, "5.0.8") <= 0)
+                && (VersioningUtil.CompareVersions(toolVersion, "5.0.0") >= 0);
+        }
+
 		public static XmlDocument ComputeHash(XmlDocument doc, string elementId, IEnumerable<string> canonicalization,
 			string digestMethod)
 		{
@@ -107,7 +116,7 @@ namespace TUGraz.VectoHashing.Impl
 			bool isOldVectoSimReport = IsOldVectoSimReport(doc);
 
 			// load any HMAC algorithm so that the key is also available. the HVAC algorithm used is the one set in the Reference object below
-			var hmac = HMAC.Create("HMACSHA256"); 
+			var hmac = new HMACSHA256(); //HMAC.Create("HMACSHA256"); 
 			var signedXml = new SignedXml(doc);
 			var reference = new Reference("#" + elementId) {
 				DigestMethod = digestMethod

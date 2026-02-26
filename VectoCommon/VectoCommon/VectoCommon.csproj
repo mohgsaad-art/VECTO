@@ -3,6 +3,7 @@
     <Title>Vehicle Energy Consumption Calculation TOol: VectoCommon</Title>
     <Description>Provides Vecto models and utils.</Description>
     <Configurations>Debug;Release</Configurations>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCommon</RootNamespace>
@@ -28,5 +29,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>XMLNames.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+	<None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

@@ -31,27 +31,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Ninject;
+using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Tests.Models.SimulationComponent;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
-using NUnit.Framework;
-using System.IO;
-using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.InputData.Reader.Impl;
-using TUGraz.VectoCore.Tests.Models.SimulationComponent;
 
 namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 {
@@ -59,7 +62,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 	[Parallelizable(ParallelScope.All)]
 	public class MinimalPowertrain
 	{
-		public const string CycleFile = @"TestData/Integration/MinimalPowerTrain/1-Gear-Test-dist.vdri";
+        private StandardKernel _kernel;
+
+        public const string CycleFile = @"TestData/Integration/MinimalPowerTrain/1-Gear-Test-dist.vdri";
 		public const string CycleFileStop = @"TestData/Integration/MinimalPowerTrain/1-Gear-StopTest-dist.vdri";
 		public const string EngineFile = @"TestData/Integration/MinimalPowerTrain/24t Coach.veng";
 		public const string GearboxFile = @"TestData/Integration/MinimalPowerTrain/24t Coach-1Gear.vgbx";
@@ -72,7 +77,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase]
 		public void TestWheelsAndEngineInitialize()
@@ -89,8 +95,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var runData = new VectoRunData() {
 				JobName = "Coach_MinimalPowertrainOverload"
 			};
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				VehicleData = vehicleData,
 				DriverData = driverData
 			}, modData, null);
@@ -152,8 +158,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				}
 
 			};
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
@@ -232,8 +238,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				DriverData = driverData,
 				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
-			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))

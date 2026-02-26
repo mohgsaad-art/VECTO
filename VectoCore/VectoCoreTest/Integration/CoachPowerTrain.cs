@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -48,6 +49,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -58,6 +60,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 {
 	public class CoachPowerTrain
 	{
+        private static StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
 		public const string AccelerationFile = @"TestData/Components/Truck.vacc";
 		public const string EngineFile = @"TestData/Components/24t Coach.veng";
 		public const string EngineFileHigh = @"TestData/Components/24t Coach_high.veng";
@@ -107,10 +111,10 @@ namespace TUGraz.VectoCore.Tests.Integration
 				DriverData = driverData
 			};
 			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(runData, fileWriter, null)
-				{ WriteModalResults = true };
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
+			modData.WriteModalResults = true;
 
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 			var clutch = new Clutch(container, engineData);
@@ -122,7 +126,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(clutch)
 				.AddComponent(engine);
 			

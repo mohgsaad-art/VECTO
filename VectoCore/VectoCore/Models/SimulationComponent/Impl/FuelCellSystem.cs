@@ -16,7 +16,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TestpowertrainFuelCellSystem : FuelCellSystem
     {
-		private readonly IMileageCounter _mileageCounter;
 		protected FuelCellSystemData ModelData { get; set; }
 		
 		

@@ -32,10 +32,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Models.Simulation;
@@ -45,10 +47,10 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
-using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
@@ -56,7 +58,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class VehicleTest
 	{
-		private const string VehicleDataFileCoach = @"TestData/Components/24t Coach.vveh";
+        private StandardKernel _kernel;
+
+        private const string VehicleDataFileCoach = @"TestData/Components/24t Coach.vveh";
 		private const string VehicleDataFileTruck = @"TestData/Components/40t_Long_Haul_Truck.vveh";
 		public static readonly double Tolerance = 0.001;
 
@@ -65,6 +69,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
         public void RunBeforeAnyTests()
         {
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+            _kernel = new StandardKernel(new VectoNinjectModule());
         }
 
 
@@ -80,7 +85,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			//VehicleData.ReadFromFile(VehicleDataFile);
 			//vehicleData.CrossWindCorrectionMode = CrossWindCorrectionMode.NoCorrection;
 
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
@@ -122,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void VehicleAirResistanceTest(double vehicleSpeed, double acceleration, double dt, double height,
 			double expected)
 		{
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
 
@@ -158,7 +163,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
                 _airdragDataAdapter.GetDeclarationAirResistanceCurve("TractorSemitrailer",
 					6.2985.SI<SquareMeter>(), 3.SI<Meter>()), CrossWindCorrectionMode.DeclarationModeCorrection);
 
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()

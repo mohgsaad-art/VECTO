@@ -97,12 +97,6 @@ namespace TUGraz.VectoCore.OutputData
 
 		public IModalDataPostProcessor PostProcessingCorrection { set; protected get; }
 
-		[Obsolete("Avoid creating ModalDataContainer via constructor - use dependency injection!")]
-		public ModalDataContainer(VectoRunData runData, IModalDataWriter writer,
-			Action<ModalDataContainer> addReportResult,
-			params IModalDataFilter[] filter) : this(runData, writer, addReportResult, filter, null) { }
-
-		
         public ModalDataContainer(VectoRunData runData, IModalDataWriter writer,
 			Action<ModalDataContainer> addReportResult,
 			IModalDataFilter[] filter, IModalDataPostProcessorFactory postProcessorFactory)
@@ -110,24 +104,14 @@ namespace TUGraz.VectoCore.OutputData
             _runData = runData;
 			_writer = writer;
 
-			_filters = filter ?? new IModalDataFilter[0];
+			_filters = filter ?? Array.Empty<IModalDataFilter>();
 			_addReportResult = addReportResult ?? (x => { });
 
 			Auxiliaries = new Dictionary<string, DataColumn>();
 			Data = new ModalResults();
 			CurrentRow = Data.NewRow();
 
-			if (postProcessorFactory == null) {
-				// was not injected but called by the obsolete constructor
-				postProcessorFactory =
-					new StandardKernel(new VectoNinjectModule()).Get<IModalDataPostProcessorFactory>();
-			}
 			PostProcessingCorrection = postProcessorFactory.GetPostProcessor(runData.JobType, runData.BatteryOnlyHybridMode);
-
-            if (runData.EngineData != null) {
-				
-			}
-
 		}
 
 		public void RegisterComponent(VectoSimulationComponent component)
@@ -930,7 +914,7 @@ namespace TUGraz.VectoCore.OutputData
 					.Select(x => $"{x.GetName()}_{batKey}"));
 			}
 
-			return dataColumns.Where(x => Data.Columns.Contains(x)).ToArray();
+			return dataColumns.Where(x => Data.Columns.Contains(x)).Distinct().ToArray();
 		}
 
 		[Obsolete]

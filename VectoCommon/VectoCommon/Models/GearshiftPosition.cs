@@ -26,9 +26,19 @@ namespace TUGraz.VectoCommon.Models
 		public bool Engaged => Gear != 0;
 
 		public override bool Equals(object x) =>
-			x is GearshiftPosition other && other.Gear == Gear && other.TorqueConverterLocked == TorqueConverterLocked;
+			(x != null) && x is GearshiftPosition other && other.Gear == Gear && other.TorqueConverterLocked == TorqueConverterLocked;
 
 		public override int GetHashCode() => Name.GetHashCode();
+
+		public static bool operator ==(GearshiftPosition p1, GearshiftPosition p2)
+		{
+            return ((object)p1 == null) ? ((object)p2 == null) : p1.Equals(p2);
+        }
+
+		public static bool operator !=(GearshiftPosition p1, GearshiftPosition p2)
+		{
+			return !(p1 == p2); 
+		}
 
 		public static bool operator >(GearshiftPosition p1, GearshiftPosition p2)
 		{

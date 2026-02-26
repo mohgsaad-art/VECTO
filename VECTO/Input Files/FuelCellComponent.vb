@@ -31,6 +31,7 @@ Public Class FuelCellComponent
             Dim retVal = New DataSource()
             retVal.SourceType = DataSourceType.JSONFile
             retVal.SourceFile = _filePath
+            Return retVal
         End Get
     End Property
 

@@ -41,7 +41,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		public int AxleNumber { get => _axleNumber;
 			set => SetProperty(ref _axleNumber, value);
 		}
-		public DataSource DataSource => _dataSource;
+		public DataSource DataSource => null;
 
 		private ITyreViewModel _tyreViewModel;
 		public ITyreViewModel TyreViewModel { 
@@ -51,8 +51,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre => _tyreViewModel;
 
         private bool _steered;
-		private DataSource _dataSource;
-		public bool Steered { get => _steered; set => SetProperty(ref _steered, value); }
+		
+        public bool Steered { get => _steered; set => SetProperty(ref _steered, value); }
 
 
 

@@ -38,7 +38,6 @@ Imports TUGraz.VectoCore.Models.SimulationComponent.Impl
 Imports TUGraz.VectoCore.Ninject
 Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.OutputData.XML
-Imports TUGraz.VectoCore.OutputData.XML.Engineering.Interfaces
 
 
 ''' <summary>

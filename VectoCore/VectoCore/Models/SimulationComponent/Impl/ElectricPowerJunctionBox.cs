@@ -48,26 +48,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false)
 		{
-			if ((absTime.Value() == 0)
-				&& (powerDemand.Value() == 0)
-				&& dryRun)
+			if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
 			{
 				return _electricPower.Request(absTime, dt, powerDemand, dryRun);
 			}
 
-			if (_powerDemands[CurrentTorqueSplitterNextComponent] == null)
+            if (_powerDemands[CurrentTorqueSplitterNextComponent] == null)
 			{
 				_powerDemands[CurrentTorqueSplitterNextComponent] = powerDemand;	
 			}
 
-			if (_powerDemands.Any(x => x.Value == null))
-			{
-				return new ElectricSystemNotReadyResponse(this);
-			}
-
-			_electricPowerResponse = _electricPowerResponse ?? _electricPower.Request(absTime, dt, _powerDemands.Values.Sum(), dryRun);
-
-			return _electricPowerResponse;
+			return _powerDemands.Any(x => x.Value == null)
+				? new ElectricSystemNotReadyResponse(this)
+				: _electricPowerResponse = _electricPowerResponse ?? _electricPower.Request(absTime, dt, _powerDemands.Values.Sum(), dryRun);
 		}
 
 		public Watt ElectricAuxPower => _electricPower.ElectricAuxPower;

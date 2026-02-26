@@ -24,7 +24,6 @@ namespace VECTO3GUI2020.Ninject.Factories
 
     public class ComponentViewModelFactoryModule : AbstractNinjectModule
 	{
-		private IComponentViewModelFactoryInternal factory;
 		private const string scopeName = nameof(IComponentViewModelFactory);
 		private const string common = "common";
 

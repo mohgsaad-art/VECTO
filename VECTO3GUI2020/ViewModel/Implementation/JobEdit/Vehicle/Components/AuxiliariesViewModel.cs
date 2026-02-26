@@ -42,9 +42,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
         }
 
-		private bool _savedInDeclarationMode;
-		private IList<IAuxiliaryDeclarationInputData> _auxiliaries;
-        public virtual bool SavedInDeclarationMode => throw new NotImplementedException();
+		public virtual bool SavedInDeclarationMode => throw new NotImplementedException();
 
 		public virtual IList<IAuxiliaryDeclarationInputData> Auxiliaries => _auxiliaryViewModels.Cast<IAuxiliaryDeclarationInputData>().ToList();
 	}

@@ -30,22 +30,25 @@
 */
 
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
-using System.IO;
-using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
-using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
-using Newtonsoft.Json;
 using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
 
 namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
@@ -54,11 +57,13 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 	[Parallelizable(ParallelScope.All)]
 	public class AuxDemandTest
 	{
-		[OneTimeSetUp]
+        private static StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+        }
 
 		[TestCase(12000, 1256, 148, 148, 5649.8149)]
 		[TestCase(12000, 1256, -45, -30, 8516.9257)]
@@ -155,7 +160,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 					CurbMass = vehicleMass.SI<Kilogram>()
 				}
 			};
-			var vehicle = VehicleContainer.CreateVehicleContainer(runData, new MockModalDataContainer(), null);
+			var vehicle = _kernel.Get<IPowertrainBuilder>().Build(runData, new MockModalDataContainer(), null);
             var engine = new CombustionEngine(vehicle, modelData);
 			//new Vehicle(vehicle, new VehicleData());
 			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking, DrivingAction = DrivingAction.Brake };

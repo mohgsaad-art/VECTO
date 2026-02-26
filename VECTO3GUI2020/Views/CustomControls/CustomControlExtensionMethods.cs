@@ -12,7 +12,6 @@ namespace VECTO3GUI2020.Views.CustomControls
     public static class CustomControlExtensionMethods
     {
 
-		private static string unresolved = "unresolved";
 		private static string _suffix = "_"; //used to mark properties;
 
 		/// <summary>
@@ -32,7 +31,6 @@ namespace VECTO3GUI2020.Views.CustomControls
 			if (propertyName == null || binding == null) {
 				var status = binding?.Status;
 				throw new VectoException("Could not resolve binding");
-				return name;
 			}
 
 			foreach (var resourceManager in resourceManagers) {

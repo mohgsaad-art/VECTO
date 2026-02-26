@@ -345,6 +345,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public bool DisengageGearbox { get; set; }
 		public void TriggerGearshift(Second absTime, Second dt)
 		{
+			GearShiftTriggered?.Invoke();
 			throw new NotImplementedException();
 		}
 
@@ -397,7 +398,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			get; set;
 		}
 		public PowertrainPosition[] ElectricMotorPositions { get; set; }
-		public VectoSimulationJobType VehicleArchitecutre { get; }
+		public VectoSimulationJobType VehicleArchitecture { get; }
 
 		#endregion
 

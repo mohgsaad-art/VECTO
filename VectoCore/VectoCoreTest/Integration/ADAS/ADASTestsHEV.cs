@@ -1,22 +1,25 @@
-﻿using System.IO;
-using System.Linq;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using static TUGraz.VectoCore.Models.SimulationComponent.Impl.PCCStates;
 using static TUGraz.VectoCore.Models.SimulationComponent.Impl.DrivingAction;
+using static TUGraz.VectoCore.Models.SimulationComponent.Impl.PCCStates;
 
 namespace TUGraz.VectoCore.Tests.Integration.ADAS
 {
@@ -28,11 +31,17 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 	[Parallelizable(ParallelScope.All)]
 	public class ADASTestsHEV
 	{
-		private const string BasePath = @"TestData/Integration/ADAS-HEV/Group5PCCEng/";
+        private StandardKernel _kernel;
+
+        private const string BasePath = @"TestData/Integration/ADAS-HEV/Group5PCCEng/";
 		private const double tolerance = 1; //seconds of tolerance. Tolerance distance is calculated dynamically based on speed.
 
 		[OneTimeSetUp]
-		public void RunBeforeAnyTests() => Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+		public void RunBeforeAnyTests()
+		{
+			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		private GraphWriter GetGraphWriter()
 		{
@@ -55,14 +64,14 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 
 		[TestCase(@"TestData/Integration/ADAS-HEV/VECTO-1493/P1_CityBus.vecto", TestName = "VECTO-1493_P1Citybus")]
 		[TestCase(@"TestData/Integration/ADAS-HEV/VECTO-1484/P2_Group5_s2c0_rep_Payload.vecto", TestName = "VECTO-1484_P2Group5")]
-		public static void RunEngineeringJob(string jobName)
+		public void RunEngineeringJob(string jobName)
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
 			var writer = new FileOutputWriter(Path.Combine(Path.GetDirectoryName(jobName), Path.GetFileName(jobName)));
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			factory.SumData = sumContainer;
 			
@@ -94,8 +103,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			factory.SumData = sumContainer;
 
@@ -132,8 +141,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			factory.SumData = sumContainer;
 
@@ -170,7 +179,7 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			factory.Validate = false;
 			factory.SumData = sumContainer;
@@ -1440,8 +1449,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
 			var writer = new FileOutputWriter(Path.Combine(Path.GetDirectoryName(jobName), Path.GetFileName(jobName)));
 			var sumContainer = new SummaryDataContainer(writer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			factory.SumData = sumContainer;
 

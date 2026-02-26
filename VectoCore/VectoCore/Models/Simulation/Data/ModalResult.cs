@@ -377,8 +377,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		protected internal Dictionary<int, Dictionary<ModalResultField, DataColumn>> BatteryColumns =
 			new Dictionary<int, Dictionary<ModalResultField, DataColumn>>();
 
-		protected ModalResults(SerializationInfo info, StreamingContext context) : base(info, context) {}
-
 		public ModalResults()
 		{
 			//CreateColumns(CommonSignals);

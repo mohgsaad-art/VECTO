@@ -12,6 +12,8 @@
     <Configurations>Debug;Release;MockupDebug</Configurations>
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	  <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
@@ -149,6 +151,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Mockup\**" />
+    <EmbeddedResource Remove="Mockup\**" />
+    <None Remove="Mockup\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="JSONKeys.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -169,12 +177,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mockup\Ninject\" />
-    <Folder Include="Mockup\Reports\" />
-    <Folder Include="Mockup\Simulation\SimulatorFactory\" />
-  </ItemGroup>
-
-
+	<ItemGroup>
+      <None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

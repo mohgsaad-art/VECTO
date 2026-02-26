@@ -91,13 +91,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                 //for (var gear = (uint)GearboxModelData.Gears.Count; gear > 1; gear--) {
 
                 TestPowertrain.UpdateComponents();
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.Gearboxes.First().SetGear = gear;
+                TestPowertrain.Gearboxes.First().SetNextGear = gear;
                 if (Controller.CurrentStrategySettings != null) {
                     TestPowertrain.HybridController.ApplyStrategySettings(Controller.CurrentStrategySettings);
                 }
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.Gearboxes.First().Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.Gearboxes.First().Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 
@@ -145,16 +145,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 				
 				TestPowertrain.UpdateComponents();
 
-                TestPowertrain.Gearbox.SetGear = gear;
-                TestPowertrain.Gearbox.SetNextGear = gear;
+                TestPowertrain.Gearboxes.First().SetGear = gear;
+                TestPowertrain.Gearboxes.First().SetNextGear = gear;
                 if (Controller.CurrentStrategySettings != null) {
                     TestPowertrain.HybridController.ApplyStrategySettings(Controller.CurrentStrategySettings);
                 }
 
                 TestPowertrain.CombustionEngine.CombustionEngineOn = true;
 
-                var response = TestPowertrain.Gearbox.Initialize(outTorque, outAngularVelocity);
-                response = TestPowertrain.Gearbox.Request(absTime,
+                var response = TestPowertrain.Gearboxes.First().Initialize(outTorque, outAngularVelocity);
+                response = TestPowertrain.Gearboxes.First().Request(absTime,
                     Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval, outTorque, outAngularVelocity,
                     true);
 

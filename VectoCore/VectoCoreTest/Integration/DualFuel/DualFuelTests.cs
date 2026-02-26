@@ -4,6 +4,7 @@ using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Ninject;
@@ -38,7 +39,7 @@ namespace TUGraz.VectoCore.Tests.Integration.DualFuel
             var jobContainer = new JobContainer(sumData);
             var inputData = xmlInputReader.CreateDeclaration(jobName);
 
-            var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+            var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
             runsFactory.WriteModalResults = true;
             runsFactory.Validate = false;
 
@@ -60,8 +61,8 @@ namespace TUGraz.VectoCore.Tests.Integration.DualFuel
 			var jobContainer = new JobContainer(sumData);
 			var inputData = xmlInputReader.CreateDeclaration(jobName);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			runsFactory.WriteModalResults = true;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            runsFactory.WriteModalResults = true;
 			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);

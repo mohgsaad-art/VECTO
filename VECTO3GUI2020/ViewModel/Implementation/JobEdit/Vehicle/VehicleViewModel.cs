@@ -342,7 +342,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle
 			get => throw new NotImplementedException();
 			set => throw new NotImplementedException();
 		}
-		public virtual Meter Height
+		public new virtual Meter Height
 		{
 			get => throw new NotImplementedException();
 			set => throw new NotImplementedException();
@@ -352,7 +352,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle
 			get => throw new NotImplementedException();
 			set => throw new NotImplementedException();
 		}
-		public virtual Meter Width
+		public new virtual Meter Width
 		{
 			get => throw new NotImplementedException();
 			set => throw new NotImplementedException();
@@ -422,7 +422,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle
     public class VehicleViewModel_v2_0 : VehicleViewModel_v1_0
     {
 		public new static readonly string VERSION = typeof(XMLDeclarationVehicleDataProviderV20).FullName;
-		private IAdasViewModel _aDASViewModel;
 		private PerSecond _engineIdleSpeed;
 
 

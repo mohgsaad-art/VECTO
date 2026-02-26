@@ -250,7 +250,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 	public class MockVehicleTestInputData : IVehicleDeclarationInputData
 	{
-		private DateTime _date;
 		public DataSource DataSource { get; }
 		public bool SavedInDeclarationMode { get; }
 		public string Manufacturer { get; }
@@ -261,7 +260,7 @@ namespace TUGraz.VectoCore.Tests.Utils
         public HydrogenStorageTechnology? HydrogenStorageTechnology { get; }
         public bool BatteryOnlyMode { get; }
         public DynamicChargingTechnology DynamicChargingTechnology { get; }
-        DateTime IComponentInputData.Date => _date;
+        DateTime IComponentInputData.Date => default;
 
 		public string AppVersion { get; }
 		public string Date { get; }

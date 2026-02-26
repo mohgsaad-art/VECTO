@@ -8,7 +8,6 @@ namespace VECTO3GUI2020.Behaviours
 	{
 
 		private FrameworkElement _placementTarget;
-		private double _initialHorizontalOffset;
 		private double _popUpWidth;
 
 
@@ -46,7 +45,7 @@ namespace VECTO3GUI2020.Behaviours
 
 		protected override void OnDetaching()
 		{
-			this.AssociatedObject.HorizontalOffset = _initialHorizontalOffset;
+			this.AssociatedObject.HorizontalOffset = 0;
 			base.OnDetaching();
 		}
 

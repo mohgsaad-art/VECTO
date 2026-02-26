@@ -181,12 +181,12 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
 		public override IFuelConsumptionCorrection FuelConsumptionCorrection(IFuelProperties fuel)
 		{
-			if (fuel.FuelType != FuelType.H2FC || !FuelCorrection.ContainsKey(fuel.FuelType))
+			if (fuel.FuelType != FuelType.H2FC)
 			{
 				throw new VectoException("Invalid fuel {0}", fuel);
 			}
 
-			return FuelCorrection[fuel.FuelType];
+			return FuelCorrection.ContainsKey(fuel.FuelType) ? FuelCorrection[fuel.FuelType] : null;
 		}
 
 		public override WattSecond ElectricEnergyConsumption_SoC_Corr { get; set; }

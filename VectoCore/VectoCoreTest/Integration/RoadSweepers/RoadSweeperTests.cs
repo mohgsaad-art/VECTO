@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -10,8 +11,10 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
@@ -22,7 +25,9 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 	[Parallelizable(ParallelScope.All)]
 	public class RoadSweeperTests
 	{
-		public const string RoadSweeperJob =
+        private StandardKernel _kernel;
+
+        public const string RoadSweeperJob =
 			@"TestData/RoadSweepers/Class9_RigidTruck_6x2_PTO/Class9_RigidTruck_ENG_PTO.vecto";
 
 		public const string SideLoaderJob =
@@ -32,7 +37,8 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 		public void OneTimeSetup()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
 		[TestCase()]
@@ -195,8 +201,8 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			factory.SumData = sumContainer;
@@ -236,8 +242,8 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			factory.SumData = sumContainer;

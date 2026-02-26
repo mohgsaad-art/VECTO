@@ -31,10 +31,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Ninject;
 using NUnit.Framework;
-using System.IO;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -43,12 +45,13 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using System.Linq;
 
 
 namespace TUGraz.VectoCore.Tests.FileIO
@@ -57,14 +60,17 @@ namespace TUGraz.VectoCore.Tests.FileIO
 	[Parallelizable(ParallelScope.All)]
 	public class JsonReadTest
 	{
-		private const string TestJobFile = @"TestData/Jobs/40t_Long_Haul_Truck.vecto";
+        private StandardKernel _kernel;
+
+        private const string TestJobFile = @"TestData/Jobs/40t_Long_Haul_Truck.vecto";
 		private const string TestVehicleFile = @"TestData/Components/24t Coach.vveh";
 
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase]
 		public void ReadJobTest()
@@ -514,8 +520,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(axlesDec[0].WheelEndFriction?.Value() ?? double.NaN, friction0);
 			Assert.AreEqual(axlesDec[1].WheelEndFriction?.Value() ?? double.NaN, friction1);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputProvider, null);
-			var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputProvider, null, null, null, false);
+            var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
 
 			Assert.AreEqual(delta, deltaFriction.Value(), 1E-03);
 		}
@@ -538,8 +544,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(friction1, axlesDec[1].WheelEndFriction?.Value() ?? double.NaN);
 			Assert.AreEqual(friction2, axlesDec[2].WheelEndFriction?.Value() ?? double.NaN);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, null);
-			var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, null, null, null, false);
+            var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
 
 			Assert.AreEqual(delta, deltaFriction.Value(), 1E-03);
 		}
@@ -559,8 +565,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var exception = Assert.Throws<VectoException>(
 				() => { 
 					var axlesDec = dataProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration;
-					var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
-					runsFactory.RunDataFactory.NextRun().First();
+					var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
+                    runsFactory.RunDataFactory.NextRun().First();
 				});
 				
 			TestContext.WriteLine(exception.Message);

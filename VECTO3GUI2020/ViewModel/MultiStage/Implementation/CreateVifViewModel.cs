@@ -386,7 +386,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 				valid = inputData != null && inputData.JobInputData.Vehicle.VehicleCategory == VehicleCategory.HeavyBusPrimaryVehicle;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				valid = false;
 			}

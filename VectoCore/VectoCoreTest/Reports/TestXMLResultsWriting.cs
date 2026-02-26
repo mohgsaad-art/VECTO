@@ -1011,8 +1011,6 @@ public class TestXMLResultsWriting
 
     private IDeclarationInputDataProvider GetMockInputData(int amdm)
 	{
-		var xmlType = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24 + ":FOO";
-
 		var mock = new Mock<IDeclarationInputDataProvider>();
 		var inputDataSource = new DataSource() {
 			SourceType = DataSourceType.XMLFile

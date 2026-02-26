@@ -54,7 +54,7 @@ public class FullReportTestsBase
 
 	public void CheckElementCount(string name, XDocument xDoc, int count)
 	{
-		Assert.AreEqual(count, xDoc.XPathSelectElements($"//*[local-name()='{name}']").Count(), $"element count of '{name}' mismatch");
+		Assert.That(xDoc.XPathSelectElements($"//*[local-name()='{name}']").Count(), Is.EqualTo(count), $"element count of '{name}' mismatch");
 	}
 
 	protected void AssertElementValue(XDocument xdoc, string expectedValue, params string[] xPath)
@@ -62,7 +62,7 @@ public class FullReportTestsBase
 		var query = "./" + string.Join("/",
 			xPath.Where(x => x != null).Select(x => $"/*[local-name()='{x}']").ToArray());
 		var node = xdoc.XPathSelectElement(query);
-		Assert.AreEqual(expectedValue, node.Value);
+		Assert.That(node.Value, Is.EqualTo(expectedValue));
 	}
 
 	protected IEnumerable<XElement> GetElements(XDocument xdoc, params string[] xPath)

@@ -60,7 +60,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Auxiliaries
 
 		public Watt PowerDemand(IDataBus dataBus)
         {
-			switch (dataBus.PowertrainInfo.VehicleArchitecutre) {
+			switch (dataBus.PowertrainInfo.VehicleArchitecture) {
 				case VectoSimulationJobType.BatteryElectricVehicle:
 				case VectoSimulationJobType.IEPC_E:
 				case VectoSimulationJobType.SerialHybridVehicle:

@@ -56,9 +56,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			fcsData.PreRunPostProcessing = fcPostProcessor;
 			var result = fcPostProcessor.CalculateFuelCellPowerDemand(fcsData, batterySystemData.Clone(), modalData.WriteModalResults);
-			batterySystemData.InitialSoC = result.InitSoc;
+			if (result.Success)
+			{
+				batterySystemData.InitialSoC = result.InitSoc;
+			}
 
-			return new FuelCellPowerMap(result.Entries);
+			return new FuelCellPowerMap(result.Entries, result.Reason);
 		}
 
 		public FuelCellSystemShareMap CreateFuelCellShareMap(FuelCellSystemData fuelCellSystemData)

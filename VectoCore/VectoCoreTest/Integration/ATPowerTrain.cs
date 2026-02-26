@@ -119,14 +119,12 @@ namespace TUGraz.VectoCore.Tests.Integration
 				ExecutionMode = ExecutionMode.Engineering,
 			};
 			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(runData, fileWriter, null) {
-				WriteModalResults = true,
-			};
-			var container =
-				VehicleContainer.CreateVehicleContainer(runData, modData,
-					summaryDataContainer);
-
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
+			var modData = kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
+			
+			var container = kernel.Get<IPowertrainBuilder>().Build(runData, modData, summaryDataContainer);
+            
+            var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 			var tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airdragData))
