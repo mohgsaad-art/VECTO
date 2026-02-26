@@ -2151,7 +2151,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return tmp;
 		}
 
-		private void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
+		protected virtual void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
 		{
 			tmp.IgnoreReason = 0;
 			if (resp == null) {
@@ -2246,7 +2246,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				CheckGearshiftLimits(tmp, resp);
 			}
 
-			if (resp.Source is TorqueConverter) {
+			if (resp.Source is ITorqueConverter) {
 				if (resp is ResponseUnderload) {
 					tmp.FuelCosts = double.NaN;
 					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
@@ -2431,7 +2431,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			LimitedGbxTorque = false;
 		}
 
-		public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		public virtual void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.HybridStrategyScore] = (CurrentState.Solution?.Score ?? 0) / 1e3;
 			container[ModalResultField.HybridStrategySolution] = CurrentState.Solution?.U ?? -100;
