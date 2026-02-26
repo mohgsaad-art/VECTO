@@ -105,7 +105,7 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
 						Fuel = { FuelData.H2 }
 					};
 					var fchviterativeStrategy =
-						new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+						new FCHEVIterativeRunStrategy(new[] { new PreRunOptions() { WriteModAndSumData = false }, new PreRunOptions() });
 					fchviterativeStrategy.Update = (modData, iterationRunData) => {
 						iterationRunData.OVCMode = simulationRunData.OVCMode == OvcHevMode.NotApplicable
 							? OvcHevMode.NotApplicable

@@ -40,6 +40,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCommon.InputData;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
@@ -234,12 +235,20 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 },
                 this,
 				(preRunOptions) => {
-                    Container.RunData.Report?.PrepareResult(null); //<- increase number of expected results;
-					if (preRunOptions.WriteModAndSumData)
-					{
-                    Container.FinishSingleSimulationRun();
-					}
-                }) ?? false;
+					var isFCHVWithModals = 
+						Container.PowertrainInfo.VehicleArchitecture.IsFCHV() &&
+						Container.ModalData.WriteModalResults;
+
+					var writeModalsOG = Container.ModalData.WriteModalResults;
+					Container.ModalData.WriteModalResults = isFCHVWithModals ? preRunOptions.WriteModAndSumData : Container.ModalData.WriteModalResults;
+
+					// Increase number of expected results
+					Container.RunData.Report?.PrepareResult(null);
+					Container.FinishSingleSimulationRun();
+
+					Container.ModalData.WriteModalResults = writeModalsOG;
+
+				}) ?? false;
 
             if (!runAgain) {
                 Container.FinishSimulationRun();
