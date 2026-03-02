@@ -62,7 +62,6 @@ namespace VectoHashingTest
 		public const string ReferenceXMLEngine = @"Testdata/XML/Reference/vecto_engine-sample.xml";
 		public const string ReferenceXMLVehicle = @"Testdata/XML/Reference/vecto_vehicle-sample_FULL.xml";
 
-
 		protected IXMLInputDataReader xmlInputReader;
 		private IKernel _kernel;
 
@@ -285,7 +284,8 @@ namespace VectoHashingTest
 
 		[TestCase(@"Testdata/XML/ToHash/vecto_engine-input.xml"),
 		TestCase(@"Testdata/XML/ToHash/vecto_engine_withid-input.xml"),
-		TestCase(@"Testdata/XML/ToHash/vecto_gearbox-input.xml")]
+		TestCase(@"Testdata/XML/ToHash/vecto_gearbox-input.xml"),
+		TestCase(@"Testdata/XML/ToHash/Angledrive.xml")]
 		public void TestAddHash(string file)
 		{
 			var destination = Path.GetFileNameWithoutExtension(file) + "_hashed.xml";
