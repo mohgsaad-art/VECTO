@@ -140,9 +140,11 @@ namespace TUGraz.VectoHashing
 			switch (component)
 			{
 				case VectoComponents.Angledrive:
-					var angleDriveType = Document.SelectSingleNode("//*[local-name() = 'AngledriveType']")?.InnerText;
-					return !string.IsNullOrEmpty(angleDriveType) && angleDriveType != "None";
-				case VectoComponents.TorqueConverter:
+                    var angleDriveElement = Document.SelectSingleNode("//*[local-name() = 'Angledrive']");
+                    var isAngledriveComponentFile = (angleDriveElement?.ParentNode.LocalName == "VectoInputDeclaration");
+                    var angleDriveType = Document.SelectSingleNode("//*[local-name() = 'AngledriveType']")?.InnerText;
+                    return isAngledriveComponentFile || (!string.IsNullOrEmpty(angleDriveType) && angleDriveType != "None");
+                case VectoComponents.TorqueConverter:
 				case VectoComponents.Engine:
 				case VectoComponents.Gearbox:
 				case VectoComponents.Axlegear:
