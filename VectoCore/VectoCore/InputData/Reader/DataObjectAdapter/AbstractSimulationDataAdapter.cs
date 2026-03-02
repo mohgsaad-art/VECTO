@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
                     $"DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
             }
 
-            var numGearsPowermap = iepcInput.VoltageLevels.Select(x => Tuple.Create(x.VoltageLevel, x.PowerMap.Count)).ToArray();
+            var numGearsPowermap = iepcInput.VoltageLevels.Where(x => x.PowerMap != null).Select(x => Tuple.Create(x.VoltageLevel, x.PowerMap.Count)).ToArray();
             var gearCount = iepcInput.Gears.Count;
             var numGearsDrag = iepcInput.DragCurves.Count;
 
