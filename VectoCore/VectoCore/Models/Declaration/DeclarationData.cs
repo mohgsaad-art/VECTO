@@ -1249,7 +1249,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 						FullGenerationTorque = maxTq
 					},
 					new ElectricMotorFullLoadCurve.FullLoadEntry() {
-						MotorSpeed = 1.1 * emFld.MaxSpeed,
+						MotorSpeed = 1.0 * emFld.MaxSpeed,
 						FullDriveTorque = -maxTq,
 						FullGenerationTorque = maxTq
 					}
