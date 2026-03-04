@@ -64,7 +64,7 @@ public class HybridStrategyCostCalculationExtractTestdata
 
 	public class HybridStrategyTestData : VectoCore.Models.SimulationComponent.Strategies.HybridStrategy
 	{
-		public HybridStrategyTestData(VectoRunData runData, IVehicleContainer container) : base(runData, container)
+		public HybridStrategyTestData(VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(runData, container, powertrainContainer)
 		{
 			//Writer = writer;
 		}
