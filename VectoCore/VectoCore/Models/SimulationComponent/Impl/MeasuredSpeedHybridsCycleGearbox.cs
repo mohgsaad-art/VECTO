@@ -5,12 +5,13 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class MeasuredSpeedHybridsCycleGearbox : CycleGearbox, IHybridControlledGearbox
     {
-        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
+        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer)
         {
             LastDownshift = -double.MaxValue.SI<Second>();
             LastUpshift = -double.MaxValue.SI<Second>();

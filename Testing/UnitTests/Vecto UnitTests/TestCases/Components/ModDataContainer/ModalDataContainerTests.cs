@@ -1,5 +1,7 @@
 ﻿using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -55,4 +57,33 @@ public class ModalDataContainerTests
 
 		Assert.AreEqual(expected.Value(), modData.Distance.Value(), 1e-6);
 	}
+	
+	
+	[Test]
+	public void SortPowertrainPositionAndAxleNumber()
+	{
+		var rand = new Random();
+		// protected internal List<Tuple<PowertrainPosition,int>> ElectricMotors;
+		var positions = new List<PowertrainPosition>
+		{
+			PowertrainPosition.BatteryElectricE2, PowertrainPosition.BatteryElectricE4,
+			PowertrainPosition.BatteryElectricE3, PowertrainPosition.HybridP1
+		};
+		
+		var axleNumbers = Enumerable.Range(1, 100).Select(_ => rand.Next()).ToArray();
+		var list = new List<Tuple<PowertrainPosition, AxleNumber>>() { };
+		foreach (var number in axleNumbers)
+		{
+			list.Add(new Tuple<PowertrainPosition, AxleNumber>(positions[rand.Next() % positions.Count],
+				new AxleNumber(number)));
+		}
+
+		var orderedListByTuple = list.OrderBy(x => x).Reverse().ToList();
+		var orderedListByValue = list.OrderBy(x => x.Item1).ThenBy(x => x.Item2.Value).Reverse().ToList();
+		
+		Assert.That(orderedListByValue.SequenceEqual(orderedListByTuple));
+	}
+
+	
+	
 }

@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 
 		public FuelCell(FuelCellData fcData, IVehicleContainer dataBus, FuelCellData.FuelCellId id) : 
-			base(null, Constants.NOT_IN_AXLE_POWERTRAIN) //provide null here, when registering the component the Id is accessed but is not set in the base constructor
+			base(null) //provide null here, when registering the component the Id is accessed but is not set in the base constructor
 		{
 			DataBus = dataBus;
 			ModelData = fcData;
@@ -52,9 +52,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var power = CurrentState.Power;
-			container[ModalResultField.P_FCS, Id.ToString()] = power ?? 0.SI<Watt>();
-			container[ModalResultField.FC_FCS, Id.ToString()] = CurrentState.FuelConsumption ?? 0.SI<KilogramPerSecond>();
-			container[ModalResultField.t_FCS_On, Id.ToString()] = CurrentState.TimeShare;
+			container[ModalResultField.P_FCS, Id] = power ?? 0.SI<Watt>();
+			container[ModalResultField.FC_FCS, Id] = CurrentState.FuelConsumption ?? 0.SI<KilogramPerSecond>();
+			container[ModalResultField.t_FCS_On, Id] = CurrentState.TimeShare;
 
 		}
 

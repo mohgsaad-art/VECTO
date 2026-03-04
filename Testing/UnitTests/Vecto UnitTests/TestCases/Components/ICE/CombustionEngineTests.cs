@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -9,6 +10,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -42,7 +44,8 @@ public class CombustionEngineTests
 			}
 		};
 		var vehicle = new Mock<IVehicleContainer>().Object;
-        var engine = new CombustionEngine(vehicle, engineData);
+		var powertrainContainer = new PowertrainContainer(vehicle);
+        var engine = new CombustionEngine(vehicle, powertrainContainer,engineData);
 
 		var port = engine.OutPort();
 		Assert.IsNotNull(port);
@@ -56,8 +59,8 @@ public class CombustionEngineTests
 
 		var dao = new EngineeringDataAdapter();
         var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
-
-		var engine = new CombustionEngine(container, engineData);
+        var powertrainContainer = new PowertrainContainer(container);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
 
 		var port = engine.OutPort();
 
@@ -85,8 +88,8 @@ public class CombustionEngineTests
 
 		var dao = new EngineeringDataAdapter();
 		var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
-
-		var engine = new CombustionEngine(container, engineData);
+		var powertrainContainer = new PowertrainContainer(container);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
 
         var expectedResults = InputDataHelper.InputDataAsTableData(ExpectedEngineFldHdr, GetExpectedResults(testName));
 
@@ -135,12 +138,13 @@ public class CombustionEngineTests
 
 	private IVehicleContainer GetMockVehicleContainer()
 	{
-		var container = new Mock<IVehicleContainer>();
-		var gbx = new Mock<IGearboxInfo>();
+		var container = new Mock<IVehicleContainer>().WithPowertrainDict();
+		var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
 
 		gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(0));
 
-		container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 
 
 		return container.Object;

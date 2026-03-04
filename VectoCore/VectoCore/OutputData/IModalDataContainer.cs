@@ -39,6 +39,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 
@@ -68,11 +69,17 @@ namespace TUGraz.VectoCore.OutputData
 
 		object this[ModalResultField key, IFuelProperties fuel] { get; set; }
 
-		object this[ModalResultField key, PowertrainPosition pos, int axleNumber] { get; set; }
+		object this[ModalResultField key, PowertrainPosition pos, AxleNumber axleNumber] { get; set; }
 
 		object this[ModalResultField key, int? idx] { get; set; }
-
+		
+		object this[ModalResultField key, FuelCellData.FuelCellId fuelCellId] { get; set; }
+		
+		object this[ModalResultField key, AxleNumber axleNumber] { get; set; }
+		
 		object this[ModalResultField key, string arg] { get; set; }
+
+		// object this[ModalResultField key, string arg] { get; set; }
 
 		/// <summary>
 		/// Indexer for auxiliary fields of the DataWriter.
@@ -105,7 +112,7 @@ namespace TUGraz.VectoCore.OutputData
 
 		Dictionary<string, DataColumn> Auxiliaries { get; }
 
-		T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T>;
+		T TimeIntegral<T>(ModalResultField field, AxleNumber axleNumber, Func<SI, bool> filter = null) where T : SIBase<T>;
 
         T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T>;
 
@@ -131,7 +138,7 @@ namespace TUGraz.VectoCore.OutputData
 
 		void Reset(bool clearColumns = false);
 		
-		string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf);
+		string GetColumnName(PowertrainPosition pos, AxleNumber axleNumber, ModalResultField mrf);
 
 		string GetColumnName(ModalResultField mrf, string arg);
 
@@ -149,19 +156,19 @@ namespace TUGraz.VectoCore.OutputData
 		bool HasCombustionEngine { get; }
 		bool HasGearbox { get; }
 		bool HasAxlegear { get; }
-		WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, int axleNumber);
-		WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, int axleNumber);
-		WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, int axleNumber);
-		WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, int axleNumber);
-		PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, int axleNumber);
-		double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, int axleNumber);
-		double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, int axleNumber);
-		double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, int axleNumber);
-		double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, int axleNumber);
-		WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, int axleNumber);
-		WattSecond ElectricMotorLosses(PowertrainPosition emPos, int axleNumber);
-		WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, int axleNumber);
-		WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, int axleNumber);
+		WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber);
+		PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, AxleNumber axleNumber);
+		double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber);
+		double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber);
+		double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber);
+		double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond ElectricMotorLosses(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, AxleNumber axleNumber);
+		WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, AxleNumber axleNumber);
 		ICorrectedModalData CorrectedModalData { get; } 
 		ModalResults Data { get; }
 		string RunName { get; }

@@ -46,7 +46,7 @@ public class BusAuxWHRElPostProcessingTests
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];
@@ -90,8 +90,8 @@ public class BusAuxWHRElPostProcessingTests
             modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
             modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
-            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
+            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
+            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
 
 
             // WHR
@@ -133,8 +133,8 @@ public class BusAuxWHRElPostProcessingTests
             modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
             modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
-            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
+            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
+            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
 
             // WHR
             modData[ModalResultField.P_WHR_el_corr] = P_WHR;
@@ -200,7 +200,7 @@ public class BusAuxWHRElPostProcessingTests
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];
@@ -244,9 +244,9 @@ public class BusAuxWHRElPostProcessingTests
             modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
             modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
-            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
-            modData[ModalResultField.EM_Off_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 0.SI<Scalar>();
+            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
+            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
+            modData[ModalResultField.EM_Off_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 0.SI<Scalar>();
 
 
             // WHR
@@ -288,9 +288,9 @@ public class BusAuxWHRElPostProcessingTests
             modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
             modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
-            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
-            modData[ModalResultField.EM_Off_, PostProcessingRunData.emPos, Constants.NOT_IN_AXLE_POWERTRAIN] = 0.SI<Scalar>();
+            modData[ModalResultField.P_EM_electricMotor_el_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>() * emEff;
+            modData[ModalResultField.P_EM_mech_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 120.SI<Watt>();
+            modData[ModalResultField.EM_Off_, PostProcessingRunData.emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN] = 0.SI<Scalar>();
 
             // WHR
             modData[ModalResultField.P_WHR_el_corr] = P_WHR;

@@ -116,19 +116,20 @@ namespace TUGraz.VectoCore.Tests.Integration
 			modData.WriteModalResults = true;
 
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var engine = new CombustionEngine(container, engineData);
+			var engine = new CombustionEngine(container, powertrainContainer, engineData);
 
             cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airdragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
-				.AddComponent(new Clutch(container, engineData))
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new AMTGearbox(container, powertrainContainer, new AMTShiftStrategyOptimized(container, powertrainContainer)))
+				.AddComponent(new Clutch(container, powertrainContainer, engineData))
 				.AddComponent(engine);
 
-			var aux = new BusAuxiliariesAdapter(container, runData.BusAuxiliaries);
+			var aux = new BusAuxiliariesAdapter(container, powertrainContainer,runData.BusAuxiliaries);
 			
 			var auxCfg = runData.BusAuxiliaries;
 			var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart

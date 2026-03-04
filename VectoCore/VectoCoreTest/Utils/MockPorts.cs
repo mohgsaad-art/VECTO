@@ -144,6 +144,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public PerSecond EngineN80hSpeed { get; set; }
 
 		public bool EngineOn => throw new NotImplementedException();
+
+		public AxleNumber AxleNumber => throw new NotImplementedException();
 	}
 
 	public class MockDrivingCycleOutPort : LoggingObject, IDrivingCycleOutPort

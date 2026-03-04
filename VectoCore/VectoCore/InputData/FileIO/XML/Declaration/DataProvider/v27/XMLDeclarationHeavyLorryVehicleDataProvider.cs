@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override XmlElement PTONode => (VehicleType == VectoSimulationJobType.IHPC) ? null : base.PTONode;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => 
             (VehicleType == VectoSimulationJobType.IHPC) ? null : base.GetPTOTransmissionInputData();
     }
 
@@ -100,7 +100,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override XmlElement PTONode => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
     }
 
     public class XMLDeclaration_PEV_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override XmlElement PTONode => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
     }
 
     public class XMLDeclaration_FCHV_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
@@ -189,7 +189,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override XmlElement PTONode => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
     }
 
     public abstract class XMLDeclaration_Multiple_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
@@ -224,12 +224,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null)
         {
             return PTOReader.GetPTOInputData(axleNumber);
         }
 
-        public override RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override RetarderType GetRetarderType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
@@ -241,14 +241,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             return RetarderTypeHelper.Parse(node.InnerText);
         }
 
-        public override double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override double GetRetarderRatio(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderRatio).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
             return (node != null) ? double.Parse(node.InnerText) : 0;
         }
 
-        public override AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override AngledriveType GetAngledriveType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_AngledriveType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 

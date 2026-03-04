@@ -4,12 +4,13 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
     public class MeasuredSpeedHybridStrategy : HybridStrategy
     {
-        public MeasuredSpeedHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container) {}
+        public MeasuredSpeedHybridStrategy(VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(runData, container, powertrainContainer) {}
 
         protected override List<HybridResultEntry> FindSolution(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
@@ -43,7 +44,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
     public class MeasuredSpeedHybridStrategyAT : HybridStrategyAT 
     { 
-        public MeasuredSpeedHybridStrategyAT(VectoRunData runData, IVehicleContainer container) : base(runData, container)
+        public MeasuredSpeedHybridStrategyAT(VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(runData, container, powertrainContainer)
 		{ }
 
         protected override List<HybridResultEntry> FindSolution(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)

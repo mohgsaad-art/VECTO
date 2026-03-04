@@ -4,6 +4,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
@@ -16,8 +17,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 		protected IGearbox _gearbox;
 
-        public HybridCtlShiftStrategy(IHybridControllerInternal hybridController, IVehicleContainer container) : base(
-            container)
+        public HybridCtlShiftStrategy(IHybridControllerInternal hybridController, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(
+            container, powertrainContainer)
         {
             Controller = hybridController;
 

@@ -19,8 +19,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
 		ICombustionEngine Engine { set; }
 
-		IElectricMotorControl ElectricMotorControl(PowertrainPosition pos, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+		IElectricMotorControl ElectricMotorControl(PowertrainPosition pos);
 
-		void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorDataItem2, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+		void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorDataItem2);
 	}
 }

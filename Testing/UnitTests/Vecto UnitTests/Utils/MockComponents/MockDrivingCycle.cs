@@ -14,7 +14,7 @@ public class MockDrivingCycle : VectoSimulationComponent, IDrivingCycleInfo
 	private readonly IEnumerator<DrivingCycleData.DrivingCycleEntry> _left;
 	private readonly IEnumerator<DrivingCycleData.DrivingCycleEntry> _right;
 
-	public MockDrivingCycle(IVehicleContainer container, DrivingCycleData data) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+	public MockDrivingCycle(IVehicleContainer container, DrivingCycleData data) : base(container)
 	{
 		if (data != null) {
 			_left = data.Entries.GetEnumerator();

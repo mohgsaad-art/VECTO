@@ -172,7 +172,7 @@ namespace TUGraz.VectoCommon.InputData
 
 	public interface IAxlePowertrainEngineeringInputData
 	{
-		int AxleNumber { get; }
+		AxleNumber AxleNumber { get; }
 
 		ArchitectureID Architecture { get; }
 
@@ -241,7 +241,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		TableData PTOCycleWhileDriving { get; }
 
-        int AxleNumber { get; }
+        AxleNumber AxleNumber { get; }
     }
 
 	public interface IAxleEngineeringInputData : IAxleDeclarationInputData

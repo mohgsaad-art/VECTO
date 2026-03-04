@@ -35,6 +35,7 @@ using System.Xml;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML.Common;
@@ -58,7 +59,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Implementation of IPTOTransmissionInputData
 
-		public virtual int AxleNumber => Constants.NOT_IN_AXLE_POWERTRAIN;
+		public virtual AxleNumber AxleNumber => AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
 		public virtual string PTOTransmissionType
 		{
@@ -160,6 +161,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
         public override string PTOTransmissionType => ElementExists(XMLNames.Vehicle_PTO_ShaftsGearWheels) ? base.PTOTransmissionType : "None";
 
-        public override int AxleNumber => int.Parse(GetAttribute(BaseNode, "axleNumber"));
+        public override AxleNumber AxleNumber => new AxleNumber(int.Parse(GetAttribute(BaseNode, "axleNumber")));
     }
 }

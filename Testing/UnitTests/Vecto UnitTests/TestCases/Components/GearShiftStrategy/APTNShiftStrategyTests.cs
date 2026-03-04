@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -13,6 +15,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
@@ -377,16 +380,18 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		
 		private APTNShiftStrategy GetShiftStrategyAndGearbox(Mock<IVehicleContainer> container, out Mock<IIEPCGearbox> gearbox)
 		{
-			var shiftStrategy = new APTNShiftStrategy(container.Object);
+			var powertrainContainer = new PowertrainContainer(container.Object);
+			var shiftStrategy = new APTNShiftStrategy(container.Object, powertrainContainer);
 
-			var gbx = new Mock<IIEPCGearbox>(MockBehavior.Strict);
+			var gbx = new Mock<IIEPCGearbox>(MockBehavior.Strict).WithDefaultAxleNumber();
 			gbx.Name = "MockGearbox";
 			gbx.Setup(g => g.LastUpshift).Returns(-double.MaxValue.SI<Second>());
 			gbx.Setup(g => g.LastDownshift).Returns(-double.MaxValue.SI<Second>());
 			
 			shiftStrategy.Gearbox = gbx.Object;
 			SetVelocityDropLookupData(shiftStrategy);
-			container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+			container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+			container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 
 			gearbox = gbx;
 			return shiftStrategy;
@@ -402,7 +407,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 			//EmInfo
 			var em = GetElectricMotor(container.Object, runData.ElectricMachinesSinglePwt.Single().Item2);
-			container.Setup(c => c.ElectricMotorInfo(PowertrainPosition.BatteryElectricE2, Constants.NOT_IN_AXLE_POWERTRAIN))
+			container.Setup(c => c.ElectricMotorInfo(PowertrainPosition.BatteryElectricE2, AxleNumber.NOT_IN_AXLE_POWERTRAIN))
 				.Returns(em);
 			
 			// container.Setup(r => r.GetElectricMotors()).Returns(new List<IElectricMotorInfo>(){em});
@@ -441,8 +446,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		private ElectricMotor GetElectricMotor(IVehicleContainer container, ElectricMotorData emData)
 		{
 			var emControl = new SimpleElectricMotorControl();
-			
-			var electricMotor = new ElectricMotor(container: container, emData, emControl,
+			var powertrainContainer = new PowertrainContainer(container);
+			var electricMotor = new ElectricMotor(container: container, powertrainContainer, emData, emControl,
 				PowertrainPosition.BatteryElectricE2);
 
 			//Connect Electric System
@@ -455,8 +460,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			ElectricMotorData emData)
 		{
 			var emControl = new SimpleElectricMotorControl();
-			
-			var electricMotor = new TestPowertrainElectricMotor(container: container, emData, emControl,
+			var powertrainContainer = new PowertrainContainer(container);
+			var electricMotor = new TestPowertrainElectricMotor(container: container, powertrainContainer, emData, emControl,
 				PowertrainPosition.BatteryElectricE2);
 
 			//Connect Electric System
@@ -470,23 +475,31 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			out Mock<ISimpleVehicleContainer> simplePt)
 		{
 			var testPt = new Mock<ITestPowertrain>();
+		
 			simplePt = GetSimplePowertrain(ratios, container, out var gbx);
+			var simplePtContainer = new SimplePowertrainContainer(simplePt.Object);
+			simplePt.Setup(s => s.SimplePowertrains)
+				.Returns(new ReadOnlyDictionary<AxleNumber, ISimplePowertrainContainer>(
+					new Dictionary<AxleNumber, ISimplePowertrainContainer>()
+					{{ AxleNumber.NOT_IN_AXLE_POWERTRAIN, simplePtContainer}}));
+
+			
 			var simplePtObj = simplePt.Object;
 			testPt.Setup(t => t.ElectricMotors).Returns(() => {
 				var list = new List<ITestpowertrainElectricMotor>();
-				foreach (var (k, v) in simplePtObj.ElectricMotors) {
-					if (v is ITestpowertrainElectricMotor testEm) {
-						list.Add(testEm);
-					} else {
-						throw new Exception("Expected TestElectricMotor in simple powertrain");
-					}
-				}
+				// foreach (var (k, v) in simplePtObj.ElectricMotors) {
+				// 	if (v is ITestpowertrainElectricMotor testEm) {
+				// 		list.Add(testEm);
+				// 	} else {
+				// 		throw new Exception("Expected TestElectricMotor in simple powertrain");
+				// 	}
+				// }
 				return list;
 			});
 
 			testPt.Setup(t => t.Container).Returns(simplePt.Object);
 			
-			testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+			testPt.Setup(t => t.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 			return testPt;
 		}
 		
@@ -524,8 +537,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		private ElectricMotor GetMockElectricMotor(IVehicleContainer container, ElectricMotorData emData)
 		{
 			var emControl = new SimpleElectricMotorControl();
-			
-			var electricMotor = new ElectricMotor(container: container, emData, emControl,
+			var powertrainContainer = new PowertrainContainer(container);
+			var electricMotor = new ElectricMotor(container: container, powertrainContainer, emData, emControl,
 				PowertrainPosition.BatteryElectricE2);
 
 			//Connect Electric System
@@ -551,23 +564,24 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			var emDict = new Dictionary<PowertrainPosition, IElectricMotorInfo>() {
 				{ PowertrainPosition.BatteryElectricE2, em },
 			};
-			simplePt.Setup(r => r.ElectricMotorInfo(PowertrainPosition.BatteryElectricE2, Constants.NOT_IN_AXLE_POWERTRAIN))
+			simplePt.Setup(r => r.ElectricMotorInfo(PowertrainPosition.BatteryElectricE2, AxleNumber.NOT_IN_AXLE_POWERTRAIN))
 				.Returns(em);
 
 			//BatteryInfo
 			simplePt.Setup(s => s.BatteryInfo.InternalVoltage).Returns(700.SI<Volt>());
 
-			simplePt.Setup(s => s.ElectricMotors).Returns(emDict);
+			// simplePt.Setup(s => s.ElectricMotors).Returns(emDict);
 
 			simplePt.Setup(s => s.PowertrainInfo.HasCombustionEngine).Returns(false);
 			
 			simplePt.Setup(s => s.RunData).Returns(runData);
 
-			testGbx = GetTestGearbox(simplePt.Object, em, runData.GearboxSinglePwt.Gears);
+			testGbx = GetTestGearbox(simplePt.Object, em, runData.GearboxSinglePwt.Gears).WithDefaultAxleNumber();;
 			
-			simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
-			simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
-			simplePt.Setup(s => s.GearboxOutPort).Returns(testGbx.Object);
+			simplePt.Setup(s => s.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
+			simplePt.Setup(s => s.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
+			simplePt.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){testGbx.Object});
+			// simplePt.Setup(s => s.GearboxOutPort).Returns(testGbx.Object);
 			
 			simplePt.Setup(s => s.SimulationComponents()).Returns(components);
 			simplePt.Setup(s => s.Brakes).Returns(new Mock<IBrakes>().Object);

@@ -42,6 +42,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -58,10 +59,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public ITnOutPort NextComponent { protected internal get; set; }
 
-		public TorqueConverter(
-			IGearboxInfo gearbox, IShiftStrategy shiftStrategy, IVehicleContainer container,
-			TorqueConverterData tcData, VectoRunData runData, int axleNumber) : 
-				base(container, axleNumber)
+		public TorqueConverter(IGearboxInfo gearbox, IShiftStrategy shiftStrategy, IVehicleContainer container,
+			IPowertrainContainer powertrainContainer,
+			TorqueConverterData tcData, VectoRunData runData) : 
+				base(container, powertrainContainer)
 		{
 			Gearbox = gearbox;
 			ShiftStrategy = shiftStrategy;
@@ -511,23 +512,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (CurrentState.OperatingPoint == null) {
-				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = 1.0;
-				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = 1.0;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber] = 1.0;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber] = 1.0;
 			} else {
-				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.TorqueRatio;
-				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.SpeedRatio;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber] = CurrentState.OperatingPoint.TorqueRatio;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber] = CurrentState.OperatingPoint.SpeedRatio;
 			}
-			container[ModalResultField.TC_TorqueIn, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
-			container[ModalResultField.TC_TorqueOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
-			container[ModalResultField.TC_angularSpeedIn, AxleNumber.FormatAxleNumber()] = CurrentState.InAngularVelocity;
-			container[ModalResultField.TC_angularSpeedOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutAngularVelocity;
+			container[ModalResultField.TC_TorqueIn, AxleNumber] = CurrentState.InTorque;
+			container[ModalResultField.TC_TorqueOut, AxleNumber] = CurrentState.OutTorque;
+			container[ModalResultField.TC_angularSpeedIn, AxleNumber] = CurrentState.InAngularVelocity;
+			container[ModalResultField.TC_angularSpeedOut, AxleNumber] = CurrentState.OutAngularVelocity;
 
 			var avgOutVelocity = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var avgInVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
-			container[ModalResultField.P_TC_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque * avgOutVelocity;
-			container[ModalResultField.P_TC_loss, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgInVelocity -
+			container[ModalResultField.P_TC_out, AxleNumber] = CurrentState.OutTorque * avgOutVelocity;
+			container[ModalResultField.P_TC_loss, AxleNumber] = CurrentState.InTorque * avgInVelocity -
 													CurrentState.OutTorque * avgOutVelocity;
-			container[ModalResultField.P_TC_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgInVelocity;
+			container[ModalResultField.P_TC_in, AxleNumber] = CurrentState.InTorque * avgInVelocity;
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

@@ -268,7 +268,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
                     .Average(x => modData.ElectricMotorEfficiencyGenerate(x.Item1.Position, x.Item1.AxleNumber))
                 : modData.ElectricMotorEfficiencyGenerate(
                     runData.ElectricMachinesSinglePwt.First().Item1, 
-                    Constants.NOT_IN_AXLE_POWERTRAIN);
+                    AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             
             r.EnergyDCDCMissing = missingDCDCEnergy /
                                 runData.BusAuxiliaries.ElectricalUserInputsConfig.DCDCEfficiency /

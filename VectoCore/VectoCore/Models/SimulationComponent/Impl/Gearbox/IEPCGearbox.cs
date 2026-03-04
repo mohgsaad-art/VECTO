@@ -6,7 +6,9 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
@@ -15,8 +17,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 	{
 		protected IGearbox _impl;
 
-		public IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) 
-			: this(container, strategy, gbxFactory, false, axleNumber)
+		public IEPCGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory) 
+			: this(container, powertrainContainer, strategy, gbxFactory, false)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -24,8 +26,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			}
         }
 
-		protected IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, bool dummy, int axleNumber)
+		protected IEPCGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, bool dummy)
 		{
+			var axleNumber = powertrainContainer.AxleNumber;
 			var gearboxData = container.RunData.GetGearboxData().First(x => x.Item1 == axleNumber).Item2;
 
 			_impl = gbxFactory.CreateIEPCGearbox(gearboxData.Gears.Count == 1, container, strategy);
@@ -111,7 +114,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 		public IShiftStrategy Strategy => _impl.Strategy;
 
-		public int AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
+		public AxleNumber AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
 
 		#endregion
 

@@ -85,13 +85,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		public override XmlElement ADASNode => null;
 
-		public override AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AngledriveType.None;
+		public override AngledriveType GetAngledriveType(AxleNumber axleNumber = null) => AngledriveType.None;
 
-		public override RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => RetarderType.None;
+		public override RetarderType GetRetarderType(AxleNumber axleNumber = null) => RetarderType.None;
 		
-		public override double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 0;
+		public override double GetRetarderRatio(AxleNumber axleNumber = null) => 0;
 
-		public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
 		public override Kilogram CurbMassChassis => GetDouble(XMLNames.CorrectedActualMass).SI<Kilogram>();
 	}

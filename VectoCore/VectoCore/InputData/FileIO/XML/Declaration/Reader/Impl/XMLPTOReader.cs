@@ -34,6 +34,7 @@ using System.Xml.Linq;
 using System.Linq;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
@@ -65,7 +66,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		#region Implementation of IXMLPTOReader
 
-		public virtual IPTOTransmissionInputData GetPTOInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+		public virtual IPTOTransmissionInputData GetPTOInputData(AxleNumber axleNumber = null) => 
 			_ptoInputData ?? (_ptoInputData = CreateComponent(XMLNames.Vehicle_PTO, PTOCreator));
 
 		#endregion
@@ -130,7 +131,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
            vehicle, componentNode)
         { }
 
-		public override IPTOTransmissionInputData GetPTOInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public override IPTOTransmissionInputData GetPTOInputData(AxleNumber axleNumber = null)
         {
 			return CreateComponents(XMLNames.Vehicle_PTO, PTOCreator).FirstOrDefault(x => x.AxleNumber == axleNumber);
         }

@@ -33,6 +33,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
@@ -423,7 +424,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_mech_map [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_int_mech_map_,
 		[ModalResultField(typeof(SI), caption: "P_{0}{1}_el [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_el_,
 		[ModalResultField(typeof(SI), caption: "P_{0}{1}_out [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_out_,
-		[ModalResultField(typeof(SI), caption: "n_IEPC_out_avg{0} [kW]", outputFactor: 1e-3, perAxle: true)] n_IEPC_out_avg,
+		[ModalResultField(typeof(SI), caption: "n_IEPC_out_avg{0} [1/min]", outputFactor: 1e-3, perAxle: true)] n_IEPC_out_avg,
 		[ModalResultField(typeof(SI), caption: "T_IEPC_out{0} [kW]", outputFactor: 1e-3, perAxle: true)] T_IEPC_out,
 		[ModalResultField(typeof(SI), caption: "P_{0}{1}_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_electricMotorLoss_,
 		[ModalResultField(typeof(SI), caption: "{0}{1}_off", perAxle: true)] IEPC_Off_,
@@ -556,7 +557,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			return GetAttribute(field).PerAxle;
         }
 
-		public static string GetColumnName(this ModalResultField field, int axleNumber)
+		public static string GetColumnName(this ModalResultField field, AxleNumber axleNumber)
 		{
 			return field.GetPerAxle()
                 ? string.Format(field.GetCaption(), axleNumber.FormatAxleNumber())

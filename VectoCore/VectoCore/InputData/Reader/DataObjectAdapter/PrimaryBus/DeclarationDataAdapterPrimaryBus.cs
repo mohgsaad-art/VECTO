@@ -277,7 +277,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
                         AxleNumber = axlePtData.AxleNumber,
                         Architecture = axlePtData.Architecture,
                         AxleGearData = axlegearData,
-                        ElectricMachineData = emData,
+                        ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(){emData},
                         AngledriveData = angledriveData,
                         GearboxData = gearboxData,
                         Retarder = retarderData,
@@ -315,6 +315,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
                 }
 
                 var gearboxType = axlePtData.GearboxInputData?.Type ?? GearboxType.APTN;
+                gearboxType = GearboxType.APTN;
 
                 gearshiftParams = CreateGearshiftData(
                     axlePtData.AxleGearInputData?.Ratio ?? 1,

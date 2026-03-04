@@ -143,7 +143,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override string PowertrainPositionPrefix => "E";
 
 		#endregion
-
 		public XMLDeclarationPevHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
 			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 

@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
                 {
                     throw new VectoException(
                         $"EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}" +
-						((axleNumber != Constants.NOT_IN_AXLE_POWERTRAIN) ? $", axle {torqueLimit.Key.AxleNumber}" : ""));
+						((axleNumber != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? $", axle {torqueLimit.Key.AxleNumber}" : ""));
                 }
             }
         }

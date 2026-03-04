@@ -51,6 +51,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -117,38 +118,51 @@ namespace TUGraz.VectoCore.Tests.Integration
 				DriverData = driverData,
 			};
 
+			runData.GearboxSinglePwt.ShiftStrategy =  gbxType switch
+			{
+				GearboxType.MT => MTShiftStrategy.Name,
+				GearboxType.AMT => AMTShiftStrategyOptimized.Name,
+				_ => throw new ArgumentOutOfRangeException()
+			};
+			
+
 			var fileWriter = new FileOutputWriter(modFileName);
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null) as ModalDataContainer;
 			modData.WriteModalResults = true;
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
+			
+			
+			// var powertrainContainer = 
+			// var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>(PowertrainComponentNinjectModule.RealPowertrainPrefix).CreatePowertrainContainer(container);
+			// var cycle = new DistanceBasedDrivingCycle(container, cycleData);
+			// var engine = new CombustionEngine(container, powertrainContainer, engineData);
+			// var clutch = new Clutch(container, powertrainContainer, engineData);
 
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var engine = new CombustionEngine(container, engineData);
-			var clutch = new Clutch(container, engineData);
+   //          IShiftStrategy gbxStrategy;
+			// switch (gbxType) {
+			// 	case GearboxType.MT:
+			// 		gbxStrategy = new MTShiftStrategy(container, powertrainContainer);
+			// 		break;
+			// 	case GearboxType.AMT:
+			// 		gbxStrategy = new AMTShiftStrategyOptimized(container, powertrainContainer);
+			// 		break;
+			// 	default:
+			// 		throw new ArgumentOutOfRangeException("gbxType", gbxType, null);
+			// }
 
-            IShiftStrategy gbxStrategy;
-			switch (gbxType) {
-				case GearboxType.MT:
-					gbxStrategy = new MTShiftStrategy(container);
-					break;
-				case GearboxType.AMT:
-					gbxStrategy = new AMTShiftStrategyOptimized(container);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("gbxType", gbxType, null);
-			}
-
-			dynamic tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
-				.AddComponent(new Vehicle(container, vehicleData, airdragData))
-				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
-				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, gbxStrategy, Constants.NOT_IN_AXLE_POWERTRAIN))
-				.AddComponent(clutch)
-				.AddComponent(engine);
+			// dynamic tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
+			// 	.AddComponent(new Vehicle(container, vehicleData, airdragData))
+			// 	.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
+			// 	.AddComponent(new Brakes(container))
+			// 	.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+			// 	.AddComponent(new AMTGearbox(container, powertrainContainer, gbxStrategy))
+			// 	.AddComponent(clutch)
+			// 	.AddComponent(engine);
 
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("ZERO", 0.SI<Watt>());
+			
+			var engine = container.Components.Where(c => c is ICombustionEngine).Cast<ICombustionEngine>().Single();
 			engine.Connect(aux.Port());
 			container.AddAuxiliary("ZERO");
 

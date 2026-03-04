@@ -75,8 +75,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
 			
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
-			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
-				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
+			TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).Position));
 
             var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
 			TestPowertrain.HybridController.ApplyStrategySettings(new HybridStrategyResponse {
@@ -127,8 +127,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
 
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
-			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
-				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
+			TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).Position));
 
 
 			var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
@@ -340,7 +340,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						GensetState.MaximalPointDeRated
 						: GensetState.MaximalPoint;
 					genSetOperatingPoint = MaxGensetPower(absTime, dt, drivetrainDemand, maxPowerGenset, gensetState);
-					emTorque = TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).GetTorqueForElectricPower(
+					emTorque = TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetTorqueForElectricPower(
 						DataBus.BatteryInfo.InternalVoltage, drivetrainDemand.Response.ElectricSystem.MaxPowerDrive,
 						drivetrainDemand.Response.ElectricMotor.AngularVelocity, dt, DataBus.GearboxesInfo.FirstOrDefault()?.Gear ?? new GearshiftPosition(0), dryRun);
 					if (emTorque == null) {

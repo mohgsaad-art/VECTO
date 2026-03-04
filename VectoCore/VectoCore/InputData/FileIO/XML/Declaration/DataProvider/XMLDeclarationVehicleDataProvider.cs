@@ -188,15 +188,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual PerSecond EngineIdleSpeed => GetDouble(XMLNames.Vehicle_IdlingSpeed).RPMtoRad();
 
-		public virtual double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => GetDouble(XMLNames.Vehicle_RetarderRatio);
+		public virtual double GetRetarderRatio(AxleNumber axleNumber = null) => GetDouble(XMLNames.Vehicle_RetarderRatio);
 
-		public virtual IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+		public virtual IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => 
 			_ptoData ?? (_ptoData = PTOReader.GetPTOInputData(axleNumber));
 
-		public virtual RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) =>
+		public virtual RetarderType GetRetarderType(AxleNumber axleNumber = null) =>
 			RetarderTypeHelper.Parse(GetString(XMLNames.Vehicle_RetarderType));
         
-		public virtual AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+		public virtual AngledriveType GetAngledriveType(AxleNumber axleNumber = null) => 
 			GetString(XMLNames.Vehicle_AngledriveType).ParseEnum<AngledriveType>();
 
 		public virtual bool VocationalVehicle => XmlConvert.ToBoolean(GetString(XMLNames.Vehicle_VocationalVehicle));
@@ -479,13 +479,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public override XmlElement ADASNode => null;
 
-		public override AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AngledriveType.None;
+		public override AngledriveType GetAngledriveType(AxleNumber axleNumber = null) => AngledriveType.None;
 
-		public override RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => RetarderType.None;
+		public override RetarderType GetRetarderType(AxleNumber axleNumber = null) => RetarderType.None;
 		
-		public override double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 0;
+		public override double GetRetarderRatio(AxleNumber axleNumber = null) => 0;
 
-		public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
 		#endregion
 
@@ -591,12 +591,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public virtual PerSecond EngineIdleSpeed => GetDouble(XMLNames.Engine_IdlingSpeed).RPMtoRad();
 
 
-		public virtual RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+		public virtual RetarderType GetRetarderType(AxleNumber axleNumber = null) => 
 			RetarderTypeHelper.Parse(GetString(XMLNames.Vehicle_RetarderType));
 
-		public virtual double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => GetDouble(XMLNames.Vehicle_RetarderRatio);
+		public virtual double GetRetarderRatio(AxleNumber axleNumber = null) => GetDouble(XMLNames.Vehicle_RetarderRatio);
 
-		public virtual AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) =>
+		public virtual AngledriveType GetAngledriveType(AxleNumber axleNumber = null) =>
 			GetString(XMLNames.Vehicle_AngledriveType).ParseEnum<AngledriveType>();
 
 		public virtual IVehicleInMotionChargingDeclaration InMotionCharging { get; protected set; } = new XMLIMCData();
@@ -665,7 +665,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
                     var powertrainPosition =
                         PowertrainPositionHelper.Parse(PowertrainPositionPrefix, GetString(XMLNames.ElectricMachine_Position, electricMachineNode));
 
-                    var axleNumber = int.Parse(GetAttribute(electricMachineNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}");
+                    var axleNumber = new AxleNumber(int.Parse(GetAttribute(electricMachineNode, "axleNumber") ?? $"{AxleNumber.NOT_IN_AXLE_POWERTRAIN}"));
                     var emPlacement = new EMPlacement(powertrainPosition, axleNumber);
 
                     if (!motorTorqueLimits.ContainsKey(emPlacement))
@@ -726,7 +726,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public XmlElement PTONode { get; }
 		public IXMLPTOReader PTOReader { get; set; }
-		public IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
 		#endregion
 
@@ -1008,7 +1008,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
         public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
-        public override RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override RetarderType GetRetarderType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
@@ -1020,14 +1020,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
             return RetarderTypeHelper.Parse(node.InnerText);
         }
 
-        public override double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override double GetRetarderRatio(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderRatio).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
             return (node != null) ? double.Parse(node.InnerText) : 0;
         }
 
-        public override AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override AngledriveType GetAngledriveType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_AngledriveType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
@@ -1211,8 +1211,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				{
 					var powertrainPosition =
 						PowertrainPositionHelper.Parse(PowertrainPositionPrefix, GetString(XMLNames.ElectricMachine_Position, electricMachineNode));
-
-					var axleNumber = int.Parse(GetAttribute(electricMachineNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}");
+					
+					var axleNumber = new AxleNumber(int.Parse(GetAttribute(electricMachineNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}"));
 					var emPlacement = new EMPlacement(powertrainPosition, axleNumber);
 
 					if (!motorTorqueLimits.ContainsKey(emPlacement))

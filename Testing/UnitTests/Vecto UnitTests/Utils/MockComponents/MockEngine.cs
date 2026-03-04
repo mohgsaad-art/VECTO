@@ -10,7 +10,7 @@ namespace TUGraz.VectoCore.Tests.Utils;
 
 public class MockEngine : VectoSimulationComponent, IEngineInfo, IEngineControl
 {
-	public MockEngine(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN) { }
+	public MockEngine(IVehicleContainer container) : base(container) { }
 
 	public PerSecond EngineSpeed { get; set; }
 	public NewtonMeter EngineTorque { get; set; }

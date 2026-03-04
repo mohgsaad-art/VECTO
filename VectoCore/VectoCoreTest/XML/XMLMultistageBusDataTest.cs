@@ -501,7 +501,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(mission, result.Mission);
 			Assert.AreEqual(FuelType.DieselCI, result.EnergyConsumption.First().Key);
 			energyCon = energyCon * 1000;
-			Assert.AreEqual(energyCon.SI<JoulePerMeter>(), result.EnergyConsumption.First().Value);
+			Assert.That(energyCon.SI<JoulePerMeter>().IsEqual(result.EnergyConsumption.First().Value));
 		}
 
 		private void CheckSimulationParameters(double totalMass, double payload, double passenger, string fuelMode, IResult result, ref int index)

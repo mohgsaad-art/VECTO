@@ -179,7 +179,7 @@ public class ReportResultTestUtils
 		modData.Setup(x => x.Distance).Returns(30000.SI<Meter>());
 		modData.Setup(x => x.GetValues<MeterPerSecond>(ModalResultField.v_act)).Returns(new[] { 0.KMPHtoMeterPerSecond(), 50.KMPHtoMeterPerSecond() });
 		modData.Setup(x => x.GetValues<MeterPerSquareSecond>(ModalResultField.acc)).Returns(new[] { -1.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>(), 1.SI<MeterPerSquareSecond>() });
-		modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
+		modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
 
 		var e_gbxIn = 1000.SI<WattSecond>();
 		var gbxEff = 0.98;

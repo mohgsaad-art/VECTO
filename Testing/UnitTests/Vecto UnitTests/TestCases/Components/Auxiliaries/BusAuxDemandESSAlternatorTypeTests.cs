@@ -19,6 +19,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
@@ -815,12 +816,13 @@ public class BusAuxDemandESSAlternatorTypeTests
             HasElectricMotor = false,
             RunData = runData
         };
-		var engine = new StopStartCombustionEngine(container, engineData);
+        var powertrainContainer = new PowertrainContainer(container);
+		var engine = new StopStartCombustionEngine(container, powertrainContainer, engineData);
 
         container.EngineInfo = engine;
 
         var conventionalAux = CreateAuxiliaries(runData.Aux, container);
-        var aux = new BusAuxiliariesAdapter(container, runData.BusAuxiliaries, conventionalAux);
+        var aux = new BusAuxiliariesAdapter(container, powertrainContainer, runData.BusAuxiliaries, conventionalAux);
 
         var auxCfg = runData.BusAuxiliaries;
         var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart

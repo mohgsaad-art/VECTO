@@ -47,6 +47,7 @@ namespace TUGraz.VectoCore.Tests.Integration
             //TestCase(@$"{EngineeringBasePath}/MultipleSHEV_S4_S4/Multiple.vecto", ExecutionMode.Engineering),
 
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E2_E2_HeavyLorry.xml", ExecutionMode.Declaration),
+            // TestCase($@"{DeclarationBasePath}/Multiple_PEV_E2_E2_HeavyLorry.xml", ExecutionMode.Declaration, true),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E2_E3_HeavyLorry.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E2_E4_HeavyLorry.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E2_IEPC_HeavyLorry.xml", ExecutionMode.Declaration),
@@ -83,7 +84,7 @@ namespace TUGraz.VectoCore.Tests.Integration
             TestCase($@"{DeclarationBasePath}/Multiple_FCHV_F4_F4_PrimaryBus.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E4_E4_PrimaryBus.xml", ExecutionMode.Declaration),
         ]
-        public void RunDistanceJob(string jobFile, ExecutionMode mode)
+        public void RunDistanceJob(string jobFile, ExecutionMode mode, bool validate=false)
         {
             var inputProvider = (mode == ExecutionMode.Engineering) 
                 ? JSONInputDataFactory.ReadJsonJob(jobFile)
@@ -93,8 +94,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 
             var factory = _kernel
                 .Get<ISimulatorFactoryFactory>()
-                .Factory(mode, inputProvider, fileWriter, null, null, false);
-            factory.Validate = false;
+                .Factory(mode, inputProvider, fileWriter, null, null, validate);
+            factory.Validate = validate;
 
             var sumWriter = new SummaryDataContainer(fileWriter);
             var jobContainer = new JobContainer(sumWriter);
@@ -107,6 +108,5 @@ namespace TUGraz.VectoCore.Tests.Integration
                 Assert.IsTrue(cycleToRun.FinishedWithoutErrors);
             }
         }
-
     }
 }

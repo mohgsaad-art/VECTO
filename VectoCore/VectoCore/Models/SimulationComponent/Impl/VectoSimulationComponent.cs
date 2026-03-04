@@ -34,7 +34,9 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -49,25 +51,40 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     /// </summary>
     public abstract class VectoSimulationComponent : LoggingObject, IUpdateable
     {
-        [NonSerialized] protected IDataBus DataBus;
+        private AxleNumber _axleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN;
+        protected IDataBus DataBus { get; set; }
+        protected IPowertrainContainer PowertrainContainer { get; set; }
 
-		public int AxleNumber { get; private set; }
+        public AxleNumber AxleNumber
+        {
+            get => _axleNumber;
+            private set => _axleNumber = value;
+        }
 
-		/// <summary>
-		/// Constructor. Registers the component in the cockpit.
-		/// </summary>
-		/// <param name="dataBus">The vehicle container</param>
-		protected VectoSimulationComponent(IVehicleContainer dataBus, int axleNumber)
-		{
-			DataBus = dataBus;
-			AxleNumber = axleNumber;
+        /// <summary>
+        /// Constructor. Registers the component in the cockpit.
+        /// </summary>
+        /// <param name="dataBus">The vehicle container</param>
+        protected VectoSimulationComponent(IVehicleContainer dataBus) : this(dataBus, null) { }
+
+        protected VectoSimulationComponent(IVehicleContainer dataBus, IPowertrainContainer powertrainContainer)
+        {
+            DataBus = dataBus;
+            if (powertrainContainer != null)
+            {
+                AxleNumber = powertrainContainer.AxleNumber;
+            }
+            PowertrainContainer = powertrainContainer;
 
             // if a component doesn't want to be registered in DataBus, it supplies null to the constructor
             // (mk 2016-08-31: currently the only example is PTOCycleController, in order to not interfere with the real DrivingCycle)
             if (dataBus != null) {
+                
                 dataBus.AddComponent(this);
+
             }
         }
+
 
         public virtual void CommitSimulationStep(Second time, Second simulationInterval, IModalDataContainer container)
         {
@@ -108,12 +125,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         protected internal TStateType CurrentState;
         protected internal TStateType PreviousState;
 
-		protected StatefulVectoSimulationComponent(IVehicleContainer container, int axleNumber)
-			: base(container, axleNumber)
-		{
-			CurrentState = new TStateType();
-			PreviousState = new TStateType();
-		}
+		protected StatefulVectoSimulationComponent(IVehicleContainer container)
+			: base(container)
+        {
+            InitState();
+        }
+        
+        protected StatefulVectoSimulationComponent(IVehicleContainer container, IPowertrainContainer powertrainContainer)
+            : base(container, powertrainContainer)
+        {
+            InitState();
+        }
+
+
+        private void InitState()
+        {
+            CurrentState = new TStateType();
+            PreviousState = new TStateType();
+        }
+
+
 
         protected void AdvanceState()
         {
@@ -130,7 +161,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
         protected TOutPort NextComponent;
 
-		protected StatefulProviderComponent(IVehicleContainer container, int axleNumber) : base(container, axleNumber) { }
+		protected StatefulProviderComponent(IVehicleContainer container) : base(container) { }
+        protected StatefulProviderComponent(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer) { }
 
         public TProviderOutPort OutPort()
         {

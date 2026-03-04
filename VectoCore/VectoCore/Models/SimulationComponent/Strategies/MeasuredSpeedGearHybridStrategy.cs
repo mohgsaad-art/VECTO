@@ -6,12 +6,13 @@ using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
     public class MeasuredSpeedGearHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy
     {
-        public MeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container)
+        public MeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(runData, container, powertrainContainer)
         {}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
@@ -36,7 +37,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 				TestPowertrain.Clutch.UpdateFrom(DataBus.ClutchesInfo.First());
 				var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;
-				TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
+				TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
 				// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
 				foreach (var emUpstreamTransmission in TestPowertrain.ElectricMotorsUpstreamTransmission) {
                     //TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
@@ -74,7 +75,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 	public class MeasuredSpeedGearATHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy
 	{
 
-		public MeasuredSpeedGearATHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container)
+		public MeasuredSpeedGearATHybridStrategy(VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(runData, container, powertrainContainer)
 		{}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
@@ -130,11 +131,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
 			TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 			if (nextGear.TorqueConverterLocked.HasValue && !nextGear.TorqueConverterLocked.Value) {
-				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.TorqueConverterInfo());
+				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
 			}
 
 			var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;
-			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
+			TestPowertrain.GetElectricMotor(AxleNumber.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
 			// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
 			foreach (var emUpstreamTransmission in TestPowertrain.ElectricMotorsUpstreamTransmission) {
                 //TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
@@ -188,8 +189,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     //--------------------------------------------------
     public abstract class AbstractMeasuredSpeedGearHybridStrategy : AbstractHybridStrategy
 	{
-        public AbstractMeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : 
-            base(runData, vehicleContainer)
+        public AbstractMeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer, IPowertrainContainer powertrainContainer) : base(runData, vehicleContainer, powertrainContainer) 
         {}
 
         protected override void WarnGearShiftRange()

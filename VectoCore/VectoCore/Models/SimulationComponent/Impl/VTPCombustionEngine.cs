@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -52,7 +53,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public VectoRunData RunData { get; protected set; }
 
-        public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) 
+        public VTPCombustionEngine(IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, powertrainContainer, modelData, pt1Disabled) 
 		{
 			RunData = container.RunData;
 		}
@@ -326,7 +327,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						"FuelConsumptionMap for fuel {2} was extrapolated: range for FC-Map is not sufficient: n: {0}, torque: {1}",
 						avgEngineSpeed.Value(), CurrentState.EngineTorque.Value(), fuelData.FuelType.GetLabel());
 				}
-				var pt1 = ModelData.FullLoadCurves[DataBus.GearboxInfo(AxleNumber).Gear.Gear].PT1(avgEngineSpeed);
+				var pt1 = ModelData.FullLoadCurves[DataBus.GetGearboxInfo(AxleNumber).Gear.Gear].PT1(avgEngineSpeed);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration && pt1.Extrapolated)
 				{
 					Log.Error(

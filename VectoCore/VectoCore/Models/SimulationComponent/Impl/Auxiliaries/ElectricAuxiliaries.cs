@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		#region Implementation of IElectricAuxPort
 
 
-		public ElectricAuxiliaries(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public ElectricAuxiliaries(IVehicleContainer container) : base(container)
 		{
 			
 			VehicleContainer = container;

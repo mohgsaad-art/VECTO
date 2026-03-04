@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.ObjectModel;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -46,7 +47,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-    public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, IMileageCounter, IGearboxInfo, IGearboxControl, IPowertainInfo, IUpdateable
+    public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, IMileageCounter, IGearboxInfo, IGearboxControl, IPowertrainInfo, IUpdateable
 	{
 		// only CycleData Lookup is set / accessed...
 
@@ -54,9 +55,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private Watt _axlegearLoss = 0.SI<Watt>();
 		private bool _clutchClosed = true;
 
-		public int AxleNumber => Constants.NOT_IN_AXLE_POWERTRAIN;
+		public AxleNumber AxleNumber => AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
-		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, AxleNumber axleNumber) => null;
 
         public IList<IElectricMotorInfo> ElectricMotorsInfo { get; set; }
 
@@ -66,11 +67,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public ITorqueSplitter TorqueSplitter { get; set; }
 
-        public IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
+        public IAxlegearInfo AxlegearInfo(AxleNumber axleNumber) => this;
 
-		public IAngledriveInfo AngledriveInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public IAngledriveInfo AngledriveInfo(AxleNumber axleNumber) => null;
 
-        public IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public IRetarder Retarder(AxleNumber axleNumber) => null;
 
         public IList<IAxlegearInfo> AxlegearsInfo { get; set; }
 
@@ -80,9 +81,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IVehicleInfo VehicleInfo => this;
 
-		public IClutchInfo ClutchInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
+		public IClutchInfo GetClutchInfo(AxleNumber axleNumber) => this;
 
-		public IList<IClutchInfo> ClutchesInfo { get; set; }
+		public IList<IClutchInfo> ClutchesInfo => new List<IClutchInfo>() { this };
 
 		public IBrakes Brakes => this;
 
@@ -113,15 +114,17 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IMileageCounter MileageCounter => this;
 
-		public IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
+		public IGearboxInfo GearboxInfo(AxleNumber axleNumber) => this;
 
-		public IList<IGearboxInfo> GearboxesInfo { get; set; }
+		public IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => this;
+		
+		public IList<IGearboxInfo> GearboxesInfo  => new List<IGearboxInfo>(){this};
 
         public IShiftStrategy Strategy => null;
 
 		public event Action GearShiftTriggered;
 
-		public IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
+		public IGearboxControl GearboxCtl(AxleNumber axleNumber) => this;
 
         public IList<IGearboxControl> GearboxesCtl { get; set; }
 
@@ -138,11 +141,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IElectricSystemInfo ElectricSystemInfo { get; }
 
-		public ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber) => null;
 
-		public ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber) => null;
 
-		public IPowertainInfo PowertrainInfo => this;
+		public IPowertrainInfo PowertrainInfo => this;
 
 		public IHybridControllerInfo HybridControllerInfo { get; }
 		public IHybridControllerCtl HybridControllerCtl { get; }
@@ -288,6 +291,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public VectoRun.Status RunStatus { get; set; }
 		public ISimplePowertrainBuilder SimplePowertrainBuilder { get; }
+
+		public bool HasMultiplePowertrains => throw new NotImplementedException();
+
+		private IDictionary<AxleNumber, IPowertrainContainer> _powertrainContainers =
+			new Dictionary<AxleNumber, IPowertrainContainer>();
+		public ReadOnlyDictionary<AxleNumber, IPowertrainContainer> Powertrains => new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(_powertrainContainers);
+
 		public IAuxInProvider BusAux { get; }
 
 		public bool PTOActive { get; private set; }
@@ -298,6 +308,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 			ModalData?.RegisterComponent(component);
 
 			//WriteSumData?.RegisterComponent(component, RunData);
+		}
+
+		public void AddPowertrainContainer(IPowertrainContainer container)
+		{
+			_powertrainContainers.Add(container.AxleNumber, container);
 		}
 
 		public void AddAuxiliary(string id, string columnName = null)

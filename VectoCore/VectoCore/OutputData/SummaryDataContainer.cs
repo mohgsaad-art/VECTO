@@ -637,7 +637,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		private void CreateElectricMotorColumns(IElectricMotor em, int axleNumber, VectoRunData runData, Tuple<string, Type>[] cols)
+		private void CreateElectricMotorColumns(IElectricMotor em, AxleNumber axleNumber, VectoRunData runData, Tuple<string, Type>[] cols)
 		{
 			lock (Table) {
 				var emColNames = cols.Select(x => string.Format(x.Item1, em.Position.GetName(), axleNumber.FormatAxleNumber()));
@@ -654,7 +654,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		private void CreateRetarderColumns(int axleNumber, bool includeComputed = true)
+		private void CreateRetarderColumns(AxleNumber axleNumber, bool includeComputed = true)
 		{
 			if (includeComputed)
 			{
@@ -665,7 +665,7 @@ namespace TUGraz.VectoCore.OutputData
 			CreateColumns(axleNumber, RetarderCertificationColumns, RetarderCertificationCols);
         }
 
-		private void CreateAngledriveColumns(int axleNumber, bool includedComputed = true)
+		private void CreateAngledriveColumns(AxleNumber axleNumber, bool includedComputed = true)
 		{
 			if (includedComputed)
 			{
@@ -676,7 +676,7 @@ namespace TUGraz.VectoCore.OutputData
 			CreateColumns(axleNumber, AngledriveCertificationColumns, AngledriveCertificationCols);
         }
 
-		private void CreateTCUColumns(int axleNumber)
+		private void CreateTCUColumns(AxleNumber axleNumber)
 		{
 			CreateColumns(axleNumber, TCUColumns, TCUCols);
         }
@@ -697,11 +697,11 @@ namespace TUGraz.VectoCore.OutputData
 
 			if (!addedColumn)
 			{
-                CreateColumns(Constants.NOT_IN_AXLE_POWERTRAIN, PTOColumns, PTOCols);
+                CreateColumns(AxleNumber.NOT_IN_AXLE_POWERTRAIN, PTOColumns, PTOCols);
             }
         }
 
-		private void CreateColumns(int axleNumber, Tuple<string, Type>[] fieldColumns, IList<string> fieldCols)
+		private void CreateColumns(AxleNumber axleNumber, Tuple<string, Type>[] fieldColumns, IList<string> fieldCols)
 		{
 			lock (Table)
 			{
@@ -722,14 +722,14 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		private void CreateAxleGearColumns(int axleNumber)
+		private void CreateAxleGearColumns(AxleNumber axleNumber)
 		{
 			CreateColumns(axleNumber, AxlegearComputedColumns, AxlegearComputedCols);
 			CreateColumns(axleNumber, AxlegearModelColumns, AxlegearModelCols);
 			CreateColumns(axleNumber, AxlegearCertificationColumns, AxlegearCertificationCols);
         }
 
-		private void CreateGearTimeShareColumns(VectoRunData runData, int axleNumber)
+		private void CreateGearTimeShareColumns(VectoRunData runData, AxleNumber axleNumber)
 		{
 			lock (Table) 
 			{
@@ -751,7 +751,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		private void CreateGearRatioColumns(VectoRunData runData, int axleNumber)
+		private void CreateGearRatioColumns(VectoRunData runData, AxleNumber axleNumber)
 		{
 			lock (Table) {
                 var gears = runData.GetGearboxData().First(x => x.Item1 == axleNumber).Item2.GearList;
@@ -1302,7 +1302,7 @@ namespace TUGraz.VectoCore.OutputData
 				return;
 			}
 
-			if (func.Item1 == null || func.Item1.All(x => modData.ContainsColumn(x.GetColumnName(Constants.NOT_IN_AXLE_POWERTRAIN)))) {
+			if (func.Item1 == null || func.Item1.All(x => modData.ContainsColumn(x.GetColumnName(AxleNumber.NOT_IN_AXLE_POWERTRAIN)))) {
 				var value = func.Item2(runData, modData);
 				if (value != null) {
 					row[col.ColumnName] = value;
@@ -1324,7 +1324,7 @@ namespace TUGraz.VectoCore.OutputData
 			return string.Format(col, suffix);
 		}
 
-		private void WriteGearshiftStats(IModalDataContainer modData, Dictionary<string, object> row, uint gearCount, int axleNumber)
+		private void WriteGearshiftStats(IModalDataContainer modData, Dictionary<string, object> row, uint gearCount, AxleNumber axleNumber)
 		{
 			var timeSharePerGear = modData.TimeSharePerGear(gearCount, axleNumber);
 
@@ -1334,7 +1334,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		private void WriteGearRatios(Dictionary<string, object> row, VectoRunData runData, int axleNumber)
+		private void WriteGearRatios(Dictionary<string, object> row, VectoRunData runData, AxleNumber axleNumber)
 		{
 			var emData = runData.GetEMData().FirstOrDefault(x => (x.Item1.Position == PowertrainPosition.HybridP2_5) && (x.Item1.AxleNumber == axleNumber));
 

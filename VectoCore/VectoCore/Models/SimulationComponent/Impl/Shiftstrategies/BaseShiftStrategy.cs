@@ -36,6 +36,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 
@@ -56,7 +57,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected ISimplePowertrainBuilder PowertrainBuilder => Container.SimplePowertrainBuilder;
 
-		protected BaseShiftStrategy(IVehicleContainer container)
+		protected BaseShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer)
 		{
 			VelocityDropData = new VelocityRollingLookup();
 			Container = container;
@@ -241,7 +242,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				maxEnginePower / nextEngineSpeed * GearboxModelData.Gears[gear.Gear].Ratio).Value * nextEngineSpeed;
 			//DataBus.GearboxLoss();
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo().AxlegearLoss();
+			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
 
 			var accelerationPower = maxEnginePower - gearboxLoss - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 

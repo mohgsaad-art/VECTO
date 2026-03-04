@@ -6,6 +6,7 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -28,6 +29,7 @@ public class AngledriveTests
 
         // setup components
 		var vehicle = new Mock<IVehicleContainer>().Object;
+		var powertrainContainer = new PowertrainContainer(vehicle);
 		var angledriveData = new AngledriveData {
 			Angledrive = new TransmissionData {
 				LossMap = TransmissionLossMapReader.Create(InputDataHelper.InputDataAsTableData(AngleLossHdr, AnleLossMap), ratio, "Angledrive"),
@@ -43,7 +45,7 @@ public class AngledriveTests
 			rpmRequest = rpm;
 			return new ResponseSuccess(this);
 		});
-        var angledrive = new Angledrive(vehicle, angledriveData);
+        var angledrive = new Angledrive(vehicle, powertrainContainer, angledriveData);
 		angledrive.InPort().Connect(mockPort.Object);
 
 		// issue request

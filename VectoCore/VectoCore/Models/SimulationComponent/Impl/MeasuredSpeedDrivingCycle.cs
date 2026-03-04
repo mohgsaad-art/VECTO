@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <param name="container">The container.</param>
 		/// <param name="cycle">The cycle.</param>
 		public MeasuredSpeedDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle)
-			: base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			: base(container)
 		{
 			Data = cycle;
 			CycleIterator = new DrivingCycleEnumerator(cycle);
@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void GearShiftTriggered()
         {
-			if (DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).GearboxType == GearboxType.IHPC) {
+			if (DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GearboxType == GearboxType.IHPC) {
 				return;
             }
 
@@ -299,7 +299,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;
-				DrivingAction = DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).GearEngaged(absTime)
+				DrivingAction = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GearEngaged(absTime)
 					? (gearShiftStarted 
 						? DrivingAction.Roll 
 						: DrivingAction.Accelerate) 
@@ -313,7 +313,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionWithoutVelocityDropData(absTime);
             }
 			else if (Data.CycleType == CycleType.MeasuredSpeed) {
-				if (DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).GearboxType.AutomaticTransmission()) {
+				if (DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GearboxType.AutomaticTransmission()) {
 					DetermineDriverActionForAutomaticTransmission(absTime);	
 				}
 				else {
@@ -336,7 +336,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;
-				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN);
+				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 
 				DrivingAction = gearbox.GearEngaged(absTime) || (gearbox.GearboxType == GearboxType.IHPC)
 					? DrivingAction.Accelerate 
@@ -358,7 +358,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;
-				DrivingAction = DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).GearEngaged(absTime) 
+				DrivingAction = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GearEngaged(absTime) 
 					? DrivingAction.Accelerate 
 					: DrivingAction.Roll;
 			}
@@ -394,7 +394,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var tolerance = (((DataBus.VehicleInfo.VehicleSpeed + nextSpeed) / 2) * 0.001).Abs();
 
 				if (CycleData.RightSample.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
-					var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN);
+					var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 					
 					DrivingAction = gearbox.GearEngaged(absTime) || (gearbox.GearboxType == GearboxType.IHPC) 
 						? DrivingAction.Accelerate 
@@ -423,13 +423,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			return ((DataBus.HybridControllerCtl != null) 
 				? DataBus.HybridControllerCtl.Strategy.VelocityDropData
-				: DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).Strategy.VelocityDropData) 
+				: DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).Strategy.VelocityDropData) 
 				!= null;
 		}
 
         private MeterPerSecond CalculateVehicleSpeedAtNextStep(Second absTime)
         {
-			var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 
 			var velocityDropData = (DataBus.HybridControllerCtl != null) 
 				? DataBus.HybridControllerCtl.Strategy.VelocityDropData
@@ -507,7 +507,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if ((RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle)
 				&& (DrivingAction == DrivingAction.Brake)
 				&& ((r.Engine.EngineSpeed ?? 0.SI<PerSecond>()) < DataBus.EngineInfo.EngineIdleSpeed)
-				&& (DataBus.GearboxesInfo.First(x => x.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN).Gear.Gear == 1)) {
+				&& (DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).Gear.Gear == 1)) {
 
 				DataBus.GearboxesCtl.First().DisengageGearbox = true;
 

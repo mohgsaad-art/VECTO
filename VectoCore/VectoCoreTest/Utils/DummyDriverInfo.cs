@@ -9,7 +9,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 {
 	internal class DummyDriverInfo : VectoSimulationComponent, IDriverInfo
 	{
-		public DummyDriverInfo(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public DummyDriverInfo(IVehicleContainer container) : base(container)
 		{
 
 		}

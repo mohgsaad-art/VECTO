@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public static readonly string AXLE_NUMBER_VERSION = $"{XSD_TYPE}:AxleNumberVersion";
 
 		protected IXMLDeclarationVehicleData Vehicle;
-        private int? _axleNumber;
+        private AxleNumber _axleNumber;
 		
         public XMLDeclarationRetarderDataProviderV10(
 			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         }
 
         public XMLDeclarationRetarderDataProviderV10(
-            int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
+            AxleNumber axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
             base(componentNode, sourceFile)
         {
 			_axleNumber = axleNumber;
@@ -73,12 +73,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
         #region Implementation of IRetarderInputData
 
-        public virtual RetarderType Type => Vehicle.GetRetarderType(AxleNumber.Value);
+        public virtual RetarderType Type => Vehicle.GetRetarderType(AxleNumber);
 
-		public virtual double Ratio => Vehicle.GetRetarderRatio(AxleNumber.Value);
+		public virtual double Ratio => Vehicle.GetRetarderRatio(AxleNumber);
 
-        private int? AxleNumber =>
-            _axleNumber ?? (_axleNumber = int.Parse(GetAttribute(BaseNode?.ParentNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}"));
+        private AxleNumber AxleNumber =>
+            _axleNumber ?? (_axleNumber = new AxleNumber(int.Parse(GetAttribute(BaseNode?.ParentNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}")));
 
         public virtual TableData LossMap =>
 			ReadTableData(

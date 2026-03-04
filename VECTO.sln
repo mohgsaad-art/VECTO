@@ -118,6 +118,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMLConverterCmdLineStart", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VECTO IntegrationTests", "Testing\IntegrationTests\VECTO IntegrationTests\VECTO IntegrationTests.csproj", "{765E8BAF-EEEC-46D3-B04F-A918BE77617A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{F72C8B95-EE33-4005-B02C-CB9FA992F691}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

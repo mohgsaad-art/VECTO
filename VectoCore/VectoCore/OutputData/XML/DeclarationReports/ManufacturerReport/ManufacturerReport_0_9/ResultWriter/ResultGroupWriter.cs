@@ -96,7 +96,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 					? entry.GearshiftCount
 						.Select(x => new XElement(
 							TNS + XMLNames.Report_ResultEntry_GearshiftCount,
-							(x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+							(x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
 							x.Value.ToXMLFormat(0)))
 						.ToArray()
 					: new[] { new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, ((double)0).ToXMLFormat(0)) },
@@ -109,7 +109,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 					? entry.AverageGearboxEfficiency
 						.Select(x => new XElement(
 							TNS + XMLNames.Report_Results_AverageGearboxEfficiency,
-							(x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+							(x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
 							x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
 						.ToArray()
                     : new[] { new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) },
@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
                     ? entry.AverageAxlegearEfficiency
                         .Select(x => new XElement(
                             TNS + XMLNames.Report_Results_AverageAxlegearEfficiency,
-                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            (x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
                             x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
                         .ToArray()
                     : new[] { new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) }
@@ -176,7 +176,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
                     ? entry.GearshiftCount
 						.Select(x => new XElement(
                             TNS + XMLNames.Report_ResultEntry_GearshiftCount,
-                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            (x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
                             x.Value.ToXMLFormat(0)))
                         .ToArray()
                     : new[] { new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, ((double)0).ToXMLFormat(0)) },
@@ -184,7 +184,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
                     ? entry.AverageGearboxEfficiency
                         .Select(x => new XElement(
                             TNS + XMLNames.Report_Results_AverageGearboxEfficiency,
-                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            (x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
                             x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
                         .ToArray()
                     : new[] { new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) },
@@ -192,7 +192,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
                     ? entry.AverageAxlegearEfficiency
                         .Select(x => new XElement(
                             TNS + XMLNames.Report_Results_AverageAxlegearEfficiency,
-                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            (x.Key != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
                             x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
                         .ToArray()
                     : new[] { new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) }

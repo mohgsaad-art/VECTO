@@ -48,7 +48,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public RequestData LastRequest;
 
-		public MockDriver(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public MockDriver(IVehicleContainer container) : base(container)
 		{
 			DriverBehavior = DrivingBehavior.Accelerating;
 			DrivingAction = DrivingAction.Accelerate;

@@ -62,9 +62,6 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\HashingTool\HashingTool.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 		<Import Include="System" />
 		<Import Include="System.Collections" />
 		<Import Include="System.Data" />
@@ -113,6 +110,11 @@
 	<EmbeddedResource Update="Resources\6x2rt.png" />
 	<EmbeddedResource Update="Resources\6x2tt.png" />
 	<EmbeddedResource Update="Resources\Undef.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+	  <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj" />
 	</ItemGroup>
 
 

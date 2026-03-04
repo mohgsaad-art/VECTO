@@ -10,7 +10,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electric
 
     public class NoBattery : VectoSimulationComponent, ISimpleBattery
 	{
-		public NoBattery(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN) { }
+		public NoBattery(IVehicleContainer container) : base(container) { }
 
 		#region Implementation of ISimpleBatteryInfo
 
@@ -68,7 +68,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electric
 	public class SimpleBattery : StatefulVectoSimulationComponent<SimpleBattery.State>, ISimpleBattery
 	{
 		public SimpleBattery(IVehicleContainer container, WattSecond capacity, double storageEfficiency, double soc = 0.9) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			Capacity = capacity;
 			SOC = soc;

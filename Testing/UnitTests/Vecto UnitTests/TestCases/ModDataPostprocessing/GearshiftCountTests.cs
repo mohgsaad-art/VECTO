@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Configuration;
@@ -36,8 +37,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 34, gear = 4u },
@@ -48,11 +49,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(1, gearshifts.Value());
         }
 
@@ -67,8 +68,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 34, gear = 4u },
@@ -79,11 +80,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(0, gearshifts.Value());
         }
 
@@ -98,8 +99,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 34, gear = 4u },
@@ -110,11 +111,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(1, gearshifts.Value());
         }
 
@@ -130,8 +131,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 4, gear = 4u },
@@ -142,11 +143,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(1, gearshifts.Value());
         }
 
@@ -161,8 +162,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 4, gear = 4u },
@@ -174,11 +175,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(2, gearshifts.Value());
         }
 
@@ -194,8 +195,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 34, gear = 4u },
@@ -206,11 +207,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(1, gearshifts.Value());
         }
 
@@ -226,8 +227,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 			Assert.IsNotNull(modData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateColumns(ModalResults.GearboxSignals,
-                nameFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
-                captionFunc: (x) => string.Format(x.GetAttribute().Caption, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
+                nameFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()),
+                captionFunc: (x) => string.Format(x.GetAttribute().Caption, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
 
             var entries = new[] {
                 new DummyEntry { v = 34, gear = 4u },
@@ -238,11 +239,11 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
             };
             foreach (var dummyEntry in entries) {
                 modData[ModalResultField.v_act] = dummyEntry.v.KMPHtoMeterPerSecond();
-                modData[ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
+                modData[ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] = dummyEntry.gear;
                 modData.CommitSimulationStep();
             }
 
-            var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+            var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
             Assert.AreEqual(1, gearshifts.Value());
         }
 

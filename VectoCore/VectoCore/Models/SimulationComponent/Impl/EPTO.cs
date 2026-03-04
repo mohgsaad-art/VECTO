@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private readonly IPTOCycleController _ptoCycleController;
 		private readonly IDataBus _dataBus;
 
-		public EPTO(IPTOCycleController cycleController, IVehicleContainer dataBus) : base(dataBus, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public EPTO(IPTOCycleController cycleController, IVehicleContainer dataBus) : base(dataBus)
 		{
 			_dataBus = dataBus;
 			_ptoCycleController = cycleController;

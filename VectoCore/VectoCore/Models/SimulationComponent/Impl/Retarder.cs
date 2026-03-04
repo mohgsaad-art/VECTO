@@ -39,13 +39,14 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Configuration;
 using System.Linq;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public interface IRetarder : IPowerTrainComponent
+	public interface IRetarder : IPowerTrainComponent, IHasAxleNumber
 	{
-        int AxleNumber { get; }
     }
 
     /// <summary>
@@ -64,14 +65,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <param name="container"></param>
 		/// <param name="lossMap"></param>
 		/// <param name="ratio"></param>
-		public Retarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : 
-			base(container, axleNumber)
+		public Retarder(IVehicleContainer container, IPowertrainContainer powertrainContainer, RetarderLossMap lossMap, double ratio) : 
+			base(container, powertrainContainer)
 		{
 			_lossMap = lossMap;
 			_ratio = ratio;
-			_primaryRetarder = (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-				? container.RunData != null && container.RunData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder
-				: container.RunData.AxlePowertrains.Where(x => x.AxleNumber == axleNumber).All(x => x.Retarder.Type == RetarderType.TransmissionInputRetarder);
+			_primaryRetarder = container.RunData != null && container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].Retarder.Type == RetarderType.TransmissionInputRetarder; 
 		}
 
 		public IResponse Initialize(NewtonMeter torque, PerSecond angularVelocity)
@@ -104,10 +103,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
-			container[ModalResultField.P_ret_loss, AxleNumber.FormatAxleNumber()] = 
+			container[ModalResultField.P_ret_loss, AxleNumber] = 
 				(CurrentState.InTorque - CurrentState.OutTorque) * avgAngularSpeed;
 			
-			container[ModalResultField.P_retarder_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgAngularSpeed;
+			container[ModalResultField.P_retarder_in, AxleNumber] = CurrentState.InTorque * avgAngularSpeed;
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

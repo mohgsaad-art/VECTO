@@ -248,7 +248,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 	public class DummyCycle : VectoSimulationComponent, IDrivingCycleInfo
 	{
-		public DummyCycle(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public DummyCycle(IVehicleContainer container) : base(container)
 		{
 			
 		}

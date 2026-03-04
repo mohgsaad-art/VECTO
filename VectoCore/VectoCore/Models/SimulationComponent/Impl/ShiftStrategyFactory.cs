@@ -4,11 +4,11 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-
     public class ShiftStrategyFactory : IShiftStrategyFactory
     {
         protected readonly IInternalShiftStrategyFactory _internalFactory;
@@ -17,6 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         {
             _internalFactory = internalFactory;
         }
+
 
         public string GetShiftStrategyName(GearboxType gearboxType, VectoSimulationJobType jobType, bool batteryOnlyHybridMode)
         {
@@ -31,9 +32,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                             return AMTShiftStrategyOptimized.Name;
                         case VectoSimulationJobType.BatteryElectricVehicle:
                         case VectoSimulationJobType.SerialHybridVehicle:
-							return PEVAMTShiftStrategy.Name;
+                            return PEVAMTShiftStrategy.Name;
                         case VectoSimulationJobType.FCHV:
 							return FCHVAMTShiftStrategy.Name;
+                        case VectoSimulationJobType.Multiple_PEV:
+                        case VectoSimulationJobType.Multiple_SHEV:
+                        case VectoSimulationJobType.Multiple_FCHV:
+                            throw new VectoException(
+                                "Gearboxes for vehicles with multiple powertrains should me simulated as APT-N");      
                         default:
 							throw new VectoException(
                                 "no default gearshift strategy available for gearbox type {0} and job type {1}",
@@ -97,14 +103,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
         }
 
-        public IShiftStrategy GetShiftStrategy(string name, IVehicleContainer container)
+        public IShiftStrategy GetShiftStrategy(string name, IVehicleContainer container,
+            IPowertrainContainer powertrainContainer)
         {
             try {
-                return _internalFactory.CreateShiftStrategy(name, container);
-            } catch (Exception ex) {
-                throw new ArgumentOutOfRangeException($@"Could not create shift strategy {name}", ex);
+                return _internalFactory.CreateShiftStrategy(name, container, powertrainContainer);
+            } catch (Exception ex)
+            {
+               throw new ArgumentOutOfRangeException($@"Could not create shift strategy {name}", ex);
             }
         }
+        
 
         public IShiftPolygonCalculator CreateShiftPolygonCalculator(string shiftStrategyName,
             ShiftStrategyParameters shiftParams)

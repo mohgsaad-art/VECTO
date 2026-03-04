@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <param name="container">The container.</param>
 		/// <param name="cycle">The cycle.</param>
 		public PowertrainDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			Data = cycle;
 			CycleIterator = new DrivingCycleEnumerator(Data);

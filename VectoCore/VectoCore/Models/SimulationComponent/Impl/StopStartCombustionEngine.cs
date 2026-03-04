@@ -4,6 +4,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -12,7 +13,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TestpowertrainCombustionEngine : StopStartCombustionEngine, ITestpowertrainCombustionEngine
 	{
-		public TestpowertrainCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
+		public TestpowertrainCombustionEngine(IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, powertrainContainer, modelData, pt1Disabled) { }
 
 		#region Implementation of ITestpowertrainCombustionEngine
 
@@ -23,8 +24,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 	public class AlwaysOffCombustionEngine : StopStartCombustionEngine
 	{
-		public AlwaysOffCombustionEngine(IVehicleContainer container, CombustionEngineData modelData,
-			bool pt1Disabled = false) : base(container, modelData, pt1Disabled)
+		public AlwaysOffCombustionEngine(IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData,
+			bool pt1Disabled = false) : base(container, powertrainContainer, modelData, pt1Disabled)
 		{
 			CombustionEngineOn = false;
 			PreviousState.EngineTorque = 0.SI<NewtonMeter>();
@@ -84,8 +85,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected WattSecond EngineStartEnergy;
 
 		public StopStartCombustionEngine(
-			IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(
-			container, modelData, pt1Disabled)
+			IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData, bool pt1Disabled = false) : base(
+			container, powertrainContainer, modelData, pt1Disabled)
 		{
 			CombustionEngineOn = true;
 

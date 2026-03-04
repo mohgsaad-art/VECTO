@@ -100,13 +100,14 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				VehicleData = vehicleData,
 				DriverData = driverData
 			}, modData, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 
 			var driver = new Driver(container, driverData, new DefaultDriverStrategy(container));
-			var engine = new CombustionEngine(container, engineData);
+			var engine = new CombustionEngine(container, powertrainContainer, engineData);
 			driver.AddComponent(new Vehicle(container, vehicleData, CreateAirdragData()))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Clutch(container, engineData))
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new Clutch(container, powertrainContainer, engineData))
 				.AddComponent(engine);
 
 			var gbx = new MockGearbox(container);
@@ -160,16 +161,16 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			};
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, CreateAirdragData()))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Clutch(container, engineData))
-				.AddComponent(new CombustionEngine(container, engineData));
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new Clutch(container, powertrainContainer, engineData))
+				.AddComponent(new CombustionEngine(container, powertrainContainer, engineData));
 			//engine.IdleController.RequestPort = clutch.IdleControlPort;
 
 			var gbx = new MockGearbox(container) { Gear = new GearshiftPosition(0) };
@@ -240,15 +241,15 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			};
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, CreateAirdragData()))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Clutch(container, engineData))
-				.AddComponent(new CombustionEngine(container, engineData));
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new Clutch(container,powertrainContainer,  engineData))
+				.AddComponent(new CombustionEngine(container, powertrainContainer, engineData));
 			//engine.IdleController.RequestPort = clutch.IdleControlPort;
 
 			var gbx = new MockGearbox(container);

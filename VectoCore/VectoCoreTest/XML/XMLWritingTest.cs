@@ -37,7 +37,7 @@ using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
-	[TestFixture]
+	// [TestFixture]
 	//[Parallelizable(ParallelScope.All)]
 	public class XMLWritingTests
 	{
@@ -56,14 +56,14 @@ namespace TUGraz.VectoCore.Tests.XML
 		private IKernel _kernel;
 
 
-		[OneTimeSetUp]
-		public void RunBeforeAnyTests()
-		{
-			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-
-			_kernel = new StandardKernel(new VectoNinjectModule());
-			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
-		}
+		// [OneTimeSetUp]
+		// public void RunBeforeAnyTests()
+		// {
+		// 	Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+		//
+		// 	_kernel = new StandardKernel(new VectoNinjectModule());
+		// 	xmlInputReader = _kernel.Get<IXMLInputDataReader>();
+		// }
 
 	}
 }

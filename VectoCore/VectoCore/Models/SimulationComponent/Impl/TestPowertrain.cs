@@ -7,6 +7,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -29,7 +30,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public ITestpowertrainCombustionEngine CombustionEngine { get; }
         public IAuxPort EngineAux { get; }
-        public ITestpowertrainElectricMotor GetElectricMotor(int axleNumber) => ElectricMotors.FirstOrDefault(x => x.AxleNumber == axleNumber);
+        public ITestpowertrainElectricMotor GetElectricMotor(AxleNumber axleNumber) => ElectricMotors.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public ITestpowertrainGensetChargerAdapter Charger { get; }
         public IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; } = new List<IElectricMotor>();
         public IList<ITestpowertrainElectricMotor> ElectricMotors { get; } = new List<ITestpowertrainElectricMotor>();
@@ -38,7 +39,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public IDCDCConverter DCDCConverter { get; }
         public IWHRCharger WHRCharger;
 
-        public ITestPowertrainTransmission GetGearbox(int axleNumber) => Gearboxes.FirstOrDefault(x => (x as IGearboxInfo).AxleNumber == axleNumber);
+        public ITestPowertrainTransmission GetGearbox(AxleNumber axleNumber) => Gearboxes.FirstOrDefault(x => (x as IGearboxInfo).AxleNumber == axleNumber);
 
         public TestPowertrain(ISimpleVehicleContainer container, IDataBus realContainer, bool createDriver)
         {
@@ -119,7 +120,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
         private IDataBus realContainer;
 
-		public MockDrivingCycle(ISimpleVehicleContainer container, IDataBus rcontainer) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public MockDrivingCycle(ISimpleVehicleContainer container, IDataBus rcontainer) : base(container)
 		{
 			realContainer = rcontainer;
 		}
@@ -184,7 +185,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
         private IDataBus realContainer;
 
-		public MockDriver(ISimpleVehicleContainer container, IDataBus rcontainer) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public MockDriver(ISimpleVehicleContainer container, IDataBus rcontainer) : base(container)
 		{
 			realContainer = rcontainer;
 		}

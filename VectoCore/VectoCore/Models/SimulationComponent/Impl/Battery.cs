@@ -16,7 +16,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	{
 		protected readonly BatteryData ModelData;
 
-		public Battery(IVehicleContainer container, BatteryData modelData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public Battery(IVehicleContainer container, BatteryData modelData) : base(container)
 		{
 			ModelData = modelData;
 			CurrentState.PulseDuration = 0.SI<Second>();

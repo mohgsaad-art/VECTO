@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
@@ -62,8 +63,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected internal readonly TorqueConverterWrapper TorqueConverter;
 
-		public CycleGearbox(IVehicleContainer container, int axleNumber)
-			: base(container, axleNumber)
+		public CycleGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer)
+			: base(container, powertrainContainer)
 		{
 			if (!ModelData.Type.AutomaticTransmission()) {
 				return;
@@ -81,11 +82,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return;
             }
 
-			var strategy = new CycleShiftStrategy(container);
+			var strategy = new CycleShiftStrategy(container, powertrainContainer);
 
 			TorqueConverter = new TorqueConverterWrapper(runData.Cycle.Entries.All(x => x.EngineSpeed != null),
 				new CycleTorqueConverter(container, ModelData.TorqueConverterData),
-				new TorqueConverter(this, strategy, container, ModelData.TorqueConverterData, runData, Constants.NOT_IN_AXLE_POWERTRAIN));
+				new TorqueConverter(this, strategy, container, powertrainContainer, ModelData.TorqueConverterData, runData));
 			if (TorqueConverter == null) {
 				throw new VectoException("Torque Converter required for AT transmission!");
 			}
@@ -443,19 +444,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear, AxleNumber.FormatAxleNumber()] = DisengagedTstmp != null ? 0 : Gear.Gear;
-			container[ModalResultField.P_gbx_loss, AxleNumber.FormatAxleNumber()] = inPower - outPower;
-			container[ModalResultField.P_gbx_inertia, AxleNumber.FormatAxleNumber()] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
-			container[ModalResultField.P_gbx_in, AxleNumber.FormatAxleNumber()] = inPower;
-			container[ModalResultField.n_gbx_out_avg, AxleNumber.FormatAxleNumber()] = (PreviousState.OutAngularVelocity +
+			container[ModalResultField.Gear, AxleNumber] = DisengagedTstmp != null ? 0 : Gear.Gear;
+			container[ModalResultField.P_gbx_loss, AxleNumber] = inPower - outPower;
+			container[ModalResultField.P_gbx_inertia, AxleNumber] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
+			container[ModalResultField.P_gbx_in, AxleNumber] = inPower;
+			container[ModalResultField.n_gbx_out_avg, AxleNumber] = (PreviousState.OutAngularVelocity +
 														CurrentState.OutAngularVelocity) / 2.0;
-			container[ModalResultField.n_gbx_in_avg, AxleNumber.FormatAxleNumber()] = avgInAngularSpeed;
-			container[ModalResultField.T_gbx_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
-			container[ModalResultField.T_gbx_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
+			container[ModalResultField.n_gbx_in_avg, AxleNumber] = avgInAngularSpeed;
+			container[ModalResultField.T_gbx_out, AxleNumber] = CurrentState.OutTorque;
+			container[ModalResultField.T_gbx_in, AxleNumber] = CurrentState.InTorque;
 
 			if (ModelData.Type.AutomaticTransmission()) {
-				container[ModalResultField.TC_Locked, AxleNumber.FormatAxleNumber()] = !CurrentState.TorqueConverterActive;
-				container[ModalResultField.P_gbx_shift_loss, AxleNumber.FormatAxleNumber()] = CurrentState.PowershiftLosses == null
+				container[ModalResultField.TC_Locked, AxleNumber] = !CurrentState.TorqueConverterActive;
+				container[ModalResultField.P_gbx_shift_loss, AxleNumber] = CurrentState.PowershiftLosses == null
 					? 0.SI<Watt>()
 					: CurrentState.PowershiftLosses * avgInAngularSpeed;
 			}

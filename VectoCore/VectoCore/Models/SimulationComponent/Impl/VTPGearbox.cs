@@ -33,12 +33,13 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class VTPGearbox : CycleGearbox
 	{
-		public VTPGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber) { }
+		public VTPGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer) { }
 
 		protected override uint GetGearFromCycle()
 		{

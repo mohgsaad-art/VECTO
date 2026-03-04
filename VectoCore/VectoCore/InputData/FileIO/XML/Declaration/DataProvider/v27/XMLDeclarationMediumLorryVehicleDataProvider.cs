@@ -26,7 +26,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override bool VocationalVehicle => false;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
         public override XmlElement PTONode => null;
 
@@ -187,6 +187,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override XmlElement PTONode => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
     }
 }

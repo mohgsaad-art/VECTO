@@ -3,6 +3,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
@@ -10,7 +11,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 	{
 		public new const string Name = "APT-N - EffShift (FCHV)";
 
-		public FCHVAPTNShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false) { }
+		public FCHVAPTNShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer)
+			: base(container, powertrainContainer, container.HasMultiplePowertrains ? VectoSimulationJobType.Multiple_FCHV : VectoSimulationJobType.FCHV , false) { }
 	}
 
 
@@ -18,10 +20,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 	{
 		public new const string Name = "APT-N - EffShift (BEV)";
 		
-		public APTNShiftStrategy(IVehicleContainer container) : this(container, VectoSimulationJobType.BatteryElectricVehicle, false)
+		public APTNShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer) : this(container,
+			powertrainContainer, 
+			container.HasMultiplePowertrains ? VectoSimulationJobType.Multiple_PEV : VectoSimulationJobType.BatteryElectricVehicle, false)
 		{}
 
-		public APTNShiftStrategy(IVehicleContainer container, VectoSimulationJobType jobType, bool dummy) : base(container, jobType,  false)
+		public APTNShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer, VectoSimulationJobType jobType, bool dummy) : base(container, powertrainContainer, jobType,  false)
 		{
 			if (container.RunData.VehicleData == null) {
 				return;

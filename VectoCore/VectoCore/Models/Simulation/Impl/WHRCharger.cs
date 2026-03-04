@@ -15,7 +15,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
     {
 		public double Efficiency { get; }
 
-		public WHRCharger(IVehicleContainer container, double efficiency) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public WHRCharger(IVehicleContainer container, double efficiency) : base(container)
 		{
 			Efficiency = efficiency;
 			PreviousState.GeneratedEnergy = 0.SI<WattSecond>();

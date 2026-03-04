@@ -226,8 +226,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         {
             var retVal = new Dictionary<TestPowertrainSource, ISimpleVehicleContainer> {
 				{ TestPowertrainSource.Driver , FindSimpleVehicleContainerInDriver(vehicleContainer.DriverInfo)},
-                {TestPowertrainSource.ShiftStrategySimplePowertrain, FindSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GearboxInfo()))},
-                {TestPowertrainSource.ShiftStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GearboxInfo()))},
+                {TestPowertrainSource.ShiftStrategySimplePowertrain, FindSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)))},
+                {TestPowertrainSource.ShiftStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)))},
                 {TestPowertrainSource.HybridStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerHybridStrategy(GetHybridStrategy(vehicleContainer.HybridControllerInfo))}
             };
             return retVal.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
@@ -321,9 +321,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (axlegear != null) {
-                    Assert.IsInstanceOf(axlegear, container.AxlegearInfo(), "Axlegear");
+                    Assert.IsInstanceOf(axlegear, container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Axlegear");
                 } else {
-                    Assert.IsNull(container.AxlegearInfo(), "Axlegear");
+                    Assert.IsNull(container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Axlegear");
                 }
 
                 if (angledrive != null) {
@@ -339,26 +339,26 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (gearbox != null) {
-                    Assert.IsInstanceOf(gearbox, container.GearboxInfo(), "Gearbox");
-                    var strategy = GetShiftStrategy(container.GearboxInfo());
+                    Assert.IsInstanceOf(gearbox, container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Gearbox");
+                    var strategy = GetShiftStrategy(container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
                     if (shiftStrategyT != null) {
                         Assert.IsInstanceOf(shiftStrategyT, strategy, "ShiftStrategy");
                     } else {
                         Assert.IsNull(strategy, "ShiftStrategy");
                     }
                 } else {
-                    Assert.IsNull(container.GearboxInfo(), "Gearbox");
+                    Assert.IsNull(container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Gearbox");
                 }
 
                 if (torqueConverter != null) {
-                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo());
+                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
                 } else {
-                    Assert.IsNull(container.TorqueConverterInfo());
+                    Assert.IsNull(container.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
                 }
                 if (clutch != null) {
-                    Assert.IsInstanceOf(clutch, container.ClutchInfo(), "Clutch");
+                    Assert.IsInstanceOf(clutch, container.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Clutch");
                 } else {
-                    Assert.IsNull(container.ClutchInfo(), "Clutch");
+                    Assert.IsNull(container.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Clutch");
                 }
 
                 if (engine != null) {
@@ -454,11 +454,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         private static Type SerialHybridStrategyT = typeof(SerialHybridStrategy);
         private static Type SerialHybridATStrategyT = typeof(SerialHybridStrategyAT);
 
-        private static Type TestVehicleContainerT = typeof(SimplePowertrainContainer);
+        private static Type TestVehicleContainerT = typeof(SimpleVehicleContainer);
         private static Type TestDistanceBasedDrivingCycleT = typeof(DistanceBasedDrivingCycle);
         private static Type TestMeasuredspeedDrivingCycleT = typeof(MeasuredSpeedDrivingCycle);
         private static Type TestPowertrainCycleT = typeof(MockDrivingCycle);
-        private static Type TestDriverSimpleContT = typeof(SimplePowertrainContainer);
+        private static Type TestDriverSimpleContT = typeof(SimpleVehicleContainer);
         private static Type TestDriverTestPTT = typeof(MockDriver);
         private static Type TestDriverT = typeof(Driver);
         private static Type TestVehicleT = typeof(Vehicle);
@@ -1411,6 +1411,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
         #region Multiple PEV PT, distance based
 
+        
         public static object[] DistanceBased_MultiplePEV_Source =
         {
             new object[] { 
@@ -1419,17 +1420,17 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 CycleType.DistanceBased,
                 DummyEngineT,
                 new Dictionary<Type, Func<IVehicleContainer, Object>>() {
-                    { AxleGearT, (container) => container.AxlegearInfo(1) },
-                    { RetarderT, (container) => container.Retarder(1) },
+                    { AxleGearT, (container) => container.AxlegearInfo(new AxleNumber(1)) },
+                    { RetarderT, (container) => container.Retarder(new AxleNumber(1)) },
                     { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 1) },
-                    { DummyGearboxT, (container) => container.GearboxInfo(1) },
-                    { ATClutchInfoT, (container) => container.ClutchInfo(1) }
+                    { DummyGearboxT, (container) => container.GetGearboxInfo(new AxleNumber(1)) },
+                    { ATClutchInfoT, (container) => container.GetClutchInfo(new AxleNumber(1)) }
                 },
                 PowertrainPosition.BatteryElectricE3,
                 new Dictionary<Type, Func<IVehicleContainer, Object>>() {
                     { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 2) },
-                    { DummyGearboxT, (container) => container.GearboxInfo(2) },
-                    { ATClutchInfoT, (container) => container.ClutchInfo(2) }
+                    { DummyGearboxT, (container) => container.GetGearboxInfo(new AxleNumber(2)) },
+                    { ATClutchInfoT, (container) => container.GetClutchInfo(new AxleNumber(2)) }
                 },
                 PowertrainPosition.BatteryElectricE4
             },
@@ -1471,8 +1472,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             {
                 AxlePowertrains = new List<AxlePowertrainData>()
                 {
-                    CreateAxlePowertrain(powertrain1, pos1, 1),
-                    CreateAxlePowertrain(powertrain2, pos2, 2)
+                    CreateAxlePowertrain(powertrain1, pos1, new AxleNumber(1)),
+                    CreateAxlePowertrain(powertrain2, pos2, new AxleNumber(2))
                 },
                 JobType = jobType,
                 Cycle = new DrivingCycleData()
@@ -1544,7 +1545,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             return runData;
         }
 
-        private AxlePowertrainData CreateAxlePowertrain(IEnumerable<Type> powertrain, PowertrainPosition pos, int axleNumber)
+        private AxlePowertrainData CreateAxlePowertrain(IEnumerable<Type> powertrain, PowertrainPosition pos, AxleNumber axleNumber)
         {
             var pt = new AxlePowertrainData()
             {
@@ -1591,7 +1592,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
                 if (comp == ElectricMotorT)
                 {
-                    pt.ElectricMachineData = Tuple.Create(pos, new ElectricMotorData()
+                    pt.ElectricMachinesData = [Tuple.Create(pos, new ElectricMotorData()
                     {
                         Overload = new OverloadData()
                         {
@@ -1614,7 +1615,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                             }
                         }
                         }
-                    });
+                    })];
                 }
 
                 if (comp == DummyGearboxT)

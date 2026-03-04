@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public static readonly string AXLE_NUMBER_VERSION = $"{XSD_TYPE}:AxleNumberVersion";
 
         protected IXMLDeclarationVehicleData Vehicle;
-		private int? _axleNumber;
+		private AxleNumber _axleNumber;
 
 		public XMLDeclarationAngledriveDataProviderV10(
 			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
@@ -64,7 +64,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
         public XMLDeclarationAngledriveDataProviderV10(
-            int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
+            AxleNumber axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
             base(componentNode, sourceFile)
         {
 			_axleNumber = axleNumber;
@@ -74,12 +74,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
         #region Implementation of IAngledriveInputData
 
-        public virtual AngledriveType Type => Vehicle.GetAngledriveType(AxleNumber.Value);
+        public virtual AngledriveType Type => Vehicle.GetAngledriveType(AxleNumber);
 
 		public virtual double Ratio => GetDouble(XMLNames.AngleDrive_Ratio);
 
-        private int? AxleNumber => 
-			_axleNumber ?? (_axleNumber = int.Parse(GetAttribute(BaseNode?.ParentNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}"));
+        private AxleNumber AxleNumber => 
+			_axleNumber ?? (_axleNumber = new AxleNumber(int.Parse(GetAttribute(BaseNode?.ParentNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}")));
 
         public virtual TableData LossMap =>
 			ReadTableData(

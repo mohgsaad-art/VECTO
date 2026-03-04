@@ -359,11 +359,11 @@ namespace TUGraz.VectoCore.OutputData
 
 		public delegate object WriteSumEntry(VectoRunData r, IModalDataContainer m);
 
-		public delegate object WriteSumEntryAxle(VectoRunData r, IModalDataContainer m, int axleNumber);
+		public delegate object WriteSumEntryAxle(VectoRunData r, IModalDataContainer m, AxleNumber axleNumber);
 
 		public delegate object WriteFuelEntry(VectoRunData r, IModalDataContainer m, IFuelProperties f);
 
-		public delegate object WriteEmEntry(VectoRunData r, IModalDataContainer m, PowertrainPosition emPos, int axleNumber);
+		public delegate object WriteEmEntry(VectoRunData r, IModalDataContainer m, PowertrainPosition emPos, AxleNumber axleNumber);
 
 
 		public delegate object WriteAuxEntry(VectoRunData r, IModalDataContainer m, DataColumn aux);

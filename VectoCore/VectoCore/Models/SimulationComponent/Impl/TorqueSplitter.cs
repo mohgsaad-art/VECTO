@@ -15,11 +15,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TorqueSplitter : StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, ITorqueSplitter
     {
-		protected List<ITnOutPort> _nextComponents = new List<ITnOutPort>();
+		protected IList<ITnOutPort> _nextComponents = new List<ITnOutPort>();
+		public int NumberOfComponents => _nextComponents.Count;
 		private IElectricPowerJunctionBox _junctionBox;
 
 		public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			_junctionBox = junctionBox;
 		}
@@ -32,21 +33,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Dictionary<ITnOutPort, IResponse> nextCompResponses = new Dictionary<ITnOutPort, IResponse>();
 
 			_junctionBox.ClearResults();
-
-			_nextComponents.ForEach(t => {
-				_junctionBox.CurrentTorqueSplitterNextComponent = t;
-				var response = t.Request(absTime, dt, outTorque / _nextComponents.Count, outAngularVelocity, dryRun);
-				nextCompResponses[t] = response;
-			});
+			
+			foreach (var nextComponent in _nextComponents)
+			{
+				_junctionBox.CurrentTorqueSplitterNextComponent = nextComponent;
+				var response = nextComponent.Request(absTime, dt, outTorque / NumberOfComponents, outAngularVelocity, dryRun);
+				nextCompResponses[nextComponent] = response;
+			}
 
 			while (nextCompResponses.Values.Count(x => x is ResponseElectricSystemNotReady) > 0)
 			{
 				nextCompResponses
 					.Where(x => x.Value is ResponseElectricSystemNotReady)
 					.ToList().ForEach(t => {
-
 						_junctionBox.CurrentTorqueSplitterNextComponent = t.Key;
-						var response = t.Key.Request(absTime, dt, outTorque / _nextComponents.Count, outAngularVelocity, dryRun);
+						var response = t.Key.Request(absTime, dt, outTorque / NumberOfComponents, outAngularVelocity, dryRun);
 						nextCompResponses[t.Key] = response;
 				});
 			}
@@ -86,7 +87,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			PreviousState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 
-			var responses = _nextComponents.Select(x => x.Initialize(outTorque, outAngularVelocity));
+			var responses = new List<IResponse>();
+			foreach (var nextComponent in _nextComponents)
+			{
+				var splitOutTorque = outTorque / NumberOfComponents;
+				var response = nextComponent.Initialize(splitOutTorque, outAngularVelocity);
+				responses.Add(response);
+			}
 
 			return responses.First();
 		}
@@ -96,7 +103,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!_nextComponents.Contains(other))
 			{
 				_nextComponents.Add(other);
-				_junctionBox.AddTorqueSplitterNextComponent(other);
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Security;
 using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
@@ -292,9 +293,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			//var data = run.GetContainer().RunData;
 			//var simpleContainer = PowertrainBuilder.BuildSimplePowertrain(data);
 			var testPowertrain = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false);
-
+			var testPowertrainAxleContainer = PowertrainBuilder.CreateSimplePowertrainContainer(testPowertrain.Container);
 			var tmp = new VelocityRollingLookup();
-			var preprocessor = new VelocitySpeedGearshiftPreprocessor(tmp, 1.SI<Second>(), testPowertrain, minGradient: -12, maxGradient: 12);
+			var preprocessor = new VelocitySpeedGearshiftPreprocessor(tmp, 1.SI<Second>(), testPowertrain, testPowertrainAxleContainer, minGradient: -12, maxGradient: 12);
 			var t = Stopwatch.StartNew();
 
 			preprocessor.RunPreprocessing();

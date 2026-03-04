@@ -28,6 +28,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -680,7 +681,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, modDataFilter);
 			modData.WriteModalResults = true;
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, sumData);
-
+			var powertrainContainer = container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN];
+			
 			var strategy = new SerialHybridStrategy(runData, container);
 			var es = new ElectricSystem(container, batteryData);
 			var battery = new BatterySystem(container, batteryData);
@@ -691,7 +693,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			es.Connect(battery);
 
-			var engine = new StopStartCombustionEngine(container, runData.EngineData);
+			var engine = new StopStartCombustionEngine(container, powertrainContainer, runData.EngineData);
 			
 			//var hybridStrategy = new DelegateParallelHybridStrategy();
 
@@ -712,38 +714,38 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					throw new VectoException("invalid powertrain position");
 				case PowertrainPosition.BatteryElectricE2:
 					var gearbox = gearboxType.AutomaticTransmission()
-						? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN)
-						: new AMTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN);
-					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
-						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, runData.AngledriveSinglePwt) : null)
+						? (IHybridControlledGearbox)new APTGearbox(container, powertrainContainer, ctl.ShiftStrategy)
+						: new AMTGearbox(container, powertrainContainer, ctl.ShiftStrategy);
+					powertrain = powertrain.AddComponent(new AxleGear(container, powertrainContainer, runData.AxleGearSinglePwt))
+						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, powertrainContainer, runData.AngledriveSinglePwt) : null)
 						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionOutputRetarder 
-							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+							? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent((IGearbox)gearbox)
 						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder 
-							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+							? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, 
-							runData.ElectricMachinesSinglePwt, container, es, ctl));
+							runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
 					ctl.Gearbox = gearbox;
 
 					break;
 					
 				case PowertrainPosition.BatteryElectricE3:
-					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
+					powertrain = powertrain.AddComponent(new AxleGear(container, powertrainContainer, runData.AxleGearSinglePwt))
 						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.AxlegearInputRetarder 
-							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+							? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, 
-							runData.ElectricMachinesSinglePwt, container, es, ctl));
-					new DummyGearboxInfo(container, new GearshiftPosition(0));
+							runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
+					new DummyGearboxInfo(container, powertrainContainer, new GearshiftPosition(0));
 					//new MockEngineInfo(container);
-					new ATClutchInfo(container);
+					new ATClutchInfo(container, powertrainContainer);
 					runData.GearboxSinglePwt = null;
 					break;
 				case PowertrainPosition.BatteryElectricE4:
 					powertrain = powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, 
-						runData.ElectricMachinesSinglePwt, container, es, ctl));
-					new DummyGearboxInfo(container, new GearshiftPosition(0));
+						runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
+					new DummyGearboxInfo(container, powertrainContainer, new GearshiftPosition(0));
 					//new MockEngineInfo(container);
-					new ATClutchInfo(container);
+					new ATClutchInfo(container, powertrainContainer);
 					runData.GearboxSinglePwt = null;
 					break;
 				case PowertrainPosition.HybridP0:
@@ -758,7 +760,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					throw new ArgumentOutOfRangeException(nameof(pos), pos, null);
 			}
 
-			ctl.GenSet.AddComponent(GetElectricMachine(PowertrainPosition.GEN, runData.ElectricMachinesSinglePwt, container,
+			ctl.GenSet.AddComponent(GetElectricMachine(PowertrainPosition.GEN, runData.ElectricMachinesSinglePwt, container, powertrainContainer,
 					es, ctl))
 				.AddComponent(engine, idleController);
 			//PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);
@@ -815,6 +817,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 		private static IElectricMotor GetElectricMachine(PowertrainPosition pos,
 			IList<Tuple<PowertrainPosition, ElectricMotorData>> electricMachinesData, IVehicleContainer container,
+			IPowertrainContainer powertrainContainer,
 			ElectricSystem es, IHybridController ctl)
 		{
 			var motorData = electricMachinesData.FirstOrDefault(x => x.Item1 == pos);
@@ -824,7 +827,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			//container.ModData.AddElectricMotor(pos);
 			ctl.AddElectricMotor(pos, motorData.Item2);
-			var motor = new ElectricMotor(container, motorData.Item2, ctl.ElectricMotorControl(pos), pos);
+			var motor = new ElectricMotor(container, powertrainContainer, motorData.Item2, ctl.ElectricMotorControl(pos), pos);
 			if (pos == PowertrainPosition.GEN) {
 				es.Connect(new GensetChargerAdapter(motor));
 			} else {

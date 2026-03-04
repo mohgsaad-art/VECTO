@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         }
 
 		protected FuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData, bool dummy) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			
 

@@ -869,12 +869,13 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 				HasElectricMotor = false,
 				RunData = runData
 			};
-			var engine = new StopStartCombustionEngine(container, engineData);
+			var powertrainContainer = new PowertrainContainer(container);
+			var engine = new StopStartCombustionEngine(container, powertrainContainer, engineData);
 
 			container.EngineInfo = engine;
 
 			var conventionalAux = CreateAuxiliaries(runData.Aux, container);
-			var aux = new BusAuxiliariesAdapter(container, runData.BusAuxiliaries, conventionalAux);
+			var aux = new BusAuxiliariesAdapter(container, powertrainContainer, runData.BusAuxiliaries, conventionalAux);
 
 			var auxCfg = runData.BusAuxiliaries;
 			var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart

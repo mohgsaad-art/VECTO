@@ -34,6 +34,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 
@@ -41,8 +42,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class EngineOnlyCombustionEngine : CombustionEngine
 	{
-		public EngineOnlyCombustionEngine(IVehicleContainer container, CombustionEngineData modelData)
-			: base(container, modelData) {}
+		public EngineOnlyCombustionEngine(IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData)
+			: base(container, powertrainContainer, modelData) {}
 
 		// the behavior in engine-only mode differs a little bit from normal driving cycle simulation: in engine-only mode
 		// certain amount of overload is tolerated.

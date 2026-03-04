@@ -504,7 +504,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
                         AxleNumber = axlePtData.AxleNumber,
                         Architecture = axlePtData.Architecture,
                         AxleGearData = axlegearData,
-                        ElectricMachineData = emData,
+                        ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(){emData},
                         AngledriveData = angledriveData,
                         GearboxData = gearboxData,
                         Retarder = retarderData,

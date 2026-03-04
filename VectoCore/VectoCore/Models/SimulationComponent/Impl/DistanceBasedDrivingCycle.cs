@@ -70,7 +70,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IIdleControllerSwitcher IdleController { get; set; }
 
         public DistanceBasedDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			Data = cycle;
 			CycleIntervalIterator = new DrivingCycleEnumerator(Data);
@@ -108,15 +108,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 			CurrentState = PreviousState.Clone();
 
-			StartSpeed = container.RunData.GearshiftParametersSinglePwt?.StartSpeed;
-			StartAcceleration = container.RunData.GearshiftParametersSinglePwt?.StartAcceleration;
-
-			if (container.RunData.AxlePowertrains.Count() > 0)
+			
+			if (container.RunData.AxlePowertrains.Count() > 1)
 			{
-				var gearParams = container.RunData.AxlePowertrains.First(x => x.GearshiftParameters != null).GearshiftParameters;
 				
-				StartSpeed = gearParams.StartSpeed;
-				StartAcceleration = gearParams.StartAcceleration;
+				var gearParams = container.RunData.AxlePowertrains.Select(x => x.GearshiftParameters).ToList();
+
+				try
+				{
+					StartSpeed = gearParams.Select(x => x.StartSpeed).Distinct().Single();
+					StartAcceleration = gearParams.Select(x => x.StartAcceleration).Distinct().Single();
+				}
+				catch (Exception e)
+				{
+					throw new VectoException(
+						"Different Start and StartAcceleration not supported for multiple powertrains");
+				}
+			}
+			else
+			{
+				StartSpeed = container.RunData.GearshiftParametersSinglePwt?.StartSpeed;
+				StartAcceleration = container.RunData.GearshiftParametersSinglePwt?.StartAcceleration;
 			}
 		}
 

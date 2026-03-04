@@ -337,6 +337,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					retVal.Type = GearboxType.APTN;
 				}
 			}
+
+			if (vehicle.VehicleType.IsMultiplePowertrains())
+			{
+				//Multiple Powertrain PEVs are simulated as APT-N
+				retVal.Type = GearboxType.APTN;
+			}
             if (adas != null && retVal.Type.AutomaticTransmission()  && adas.EcoRoll != EcoRollType.None &&
                            !adas.ATEcoRollReleaseLockupClutch.HasValue)
             {

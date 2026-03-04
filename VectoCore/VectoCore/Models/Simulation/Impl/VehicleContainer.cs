@@ -34,49 +34,54 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
-using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
-using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
-    public class VehicleContainer : LoggingObject, IVehicleContainer, IPowertainInfo
+	
+	
+    public class VehicleContainer : LoggingObject, IVehicleContainer, IPowertrainInfo
 	{
 		private List<Tuple<int, VectoSimulationComponent>> _components =
 			new List<Tuple<int, VectoSimulationComponent>>();
 
 		public virtual IEngineInfo EngineInfo { get; protected internal set; }
 		public virtual IEngineControl EngineCtl { get; protected set; }
-		public virtual IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-			? GearboxesInfo.FirstOrDefault()
-            : GearboxesInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public virtual IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => 
+			FilterByAxleNumber(GearboxInfos, axleNumber);
 
-		public virtual IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-            ? GearboxesCtl.FirstOrDefault()
-            : GearboxesCtl.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public virtual IGearboxControl GearboxCtl(AxleNumber axleNumber) =>
+			FilterByAxleNumber(GearboxControls, axleNumber);
 
-        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-			? AxlegearsInfo.FirstOrDefault()
-			: AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public virtual IAxlegearInfo AxlegearInfo(AxleNumber axleNumber) =>
+			FilterByAxleNumber(AxlegearsInfo, axleNumber);
 
-        public virtual IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => Retarders.FirstOrDefault(x => x.AxleNumber == axleNumber);
+        public virtual IRetarder Retarder(AxleNumber axleNumber) => 
+	        FilterByAxleNumber(Retarders, axleNumber);
+        
         public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }
 		public virtual IWheelsInfo WheelsInfo { get; protected set; }
 		public virtual IDriverInfo DriverInfo { get; protected set; }
 		public virtual IHybridController HybridController { get; protected set; }
+
+		private Dictionary<AxleNumber, IPowertrainContainer> _powertrainContainers =
+			new Dictionary<AxleNumber, IPowertrainContainer>();
+
+		public ReadOnlyDictionary<AxleNumber, IPowertrainContainer> Powertrains =>
+			new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(_powertrainContainers);
+
+		public bool HasMultiplePowertrains => RunData.AxlePowertrainsDict.Values.Count > 1;
 
 		public virtual IAuxInProvider BusAux { get; protected set; }
 
@@ -86,13 +91,16 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IRESSInfo BatteryInfo { get; protected set; }
 
-		public ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-			? TorqueConverters.FirstOrDefault()
-			: TorqueConverters.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		private T FilterByAxleNumber<T>(IEnumerable<T> components, AxleNumber axleNumber) where T : IHasAxleNumber
+		{
+			return components.SingleOrDefault(c => c.AxleNumber == axleNumber);
+		}
 
-		public virtual ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-			? TorqueConverterControls.FirstOrDefault()
-			: TorqueConverterControls.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber) =>
+			FilterByAxleNumber(TorqueConverters, axleNumber);
+
+		public virtual ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber) =>
+			FilterByAxleNumber(TorqueConverterControls, axleNumber);
 
         public IDCDCConverter DCDCConverter { get; protected set; }
 
@@ -109,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public virtual bool IsTestPowertrain => false;
 
 		internal ISimulationOutPort Cycle;
-
+		
 		internal IModalDataContainer ModData;
 
 		protected ISumData WriteSumData;
@@ -118,7 +126,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		internal readonly IList<IElectricMotorInfo> EMs = new List<IElectricMotorInfo>();
 
-		internal readonly IList<IGearboxInfo> Gearboxes = new List<IGearboxInfo>();
+		internal readonly IList<IGearboxInfo> GearboxInfos = new List<IGearboxInfo>();
 
 		internal readonly IList<IGearboxControl> GearboxControls = new List<IGearboxControl>();
 
@@ -158,12 +166,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual Second AbsTime { get; set; }
 
-		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
-			ElectricMotorsInfo.FirstOrDefault(x => (x.AxleNumber == axleNumber) && (x.Position == position));
+		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position,
+			AxleNumber axleNumber) =>
+			FilterByAxleNumber(ElectricMotorsInfo.Where(em => em.Position == position), axleNumber);
 
         public IList<IElectricMotorInfo> ElectricMotorsInfo => EMs;
 
-		public IList<IGearboxInfo> GearboxesInfo => Gearboxes;
+		public IList<IGearboxInfo> GearboxesInfo => GearboxInfos.Cast<IGearboxInfo>().ToList();
 
 		public IList<IGearboxControl> GearboxesCtl => GearboxControls;
 
@@ -171,17 +180,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IList<IClutchInfo> ClutchesInfo => Clutches;
 
-		public IClutchInfo ClutchInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
-			(axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-				? ClutchesInfo.FirstOrDefault()
-                : ClutchesInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
-
-		public IAngledriveInfo AngledriveInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) =>
-            AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public IClutchInfo GetClutchInfo(AxleNumber axleNumber) =>
+			FilterByAxleNumber(ClutchesInfo, axleNumber);
+		public IAngledriveInfo AngledriveInfo(AxleNumber axleNumber) =>
+            FilterByAxleNumber(Angledrives, axleNumber);
 
         public IList<IAngledriveInfo> AngledrivesInfo => Angledrives;
 
-		public IPowertainInfo PowertrainInfo => this;
+		public IPowertrainInfo PowertrainInfo => this;
 
 		public IHybridControllerInfo HybridControllerInfo => HybridController;
 
@@ -232,7 +238,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				HasCombustionEngine = !(component is IDummyEngineInfo); // true;
 			}
 			if (component is IGearboxInfo c18) {
-				Gearboxes.Add(c18);
+				GearboxInfos.Add(c18);
 				commitPriority = 4;
 				_hasGearboxComponent = true;
 			}
@@ -253,7 +259,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					return;
 				}
 				
-				if (EMs.Count(x => (x.Position == c23.Position) && (component.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)) > 0)
+				if (EMs.Count(x => (x.Position == c23.Position) && (component.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)) > 0)
 				{
 					throw new VectoException($"There is already an electric machine at position {c23.Position}");
 				}
@@ -291,6 +297,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			WriteSumData?.RegisterComponent(component, RunData);
 		}
 
+		public void AddPowertrainContainer(IPowertrainContainer container)
+		{
+			_powertrainContainers.Add(container.AxleNumber, container);
+		}
+
 		public void AddAuxiliary(string id, string columnName = null)
 		{
 			ModalData?.AddAuxiliary(id, columnName);
@@ -316,12 +327,22 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 #endif
 					if (c is IUpdateable target) {
 						foreach (var source in realComponents) {
+							if (source is IHasAxleNumber sourceWithAxleNumber &&
+							    target is IHasAxleNumber targetWithAxleNumber)
+							{
+								if (sourceWithAxleNumber.AxleNumber != targetWithAxleNumber.AxleNumber)
+								{
+									continue;
+								}
+							}
+							
 							if (target.UpdateFrom(source)) {
 								ComponentUpdateList.Add((target, source));
 #if DEBUG
 								found = true;
 #endif
 							}
+							
 						}
 					}
 
@@ -440,9 +461,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public VectoRunData RunData { get; protected set; }
 
 		public virtual ExecutionMode ExecutionMode => RunData.ExecutionMode;
-
-
-
 	}
 	
 	public class ExemptedVehicleContainer : VehicleContainer, IExemptedVehicleContainer
@@ -475,7 +493,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 #region Overrides of VehicleContainer
 
-		public override IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => _gearboxInfo;
+		public override IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => _gearboxInfo;
 
 #endregion
 	}

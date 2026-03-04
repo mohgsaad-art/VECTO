@@ -1,6 +1,9 @@
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TUGraz.VectoCommon.InputData;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
@@ -10,22 +13,18 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
-
-
-	public class SimplePowertrainContainer : VehicleContainer, IDriverInfo, ISimpleVehicleContainer
+	
+	public class SimpleVehicleContainer : VehicleContainer, IDriverInfo, ISimpleVehicleContainer
 	{
-		public SimplePowertrainContainer(VectoRunData runData, ISimplePowertrainBuilder ptBuilder, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(runData, null, null, ptBuilder)
+		public SimpleVehicleContainer(VectoRunData runData, ISimplePowertrainBuilder ptBuilder) : base(runData, null, null, ptBuilder)
 		{
 			RunData = runData;
-			AxleNumber = axleNumber;
 		}
 
 		//public IDriverDemandOutPort VehiclePort => (VehicleInfo as Vehicle)?.OutPort();
-		public int AxleNumber { get; private set; }
 
-		public ITnOutPort GearboxOutPort => (GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber) as IGearbox)?.OutPort();
-
-		public IGearbox GearboxCtlTest => GearboxesInfo.First(x => x.AxleNumber == AxleNumber) as IGearbox;
+		// public IList<ITnOutPort> GearboxOutPorts => Gearboxes.Select(gi => (gi as IGearbox)?.OutPort()).ToList();
+		
 
 		public override Second AbsTime => 0.SI<Second>();
 
@@ -46,7 +45,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 
 		#endregion
 
-		public Dictionary<PowertrainPosition, IElectricMotorInfo> ElectricMotors => base.EMs.ToDictionary(x => x.Position, x => x);
+		// public Dictionary<PowertrainPosition, IElectricMotorInfo> ElectricMotors => base.EMs.ToDictionary(x => x.Position, x => x);
+
+		public IReadOnlyDictionary<AxleNumber, ISimplePowertrainContainer> SimplePowertrains => Powertrains.ToDictionary(kv => kv.Key, kv => (ISimplePowertrainContainer)kv.Value);
 
 		public void UpdateComponents(IDataBus realContainer) => UpdateComponentsInternal(realContainer);
 	}

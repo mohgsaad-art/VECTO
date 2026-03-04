@@ -42,6 +42,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Configuration;
 using System.Linq;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -59,9 +60,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		//private readonly FuelConsumptionAdapter _fcMapAdapter;
 
-		public BusAuxiliariesAdapter(
-			IVehicleContainer container, IAuxiliaryConfig auxiliaryConfig, IAuxPort additionalAux = null, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : 
-			base(container, axleNumber)
+		public BusAuxiliariesAdapter(IVehicleContainer container, IPowertrainContainer powertrainContainer,
+			IAuxiliaryConfig auxiliaryConfig, IAuxPort additionalAux = null) : 
+			base(container, powertrainContainer)
 		{
 			//container.AddComponent(this);
 
@@ -339,8 +340,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Auxiliaries.ResetCalculations();
 
 			var signals = Auxiliaries.Signals;
-			var gearbox = DataBus.GearboxInfo(AxleNumber);
-			var clutch = DataBus.ClutchInfo(AxleNumber);
+			var gearbox = PowertrainContainer.GearboxInfo;
+			var clutch = PowertrainContainer.ClutchInfo;
 
 			signals.SimulationInterval = dt;
 			signals.ClutchEngaged = clutch.ClutchClosed(absTime) && gearbox.GearEngaged(absTime);

@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -10,6 +12,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -28,7 +31,8 @@ public class DriverRequestTests
     {
 		var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 		var vehicleContainer = GetMockVehicleContainer(cycleData);
-
+		var powertrainContainer = new PowertrainContainer(vehicleContainer) { };
+		
 		var vehicleMock = Mock.Get(vehicleContainer.VehicleInfo);
 		var driver = new Driver(vehicleContainer, vehicleContainer.RunData.DriverData, new DefaultDriverStrategy(vehicleContainer));
 
@@ -114,6 +118,7 @@ public class DriverRequestTests
     {
 		var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0\n110,20,0,0\n120,21,0,0\n130,22,0,0\n140,23,0,0\n150,24,0,0\n160,25,0,0\n170,26,0,0\n180,27,0,0\n190,28,0,0\n200,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 		var vehicleContainer = GetMockVehicleContainer(cycleData);
+		var _ = new PowertrainContainer(vehicleContainer);
 
 		var vehicleMock = Mock.Get(vehicleContainer.VehicleInfo);
 		var driver = new Driver(vehicleContainer, vehicleContainer.RunData.DriverData, new DefaultDriverStrategy(vehicleContainer));
@@ -198,7 +203,7 @@ public class DriverRequestTests
     {
         var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,5,0,0\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 		var vehicleContainer = GetMockVehicleContainer(cycleData);
-        
+		var _ = new PowertrainContainer(vehicleContainer);
 		var driver = new Driver(vehicleContainer, vehicleContainer.RunData.DriverData, new DefaultDriverStrategy(vehicleContainer));
 
 		var vehicleSpeed = 5.KMPHtoMeterPerSecond();
@@ -284,7 +289,7 @@ public class DriverRequestTests
     public void DriverCoastingTest()
     {
         var vehicleContainer = GetMockVehicleContainer(null);
-
+		var _ = new PowertrainContainer(vehicleContainer);
         var driver = new Driver(vehicleContainer, vehicleContainer.RunData.DriverData, new DefaultDriverStrategy(vehicleContainer));
 
         var vehicleSpeed = 5.SI<MeterPerSecond>();
@@ -381,7 +386,7 @@ public class DriverRequestTests
     public void DriverCoastingTest2()
     {
         var vehicleContainer = GetMockVehicleContainer(null);
-
+        var _ = new PowertrainContainer(vehicleContainer);
         var driver = new Driver(vehicleContainer, vehicleContainer.RunData.DriverData, new DefaultDriverStrategy(vehicleContainer));
 
         var vehicleSpeed = 5.SI<MeterPerSecond>();
@@ -528,7 +533,16 @@ public class DriverRequestTests
 				VehicleCategory = VehicleCategory.RigidTruck
 			}
 		};
+
+		var powertrainContainers = new Dictionary<AxleNumber, IPowertrainContainer>(); //<- powertraincontainers will register themselves here
 		var container = new Mock<IVehicleContainer>();
+		container.Setup(c => c.AddPowertrainContainer(It.IsAny<IPowertrainContainer>())).Callback((
+			IPowertrainContainer ptContainer) =>
+		{
+			powertrainContainers.Add(ptContainer.AxleNumber, ptContainer);
+		});
+		container.Setup(c => c.Powertrains).Returns(new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(powertrainContainers));
+		
 		var vehicle = new Mock<IVehicleInfo>();
 		vehicle.Setup(v => v.VehicleSpeed).Returns(0.KMPHtoMeterPerSecond());
 
@@ -560,17 +574,17 @@ public class DriverRequestTests
 		var milage = new Mock<IMileageCounter>();
         milage.Setup(m => m.Distance).Returns(0.SI<Meter>());
 
-        var pt = new Mock<IPowertainInfo>();
+        var pt = new Mock<IPowertrainInfo>();
         pt.Setup(p => p.HasCombustionEngine).Returns(true);
         pt.Setup(p => p.HasElectricMotor).Returns(false);
 
         var iceCtl = new Mock<IEngineControl>();
 
-        var gi = new Mock<IGearboxInfo>();
+        var gi = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
         gi.Setup(g => g.GearboxType).Returns(GearboxType.AMT);
         gi.Setup(g => g.GearEngaged(It.IsAny<Second>())).Returns(true);
 
-        var ci = new Mock<IClutchInfo>();
+        var ci = new Mock<IClutchInfo>().WithDefaultAxleNumber();
         ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
 
         var br = new Mock<IBrakes>();
@@ -582,8 +596,10 @@ public class DriverRequestTests
         container.Setup(c => c.MileageCounter).Returns(milage.Object);
         container.Setup(c => c.PowertrainInfo).Returns(pt.Object);
         container.Setup(c => c.EngineCtl).Returns(iceCtl.Object);
-        container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
-        container.Setup(c => c.ClutchInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
+        container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
+        container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gi.Object});
+        container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
+        container.Setup(c => c.ClutchesInfo).Returns(new List<IClutchInfo>(){ci.Object});
         container.Setup(c => c.Brakes).Returns(br.Object);
         
         return container.Object;

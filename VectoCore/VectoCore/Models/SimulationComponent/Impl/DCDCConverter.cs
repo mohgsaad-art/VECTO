@@ -14,7 +14,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public double Efficiency { get; protected set; }
 
 		public DCDCConverter(IVehicleContainer container, double efficiency) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			Efficiency = efficiency;
 			PreviousState.ConsumedEnergy = 0.SI<WattSecond>();

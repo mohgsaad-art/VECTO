@@ -92,7 +92,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var container = new MockVehicleContainer();
 			container.Gear = new GearshiftPosition(0);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var inputData = JSONInputDataFactory.ReadElectricMotorData(MotorFile, false);
 			var dao = new EngineeringDataAdapter();
 			var electricMachine = new MockElectricMachinesInputData() {
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var battery = new MockBattery();
 			container.BatteryInfo = battery;
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			var es = new ElectricSystem(container, new BatterySystemData());
 			es.Connect(battery);
 			motor.Connect(es);
@@ -140,6 +140,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void ElectricMotorOnlyRequestTestMechLoss(double speed, double torque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			container.Gear = new GearshiftPosition(0);
             var inputData = JSONInputDataFactory.ReadElectricMotorData(MotorFile, false);
 			var dao = new EngineeringDataAdapter();
@@ -158,7 +159,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var battery = new MockBattery();
 			container.BatteryInfo = battery;
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			var es = new ElectricSystem(container, new BatterySystemData());
 			es.Connect(battery);
 			motor.Connect(es);
@@ -187,7 +188,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void ElectricMotorAssistingRequestTest(double speed, double torque, double electricTorque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var inputData = JSONInputDataFactory.ReadElectricMotorData(MotorFile, false);
 			var dao = new EngineeringDataAdapter();
 			var electricMachine = new MockElectricMachinesInputData()
@@ -207,7 +208,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var battery = new MockBattery();
 			container.BatteryInfo = battery;
 
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			var es = new ElectricSystem(container, new BatterySystemData());
 			es.Connect(battery);
 			motor.Connect(es);
@@ -257,7 +258,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var battery = new MockBattery();
 			container.BatteryInfo = battery;
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			var es = new ElectricSystem(container, new BatterySystemData());
 			es.Connect(battery);
 			motor.Connect(es);
@@ -311,9 +313,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			es.Connect(battery);
 
 			container.BatteryInfo = battery;
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			battery.Initialize(0.5);
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			motor.Connect(es);
 			var tnPort = new MockTnOutPort();
 			motor.Connect(tnPort);
@@ -348,6 +350,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void ElectricMotorOnlyWithBatteryRequestTest(double initialSoc, double speed, double torque, double expectedBatteryPower, double expectedBatteryLoss)
 		{
 			var container = new MockVehicleContainer();
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			container.Gear = new GearshiftPosition(0);
             var inputData = JSONInputDataFactory.ReadElectricMotorData(MotorFile, false);
 			var batInput = JSONInputDataFactory.ReadREESSData(BatFile, false);
@@ -376,7 +379,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var es = new ElectricSystem(container, batteryData);
 			es.Connect(battery);
 			battery.Initialize(initialSoc);
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			motor.Connect(es);
 
 			strategy.ElectricShare = -torque.SI<NewtonMeter>();
@@ -442,6 +445,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			
 			var container = _kernel.Get<IPowertrainBuilder>().Build(null, modData, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			new EngineOnlyGearboxInfo(container);
 
 			var battery = new Battery(container, batteryData.Batteries.First().Item2);
@@ -449,7 +453,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			es.Connect(battery);
 			battery.Initialize(initialSoc);
 
-			var motor = new ElectricMotor(container, data.First().Item2, strategy, PowertrainPosition.HybridP2);
+			var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, strategy, PowertrainPosition.HybridP2);
 			motor.Connect(es);
 
 			

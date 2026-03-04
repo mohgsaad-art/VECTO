@@ -35,6 +35,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -43,8 +44,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class AxleGear : TransmissionComponent, IAxlegear, IUpdateable
 	{
-		public AxleGear(IVehicleContainer container, AxleGearData modelData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : 
-			base(container, modelData.AxleGear, axleNumber)
+		public AxleGear(IVehicleContainer container, IPowertrainContainer powertrainContainer, AxleGearData modelData) : 
+			base(container, powertrainContainer, modelData.AxleGear)
 		{
 
 		}
@@ -73,10 +74,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var avgAngularVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			
-			container[ModalResultField.P_axle_loss, AxleNumber.FormatAxleNumber()] = 
+			container[ModalResultField.P_axle_loss, AxleNumber] = 
 				(CurrentState.InTorque - CurrentState.OutTorque / ModelData.Ratio) * avgAngularVelocity;
 
-			container[ModalResultField.P_axle_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgAngularVelocity;
+			container[ModalResultField.P_axle_in, AxleNumber] = CurrentState.InTorque * avgAngularVelocity;
 		}
 
 		public Watt AxlegearLoss()
