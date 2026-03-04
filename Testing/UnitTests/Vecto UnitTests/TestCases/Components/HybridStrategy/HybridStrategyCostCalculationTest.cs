@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -10,6 +11,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -26,7 +28,7 @@ public class HybridStrategyCostCalculationTest
 
 	public class HybridStrategyCalculateCost : AbstractHybridStrategy
 	{
-		public HybridStrategyCalculateCost(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData, vehicleContainer) { }
+		public HybridStrategyCalculateCost(VectoRunData runData, IVehicleContainer vehicleContainer, IPowertrainContainer powertrainContainer) : base(runData, vehicleContainer, powertrainContainer) { }
 
 		#region Overrides of AbstractHybridStrategy
 
@@ -189,10 +191,10 @@ public class HybridStrategyCostCalculationTest
 		var testData = CostCalculationDataExtension.ParseString(testDataStr);
 
 		var container = CreateContainer(testData.PowertrainInfo);
-
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var runData = GetVectoRunData(testData.ModelParams, gbxType);
 
-		var dut = new HybridStrategyCalculateCost(runData, container.Object);
+		var dut = new HybridStrategyCalculateCost(runData, container.Object, powertrainContainer);
 
 		var response = CreateResponse(testData.Response, respnseFromTC);
 		var dt = testData.dt;
@@ -207,8 +209,22 @@ public class HybridStrategyCostCalculationTest
 
 	private static Mock<IVehicleContainer> CreateContainer(PowertrainInfo powertrainInfo)
 	{
-		var container = new Mock<IVehicleContainer>();
-		var ptBuilder = new Mock<ISimplePowertrainBuilder>();
+		var container = new Mock<IVehicleContainer>(MockBehavior.Strict).WithPowertrainDict();
+		// var simpleContainer = new Mock<ISimpleVehicleContainer>(MockBehavior.Strict);
+		var simplePowertrainContainer = new Mock<ISimplePowertrainContainer>(MockBehavior.Strict);
+		var testPowertrain = new Mock<ITestPowertrain>(MockBehavior.Strict);
+		// TestPowertrain = PowertrainBuilder.CreateTestPowertrain(DataBus, true);
+		// SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
+		
+		
+		var ptBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
+		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>())).Returns(testPowertrain.Object);
+
+		testPowertrain.Setup(tp => tp.Container.SimplePowertrains[It.IsAny<AxleNumber>()]).Returns(simplePowertrainContainer.Object);
+		
+		
+		
+		
 		var driver = new Mock<IDriverInfo>();
 		var engine = new Mock<IEngineInfo>();
 		var engineCtl = new Mock<IEngineControl>();

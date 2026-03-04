@@ -2270,7 +2270,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 
 			SetBatteryCosts(resp, dt, tmp);
-			var absTime = DataBus.AbsTime; // todo!
+			// var absTime = DataBus.AbsTime; // todo!
 			if (resp.Gearbox.Gear.Engaged) {
 
 				if (iceOff) {
