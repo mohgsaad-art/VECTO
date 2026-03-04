@@ -55,7 +55,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		public Wheels(IVehicleContainer container, Meter rdyn, KilogramSquareMeter totalWheelsInertia)
-			: base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			: base(container)
 		{
 			DynamicTyreRadius = rdyn;
 			_totalWheelsInertia = totalWheelsInertia;

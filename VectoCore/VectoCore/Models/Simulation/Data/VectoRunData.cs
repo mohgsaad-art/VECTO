@@ -37,6 +37,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -59,9 +60,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 {
 
 
-	[CustomValidation(typeof(VectoRunData), "ValidateRunData")]
+	[CustomValidation(typeof(VectoRunData), nameof(ValidateRunData))]
 	public class VectoRunData : SimulationComponentData
 	{
+
 		public VectoRunData()
 		{
 			Exempted = false;
@@ -84,18 +86,69 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public CombustionEngineData EngineData { get; internal set; }
 
 		[ValidateObject]
-		public GearboxData GearboxSinglePwt { get; internal set; }
+		public GearboxData GearboxSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.GearboxData);
+			internal set => SetInSinglePowertrain((pt) => pt.GearboxData = value);
+		}
 
 		[ValidateObject]
-		public AxleGearData AxleGearSinglePwt { get; internal set; }
+		public AxleGearData AxleGearSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.AxleGearData);
+			internal set => SetInSinglePowertrain((pt) => pt.AxleGearData = value);
+		}
 
 		[ValidateObject]
-		public AngledriveData AngledriveSinglePwt { get; internal set; }
+		public AngledriveData AngledriveSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.AngledriveData);
+			internal set => SetInSinglePowertrain((pt) => pt.AngledriveData = value);
+		}
+
+		private T GetFromSinglePowertrain<T>(Func<AxlePowertrainData, T> accessor) where T : class
+		{
+			if (!AxlePowertrainsDict.TryGetValue(AxleNumber.NOT_IN_AXLE_POWERTRAIN, out var value))
+			{
+				if (AxlePowertrainsDict.Values.Count > 0)
+				{
+					throw new VectoException("Vehicle has multiple Powertrains");
+				}
+			}
+			return accessor(value);
+		}
+		private void SetInSinglePowertrain(Action<AxlePowertrainData> update)
+		{
+			if (!AxlePowertrainsDict.ContainsKey(AxleNumber.NOT_IN_AXLE_POWERTRAIN))
+			{
+				AxlePowertrainsDict[AxleNumber.NOT_IN_AXLE_POWERTRAIN] = new AxlePowertrainData(){AxleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN};
+			}
+			update(AxlePowertrainsDict[AxleNumber.NOT_IN_AXLE_POWERTRAIN]);
+		}
+
+		private IList<Tuple<AxleNumber, T>> GetFromAllPowertrains<T>(Func<AxlePowertrainData, T> accessor) where T : class
+		{
+			return AxlePowertrainsDict.Select((kv) => new Tuple<AxleNumber, T>(kv.Key, accessor(kv.Value))).Where(kv => kv.Item2 != null).ToList();
+		}
+		
 
 		[ValidateObject]
-		public IList<AxlePowertrainData> AxlePowertrains { get; internal set; } = new List<AxlePowertrainData>();
+		public IList<AxlePowertrainData> AxlePowertrains
+		{
+			get => AxlePowertrainsDict.Values.ToList();
+			internal set
+			{
+				foreach (var axlePowertrainData in value)
+				{
+					AxlePowertrainsDict[axlePowertrainData.AxleNumber] = axlePowertrainData;
+				}
+			}
+		}
 
-        [Required, ValidateObject]
+		public IDictionary<AxleNumber, AxlePowertrainData> AxlePowertrainsDict = new Dictionary<AxleNumber, AxlePowertrainData>();
+
+
+		[Required, ValidateObject]
 		[JsonIgnore]
 		public IDrivingCycleData Cycle { get; internal set; }
 
@@ -105,10 +158,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public IAuxiliaryConfig BusAuxiliaries { get; internal set; }
 
 		[ValidateObject]
-		public RetarderData RetarderSinglePwt { get; internal set; }
+		public RetarderData RetarderSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.Retarder);
+			internal set => SetInSinglePowertrain((pt) => pt.Retarder = value);
+		}
 
 		[ValidateObject]
-		public PTOData PTOSinglePwt { get; internal set; }
+		public PTOData PTOSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.PTO);
+			internal set => SetInSinglePowertrain((pt) => pt.PTO = value);
+		}
 
 		[ValidateObject]
 		public DriverData DriverData { get; internal set; }
@@ -138,7 +199,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public AuxFanData FanDataVTP { get; internal set; }
 
-		public IList<Tuple<PowertrainPosition, ElectricMotorData>> ElectricMachinesSinglePwt { get; internal set; }
+		public IList<Tuple<PowertrainPosition, ElectricMotorData>> ElectricMachinesSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.ElectricMachinesData);
+			internal set => SetInSinglePowertrain(pt => pt.ElectricMachinesData = value);
+		}
 
 		public BatterySystemData BatteryData { get; internal set; }
 
@@ -152,7 +217,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public VTPData VTPData { get; internal set; }
 
-		public ShiftStrategyParameters GearshiftParametersSinglePwt { get; internal set; }
+		public ShiftStrategyParameters GearshiftParametersSinglePwt
+		{
+			get => GetFromSinglePowertrain(pt => pt.GearshiftParameters); 
+			internal set => SetInSinglePowertrain(pt => pt.GearshiftParameters = value);
+		}
 
 		public bool Exempted { get; internal set; }
 
@@ -160,7 +229,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public IDrivingCycleData PTOCycleWhileDrive { get; internal set; }
 
-		public string GetShiftStrategy(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public string GetShiftStrategy(AxleNumber axleNumber)
 		{
 			var gearboxKVP = GetGearboxData().FirstOrDefault(x => x.Item1 == axleNumber);
 			return (gearboxKVP == default) ? null : gearboxKVP.Item2.ShiftStrategy;
@@ -315,116 +384,26 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			return ValidationResult.Success;
 		}
 
-		public List<Tuple<EMPlacement, ElectricMotorData>> GetEMData()
+		public IList<Tuple<EMPlacement, ElectricMotorData>> GetEMData()
 		{
-			var nonAxleEMS = ElectricMachinesSinglePwt?
-				.Select(x => new Tuple<EMPlacement, ElectricMotorData>(
-					new EMPlacement(x.Item1, Constants.NOT_IN_AXLE_POWERTRAIN), x.Item2)).ToList()
-				?? new List<Tuple<EMPlacement, ElectricMotorData>>();
-
-			var axleEMs = AxlePowertrains
-				.Where(x => x.ElectricMachineData != null)
-				.Select(x => new Tuple<EMPlacement, ElectricMotorData>(
-						new EMPlacement(x.ElectricMachineData.Item1, x.AxleNumber), x.ElectricMachineData.Item2)).ToList();
-
-			return nonAxleEMS.Concat(axleEMs).ToList();
+			return AxlePowertrainsDict
+				.SelectMany(kv => kv.Value.ElectricMachinesData
+					.Select(ems =>
+						new Tuple<EMPlacement, ElectricMotorData>(new EMPlacement(ems.Item1, kv.Key), ems.Item2)))
+				.ToList();
 		}
 
-		public List<Tuple<int, ShiftStrategyParameters>> GetGearshiftParameters()
-		{
-			var shiftParams = new List<Tuple<int, ShiftStrategyParameters>>();
-			
-			if (GearshiftParametersSinglePwt != null)
-			{
-				shiftParams.Add(new Tuple<int, ShiftStrategyParameters>(Constants.NOT_IN_AXLE_POWERTRAIN, GearshiftParametersSinglePwt));
-			}
+		public IList<Tuple<AxleNumber, ShiftStrategyParameters>> GetGearshiftParameters() => GetFromAllPowertrains(p => p.GearshiftParameters);
 
-			var shiftParamsInAxlePt = AxlePowertrains
-				.Where(x => x.GearshiftParameters != null)
-				.Select(x => new Tuple<int, ShiftStrategyParameters>(x.AxleNumber, x.GearshiftParameters));
+		public IList<Tuple<AxleNumber, GearboxData>> GetGearboxData() => GetFromAllPowertrains(p => p.GearboxData);
 
-			return shiftParams.Concat(shiftParamsInAxlePt).ToList();
-		}
+		public IList<Tuple<AxleNumber, AxleGearData>> GetAxlegearData() => GetFromAllPowertrains(p => p.AxleGearData);
 
-		public List<Tuple<int, GearboxData>> GetGearboxData()
-		{
-			var gearboxes = new List<Tuple<int, GearboxData>>();
+		public IList<Tuple<AxleNumber, AngledriveData>> GetAngledriveData() => GetFromAllPowertrains(p => p.AngledriveData);
 
-			if (GearboxSinglePwt != null)
-			{
-				gearboxes.Add(new Tuple<int, GearboxData>(Constants.NOT_IN_AXLE_POWERTRAIN, GearboxSinglePwt));
-			}
+		public IList<Tuple<AxleNumber, RetarderData>> GetRetarderData() => GetFromAllPowertrains(p => p.Retarder);
 
-			var gearboxesInAxlePt = AxlePowertrains
-				.Where(x => x.GearboxData != null)
-				.Select(x => new Tuple<int, GearboxData>(x.AxleNumber, x.GearboxData));
-
-			return gearboxes.Concat(gearboxesInAxlePt).ToList();
-		}
-
-		public List<Tuple<int, AxleGearData>> GetAxlegearData()
-		{
-			var axlegearData = new List<Tuple<int, AxleGearData>>();
-
-			if (AxleGearSinglePwt != null)
-			{
-				axlegearData.Add(new Tuple<int, AxleGearData>(Constants.NOT_IN_AXLE_POWERTRAIN, AxleGearSinglePwt));
-			}
-
-			var axlegearInAxlePt = AxlePowertrains
-				.Where(x => x.AxleGearData != null)
-				.Select(x => new Tuple<int, AxleGearData>(x.AxleNumber, x.AxleGearData));
-
-			return axlegearData.Concat(axlegearInAxlePt).ToList(); 
-		}
-
-		public List<Tuple<int, AngledriveData>> GetAngledriveData()
-		{
-			var angledriveData = new List<Tuple<int, AngledriveData>>();
-
-			if (AngledriveSinglePwt != null)
-			{
-				angledriveData.Add(new Tuple<int, AngledriveData>(Constants.NOT_IN_AXLE_POWERTRAIN, AngledriveSinglePwt));
-			}
-
-			var angledriverInAxlePt = AxlePowertrains
-				.Where(x => x.AngledriveData != null)
-				.Select(x => new Tuple<int, AngledriveData>(x.AxleNumber, x.AngledriveData));
-
-			return angledriveData.Concat(angledriverInAxlePt).ToList();
-		}
-
-		public List<Tuple<int, RetarderData>> GetRetarderData()
-		{
-			var retarderData = new List<Tuple<int, RetarderData>>();
-
-			if (RetarderSinglePwt != null)
-			{
-				retarderData.Add(new Tuple<int, RetarderData>(Constants.NOT_IN_AXLE_POWERTRAIN, RetarderSinglePwt));
-			}
-
-			var retardersInAxlePt = AxlePowertrains
-				.Where(x => x.Retarder != null)
-				.Select(x => new Tuple<int, RetarderData>(x.AxleNumber, x.Retarder));
-
-			return retarderData.Concat(retardersInAxlePt).ToList();
-		}
-
-		public List<Tuple<int, PTOData>> GetPTOData()
-		{
-			var ptoData = new List<Tuple<int, PTOData>>();
-
-			if (PTOSinglePwt != null)
-			{
-				ptoData.Add(new Tuple<int, PTOData>(Constants.NOT_IN_AXLE_POWERTRAIN, PTOSinglePwt));
-			}
-
-			var ptosInAxlePt = AxlePowertrains
-				.Where(x => x.PTO != null)
-				.Select(x => new Tuple<int, PTOData>(x.AxleNumber, x.PTO));
-
-            return ptoData.Concat(ptosInAxlePt).ToList();
-		}
+		public IList<Tuple<AxleNumber, PTOData>> GetPTOData() => GetFromAllPowertrains(pt => pt.PTO);
 
 		private static ValidationResult CheckPowertrainLossMapsSizeConventionalPT(VectoRunData runData, GearboxData gearboxData, 
 			CombustionEngineData engineData)

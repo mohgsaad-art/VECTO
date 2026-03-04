@@ -31,13 +31,14 @@
 
 using System;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Simulation.Data;
 
 namespace TUGraz.VectoCore.Configuration
 {
 	public static class Constants
 	{
 		public const string NOT_AVAILABLE = "N/A";
-        public const int NOT_IN_AXLE_POWERTRAIN = -1;
+		public const int NOT_IN_AXLE_POWERTRAIN = -1;
 
         public static Second DefaultPowerShiftTime = 0.8.SI<Second>();
 		public const double RPMToRad = 2 * Math.PI / 60;

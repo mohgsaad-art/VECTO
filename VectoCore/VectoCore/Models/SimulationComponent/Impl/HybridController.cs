@@ -9,6 +9,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
@@ -33,22 +34,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private readonly IVehicleContainer _vehicleContainer;
 
 
-		public HybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public HybridController(IVehicleContainer container, IPowertrainContainer powertrainContainer, IHybridControlStrategy strategy, IElectricSystem es) : 
+			base(container)
 		{
 			_electricMotorCtl = new Dictionary<PowertrainPosition, HybridCtlElectricMotorController>();
 			_vehicleContainer = container;
 			switch (container.RunData.GearboxSinglePwt.Type) {
 				case GearboxType.ATPowerSplit:
 				case GearboxType.ATSerial:
-					_shiftStrategy = new HybridCtlATShiftStrategy(this, container);
+					_shiftStrategy = new HybridCtlATShiftStrategy(this, container, powertrainContainer);
 					break;
 				case GearboxType.AMT:
-					_shiftStrategy = new HybridCtlShiftStrategy(this, container);
+					_shiftStrategy = new HybridCtlShiftStrategy(this, container, powertrainContainer);
 					break;
 				case GearboxType.APTN:
 				case GearboxType.IHPC:
-					_shiftStrategy = new HybridCtlIHPCShiftStrategy(this, container);
+					_shiftStrategy = new HybridCtlIHPCShiftStrategy(this, container, powertrainContainer);
 					break;
 				default: throw new ArgumentException($"Unsupported Gearbox type for Hybrid Controller: {container.RunData.GearboxSinglePwt.Type}");
 			}
@@ -63,7 +64,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IElectricSystem ElectricSystem { get; }
 
-		public virtual void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public virtual void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData)
 		{
 			if (_electricMotorCtl.ContainsKey(pos)) {
 				throw new VectoException("Electric motor already registered as position {0}", pos);
@@ -84,7 +85,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		SimpleComponentState IHybridController.PreviousState => PreviousState;
 
-		public virtual IElectricMotorControl ElectricMotorControl(PowertrainPosition pos, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => 
+		public virtual IElectricMotorControl ElectricMotorControl(PowertrainPosition pos) => 
 			_electricMotorCtl[pos];
 
 		public virtual IShiftStrategy ShiftStrategy => _shiftStrategy;

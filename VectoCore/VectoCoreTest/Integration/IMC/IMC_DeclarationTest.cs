@@ -86,11 +86,16 @@ public class IMC_DeclarationTest
 		}
 
 		Kernel.UpdateBinding<IXMLDeclarationVehicleData>(XMLDeclarationPevHeavyLorryDataProviderV24.QUALIFIED_XSD_TYPE,
-			ctx => {
-				var imcInputData = new Mock<XMLDeclarationPevHeavyLorryDataProviderV24>(
-					(IXMLDeclarationJobInputData)ctx.Parameters.ToList()[0].GetValue(ctx, ctx.Request.Target),
-					(XmlNode)ctx.Parameters.ToList()[1].GetValue(ctx, ctx.Request.Target),
-					(string)ctx.Parameters.ToList()[2].GetValue(ctx, ctx.Request.Target)) { CallBase = true };
+			ctx =>
+			{
+				var parameters = ctx.Parameters.Select(p => new Lazy<object>(() => p.GetValue(ctx, ctx.Request.Target))).ToList();
+				
+				var imcInputData = new Mock<XMLDeclarationPevHeavyLorryDataProviderV24>(() => new XMLDeclarationPevHeavyLorryDataProviderV24(
+					(IXMLDeclarationJobInputData)parameters[0].Value,
+					(XmlNode)parameters[1].Value,
+					(string)parameters[2].Value,
+					(bool)parameters[3].Value))
+					{ CallBase = true };
 				imcInputData.Setup(v => v.InMotionCharging).Returns(() => new XMLIMCData() {
 					Technology = imcTech,
 				});
@@ -281,13 +286,15 @@ public class IMC_DeclarationTest
     public void RunJob_CompleteBus_HEV(string primaryJob, string completeJob, IMCTechnology primaryTech,
         IMCTechnology completeTech, MissionType? mission = null, LoadingType? loading = null)
     {
+	    
         // update bindings to create a mock object that provides the imc technology values for primary vehicle, VIF, and complete vehicle
         Kernel.UpdateBinding<IXMLDeclarationVehicleData>(XMLDeclarationHevPxPrimaryBusDataProviderV24.QUALIFIED_XSD_TYPE,
             ctx => {
-                var imcInputData = new Mock<XMLDeclarationHevPxPrimaryBusDataProviderV24>(
+                var imcInputData = new Mock<XMLDeclarationHevPxPrimaryBusDataProviderV24>(() => new XMLDeclarationHevPxPrimaryBusDataProviderV24(
                     (IXMLDeclarationJobInputData)ctx.Parameters.ToList()[0].GetValue(ctx, ctx.Request.Target),
                     (XmlNode)ctx.Parameters.ToList()[1].GetValue(ctx, ctx.Request.Target),
-                    (string)ctx.Parameters.ToList()[2].GetValue(ctx, ctx.Request.Target)) { CallBase = true };
+                    (string)ctx.Parameters.ToList()[2].GetValue(ctx, ctx.Request.Target),
+                    (bool)ctx.Parameters.ToList()[3].GetValue(ctx, ctx.Request.Target))) { CallBase = true };
                 imcInputData.Setup(v => v.InMotionCharging).Returns(() => new XMLIMCData() {
                     Technology = primaryTech,
                 });
@@ -295,21 +302,25 @@ public class IMC_DeclarationTest
                 return imcInputData.Object;
             });
         Kernel.UpdateBinding<IXMLDeclarationVehicleData>(XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01.QUALIFIED_XSD_TYPE, ctx => {
-            var imcInputData = new Mock<XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01>(
-                (IXMLPrimaryVehicleBusJobInputData)ctx.Parameters.ToList()[0].GetValue(ctx, ctx.Request.Target),
-                (XmlNode)ctx.Parameters.ToList()[1].GetValue(ctx, ctx.Request.Target),
-                (string)ctx.Parameters.ToList()[2].GetValue(ctx, ctx.Request.Target)) { CallBase = true };
+	        var parameters = ctx.Parameters.ToList();
+            var imcInputData = new Mock<XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01>(() => new XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01(
+                (IXMLPrimaryVehicleBusJobInputData)parameters[0].GetValue(ctx, ctx.Request.Target),
+                (XmlNode)parameters[1].GetValue(ctx, ctx.Request.Target),
+                (string)parameters[2].GetValue(ctx, ctx.Request.Target))) { CallBase = true };
             imcInputData.Setup(v => v.InMotionCharging).Returns(() => new XMLIMCData() {
                 Technology = primaryTech,
             });
             Console.WriteLine($"Multistage Provider: {imcInputData.Object.InMotionCharging.Technology.ToString()}");
             return imcInputData.Object;
         });
-        Kernel.UpdateBinding<IXMLDeclarationVehicleData>(XMLDeclarationHevCompletedBusDataProviderV24.QUALIFIED_XSD_TYPE, ctx => {
-            var imcInputData = new Mock<XMLDeclarationHevCompletedBusDataProviderV24>(
-                (IXMLDeclarationJobInputData)ctx.Parameters.ToList()[0].GetValue(ctx, ctx.Request.Target),
-                (XmlNode)ctx.Parameters.ToList()[1].GetValue(ctx, ctx.Request.Target),
-                (string)ctx.Parameters.ToList()[2].GetValue(ctx, ctx.Request.Target)) { CallBase = true };
+        Kernel.UpdateBinding<IXMLDeclarationVehicleData>(XMLDeclarationHevCompletedBusDataProviderV24.QUALIFIED_XSD_TYPE, ctx =>
+        {
+	        var parameters = ctx.Parameters.ToList();
+            var imcInputData = new Mock<XMLDeclarationHevCompletedBusDataProviderV24>(() => new XMLDeclarationHevCompletedBusDataProviderV24(
+                (IXMLDeclarationJobInputData)parameters[0].GetValue(ctx, ctx.Request.Target),
+                (XmlNode)parameters[1].GetValue(ctx, ctx.Request.Target),
+                (string)parameters[2].GetValue(ctx, ctx.Request.Target),
+                (bool)parameters[3].GetValue(ctx, ctx.Request.Target))) { CallBase = true };
             imcInputData.Setup(v => v.InMotionCharging).Returns(() => new XMLIMCData() {
                 Technology = completeTech,
             });

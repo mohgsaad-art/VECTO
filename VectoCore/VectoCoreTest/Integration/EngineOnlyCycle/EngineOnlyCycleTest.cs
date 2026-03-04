@@ -89,7 +89,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 				cycleFile, CycleType.EngineOnly,
 				false);
 			var vehicle = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicle);
 			// ReSharper disable once ObjectCreationAsStatement
 			new MockDrivingCycle(vehicle, data);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(engineFile, 0);
@@ -97,7 +97,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 			var aux = new EngineAuxiliary(vehicle);
 			aux.AddCycle(Constants.Auxiliaries.Cycle);
 
-			var engine = new EngineOnlyCombustionEngine(vehicle, engineData);
+			var engine = new EngineOnlyCombustionEngine(vehicle, powertrainContainer, engineData);
 			engine.Connect(aux);
 			new EngineOnlyGearboxInfo(vehicle);
 			new ZeroMileageCounter(vehicle);
@@ -149,9 +149,9 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 			var dataWriter = new MockModalDataContainer();
 
 			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicleContainer);
 			var engine = new CombustionEngine(
-				vehicleContainer, MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0));
+				vehicleContainer,powertrainContainer, MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0));
 			var gbx = new MockGearbox(vehicleContainer) { Gear = new GearshiftPosition(0) };
 
 			var absTime = 0.SI<Second>();

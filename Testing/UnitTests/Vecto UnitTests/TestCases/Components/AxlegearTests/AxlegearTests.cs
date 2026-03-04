@@ -8,6 +8,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
@@ -20,9 +21,10 @@ public class AxlegearTests
     public void AxleGearTest(double rdyn, double speed, double power, double expectedTqIn)
 	{
 		var vehicle = new Mock<IVehicleContainer>().Object;
+		var powertrainContainer = new PowertrainContainer(vehicle);
 		var inputData = GetAxleInputData();
 		var axleGearData = new AxleGearDataAdapter().CreateAxleGearData(inputData); // MockSimulationDataFactory.CreateAxleGearDataFromFile(GearboxDataFile);
-        var axleGear = new AxleGear(vehicle, axleGearData);
+        var axleGear = new AxleGear(vehicle, powertrainContainer, axleGearData);
 
 		var mockPort = new Mock<ITnOutPort>();
 		NewtonMeter tqRequest = null;

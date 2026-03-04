@@ -4,7 +4,7 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
-	public interface IElectricMotorInfo
+	public interface IElectricMotorInfo : IHasAxleNumber
 	{
 		//NewtonMeter ElectricDragTorque(PerSecond electricMotorSpeed, Second simulationInterval, DrivingBehavior drivingBehavior);
 
@@ -20,7 +20,6 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		bool EmOffPrev { get; }
 		bool? EmOffCurr { get; }
 		bool DeRatingActive { get; }
-
-		int AxleNumber { get; }
+		
 	}
 }

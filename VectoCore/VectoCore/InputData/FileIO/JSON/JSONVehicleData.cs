@@ -496,12 +496,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 							"ElectricMotorTorqueLimits")
 					)).ToList();
 					return new Dictionary<EMPlacement, IList<Tuple<Volt, TableData>>>()
-						{{ new EMPlacement(GetElectricMachines().Entries.First().Position, Constants.NOT_IN_AXLE_POWERTRAIN), entries }};
+						{{ new EMPlacement(GetElectricMachines().Entries.First().Position, AxleNumber.NOT_IN_AXLE_POWERTRAIN), entries }};
 				}
 
 				return new Dictionary<EMPlacement, IList<Tuple<Volt, TableData>>>() {
 					{
-                        new EMPlacement(GetElectricMachines().Entries.First().Position, Constants.NOT_IN_AXLE_POWERTRAIN),
+                        new EMPlacement(GetElectricMachines().Entries.First().Position, AxleNumber.NOT_IN_AXLE_POWERTRAIN),
                         new List<Tuple<Volt, TableData>>() {
 							Tuple.Create((Volt)null, ReadTableData(
 								Path.Combine(BasePath, Body.GetEx<string>("EMTorqueLimits")),

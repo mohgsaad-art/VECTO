@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -38,14 +39,14 @@ public class ElectricMotorTests
 	{
 
 		var container = GetMockVehicleContainer(PowertrainPosition.BatteryElectricE3);
-
+		var powertrainContainer = new PowertrainContainer(container);
 		var electricMachine = GetElectricMachineDataV1(1);
 		var dao = new EngineeringDataAdapter();
 		var data = dao.CreateElectricMachines(electricMachine, null, null);
 
 		var ctl = new Mock<IElectricMotorControl>();
 		
-		var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.BatteryElectricE3);
+		var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.BatteryElectricE3);
 
 		var es = GetMockElectricSystem(container);
 
@@ -80,14 +81,14 @@ public class ElectricMotorTests
 	public void ElectricMotorOnlyRequestTestMechLoss(double speed, double torque, double expectedBatteryPower)
 	{
 		var container = GetMockVehicleContainer(PowertrainPosition.BatteryElectricE3);
-
+		var powertrainContainer = new PowertrainContainer(container);
 		var electricMachine = GetElectricMachineDataV1(1, 0.95);
 		var dao = new EngineeringDataAdapter();
 		var data = dao.CreateElectricMachines(electricMachine, null, null);
 
 		var ctl = new Mock<IElectricMotorControl>();
 
-		var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.BatteryElectricE3);
+		var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.BatteryElectricE3);
 
 		var es = GetMockElectricSystem(container);
 
@@ -119,7 +120,7 @@ public class ElectricMotorTests
 	public void ElectricMotorAssistingRequestTest(double speed, double torque, double electricTorque, double expectedBatteryPower)
 	{
 		var container = GetMockVehicleContainer(PowertrainPosition.HybridP2);
-
+		var powertrainContainer = new PowertrainContainer(container);
         var electricMachine = GetElectricMachineDataV1(1);
 		var dao = new EngineeringDataAdapter();
 		var data = dao.CreateElectricMachines(electricMachine, null, null);
@@ -129,7 +130,7 @@ public class ElectricMotorTests
 			It.IsAny<PerSecond>(), It.IsAny<PerSecond>(), It.IsAny<NewtonMeter>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PowertrainPosition>(), It.IsAny<bool>())).Returns(electricTorque.SI<NewtonMeter>());
 
-        var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
+        var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
 		var es = GetMockElectricSystem(container);
         motor.Connect(es);
 		
@@ -166,7 +167,7 @@ public class ElectricMotorTests
 	public void ElectricMotorAssistingRequestTestMechLoss(double speed, double torque, double electricTorque, double expectedBatteryPower)
 	{
 		var container = GetMockVehicleContainer(PowertrainPosition.HybridP2);
-
+		var powertrainContainer = new PowertrainContainer(container);
 		var electricMachine = GetElectricMachineDataV1(1, 0.95);
 		var dao = new EngineeringDataAdapter();
 		var data = dao.CreateElectricMachines(electricMachine, null, null);
@@ -176,7 +177,7 @@ public class ElectricMotorTests
 			It.IsAny<PerSecond>(), It.IsAny<PerSecond>(), It.IsAny<NewtonMeter>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PowertrainPosition>(), It.IsAny<bool>())).Returns(electricTorque.SI<NewtonMeter>());
 
-		var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
+		var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
 		var es = GetMockElectricSystem(container);
 		motor.Connect(es);
 
@@ -208,7 +209,7 @@ public class ElectricMotorTests
 	public void ElectricMotorWithBatteryIdlingRequestTest(double speed, double torque)
 	{
 		var container = GetMockVehicleContainer(PowertrainPosition.HybridP2);
-
+		var powertrainContainer = new PowertrainContainer(container);
 		var electricMachine = GetElectricMachineDataV1(1);
 		var dao = new EngineeringDataAdapter();
 		var data = dao.CreateElectricMachines(electricMachine, null, null);
@@ -218,7 +219,7 @@ public class ElectricMotorTests
 			It.IsAny<PerSecond>(), It.IsAny<PerSecond>(), It.IsAny<NewtonMeter>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PowertrainPosition>(), It.IsAny<bool>())).Returns((NewtonMeter)null);
 
-		var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
+		var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
 		var es = GetMockElectricSystem(container);
 		motor.Connect(es);
 
@@ -257,7 +258,7 @@ public class ElectricMotorTests
 		var continuousTorque = 24.SI<NewtonMeter>();
 
         var container = GetMockVehicleContainer(PowertrainPosition.HybridP2);
-
+        var powertrainContainer = new PowertrainContainer(container);
 		var electricMachine = GetElectricMachineDataV2(1);
 		Mock.Get(electricMachine.Entries.First().ElectricMachine).Setup(e => e.OverloadRecoveryFactor).Returns(0.9);
 
@@ -270,7 +271,7 @@ public class ElectricMotorTests
 			It.IsAny<PerSecond>(), It.IsAny<PerSecond>(), It.IsAny<NewtonMeter>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PowertrainPosition>(), It.IsAny<bool>())).Returns(() =>emTorque);
 
-		var motor = new ElectricMotor(container, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
+		var motor = new ElectricMotor(container, powertrainContainer, data.First().Item2, ctl.Object, PowertrainPosition.HybridP2);
 		var es = GetMockElectricSystem(container);
 		motor.Connect(es);
 
@@ -345,8 +346,9 @@ public class ElectricMotorTests
 	private static IVehicleContainer GetMockVehicleContainer(PowertrainPosition emPos)
 	{
 		var container = new Mock<IVehicleContainer>();
-		var gbx = new Mock<IGearboxInfo>();
-		container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
+		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 		var bat = new Mock<IRESSInfo>();
 		container.SetupGet(c => c.BatteryInfo).Returns(bat.Object);
 		var ice = new Mock<IEngineControl>();

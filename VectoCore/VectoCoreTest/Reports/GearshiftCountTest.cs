@@ -31,6 +31,7 @@
 
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -71,7 +72,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
@@ -101,7 +102,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(0, gearshifts.Value());
 		}
 
@@ -131,7 +132,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
@@ -162,7 +163,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
@@ -193,7 +194,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(2, gearshifts.Value());
 		}
 
@@ -224,7 +225,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
@@ -255,7 +256,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
+			var gearshifts = modData.GearshiftCount(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 

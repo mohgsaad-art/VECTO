@@ -33,7 +33,7 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
-	public interface IClutchInfo
+	public interface IClutchInfo : IHasAxleNumber
 	{
 		/// <summary>
 		/// Returns if the clutch is closed in the current interval.
@@ -41,7 +41,6 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		bool ClutchClosed(Second absTime);
 
 		Watt ClutchLosses { get; }
-
-		int AxleNumber { get; }
+		
 	}
 }

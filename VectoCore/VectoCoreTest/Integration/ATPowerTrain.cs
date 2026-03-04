@@ -123,17 +123,17 @@ namespace TUGraz.VectoCore.Tests.Integration
 			modData.WriteModalResults = true;
 			
 			var container = kernel.Get<IPowertrainBuilder>().Build(runData, modData, summaryDataContainer);
-            
+			var powertrainContainer = kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
             var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var engine = new CombustionEngine(container, engineData);
+			var engine = new CombustionEngine(container, powertrainContainer, engineData);
 			var tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airdragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new APTGearbox(container, new ATShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new APTGearbox(container, powertrainContainer, new ATShiftStrategyOptimized(container, powertrainContainer)))
 				.AddComponent(engine);
-			new ATClutchInfo(container);
+			new ATClutchInfo(container, powertrainContainer);
 
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("ZERO", 0.SI<Watt>());

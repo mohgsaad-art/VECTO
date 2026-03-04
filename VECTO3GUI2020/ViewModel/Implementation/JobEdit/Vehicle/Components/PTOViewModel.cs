@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
@@ -46,7 +47,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		protected TableData _ptoLossMap;
 		protected TableData _ptoCycle;
         public virtual string PTOTransmissionType {get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		public virtual int AxleNumber { get; }
+		public virtual AxleNumber AxleNumber { get; }
 		public virtual TableData PTOLossMap {get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 		public TableData PTOCycleDuringStop { get; }
 		public TableData EPTOCycleDuringStop { get; }

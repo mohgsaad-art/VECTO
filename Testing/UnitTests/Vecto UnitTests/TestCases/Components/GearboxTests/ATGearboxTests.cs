@@ -11,6 +11,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -42,7 +43,7 @@ public class ATGearboxTests
     {
         var ratios = new[] { 3.4, 1.9, 1.42, 1.0, 0.7, 0.62 };
         var container = CreateVehicle(ratios);
-
+        var powertrainContainer = new PowertrainContainer(container.Object);
 		var shiftStrategy = new Mock<IShiftStrategy>();
 		
 		var port = new Mock<ITnOutPort>();
@@ -52,7 +53,7 @@ public class ATGearboxTests
 		var idleCtl = new Mock<IIdleController>();
 
 		// Setup DUT:
-        var gbx = new APTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+        var gbx = new APTGearbox(container.Object, powertrainContainer, shiftStrategy.Object);
 		gbx.Connect(port.Object);
 		gbx.IdleController = idleCtl.Object;
 
@@ -106,7 +107,7 @@ public class ATGearboxTests
         if (!double.IsNaN(expectedShiftLossEnergy)) {
             var modData = new MockModalDataContainer();
             gbx.CommitSimulationStep(absTime, dt, modData);
-            var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
+            var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
             Assert.AreEqual(expectedShiftLossEnergy, shiftLossE.Value(), 1e-3);
         }
     }
@@ -129,7 +130,7 @@ public class ATGearboxTests
     {
 		var ratios = new[] { 3.4, 1.9, 1.42, 1.0, 0.7, 0.62 };
 		var container = CreateVehicle(ratios);
-
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var shiftStrategy = new Mock<IShiftStrategy>();
 
 		var port = new Mock<ITnOutPort>();
@@ -139,7 +140,7 @@ public class ATGearboxTests
 		var idleCtl = new Mock<IIdleController>();
 
 		// Setup DUT:
-		var gbx = new APTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+		var gbx = new APTGearbox(container.Object, powertrainContainer, shiftStrategy.Object);
 		gbx.Connect(port.Object);
 		gbx.IdleController = idleCtl.Object;
 
@@ -196,7 +197,7 @@ public class ATGearboxTests
         Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear.Gear);
 
 		gbx.CommitSimulationStep(absTime, dt, modData);
-        var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
+        var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
         Assert.AreEqual(expectedShiftLossEnergy * splitFactor, shiftLoss1.Value(), 1e-3);
         gbx.Request(absTime, dt, 0.SI<NewtonMeter>(), preShiftRpm.RPMtoRad(), false);
 
@@ -209,7 +210,7 @@ public class ATGearboxTests
 
         Assert.IsInstanceOf<ResponseSuccess>(response);
         gbx.CommitSimulationStep(absTime, dt, modData);
-        var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
+        var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
         Console.WriteLine("expected shiftloss energy: {0}, sum of shift loss energy: {1} ({2} + {3})", expectedShiftLossEnergy, shiftLoss1 + shiftLoss2, shiftLoss1, shiftLoss2);
         Assert.AreEqual(expectedShiftLossEnergy * (1 - splitFactor), shiftLoss2.Value(), 1e-3);
 
@@ -268,7 +269,7 @@ public class ATGearboxTests
 
 		container.Setup(c => c.RunData).Returns(runData);
 		var ci = new Mock<IClutchInfo>();
-		container.Setup(c => c.ClutchInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
+		container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
 		ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
 
 		var vi = new Mock<IVehicleInfo>();

@@ -563,7 +563,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 					vehicle.Components.Generator, 
 					vehicle.ElectricMotorTorqueLimits,
                     runData.BatteryData?.CalculateVoltageCenterSoc(), 
-					Constants.NOT_IN_AXLE_POWERTRAIN);
+					AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 
                 runData.ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { generatorData };
 

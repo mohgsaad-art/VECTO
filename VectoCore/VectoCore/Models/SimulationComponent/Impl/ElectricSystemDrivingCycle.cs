@@ -26,7 +26,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected Second AbsTime { get; set; }
 
 		public ElectricSystemDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			Data = cycle;
 			CycleIterator = new DrivingCycleEnumerator(Data);

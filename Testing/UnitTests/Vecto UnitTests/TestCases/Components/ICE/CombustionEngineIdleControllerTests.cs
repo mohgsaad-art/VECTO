@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -11,6 +12,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Tests.Utils;
 using Assert = NUnit.Framework.Assert;
@@ -43,12 +45,14 @@ public class CombustionEngineIdleControllerTests
     public void EngineIdleControllerTest()
 	{
 		var container = GetMockVehicleContainer();
+		var powertrainContainer = new PowertrainContainer(container);
 		var inputData = GetEngineInputData(5.1471.SI<KilogramSquareMeter>());
 
         var dao = new EngineeringDataAdapter();
 		var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
 
-		var engine = new CombustionEngine(container, engineData);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
+
 		var aux = new EngineAuxiliary(container);
 		aux.AddConstant("CONST", 5000.SI<Watt>());
 		engine.Connect(aux.Port());
@@ -108,12 +112,13 @@ public class CombustionEngineIdleControllerTests
     public void EngineIdleControllerTest2()
     {
 		var container = GetMockVehicleContainer();
+		var powertrainContainer = new PowertrainContainer(container);
 		var inputData = GetEngineInputData(5.1471.SI<KilogramSquareMeter>());
 
 		var dao = new EngineeringDataAdapter();
 		var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
 
-		var engine = new CombustionEngine(container, engineData);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
 		var aux = new EngineAuxiliary(container);
 		aux.AddConstant("CONST", 5000.SI<Watt>());
 		engine.Connect(aux.Port());
@@ -170,12 +175,13 @@ public class CombustionEngineIdleControllerTests
 	public void EngineIdleControllerTest3()
 	{
 		var container = GetMockVehicleContainer();
+		var powertrainContainer = new PowertrainContainer(container);
 		var inputData = GetEngineInputData(3.8.SI<KilogramSquareMeter>());
 
 		var dao = new EngineeringDataAdapter();
 		var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
 
-		var engine = new CombustionEngine(container, engineData);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
 		var aux = new EngineAuxiliary(container);
 		aux.AddConstant("CONST", 5000.SI<Watt>());
 		engine.Connect(aux.Port());
@@ -223,12 +229,13 @@ public class CombustionEngineIdleControllerTests
     public void EngineIdleJump()
     {
 		var container = GetMockVehicleContainer();
+		var powertrainContainer = new PowertrainContainer(container);
 		var inputData = GetEngineInputData(3.8.SI<KilogramSquareMeter>());
 
         var dao = new EngineeringDataAdapter();
 		var engineData = dao.CreateEngineData(inputData, inputData.EngineModes.First());
 
-		var engine = new CombustionEngine(container, engineData);
+		var engine = new CombustionEngine(container, powertrainContainer, engineData);
 		var aux = new EngineAuxiliary(container);
 		aux.AddConstant("CONST", 5000.SI<Watt>());
 		engine.Connect(aux.Port());
@@ -286,9 +293,9 @@ public class CombustionEngineIdleControllerTests
 
     private IVehicleContainer GetMockVehicleContainer()
 	{
-		var container = new Mock<IVehicleContainer>();
-		var gbx = new Mock<IGearboxInfo>();
-		var ice = new Mock<IEngineInfo>();
+		var container = new Mock<IVehicleContainer>().WithPowertrainDict();
+		var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
+		var ice = new Mock<IEngineInfo>().WithDefaultAxleNumber();
 		var iceCtl = new Mock<IEngineControl>();
 		var veh = new Mock<IVehicleInfo>();
 
@@ -297,7 +304,8 @@ public class CombustionEngineIdleControllerTests
 		iceCtl.Setup(i => i.CombustionEngineOn).Returns(true);
 		veh.Setup(v => v.VehicleStopped).Returns(false);
 
-		container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 		container.Setup(c => c.EngineInfo).Returns(ice.Object);
 		container.Setup(c => c.EngineCtl).Returns(iceCtl.Object);
 		container.Setup(c => c.VehicleInfo).Returns(veh.Object);

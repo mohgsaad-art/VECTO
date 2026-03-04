@@ -14,7 +14,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	{
 		private SuperCapData ModelData;
 
-		public SuperCap(IVehicleContainer container, SuperCapData modelData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public SuperCap(IVehicleContainer container, SuperCapData modelData) : base(container)
 		{
 			ModelData = modelData;
 		}

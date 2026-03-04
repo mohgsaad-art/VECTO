@@ -3,6 +3,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
@@ -10,7 +11,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
     {
 		protected IGearbox _gearbox;
 
-        public CycleShiftStrategy(IVehicleContainer container) : base(container) { }
+        public CycleShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer) { }
 
 		public override IGearbox Gearbox {
 			get => _gearbox;

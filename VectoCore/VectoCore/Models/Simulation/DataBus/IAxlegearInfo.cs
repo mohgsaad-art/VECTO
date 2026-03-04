@@ -34,21 +34,19 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
-	public interface IAxlegearInfo
+	public interface IAxlegearInfo : IHasAxleNumber
 	{
 		Watt AxlegearLoss();
 
 		Tuple<PerSecond, NewtonMeter> CurrentAxleDemand { get; }
 		
 		double Ratio { get; }
-
-		int AxleNumber { get; }
+		
 	}
 
-	public interface IAngledriveInfo
+	public interface IAngledriveInfo : IHasAxleNumber
 	{
 		double Ratio { get; }
-
-		int AxleNumber { get; }
+		
 	}
 }

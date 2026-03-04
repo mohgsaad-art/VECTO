@@ -11,6 +11,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -64,6 +65,7 @@ public class VehicleTests
 	private static Mock<IVehicleContainer> GetMockContainer()
 	{
 		var container = new Mock<IVehicleContainer>();
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var runData = new VectoRunData() {
 			ExecutionMode = ExecutionMode.Declaration,
 			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
@@ -76,7 +78,7 @@ public class VehicleTests
 		container.Setup(c => c.DriverInfo).Returns(driver.Object);
 		container.Setup(c => c.DrivingCycleInfo).Returns(cycle.Object);
 		container.Setup(c => c.RunData).Returns(runData);
-		var pi = new Mock<IPowertainInfo>();
+		var pi = new Mock<IPowertrainInfo>();
 		pi.Setup(p => p.VehicleArchitecture).Returns(VectoSimulationJobType.ConventionalVehicle);
 		pi.Setup(p => p.HasCombustionEngine).Returns(true);
 		container.Setup(c => c.PowertrainInfo).Returns(pi.Object);
@@ -85,13 +87,14 @@ public class VehicleTests
 		container.Setup(c => c.EngineInfo).Returns(eng.Object);
 		var axl = new Mock<IAxlegearInfo>();
 		axl.Setup(a => a.Ratio).Returns(1);
-		container.Setup(c => c.AxlegearInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(axl.Object);
+		container.Setup(c => c.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(axl.Object);
 		var whl = new Mock<IWheelsInfo>();
 		whl.Setup(w => w.DynamicTyreRadius).Returns(0.5.SI<Meter>());
 		container.Setup(c => c.WheelsInfo).Returns(whl.Object);
 		var gbx = new Mock<IGearboxInfo>();
 		gbx.Setup(g => g.GetGearData(It.IsAny<uint>())).Returns(new GearData() { Ratio = 1 });
-		container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
         return container;
 	}
 

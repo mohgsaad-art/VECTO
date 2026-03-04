@@ -1,14 +1,19 @@
 ﻿using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 
 namespace TUGraz.VectoCore.Models.Simulation
 {
     public interface ISimplePowertrainBuilder
 	{
-		//ITestPowertrain CreateTestPowertrain(ISimpleVehicleContainer testContainer, IDataBus realContainer, bool createDriver);
 		ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, VectoSimulationJobType overrideJobType);
 		ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver);
         ITestGenset CreateTestGenset(IVehicleContainer realContainer);
+        
+        ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleContainer,
+	        AxleNumber axleNumber);
+        ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleContainer);
 
         /// <summary>
         /// Builds a simple conventional powertrain.

@@ -11,6 +11,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -39,8 +40,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected ShiftLineSet UpshiftLineTCLocked = new ShiftLineSet();
 
 		protected IAPTGearbox _gearbox;
+		protected ISimplePowertrainContainer SimplePowertrainContainer;
 
-        public ATShiftStrategyOptimized(IVehicleContainer container) : base(container)
+		public ATShiftStrategyOptimized(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer)
 		{
 			EngineInertia = container.RunData.EngineData?.Inertia ?? 0.SI<KilogramSquareMeter>();
 
@@ -124,9 +126,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			// fuel list here has no effect as this is the mod-container for the test-powertrain only
 			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false);
-
+			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN];
 			// initialize vehicle so that vehicleStopped of the testcontainer is false (required for test-runs)
-			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = new GearshiftPosition(2u, true);
+			TestPowertrain.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN).SetGear = new GearshiftPosition(2u, true);
 			TestPowertrain.Vehicle.Initialize(10.KMPHtoMeterPerSecond(), 0.SI<Radian>());
 
 			if (runData.Cycle.CycleType == CycleType.MeasuredSpeed) {
@@ -473,7 +475,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo().AxlegearLoss();
+			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
 
 			return gbxOutSpeed * gbxOutTorque - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 		}
@@ -886,13 +888,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected ResponseDryRun RequestDryRunWithGear(
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition gear, bool updateComponents = false)
 		{
-			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetDisengaged = false;
-			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
+			var gbx = SimplePowertrainContainer.Gearbox;
+			gbx.SetDisengaged = false;
+			gbx.SetGear = gear;
 
-			TestPowertrain.Container.GearboxOutPort.Initialize(outTorque, outAngularVelocity);
+			gbx.Initialize(outTorque, outAngularVelocity);
 			if (updateComponents)
 				TestPowertrain.UpdateComponents();
-			var response = (ResponseDryRun)TestPowertrain.Container.GearboxOutPort.Request(
+			var response = (ResponseDryRun)gbx.Request(
 				0.SI<Second>(), dt, outTorque, outAngularVelocity, true);
 			return response;
 		}
@@ -909,7 +912,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo().AxlegearLoss();
+			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
 
 			var tcLossesCurrentGear = tcInSpeed * tcInTorque - gbxOutSpeed * gbxOutTorque;
 

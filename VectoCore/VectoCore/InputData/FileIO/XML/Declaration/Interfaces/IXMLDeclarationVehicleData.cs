@@ -55,12 +55,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 
 		IXMLADASReader ADASReader { set; }
 
-		AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+		AngledriveType GetAngledriveType(AxleNumber axleNumber = null);
 
-        RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+        RetarderType GetRetarderType(AxleNumber axleNumber = null);
 
-		double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+		double GetRetarderRatio(AxleNumber axleNumber = null);
 
-		IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+		IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null);
 	}
 }

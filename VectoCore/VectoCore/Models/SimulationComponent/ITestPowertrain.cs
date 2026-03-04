@@ -1,13 +1,21 @@
 ﻿using System.Collections.Generic;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
+
+	public interface ITestPowertrainAxleContainer
+	{
+		ITestpowertrainElectricMotor ElectricMotor { get; } 
+	}
 
     public interface ITestPowertrain 
     {
@@ -17,7 +25,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
         IList<ITestPowertrainTransmission> Gearboxes { get; }
 
-        ITestPowertrainTransmission GetGearbox(int axleNumber);
+        ITestPowertrainTransmission GetGearbox(AxleNumber axleNumber);
 
         ITestpowertrainCombustionEngine CombustionEngine { get; }
 
@@ -31,7 +39,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
         IBrakes Brakes { get; }
 
-        ITestpowertrainElectricMotor GetElectricMotor(int axleNumber);
+        ITestpowertrainElectricMotor GetElectricMotor(AxleNumber axleNumber);
 		IList<ITestpowertrainElectricMotor> ElectricMotors { get; } 
 		IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; }
         IDCDCConverter DCDCConverter { get; }

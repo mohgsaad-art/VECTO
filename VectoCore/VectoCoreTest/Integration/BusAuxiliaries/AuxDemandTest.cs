@@ -161,7 +161,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 				}
 			};
 			var vehicle = _kernel.Get<IPowertrainBuilder>().Build(runData, new MockModalDataContainer(), null);
-            var engine = new CombustionEngine(vehicle, modelData);
+			var powertrainContainer = new PowertrainContainer(vehicle);
+            var engine = new CombustionEngine(vehicle, powertrainContainer, modelData);
 			//new Vehicle(vehicle, new VehicleData());
 			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking, DrivingAction = DrivingAction.Brake };
 			//driver = null;
@@ -169,7 +170,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			var brakes = new MockBrakes(vehicle);
 			var veh = new MockVehicle(vehicle) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
 			var auxConfig = BusAuxiliaryInputData.ReadBusAuxiliaries(auxFilePath, vehicle.RunData.VehicleData);
-			var busAux = new BusAuxiliariesAdapter(vehicle, auxConfig);
+			var busAux = new BusAuxiliariesAdapter(vehicle, powertrainContainer, auxConfig);
 			var electricStorage = auxConfig.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
 				? new SimpleBattery(vehicle, auxConfig.ElectricalUserInputsConfig.ElectricStorageCapacity, auxConfig.ElectricalUserInputsConfig.StoredEnergyEfficiency)
 				: (ISimpleBattery)new NoBattery(vehicle);

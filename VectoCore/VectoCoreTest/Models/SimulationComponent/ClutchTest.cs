@@ -83,10 +83,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			double expectedEngineSpeed)
 		{
 			var container = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
             var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
 			gearbox.Gear = new GearshiftPosition((uint)gear);
-			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
+			var clutch = new Clutch(container,powertrainContainer,  engineData) { IdleController = new MockIdleController() };
 			var brakes = new Brakes(container) { BrakePower = 0.SI<Watt>() };
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
 			var engine  = new MockEngineInfo(container) {
@@ -114,11 +115,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void ClutchContinuityTest()
 		{
 			var container = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
 			gearbox.Gear = new GearshiftPosition(1);
 			var engine = new MockEngine(container);
-			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
+			var clutch = new Clutch(container, powertrainContainer, engineData) { IdleController = new MockIdleController() };
 
 			var inPort = clutch.InPort();
 			var outPort = new MockTnOutPort();
@@ -173,8 +175,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 	public class MockEngine : VectoSimulationComponent, IEngineInfo, IEngineControl
 	{
-		public MockEngine(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : 
-			base(container, axleNumber) {}
+		public MockEngine(IVehicleContainer container) : 
+			base(container) {}
 
 		public PerSecond EngineSpeed { get; set; }
 		public NewtonMeter EngineTorque { get; set; }

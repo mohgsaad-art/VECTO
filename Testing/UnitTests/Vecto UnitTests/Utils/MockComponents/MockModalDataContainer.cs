@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
@@ -83,12 +84,12 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 
 			AddFuels(new IFuelProperties[] { VectoCore.Models.Declaration.FuelData.Diesel }.ToList());
 
-			AddColumnsWithAxlenumber(ModalResults.RetarderSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
-            AddColumnsWithAxlenumber(ModalResults.GearboxSignals_AT, Constants.NOT_IN_AXLE_POWERTRAIN);
-            AddColumnsWithAxlenumber(ModalResults.TorqueConverterSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
+			AddColumnsWithAxlenumber(ModalResults.RetarderSignals, AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+            AddColumnsWithAxlenumber(ModalResults.GearboxSignals_AT, AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+            AddColumnsWithAxlenumber(ModalResults.TorqueConverterSignals, AxleNumber.NOT_IN_AXLE_POWERTRAIN);
         }
 
-		private void AddColumnsWithAxlenumber(ModalResultField[] signals, int axleNumber)
+		private void AddColumnsWithAxlenumber(ModalResultField[] signals, AxleNumber axleNumber)
 		{
             foreach (var signal in signals)
 			{
@@ -154,7 +155,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 			set => throw new NotImplementedException();
 		}
 
-        public object this[ModalResultField key, PowertrainPosition pos, int axleNumber] 
+        public object this[ModalResultField key, PowertrainPosition pos, AxleNumber axleNumber] 
 		{
             get => throw new NotImplementedException();
             set => throw new NotImplementedException();
@@ -180,6 +181,18 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 					CurrentRow[col] = value;
 				}
 			}
+		}
+
+		public object this[ModalResultField key, FuelCellData.FuelCellId fuelCellId]
+		{
+			get => this[key, fuelCellId.ToString()];
+			set => this[key, fuelCellId.ToString()] = value;
+		}
+
+		public object this[ModalResultField key, AxleNumber axleNumber]
+		{
+			get => this[key, axleNumber.FormatAxleNumber()];
+			set => this[key, axleNumber.FormatAxleNumber()] = value;
 		}
 
 		public object this[ModalResultField key, string arg] {
@@ -229,7 +242,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
             throw new NotImplementedException();
         }
 
-        public T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T> =>
+        public T TimeIntegral<T>(ModalResultField field, AxleNumber axleNumber, Func<SI, bool> filter = null) where T : SIBase<T> =>
             throw new NotImplementedException();
 
         public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
@@ -271,7 +284,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 			}
 		}
 
-        public string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf)
+        public string GetColumnName(PowertrainPosition pos, AxleNumber axleNumber, ModalResultField mrf)
 		{
             return string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber());
         }
@@ -318,67 +331,67 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 		public bool HasCombustionEngine { get; set; }
 		public bool HasGearbox { get; set; }
 
-		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, int axleNumber)
+		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			throw new NotImplementedException();
 		}

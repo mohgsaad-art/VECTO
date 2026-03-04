@@ -172,7 +172,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			public Meter Distance { get; private set; }
 
-			public Dictionary<int, Scalar> GearshiftCount { get; private set; }
+			public Dictionary<AxleNumber, Scalar> GearshiftCount { get; private set; }
 
 			public Scalar FullLoadPercentage { get; private set; }
 
@@ -196,9 +196,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public PerSecond EngineSpeedDrivingAvg { get; private set; }
 			public PerSecond EngineSpeedDrivingMax { get; private set; }
 
-			public Dictionary<int, double> AverageGearboxEfficiency { get; private set; } = new Dictionary<int, double>();
+			public Dictionary<AxleNumber, double> AverageGearboxEfficiency { get; private set; } = new Dictionary<AxleNumber, double>();
 
-			public Dictionary<int, double> AverageAxlegearEfficiency { get; private set; } = new Dictionary<int, double>();
+			public Dictionary<AxleNumber, double> AverageAxlegearEfficiency { get; private set; } = new Dictionary<AxleNumber, double>();
 
             public double WeightingFactor { get; private set; }
 
@@ -389,7 +389,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					if (runData.JobType == VectoSimulationJobType.ParallelHybridVehicle &&
 						runData.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.HybridP4))
 					{
-						eAxlOutSignal = data.GetColumnName(PowertrainPosition.HybridP4, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_in_);
+						eAxlOutSignal = data.GetColumnName(PowertrainPosition.HybridP4, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_in_);
 					}
 					var eAxlOut = data.TimeIntegral<WattSecond>(eAxlOutSignal, x => x > 0);
 

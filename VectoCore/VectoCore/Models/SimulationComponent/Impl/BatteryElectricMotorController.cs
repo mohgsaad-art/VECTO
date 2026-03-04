@@ -4,6 +4,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 
@@ -16,16 +17,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected ElectricMotorData ElectricMotorData;
 
 		protected readonly GearboxData GearboxModelData;
+		protected readonly IPowertrainContainer PowertrainContainer;
 
-		public int AxleNumber {  get; private set; }
-
-		public BatteryElectricMotorController(IVehicleContainer container, IElectricSystem es, AxlePowertrainData axlePt = null)
+		public BatteryElectricMotorController(IVehicleContainer container, IPowertrainContainer powertrainContainer, IElectricSystem es)
 		{
 			DataBus = container;
+			PowertrainContainer = powertrainContainer;
+			var axlePt = powertrainContainer.AxlePowertrainData;
 			ElectricMotorData = (axlePt == null) ? container.RunData.ElectricMachinesSinglePwt.FirstOrDefault()?.Item2 : axlePt.ElectricMachineData.Item2;
 			ElectricSystem = es;
 			GearboxModelData = (axlePt == null) ? container.RunData.GearboxSinglePwt : axlePt.GearboxData;
-			AxleNumber = (axlePt == null) ? Constants.NOT_IN_AXLE_POWERTRAIN : axlePt.AxleNumber;
 		}
 
 		#region Implementation of IElectricMotorControl
@@ -34,7 +35,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PerSecond prevOutAngularVelocity, PerSecond currOutAngularVelocity, NewtonMeter maxDriveTorque, 
 			NewtonMeter maxRecuperationTorque, PowertrainPosition position, bool dryRun)
 		{
-			var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber);
+			var gearbox = PowertrainContainer.GearboxInfo;
 
 			if (!gearbox.GearEngaged(absTime) && DataBus.DriverInfo.DrivingAction == DrivingAction.Roll) {
 				var avgSpeed = (prevOutAngularVelocity + currOutAngularVelocity) / 2;

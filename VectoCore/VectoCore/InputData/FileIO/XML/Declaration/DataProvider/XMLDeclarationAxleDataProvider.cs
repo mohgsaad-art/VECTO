@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected bool? _twinTyre;
 		protected AxleType? _axleType;
 		private bool? _steered;
-		private int? _axleNumber;
+		private AxleNumber _axleNumber;
 
 		public XMLDeclarationAxleDataProviderV10(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
 			: base(componentNode, sourceFile)
@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual ITyreDeclarationInputData Tyre => _tyre ?? (_tyre = Reader.Tyre);
 
-		public virtual int AxleNumber => _axleNumber ?? (_axleNumber = int.Parse(GetAttribute(BaseNode, "axleNumber"))).Value;
+		public virtual AxleNumber AxleNumber => _axleNumber ?? (_axleNumber = new AxleNumber(int.Parse(GetAttribute(BaseNode, "axleNumber"))));
 
 		public virtual NewtonMeter WheelEndFriction => null;
 

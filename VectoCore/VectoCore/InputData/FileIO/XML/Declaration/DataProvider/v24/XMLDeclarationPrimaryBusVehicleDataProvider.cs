@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override CubicMeter CargoVolume => null;
 		public override XmlElement PTONode => null;
 
-		public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
 		public override LegislativeClass? LegislativeClass => VectoCommon.Models.LegislativeClass.M3;
 

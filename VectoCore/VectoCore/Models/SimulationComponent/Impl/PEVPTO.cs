@@ -22,7 +22,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected readonly Dictionary<string, Func<PerSecond, Second, Second, bool, NewtonMeter>> Auxiliaries =
 			new Dictionary<string, Func<PerSecond, Second, Second, bool, NewtonMeter>>();
 
-		public PEVPtoTransm(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
+		public PEVPtoTransm(IVehicleContainer container) : base(container)
 		{
 			
 		}

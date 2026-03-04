@@ -39,6 +39,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -57,9 +58,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public virtual IShiftStrategy Strategy { get; }
 
-		protected AbstractGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
+		protected AbstractGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer)
 		{
-			ModelData = container.RunData.GearboxSinglePwt;
+			ModelData = container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].GearboxData;
 			LastShift = -double.MaxValue.SI<Second>();
         }
 

@@ -43,6 +43,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -362,12 +363,12 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		protected internal readonly Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>> FuelColumns = new Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>>();
 
-		protected internal List<Tuple<PowertrainPosition, int>> ElectricMotors = new List<Tuple<PowertrainPosition, int>>();
-		protected internal List<int> Axlegears = new List<int>();
-		protected internal List<int> Retarders = new List<int>();
-		protected internal List<int> Angledrives = new List<int>();
-        protected internal List<int> Gearboxes = new List<int>();
-        protected internal List<int> TorqueConverters = new List<int>();
+		protected internal List<Tuple<PowertrainPosition, AxleNumber>> ElectricMotors = new List<Tuple<PowertrainPosition, AxleNumber>>();
+		protected internal List<AxleNumber> Axlegears = new List<AxleNumber>();
+		protected internal List<AxleNumber> Retarders = new List<AxleNumber>();
+		protected internal List<AxleNumber> Angledrives = new List<AxleNumber>();
+        protected internal List<AxleNumber> Gearboxes = new List<AxleNumber>();
+        protected internal List<AxleNumber> TorqueConverters = new List<AxleNumber>();
 
         protected internal List<string> FuelCellStringColumns = new List<string>();
 		protected internal List<string> FuelCellColumns = new List<string>(); //contains fuel cell ids as string
@@ -432,7 +433,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 					var axlePt = runData.AxlePowertrains.FirstOrDefault(x => x.AxleNumber == component.AxleNumber);
 					ModalResultField[] gbSignals = null;
 
-					if (((axlePt == null) && !runData.JobType.IsIEPC()) || ((axlePt != null) && !axlePt.Architecture.IsIEPC()))
+					var isIEPC = axlePt.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN
+						? runData.JobType.IsIEPC()
+						: axlePt.Architecture.IsIEPC();
+                    
+					if (!isIEPC)
 					{
 						var gbType = runData.GetGearboxData().First(x => x.Item1 == component.AxleNumber).Item2.Type;
 						gbSignals = gbType.IsOneOf(GearboxType.ATPowerSplit, GearboxType.ATSerial, GearboxType.IHPC) ? GearboxSignals_AT : GearboxSignals;
@@ -445,7 +450,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 								captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()));
                         }
 					}
-					else if (((axlePt == null) && runData.JobType.IsIEPC()) || ((axlePt != null) && axlePt.Architecture.IsIEPC()))
+					else
 					{
 						gbSignals = IEPCTransmissionSignals;
 
@@ -482,6 +487,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 						captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber())); 
 					break;
 				case IAxlegear _:
+				case DummyAxleGearInfo _:
 					Axlegears.Add(component.AxleNumber);
 					CreateColumns(
 						AxlegearSignals, 
@@ -560,10 +566,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		}
 	
 
-		protected internal void CreateElectricMotorColumns(PowertrainPosition emPos, int axleNumber,
+		protected internal void CreateElectricMotorColumns(PowertrainPosition emPos, AxleNumber axleNumber,
 			ModalResultField[] signals)
 		{
-			ElectricMotors.Add(new Tuple<PowertrainPosition, int>(emPos, axleNumber));
+			ElectricMotors.Add(new Tuple<PowertrainPosition, AxleNumber>(emPos, axleNumber));
 			foreach (var entry in signals) {
 				var col = Columns.Add(string.Format(
 						entry.GetAttribute().Caption, 

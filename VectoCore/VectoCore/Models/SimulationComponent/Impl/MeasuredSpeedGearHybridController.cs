@@ -3,13 +3,14 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class MeasuredSpeedGearHybridController : HybridController
     {
-		public MeasuredSpeedGearHybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
-            base(container, strategy, es)
+		public MeasuredSpeedGearHybridController(IVehicleContainer container, IPowertrainContainer powertrainContainer, IHybridControlStrategy strategy, IElectricSystem es) :
+            base(container, powertrainContainer, strategy, es)
         {}
 
         protected override void ApplyStrategySettings(HybridStrategyResponse strategySettings)

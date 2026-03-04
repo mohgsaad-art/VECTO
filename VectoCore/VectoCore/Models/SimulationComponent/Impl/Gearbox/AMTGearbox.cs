@@ -30,6 +30,7 @@
 */
 
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 {
@@ -37,9 +38,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 	public class AMTGearbox : AbstractAMTGearbox, IAMTGearbox
     {
-        public AMTGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : base(container, strategy, axleNumber) { }
+        public AMTGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) : base(container, powertrainContainer, strategy) { }
 
-        protected AMTGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) : base(container, strategy, false, axleNumber) { }
+        protected AMTGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, bool dummy) : base(container, powertrainContainer, strategy, false) { }
 
 		#region Implementation of IAMTGearbox
 

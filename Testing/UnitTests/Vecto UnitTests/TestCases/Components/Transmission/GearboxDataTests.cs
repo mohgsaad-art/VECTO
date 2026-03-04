@@ -13,6 +13,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -52,11 +53,12 @@ public class GearboxDataTests
 
         runData.GearboxSinglePwt = gearboxData;
         var container = GetMockVehicleContainer(runData);
+        var powertrainContainer = new PowertrainContainer(container);
         var shiftStrategy = new Mock<IShiftStrategy>();
         shiftStrategy.Setup(s =>
                 s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(), It.IsAny<PerSecond>()))
             .Returns(new GearshiftPosition(1));
-        var gearbox = new AMTGearbox(container, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+        var gearbox = new AMTGearbox(container, powertrainContainer, shiftStrategy.Object);
 
         NewtonMeter tqRequest = null;
         PerSecond rpmRequest = null;
@@ -98,7 +100,7 @@ public class GearboxDataTests
     private static IVehicleContainer GetMockVehicleContainer(VectoRunData runData)
     {
         var container = new Mock<IVehicleContainer>();
-        var powertrainInfo = new Mock<IPowertainInfo>();
+        var powertrainInfo = new Mock<IPowertrainInfo>();
         var vehicle = new Mock<IVehicleInfo>();
         var driver = new Mock<IDriverInfo>();
         var engine = new Mock<IEngineInfo>();

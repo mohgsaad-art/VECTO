@@ -4,7 +4,9 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
@@ -16,15 +18,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 		//public TestPowertrainIEPCGearbox(IVehicleContainer container, IShiftStrategy strategy) : this(container, strategy, null, false) { }
 
 
-		public TestPowertrainIEPCGearbox(IVehicleContainer container, IShiftStrategy strategy,
-			IIEPCGearboxFactory gbxFactory) : this(container, strategy, gbxFactory, false)
+		public TestPowertrainIEPCGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy,
+			IIEPCGearboxFactory gbxFactory) : this(container, powertrainContainer, strategy, gbxFactory, false)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");
 			}
 		}
 
-		protected TestPowertrainIEPCGearbox(IVehicleContainer container, IShiftStrategy strategy,
+		protected TestPowertrainIEPCGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy,
 			IIEPCGearboxFactory gbxFactory, bool dummy)
 		{
 			_impl = gbxFactory.CreateIEPCGearbox(container.RunData.GearboxSinglePwt.Gears.Count == 1, container, strategy) as ITestPowertrainTransmission;
@@ -53,7 +55,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 		#region Implementation of IGearboxInfo
 
-		public int AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
+		public AxleNumber AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
 
 		public GearboxType GearboxType => _impl.GearboxType;
 

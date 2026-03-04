@@ -12,23 +12,68 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class ElectricPowerJunctionBox : StatefulVectoSimulationComponent<SimpleComponentState>, IElectricPowerJunctionBox
     {
+	    public class ElectricPowerJunctionBoxPort : IElectricPowerJunctionBoxPort
+	    {
+		    private readonly ElectricPowerJunctionBox _electricPowerJunctionBox;
+		    private readonly IPowertrainContainer _powertrainContainer;
+
+		    public ElectricPowerJunctionBoxPort(ElectricPowerJunctionBox electricPowerJunctionBox, IPowertrainContainer powertrainContainer)
+		    {
+			    _powertrainContainer = powertrainContainer;
+			    _electricPowerJunctionBox = electricPowerJunctionBox;
+		    }
+		    public Watt ElectricAuxPower => throw new NotImplementedException();
+
+		    public Watt ChargePower => throw new NotImplementedException();
+
+		    public Watt BatteryPower => throw new NotImplementedException();
+
+		    public Watt ConsumerPower => throw new NotImplementedException();
+
+		    public Watt FuelCellPower => throw new NotImplementedException();
+
+		    public void Connect(IElectricEnergyStorage battery)
+		    {
+			    throw new NotImplementedException();
+		    }
+
+		    public void Connect(IElectricChargerPort charger)
+		    {
+			    throw new NotImplementedException();
+		    }
+
+		    public void Connect(IElectricAuxPort aux)
+		    {
+			    throw new NotImplementedException();
+		    }
+
+		    public IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false)
+		    {
+			    return _electricPowerJunctionBox.Request(absTime, dt, powerDemand, this, dryRun);
+		    }
+	    }
+	    
 		protected internal IElectricSystem _electricPower;
-		private Dictionary<ITnOutPort, Watt> _powerDemands;
+		/// <summary>
+		/// Electric demand per IElectricPowerJunctionBoxPort
+		/// </summary>
+		private Dictionary<IElectricPowerJunctionBoxPort, Watt> _powerDemands;
 		private IElectricSystemResponse _electricPowerResponse;
 
-		public ElectricPowerJunctionBox(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public ElectricPowerJunctionBox(IVehicleContainer container) : base(container)
 		{
-			_powerDemands = new Dictionary<ITnOutPort, Watt>();
+			_powerDemands = new Dictionary<IElectricPowerJunctionBoxPort, Watt>();
 		}
 
 		public ITnOutPort CurrentTorqueSplitterNextComponent {  get; set; }
 
-		public void AddTorqueSplitterNextComponent(ITnOutPort component)
+		protected void AddPort(IElectricPowerJunctionBoxPort component)
 		{
 			if (!_powerDemands.ContainsKey(component))
 			{
@@ -46,16 +91,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		public IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false)
+		protected IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, IElectricPowerJunctionBoxPort port, bool dryRun = false)
 		{
 			if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
 			{
 				return _electricPower.Request(absTime, dt, powerDemand, dryRun);
 			}
 
-            if (_powerDemands[CurrentTorqueSplitterNextComponent] == null)
+            if (_powerDemands[port] == null)
 			{
-				_powerDemands[CurrentTorqueSplitterNextComponent] = powerDemand;	
+				_powerDemands[port] = powerDemand;	
 			}
 
 			return _powerDemands.Any(x => x.Value == null)
@@ -89,6 +134,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_electricPower = powerSupply;
 		}
 
+		public IElectricSystem GetElectricPowerJunctionBoxPort(IPowertrainContainer powertrainContainer)
+		{
+			var port = new ElectricPowerJunctionBoxPort(this,  powertrainContainer);
+			AddPort(port);
+			return port;
+		}
+
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			AdvanceState();
@@ -108,6 +160,5 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			return false;
 		}
-
 	}
 }

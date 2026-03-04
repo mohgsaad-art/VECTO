@@ -40,7 +40,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
 		public override XmlElement PTONode => null;
 
-		public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+		public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
 
 		public override bool Articulated => GetBool(XMLNames.Vehicle_Articulated);
 
@@ -256,9 +256,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = -1) => null;
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(AxleNumber axleNumber = null) => null;
         
-        public override RetarderType GetRetarderType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override RetarderType GetRetarderType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
@@ -270,14 +270,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             return RetarderTypeHelper.Parse(node.InnerText);
         }
 
-        public override double GetRetarderRatio(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override double GetRetarderRatio(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_RetarderRatio).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 
             return (node != null) ? double.Parse(node.InnerText) : 0;
         }
 
-        public override AngledriveType GetAngledriveType(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+        public override AngledriveType GetAngledriveType(AxleNumber axleNumber = null)
         {
             var node = GetNodes(XMLNames.Vehicle_AngledriveType).Cast<XmlNode>().FirstOrDefault(x => int.Parse(GetAttribute(x, "axleNumber")) == axleNumber);
 

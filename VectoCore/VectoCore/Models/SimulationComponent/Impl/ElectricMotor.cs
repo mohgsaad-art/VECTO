@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -8,6 +9,7 @@ using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -16,8 +18,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class TestPowertrainElectricMotor : ElectricMotor, ITestpowertrainElectricMotor
 	{
-		public TestPowertrainElectricMotor(IVehicleContainer container, ElectricMotorData data,
-			IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(container, data, control, position, false, axleNumber)
+		public TestPowertrainElectricMotor(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data,
+			IElectricMotorControl control, PowertrainPosition position) : base(container, powertrainContainer, data, control, position, false)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException(
@@ -69,8 +71,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public PowertrainPosition Position { get; }
 
-		public ElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
-			PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : this(container, data, control, position, false, axleNumber)
+		public ElectricMotor(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : this(container, powertrainContainer, data, control, position, false)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -81,12 +83,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected ElectricMotor(
 			IVehicleContainer container, 
+			IPowertrainContainer powertrainContainer,
 			ElectricMotorData data, 
 			IElectricMotorControl control, 
 			PowertrainPosition position,
-			bool dummy,
-			int axleNumber) : 
-				base(container, axleNumber)
+			bool dummy) : 
+				base(container, powertrainContainer)
 		{
 			Control = control;
 			ModelData = data;
@@ -100,14 +102,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			Position = container.RunData.GetEMData()
-				.First(x => 
-					(x.Item1.Position.GetPositionNumber() == position.GetPositionNumber()) && (x.Item1.AxleNumber == axleNumber))
-				.Item1.Position;
+			Position = container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].ElectricMachinesData
+				.First(x => x.Item1.GetPositionNumber() == position.GetPositionNumber()).Item1;
 
 			container?.AddComponent(this); // We have to do this again because in the base class the position is unknown!
 
-			if (ModelData.Overload.OverloadBuffer.IsSmallerOrEqual(0) && !(container is SimplePowertrainContainer)) {
+			if (ModelData.Overload.OverloadBuffer.IsSmallerOrEqual(0) && !(container is SimpleVehicleContainer)) {
 				Log.Error("Overload buffer for thermal de-rating is zero or negative! Please check electric motor data!");
 			}
 		}
@@ -217,7 +217,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IResponse DoHandleRequest(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, double ratio)
 		{
-			var gearbox = DataBus.GearboxInfo(AxleNumber);
+			var gearbox = PowertrainContainer.GearboxInfo;
 			var gear = gearbox?.Gear ?? new GearshiftPosition(1);
 			if (gear.Gear == 0) {
 				gear = new GearshiftPosition(1);
@@ -541,14 +541,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					((inTorqueDt - outTorque) * avgDtSpeed - emTorque * avgEmSpeed)
 					/ avgDtSpeed;
 
-				CurrentState.ElectricPowerToBattery = (AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? retVal.ElectricSystem?.ConsumerPower : electricPower;
+				CurrentState.ElectricPowerToBattery = (AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? retVal.ElectricSystem?.ConsumerPower : electricPower;
 			}
 			return retVal;
 		}
 
 		protected virtual PerSecond GetMotorSpeedLimit(Second absTime)
 		{
-			var gearbox = DataBus.GearboxInfo(AxleNumber);
+			var gearbox = PowertrainContainer.GearboxInfo;
 
 			if (gearbox == null || gearbox.Gear.Gear == 0) {
 				return MaxSpeedDt;

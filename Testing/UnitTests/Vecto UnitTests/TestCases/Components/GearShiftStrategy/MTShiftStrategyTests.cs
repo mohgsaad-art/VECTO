@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -10,6 +11,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -179,8 +181,8 @@ public class MTShiftStrategyTests
 		out Mock<IGearbox> gearbox)
 	{
 		gearbox = GetMockGearbox();
-		
-		var shiftStrategy = new MTShiftStrategy(container.Object) {
+		var powertrainContainer = new PowertrainContainer(container.Object);
+		var shiftStrategy = new MTShiftStrategy(container.Object, powertrainContainer) {
 			Gearbox = gearbox.Object
 		};
 		
@@ -394,9 +396,9 @@ public class MTShiftStrategyTests
 			});
 		return gbx;
 	}
-	private Mock<IPowertainInfo> GetPowertrainInfo()
+	private Mock<IPowertrainInfo> GetPowertrainInfo()
 	{
-		var powerTrainInfo = new Mock<IPowertainInfo>();
+		var powerTrainInfo = new Mock<IPowertrainInfo>();
 		powerTrainInfo.Setup(p => p.HasCombustionEngine).Returns(true);
 		return powerTrainInfo;
 	}
@@ -448,7 +450,7 @@ public class MTShiftStrategyTests
 
         //AxlegearInfo
         var axleGearInfo = new Mock<IAxlegearInfo>();
-		vehicleContainer.Setup(c => c.AxlegearInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(axleGearInfo.Object);
+		vehicleContainer.Setup(c => c.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(axleGearInfo.Object);
 		axleGearInfo.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
 
         //Powertrain Info
@@ -476,7 +478,7 @@ public class MTShiftStrategyTests
 		});
 		cycleInfo.Setup(c => c.Altitude).Returns(0.SI<Meter>());
 
-		var pi = new Mock<IPowertainInfo>();
+		var pi = new Mock<IPowertrainInfo>();
 
 
 
@@ -496,7 +498,7 @@ public class MTShiftStrategyTests
 		var simplePt = GetSimplePowertrain(runData, out var gbx);
 
 		testPt.Setup(c => c.Container).Returns(simplePt.Object);
-		testPt.Setup(c => c.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+		testPt.Setup(c => c.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		testPt.Setup(c => c.UpdateComponents());
 		
 		
@@ -518,14 +520,15 @@ public class MTShiftStrategyTests
 
 	private Mock<ISimpleVehicleContainer> GetSimplePowertrain(VectoRunData runData, out Mock<ITestPowertrainTransmission> testGearbox)
 	{
-		var simplePt = new Mock<ISimpleVehicleContainer>();
+		var simplePt = new Mock<ISimpleVehicleContainer>().WithPowertrainDict();
+		var _ = new SimplePowertrainContainer(simplePt.Object);
 		
 		simplePt.Setup(s => s.RunData).Returns(runData);
 		simplePt.Setup(s => s.AddComponent(It.IsAny<VectoSimulationComponent>()));
 		simplePt.Setup(s => s.PowertrainInfo).Returns(GetPowertrainInfo().Object);
 
 		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears);
-		simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
+		simplePt.Setup(s => s.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 
 		//Vehicle Info

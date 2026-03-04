@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -14,6 +15,7 @@ using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electr
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -43,6 +45,7 @@ public class BusAuxTests
     }
 
 
+
     public static BusAuxiliariesAdapter CreateBusAuxAdapterForTesting(double vehicleMass, DrivingBehavior behavior = DrivingBehavior.Braking, DrivingAction action = DrivingAction.Brake)
     {
         var container = new Mock<IVehicleContainer>();
@@ -62,7 +65,7 @@ public class BusAuxTests
             }
         });
         var fld = FullLoadCurveReader.Create(InputDataHelper.InputDataAsTableData(ICEFldHeader, ICEFld));
-        var engine = new Mock<IEngineInfo>();
+        var engine = new Mock<IEngineInfo>().WithDefaultAxleNumber();
         engine.Setup(e => e.EngineIdleSpeed).Returns(560.RPMtoRad());
         engine.Setup(e => e.EngineDragPower(It.IsNotNull<PerSecond>())).Returns((PerSecond r) => fld.DragLoadStationaryPower(r));
         var engineCtl = engine.As<IEngineControl>();
@@ -73,13 +76,15 @@ public class BusAuxTests
         driver.Setup(d => d.DrivingAction).Returns(action);
         driver.Setup(d => d.DriverBehavior).Returns(behavior);
         container.Setup(v => v.DriverInfo).Returns(driver.Object);
-        var gbx = new Mock<IGearboxInfo>();
+        var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
         gbx.Setup(g => g.GearEngaged(It.IsNotNull<Second>())).Returns(true);
         gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(1));
-        container.Setup(v => v.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
-        var clutch = new Mock<IClutchInfo>();
+        container.Setup(v => v.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
+        container.Setup(v => v.GearboxesInfo).Returns(() => new List<IGearboxInfo>(){ gbx.Object });
+        var clutch = new Mock<IClutchInfo>().WithDefaultAxleNumber();
         clutch.Setup(c => c.ClutchClosed(It.IsNotNull<Second>())).Returns(true);
-        container.Setup(v => v.ClutchInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(clutch.Object);
+        container.Setup(v => v.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(clutch.Object);
+        container.Setup(v => v.ClutchesInfo).Returns(() => new List<IClutchInfo>(){ clutch.Object });
         var brk = new Mock<IBrakes>();
         brk.Setup(b => b.BrakePower).Returns(0.SI<Watt>());
         container.Setup(v => v.Brakes).Returns(brk.Object);
@@ -87,7 +92,8 @@ public class BusAuxTests
         veh.Setup(v => v.VehicleSpeed).Returns(50.KMPHtoMeterPerSecond());
         veh.Setup(v => v.VehicleStopped).Returns(false);
         container.Setup(v => v.VehicleInfo).Returns(veh.Object);
-
+        
+        
         var heatPumpCoP = new Dictionary<HeatPumpType, double>();
         var heaterEff = new Dictionary<HeaterType, double>();
         foreach (var entry in EnumHelper.GetValues<HeatPumpType>())
@@ -188,8 +194,8 @@ public class BusAuxTests
         };
         auxConfig.SSMInputsHeating = auxConfig.SSMInputsCooling;
         //var str = JsonConvert.SerializeObject(auxConfig);
-
-        var busAux = new BusAuxiliariesAdapter(container.Object, auxConfig);
+        var powertrainContainer = new PowertrainContainer(container.Object);
+        var busAux = new BusAuxiliariesAdapter(container.Object, powertrainContainer, auxConfig);
         var electricStorage = auxConfig.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
             ? new SimpleBattery(container.Object, auxConfig.ElectricalUserInputsConfig.ElectricStorageCapacity, auxConfig.ElectricalUserInputsConfig.StoredEnergyEfficiency)
             : (ISimpleBattery)new NoBattery(container.Object);

@@ -41,7 +41,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		private const PowertrainPosition emPos = PowertrainPosition.HybridP2;
 
-		private const int _axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
+		private static readonly AxleNumber _axleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
 		private StandardKernel _kernel;
 

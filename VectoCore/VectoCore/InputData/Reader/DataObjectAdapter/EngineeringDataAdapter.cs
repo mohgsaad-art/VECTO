@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
         HybridStrategyParameters CreateHybridStrategyParameters(
             IEngineeringJobInputData jobInputData,
-            CombustionEngineData combustionEngineData, GearboxData gearboxData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+            CombustionEngineData combustionEngineData, GearboxData gearboxData, AxleNumber axleNumber = null);
 
         List<Tuple<PowertrainPosition, ElectricMotorData>> CreateIEPCElectricMachines(IIEPCEngineeringInputData iepc, Volt averageVoltage);
         GearboxData CreateIEPCGearboxData(IIEPCEngineeringInputData iepc, VectoRunData runData);
@@ -286,7 +286,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					AxleNumber = axlePtData.AxleNumber,
 					Architecture = axlePtData.Architecture,
 					AxleGearData = axlegearData,
-					ElectricMachineData = emData,
+					ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(){emData},
 					AngledriveData = angledriveData,
 					GearboxData = gearboxData,
 					Retarder = retarder,
@@ -359,7 +359,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			ElectricMachineEntry<IElectricMotorEngineeringInputData> em,
 			IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> torqueLimits, Volt averageVoltage,
 			GearList gearlist = null,
-			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN
+			AxleNumber axleNumber = null
 			)
 		{
 			return (em == null)
@@ -1657,7 +1657,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			IEngineeringJobInputData jobInputData,
 			CombustionEngineData combustionEngineData, 
 			GearboxData gearboxData,
-			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+			AxleNumber axleNumber = null)
 		{
 			var hybridStrategyParameters = jobInputData.HybridStrategyParameters;
 			
@@ -1684,7 +1684,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			IVehicleEngineeringInputData vehicleInputData, 
 			CombustionEngineData engineData, 
 			GearboxData gearboxData,
-			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+			AxleNumber axleNumber = null)
 		{
 
 			// engine data contains full-load curves already cropped with max gearbox torque and max ICE torque (vehicle level)
@@ -1694,7 +1694,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var belowIdle = offset?.FullLoadEntries.Where(x => x.MotorSpeed < engineData.IdleSpeed).ToList();
 
 			var retVal = new Dictionary<GearshiftPosition, VehicleMaxPropulsionTorque>();
-			var isP3OrP4Hybrid = (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			var isP3OrP4Hybrid = (axleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)
 				? vehicleInputData.Components.ElectricMachines.Entries
 					.Select(x => x.Position)
 					.Any(x => x == PowertrainPosition.HybridP3 || x == PowertrainPosition.HybridP4)

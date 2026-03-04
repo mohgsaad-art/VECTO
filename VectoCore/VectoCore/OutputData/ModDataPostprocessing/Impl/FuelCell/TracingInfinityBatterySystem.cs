@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 		public IList<double> SoCTrace = new List<double>();
 
 
-		public TracingInfinityBatterySystem(BatterySystemData batData) : base(null, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public TracingInfinityBatterySystem(BatterySystemData batData) : base(null)
 		{
 			var tmp_batData = batData.Clone();
 			tmp_batData.ChargeSustainingBatterySystem = true;

@@ -97,11 +97,11 @@ namespace TUGraz.VectoCore.OutputData
 		PerSecond EngineSpeedDrivingMin { get; }
 		PerSecond EngineSpeedDrivingAvg { get;}
 		PerSecond EngineSpeedDrivingMax { get; }
-		Dictionary<int, double> AverageGearboxEfficiency { get;  }
+		Dictionary<AxleNumber, double> AverageGearboxEfficiency { get;  }
 
-        Dictionary<int, double> AverageAxlegearEfficiency { get; }
+        Dictionary<AxleNumber, double> AverageAxlegearEfficiency { get; }
 		Scalar FullLoadPercentage { get; }
-		Dictionary<int, Scalar> GearshiftCount { get; }
+		Dictionary<AxleNumber, Scalar> GearshiftCount { get; }
 		Meter Distance { get; }
 
 		IFuelConsumptionCorrection FuelConsumptionFinal(FuelType fuelType);

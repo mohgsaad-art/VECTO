@@ -9,6 +9,7 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using System.Xml.Schema;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 {
@@ -38,7 +39,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
         protected override DataSourceType SourceType { get; }
 
-        public int AxleNumber => int.Parse(GetAttribute(BaseNode, "axleNumber"));
+        public AxleNumber AxleNumber => new AxleNumber(int.Parse(GetAttribute(BaseNode, "axleNumber")));
 
         public virtual ArchitectureID Architecture => ArchitectureID.UNKNOWN;
 

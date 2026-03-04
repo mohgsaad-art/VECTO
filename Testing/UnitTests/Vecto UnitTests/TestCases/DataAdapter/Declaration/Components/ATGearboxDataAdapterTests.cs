@@ -202,8 +202,9 @@ public class ATGearboxDataAdapterTests
             {
                 Inertia = 0.SI<KilogramSquareMeter>(),
                 FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(),
-            }
+            },
         };
+        runData.AxlePowertrainsDict[AxleNumber.NOT_IN_AXLE_POWERTRAIN] = new AxlePowertrainData();
         for (uint i = 0; i <= numGears; i++)
             runData.EngineData.FullLoadCurves[i] = fld;
         return runData;

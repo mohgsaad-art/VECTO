@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -30,7 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IReadOnlyCollection<FuelCell> FuelCells => new ReadOnlyCollection<FuelCell>(_fuelCells);
 
 		public FuelCellString(FuelCellStringData fcData, int stringId, IVehicleContainer dataBus) : 
-			base(null, Constants.NOT_IN_AXLE_POWERTRAIN) //provide null here, when registering the component the Id is accessed but is not set in the base constructor
+			base(null) //provide null here, when registering the component the Id is accessed but is not set in the base constructor
         {
 			_fcStringMap = fcData.MassFlowMap;
 			_stringId = stringId;

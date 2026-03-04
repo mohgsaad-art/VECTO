@@ -105,12 +105,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
 			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicleContainer);
 			var mockCycle = new MockDrivingCycle(vehicleContainer, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 
 			var driver = new Driver(vehicleContainer, driverData, new DefaultDriverStrategy(vehicleContainer));
-			var engine = new CombustionEngine(vehicleContainer, engineData);
-			var clutch = new Clutch(vehicleContainer, engineData);
+			var engine = new CombustionEngine(vehicleContainer, powertrainContainer, engineData);
+			var clutch = new Clutch(vehicleContainer,powertrainContainer,  engineData);
 			dynamic tmp = AddComponent(driver, new Vehicle(vehicleContainer, vehicleData, airdragData));
 			tmp = AddComponent(tmp, new Wheels(vehicleContainer, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia));
 			tmp = AddComponent(tmp, clutch);
@@ -176,13 +177,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
 			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicleContainer);
 			var mockCycle = new MockDrivingCycle(vehicleContainer, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 
 			var driver = new Driver(vehicleContainer, driverData, new DefaultDriverStrategy(vehicleContainer));
-			var engine = new CombustionEngine(vehicleContainer, engineData);
-			var clutch = new Clutch(vehicleContainer, engineData);
+			var engine = new CombustionEngine(vehicleContainer, powertrainContainer, engineData);
+			var clutch = new Clutch(vehicleContainer, powertrainContainer,  engineData);
 
 			dynamic tmp = AddComponent(driver, new Vehicle(vehicleContainer, vehicleData, airdragData));
 			tmp = AddComponent(tmp, new Wheels(vehicleContainer, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia));
@@ -254,7 +255,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null);
 			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicleContainer);
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,5,0,0\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -264,8 +265,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			dynamic tmp = AddComponent(driver, new Vehicle(vehicleContainer, vehicleData, airdragData));
 			tmp = AddComponent(tmp, new Wheels(vehicleContainer, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia));
-			var engine = new CombustionEngine(vehicleContainer, engineData);
-			var clutch = new Clutch(vehicleContainer, engineData);
+			var engine = new CombustionEngine(vehicleContainer, powertrainContainer, engineData);
+			var clutch = new Clutch(vehicleContainer, powertrainContainer, engineData);
 			clutch.IdleController = engine.IdleController;
 			tmp = AddComponent(tmp, clutch);
 			AddComponent(tmp, engine);
@@ -309,13 +310,14 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				Cycle = cycleData,
 				VehicleData = new VehicleData() { VehicleCategory = VehicleCategory.RigidTruck },
 			}, null, null);
+			var powertrainContainer = new PowertrainContainer(vehicleContainer);
 			var vehicle = new MockVehicle(vehicleContainer);
 
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
 			var driver = new Driver(vehicleContainer, driverData, new DefaultDriverStrategy(vehicleContainer));
 			new MockEngine(vehicleContainer);
 			new EngineOnlyGearboxInfo(vehicleContainer);
-			new ATClutchInfo(vehicleContainer);
+			new ATClutchInfo(vehicleContainer, powertrainContainer);
 
 			var brakes = new Brakes(vehicleContainer);
 			driver.Connect(vehicle.OutPort());
@@ -386,10 +388,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				Cycle = cycleData,
 				DriverData = driverData
 			}, null, null);
+			var powertrainContainer = new PowertrainContainer(vehicleContainer);
 			var vehicle = new MockVehicle(vehicleContainer);
 			new MockEngine(vehicleContainer);
 			new EngineOnlyGearboxInfo(vehicleContainer);
-			new ATClutchInfo(vehicleContainer);
+			new ATClutchInfo(vehicleContainer, powertrainContainer);
 
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
 			var brakes = new Brakes(vehicleContainer);

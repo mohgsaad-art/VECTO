@@ -3,6 +3,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 {
@@ -11,8 +12,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 	// so that these can be set from outside without interfering with the class in the real implementation
 	public class TestPowertrainAPTGearbox : APTGearbox, ITestPowertrainTransmission
 	{
-		public TestPowertrainAPTGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : base(container, strategy,
-			false, axleNumber)
+		public TestPowertrainAPTGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) : base(container, powertrainContainer, strategy,
+			false)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");

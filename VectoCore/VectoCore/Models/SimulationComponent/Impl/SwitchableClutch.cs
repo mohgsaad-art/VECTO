@@ -4,13 +4,15 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class SwitchableClutch : Clutch
     {
-        public SwitchableClutch(IVehicleContainer container, CombustionEngineData engineData) : base(container, engineData) { }
+        public SwitchableClutch(IVehicleContainer container, IPowertrainContainer powertrainContainer,
+            CombustionEngineData engineData) : base(container, powertrainContainer, engineData) { }
 
         #region Overrides of Clutch
 

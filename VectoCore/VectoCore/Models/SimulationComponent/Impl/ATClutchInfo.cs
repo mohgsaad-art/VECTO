@@ -2,14 +2,15 @@
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     internal class ATClutchInfo : VectoSimulationComponent, IClutchInfo
 	{
-		public ATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) :
-			base(container, axleNumber)
+		public ATClutchInfo(IVehicleContainer container, IPowertrainContainer powertrainContainer) :
+			base(container, powertrainContainer)
 		{
 		}
 

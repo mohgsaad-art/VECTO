@@ -4,6 +4,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 
@@ -12,8 +13,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 	public class TestpowertrainIEPC : IEPC, ITestpowertrainElectricMotor
 	{
-		public TestpowertrainIEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
-			PowertrainPosition position) : base(container, data, control, position, false)
+		public TestpowertrainIEPC(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : base(container, powertrainContainer, data, control, position, false)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException(
@@ -36,8 +37,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 	public class IEPC : ElectricMotor
 	{
-		public IEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
-			PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(container, data, control, position, axleNumber)
+		public IEPC(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position) : base(container, powertrainContainer, data, control, position)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -45,9 +46,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected IEPC(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control,
-			PowertrainPosition position, bool dummy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) 
-			: base(container, data, control, position, false, axleNumber) { }
+		protected IEPC(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data, IElectricMotorControl control,
+			PowertrainPosition position, bool dummy) 
+			: base(container, powertrainContainer, data, control, position, false) { }
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{

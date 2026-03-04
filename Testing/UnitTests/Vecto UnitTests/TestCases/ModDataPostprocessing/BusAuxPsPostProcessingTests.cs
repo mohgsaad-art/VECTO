@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Configuration;
@@ -40,7 +41,7 @@ public class BusAuxPsPostProcessingTests
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];
@@ -262,7 +263,7 @@ public class BusAuxPsPostProcessingTests
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];
@@ -490,7 +491,7 @@ public class BusAuxPsPostProcessingTests
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];

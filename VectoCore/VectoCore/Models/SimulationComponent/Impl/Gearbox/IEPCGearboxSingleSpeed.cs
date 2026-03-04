@@ -6,6 +6,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -20,8 +21,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
         public IShiftStrategy Strategy => null;
 
-		public IEPCGearboxSingleSpeed(IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) 
-            : this(container, strategy, false, axleNumber)
+		public IEPCGearboxSingleSpeed(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) 
+            : this(container, powertrainContainer, strategy, false)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -29,10 +30,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			}
         }
 
-        protected IEPCGearboxSingleSpeed(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) : base(container,
-            container.RunData.GetGearboxData().First(x => x.Item1 == axleNumber).Item2.Gears.First().Value, axleNumber)
+        protected IEPCGearboxSingleSpeed(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, bool dummy) : base(container, powertrainContainer,
+            container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].GearboxData.Gears.Single().Value)
 		{
-			var modelData = container.RunData.GetGearboxData().FirstOrDefault(x => x.Item1 == axleNumber).Item2;
+			var modelData = container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].GearboxData;
             GearboxType = modelData.Type;
             Gear = new GearshiftPosition(1);
             TCLocked = true;
@@ -58,10 +59,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
         protected override void DoWriteModalResults(Second time, Second simulationInterval,
             IModalDataContainer container)
         {
-            container[ModalResultField.Gear, AxleNumber.FormatAxleNumber()] = Gear.Gear;
-            container[ModalResultField.n_IEPC_out_avg, AxleNumber.FormatAxleNumber()] = (PreviousState.OutAngularVelocity +
+            container[ModalResultField.Gear, AxleNumber] = Gear.Gear;
+            container[ModalResultField.n_IEPC_out_avg, AxleNumber] = (PreviousState.OutAngularVelocity +
                                                         CurrentState.OutAngularVelocity) / 2.0;
-            container[ModalResultField.T_IEPC_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
+            container[ModalResultField.T_IEPC_out, AxleNumber] = CurrentState.OutTorque;
         }
 
         protected override bool DoUpdateFrom(object other) => false;
@@ -91,7 +92,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
         public GearshiftPosition NextGear { get; }
         public Second TractionInterruption { get; }
-        public uint NumGears { get; }
+        public uint NumGears { get; } = 1;
         public bool Disengaged { get; }
         public bool DisengageGearbox { get; set; }
 

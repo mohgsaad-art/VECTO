@@ -48,7 +48,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private readonly IEnumerator<DrivingCycleData.DrivingCycleEntry> _right;
 
 		public MockDrivingCycle(IVehicleContainer container, DrivingCycleData data) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			if (data != null) {
 				_left = data.Entries.GetEnumerator();

@@ -14,6 +14,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -526,7 +527,7 @@ public class SSMHeatingPostProcessingCorrection
 	protected IModalDataContainer GetMockModData(VectoRunData runData, Kilogram totalFuelConsumption = null, WattSecond emLoss = null, WattSecond genLoss = null)
 	{
 		var mockContainer = new Mock<IVehicleContainer>();
-
+		var powertrainContainer = new PowertrainContainer(mockContainer.Object);
 		if (runData.JobType != VectoSimulationJobType.BatteryElectricVehicle) {
 			var eng = new Mock<IEngineInfo>();
 			eng.Setup(e => e.EngineIdleSpeed).Returns(runData.EngineData.IdleSpeed);
@@ -538,7 +539,7 @@ public class SSMHeatingPostProcessingCorrection
 		}
 
 
-		var busAux = new BusAuxiliariesAdapter(mockContainer.Object, runData.BusAuxiliaries);
+		var busAux = new BusAuxiliariesAdapter(mockContainer.Object, powertrainContainer, runData.BusAuxiliaries);
 
 		var m = new Mock<IModalDataContainer>();
 		m.Setup(x => x.Duration).Returns(3600.SI<Second>());
@@ -570,7 +571,7 @@ public class SSMHeatingPostProcessingCorrection
 		}
 		
 		if (runData.GetEMData().Any(x => x.Item1.Position != PowertrainPosition.GEN)) {
-			m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<int>(), It.IsAny<ModalResultField>()))
+			m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<AxleNumber>(), It.IsAny<ModalResultField>()))
 				.Returns<PowertrainPosition, ModalResultField>((pos, mrf) =>
 					string.Format(mrf.GetCaption(), pos.GetName()));
 
@@ -591,7 +592,7 @@ public class SSMHeatingPostProcessingCorrection
 		WattSecond emLoss, 
 		Mock<IModalDataContainer> m, 
 		PowertrainPosition emPos,
-		int axleNumber)
+		AxleNumber axleNumber)
 	{
 		var colName = m.Object.GetColumnName(emPos, axleNumber, ModalResultField.P_EM_electricMotorLoss_);
 		if (emPos == PowertrainPosition.IEPC) {

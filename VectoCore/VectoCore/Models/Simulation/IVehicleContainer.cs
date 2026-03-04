@@ -31,8 +31,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -61,6 +63,8 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		ISimplePowertrainBuilder SimplePowertrainBuilder { get; }
 
+		bool HasMultiplePowertrains { get; }
+		
 		IAuxInProvider BusAux { get; }
 
 		/// <summary>
@@ -69,6 +73,12 @@ namespace TUGraz.VectoCore.Models.Simulation
         /// <param name="component"></param>
         void AddComponent(VectoSimulationComponent component);
 
+		/// <summary>
+		/// Add a new powertrain container. 
+		/// </summary>
+		/// <param name="container"></param>
+		void AddPowertrainContainer(IPowertrainContainer container);
+		
 		void AddAuxiliary(string id, string columnName = null);
 
 		/// <summary>
@@ -91,6 +101,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 		void FinishSingleSimulationRun(Exception e = null);
 
 		IReadOnlyList<VectoSimulationComponent> Components { get; }
+
 	}
 
 	public interface IExemptedVehicleContainer : IVehicleContainer
@@ -98,18 +109,18 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 	}
 
+
+
 	public interface ISimpleVehicleContainer : IVehicleContainer
 	{
-		//IDriverDemandOutPort VehiclePort { get; }
-		int AxleNumber { get; }
-
-		ITnOutPort GearboxOutPort { get; }
+		// ITnOutPort GearboxOutPort { get; }
 
 		bool HasGearbox { get; }
 
 		VectoSimulationJobType VehicleArchitecture { get; }
 
-		Dictionary<PowertrainPosition, IElectricMotorInfo> ElectricMotors { get; }
+		// Dictionary<PowertrainPosition, IElectricMotorInfo> ElectricMotors { get; }
+		IReadOnlyDictionary<AxleNumber, ISimplePowertrainContainer> SimplePowertrains { get; }
 		
 		IHybridController HybridController { get; }
 

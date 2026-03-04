@@ -246,7 +246,7 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
                         AxleGearData = CreateDummyAxleGearData(axlePt.AxleGearInputData),
                         GearboxData = CreateDummyGearboxData(axlePt.GearboxInputData),
                         AngledriveData = CreateDummyAngleDriveData(axlePt.AngledriveInputData),
-                        ElectricMachineData = axlePt.Architecture.IsIEPC() ? CreateDummyIEPCData().First() : CreateDummyElecticMachineData(axlePt.ElectricMotor.Position)
+                        ElectricMachinesData = [axlePt.Architecture.IsIEPC() ? CreateDummyIEPCData().First() : CreateDummyElecticMachineData(axlePt.ElectricMotor.Position)]
                     };
 
                     runData.AxlePowertrains.Add(axlePowertrainData);

@@ -12,6 +12,7 @@ using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Configuration;
 using System.Linq;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -38,7 +39,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected ITnOutPort GenSetPort;
 
 		public SerialHybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			GenSet = new TnInPortWrapper(this);
 			_electricMotorCtl = new Dictionary<EMPlacement, ElectricMotorController>();
@@ -252,13 +253,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		SimpleComponentState IHybridController.PreviousState => PreviousState;
 		public ITnInProvider GenSet { get; }
 
-		public IElectricMotorControl ElectricMotorControl(PowertrainPosition pos, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public IElectricMotorControl ElectricMotorControl(PowertrainPosition pos)
 		{
+			var axleNumber = AxleNumber;
 			return _electricMotorCtl.First(x => (x.Key.Position == pos) && (x.Key.AxleNumber == axleNumber)).Value;
 		}
 
-		public void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
-		{
+		public void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData)
+		{			
+			var axleNumber = AxleNumber;
 			if (_electricMotorCtl.Any(x => (x.Key.Position == pos) && (x.Key.AxleNumber == axleNumber))) {
 				throw new VectoException("Electric motor already registered as position {0}", pos);
 			}

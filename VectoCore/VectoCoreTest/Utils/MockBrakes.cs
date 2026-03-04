@@ -41,7 +41,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 {
     public class MockBrakes : VectoSimulationComponent, IBrakes, IUpdateable
 	{
-		public MockBrakes(IVehicleContainer vehicle) : base(vehicle, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public MockBrakes(IVehicleContainer vehicle) : base(vehicle)
 		{
 			BrakePower = 0.SI<Watt>();
 		}

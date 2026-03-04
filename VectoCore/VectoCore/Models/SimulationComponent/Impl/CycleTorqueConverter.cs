@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private TorqueConverterData ModelData;
 
 		public CycleTorqueConverter(IVehicleContainer container, TorqueConverterData modelData) : 
-			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(container)
 		{
 			ModelData = modelData;
 		}
@@ -81,21 +81,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (CurrentState.OperatingPoint == null) {
-				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = 1.0;
-				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = 1.0;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber] = 1.0;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber] = 1.0;
 			} else {
-				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.TorqueRatio;
-				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.SpeedRatio;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber] = CurrentState.OperatingPoint.TorqueRatio;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber] = CurrentState.OperatingPoint.SpeedRatio;
 			}
-			container[ModalResultField.TC_TorqueIn, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
-			container[ModalResultField.TC_TorqueOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
-			container[ModalResultField.TC_angularSpeedIn, AxleNumber.FormatAxleNumber()] = CurrentState.InAngularVelocity;
-			container[ModalResultField.TC_angularSpeedOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutAngularVelocity;
+			container[ModalResultField.TC_TorqueIn, AxleNumber] = CurrentState.InTorque;
+			container[ModalResultField.TC_TorqueOut, AxleNumber] = CurrentState.OutTorque;
+			container[ModalResultField.TC_angularSpeedIn, AxleNumber] = CurrentState.InAngularVelocity;
+			container[ModalResultField.TC_angularSpeedOut, AxleNumber] = CurrentState.OutAngularVelocity;
 
 			var avgOutVelocity = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var avgInVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
-			container[ModalResultField.P_TC_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque * avgOutVelocity;
-			container[ModalResultField.P_TC_loss, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgInVelocity -
+			container[ModalResultField.P_TC_out, AxleNumber] = CurrentState.OutTorque * avgOutVelocity;
+			container[ModalResultField.P_TC_loss, AxleNumber] = CurrentState.InTorque * avgInVelocity -
 													CurrentState.OutTorque * avgOutVelocity;
 		}
 

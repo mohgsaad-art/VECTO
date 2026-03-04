@@ -24,10 +24,12 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 {
 
     public class PowertrainComponentNinjectModule : VectoNinjectModule
-	{
-		
-		private ComponentBindingNameHelper _realPowertrain = new ComponentBindingNameHelper("RealPowertrain");
-		private ComponentBindingNameHelper _testPowertrain = new ComponentBindingNameHelper("TestPowertrain");
+    {
+	    public const string RealPowertrainPrefix = "RealPowertrain";
+	    public const string TestPowertrainPrefix = "TestPowertrain";
+	    
+		private ComponentBindingNameHelper _realPowertrain = new ComponentBindingNameHelper(RealPowertrainPrefix);
+		private ComponentBindingNameHelper _testPowertrain = new ComponentBindingNameHelper(TestPowertrainPrefix);
 
 		const GearboxType MTGearbox = GearboxType.MT;
 		const GearboxType AMTGearbox = GearboxType.AMT;
@@ -45,11 +47,11 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
             #region Setup Factories for powertrain components
 
-            Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_realPowertrain))
-				.WhenInjectedExactlyInto<PowertrainBuilder>().InSingletonScope().Named(_realPowertrain.Prefix);
-
-			Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_testPowertrain))
-				.WhenInjectedExactlyInto<SimplePowertrainBuilder>().InSingletonScope().Named(_testPowertrain.Prefix);
+            
+            Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_realPowertrain)).Named(_realPowertrain.Prefix);
+            Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_testPowertrain)).Named(_testPowertrain.Prefix);
+            Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_realPowertrain)).WhenInjectedExactlyInto<PowertrainBuilder>().InSingletonScope().Named(_realPowertrain.Prefix);
+			Bind<IPowertrainComponentFactory>().ToFactory(() => GetMethodSettings(_testPowertrain)).WhenInjectedExactlyInto<SimplePowertrainBuilder>().InSingletonScope().Named(_testPowertrain.Prefix);
 
 			Bind<IIEPCGearboxFactory>().ToFactory(() => new CombineArgumentsToNameInstanceProvider(true, 
 					GetMethodSettings(_realPowertrain.CreateIEPCName, 1, null))).When(r => r.ParentContext?.Binding.Metadata.Name?.StartsWith(_realPowertrain.Prefix) ?? false)
@@ -72,7 +74,24 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
             Bind<ICombustionEngine>().To<EngineOnlyCombustionEngine>().Named(_realPowertrain.ICEName(CycleType.EngineOnly));
 			Bind<ICombustionEngine>().To<VTPCombustionEngine>().Named(_realPowertrain.ICEName(CycleType.VTP));
 
-
+            foreach (var jobType in EnumHelper.GetValues<VectoSimulationJobType>())
+            {
+	            if (!jobType.IsMultiplePowertrains())
+	            {
+		            Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(_realPowertrain.DriverStrategyName(jobType, 0));
+		            Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(_realPowertrain.DriverStrategyName(jobType, 1));
+		            Bind<IDriver>().To<Driver>().Named(_realPowertrain.DriverName(jobType, 0));
+		            Bind<IDriver>().To<Driver>().Named(_realPowertrain.DriverName(jobType, 1));
+	            }else{
+	                Bind<IDriver>().To<DriverNoSwitchableGearbox>().Named(_realPowertrain.DriverName(jobType, 0));
+	                Bind<IDriver>().To<DriverSingleSwitchableGearbox>().Named(_realPowertrain.DriverName(jobType, 1));
+	                Bind<IDriver>().To<DriverMultipleSwitchableGearbox>().Named(_realPowertrain.DriverName(jobType, 2));
+	                
+	                Bind<IDriverStrategy>().To<MultiplePowertrainsDriverStrategyNoSwitchableGearbox>().Named(_realPowertrain.DriverStrategyName(jobType, 0));
+	                Bind<IDriverStrategy>().To<MultiplePowertrainsDriverStrategySingleSwitchableGearbox>().Named(_realPowertrain.DriverStrategyName(jobType, 1));
+	                Bind<IDriverStrategy>().To<MultiplePowertrainsDriverStrategyMultipleSwitchableGearboxes>().Named(_realPowertrain.DriverStrategyName(jobType, 2));
+                }
+            }
 
             Bind<IElectricSystem>().To<ElectricSystem>().Named(_realPowertrain.Prefix);
 			Bind<IElectricChargerPort>().To<GensetChargerAdapter>().Named(_realPowertrain.Prefix);
@@ -201,6 +220,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				}
 			}
 			
+			
             Bind<IGearbox>().To<TestpowertrainIEPCGearboxMultipleGears>().Named(_testPowertrain.IEPCName(false));
 			Bind<IGearbox>().To<TestpowertrainIEPCGearboxSingleSpeed>().Named(_testPowertrain.IEPCName(true));
 
@@ -274,7 +294,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
             };
 			var GbxClass_Distance_Multiple = new Dictionary<GearboxType, Type>() {
                 {IEPCGearbox, iepcGearboxT},
-                {APTNGearbox, iepcGearboxT},
+                {APTNGearbox, aptnGearboxT},
             };
             #endregion
 
@@ -392,6 +412,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
                     { Tuple.Create(CycleType.PWheel, VectoSimulationJobType.IEPC_E) , GbxClass_PWheel_EIEPC},
 					// VTP cycles
 					{ Tuple.Create(CycleType.VTP, VectoSimulationJobType.ConventionalVehicle) , GbxClass_VTP_Conv},
+					
                 };
         }
 
@@ -489,6 +510,10 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.IEPC_E) , GbxClass_Distance_EIEPC},
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV) , GbxClass_Distance_PEV},
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV_IEPC) , GbxClass_Distance_EIEPC},
+				
+
+				
+			
 
                 { Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ConventionalVehicle) , GbxClass_MeasuredSpd_Conv},
 				{ Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasuredSpd_PHEV},
@@ -497,6 +522,11 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				{ Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.IEPC_E) , GbxClass_MeasuredSpd_EIEPC},
 
 				{ Tuple.Create(CycleType.MeasuredSpeedGear, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasuredSpdGear_PHEV},
+				
+				//Multiple Powertrains
+				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_FCHV), GbxClass_Distance_PEV},
+				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_PEV) , GbxClass_Distance_PEV},
+				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_SHEV) , GbxClass_Distance_SHEV},
             };
         }
 
@@ -506,7 +536,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 		{
 			Bind<IVehicleContainer>().To<VehicleContainer>().Named(namingHelper.Prefix);
 			Bind<IExemptedVehicleContainer>().To<ExemptedVehicleContainer>().Named(namingHelper.Prefix);
-			Bind<ISimpleVehicleContainer>().To<SimplePowertrainContainer>().Named(namingHelper.Prefix);
+			Bind<ISimpleVehicleContainer>().To<SimpleVehicleContainer>().Named(namingHelper.Prefix);
 
             Bind<IWheels>().To<Wheels>().Named(namingHelper.Prefix);
 			Bind<IWheelEnd>().To<WheelEnd>().Named(namingHelper.Prefix);
@@ -516,8 +546,9 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 			Bind<IPWheelCycle>().To<PWheelCycle>().Named(namingHelper.Prefix);
 			Bind<IVTPCycle>().To<VTPCycle>().Named(namingHelper.Prefix);
 
-            Bind<IDriver>().To<Driver>().Named(namingHelper.Prefix);
-            Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(namingHelper.Prefix);
+            //Bind<IDriver>().To<Driver>().Named(namingHelper.Prefix);
+            //Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(namingHelper.Prefix);
+
             Bind<IBrakes>().To<Brakes>().Named(namingHelper.Prefix);
 			Bind<IElectricPowerJunctionBox>().To<ElectricPowerJunctionBox>().Named(namingHelper.Prefix);
 			Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.Prefix);
@@ -549,6 +580,10 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
             Bind<IPowertrainDrivingCycle>().To<PowertrainDrivingCycle>().Named(namingHelper.Prefix);
 			Bind<IEngineAuxiliary>().To<EngineAuxiliary>().Named(namingHelper.Prefix);
+
+
+			Bind<IPowertrainContainer>().To<PowertrainContainer>().Named(namingHelper.Prefix);
+			Bind<ISimplePowertrainContainer>().To<SimplePowertrainContainer>().Named(namingHelper.Prefix);
 		}
 
 		
@@ -562,6 +597,11 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				GetMethodSettings(namingHelper.CreatICENameBatteryOnlyHybrid, 1, typeof(IPowertrainComponentFactory).GetMethod(
 					nameof(IPowertrainComponentFactory
 						.CreateCombustionEngineBatteryOnlyHybrid))),
+				// method settings for creating driver and driver strategy
+				GetMethodSettings(namingHelper.CreateDriverName, 2, typeof(IPowertrainComponentFactory).GetMethod(
+                    nameof(IPowertrainComponentFactory.CreateDriver))),
+                GetMethodSettings(namingHelper.CreateDriverStrategyName, 2, typeof(IPowertrainComponentFactory).GetMethod(
+                    nameof(IPowertrainComponentFactory.CreateDriverStrategy))),
                 // method settings for creating name bindings for gearbox
                 GetMethodSettings(namingHelper.CreateGearboxName, 3, typeof(IPowertrainComponentFactory).GetMethod(
 					nameof(IPowertrainComponentFactory
@@ -575,8 +615,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 						.CreateDummyGearboxInfo))),
 				// method settings for creating name bindings for clutch
 				GetMethodSettings(namingHelper.CreateClutchName, 1, typeof(IPowertrainComponentFactory).GetMethod(
-					nameof(IPowertrainComponentFactory
-						.CreateClutch))),
+					nameof(IPowertrainComponentFactory.CreateClutch))),
 				GetMethodSettings(namingHelper.CreateClutchBatteryOnlyHybridName, 1, typeof(IPowertrainComponentFactory).GetMethod(
 					nameof(IPowertrainComponentFactory
 						.CreateClutchBatteryOnlyHybrid))),
@@ -705,6 +744,14 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
 		public string IEPCName(bool singleSpeed) => $"{_prefix}_IEPC_{singleSpeed}";
 
-       
+
+        public string DriverStrategyName(VectoSimulationJobType jobType, int numShiftableGearboxes) => $"{_prefix}_DriverStrategy_{jobType.ToString()}_{numShiftableGearboxes}";
+
+        public string CreateDriverStrategyName(object[] arguments) => CheckArguments<VectoSimulationJobType, int>(arguments, DriverStrategyName);
+
+        public string DriverName(VectoSimulationJobType jobType, int numShiftableGearboxes) => $"{_prefix}_Driver_{jobType.ToString()}_{numShiftableGearboxes}";
+
+        public string CreateDriverName(object[] arguments) => CheckArguments<VectoSimulationJobType, int>(arguments, DriverName);
+
     }
 }

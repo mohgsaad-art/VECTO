@@ -7,6 +7,7 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
@@ -41,8 +42,9 @@ public class RetarderDataReaderTests
         var retarderTbl =  InputDataHelper.InputDataAsTableData("Retarder Speed [rpm],Loss Torque [Nm]",
                 retarderEntries);
         var vehicle = new Mock<IVehicleContainer>().Object;
+        var powertrainContainer = new PowertrainContainer(vehicle);
         var retarderData = RetarderLossMapReader.Create(retarderTbl);
-        var retarder = new Retarder(vehicle, retarderData, 2.0);
+        var retarder = new Retarder(vehicle, powertrainContainer, retarderData, 2.0);
 
 		var mockPort = new Mock<ITnOutPort>();
 		NewtonMeter tqRequest = null;

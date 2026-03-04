@@ -24,7 +24,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> _electricMotorTorque = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>();
 
-		public SimpleHybridController(IVehicleContainer container, IElectricSystem es) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public SimpleHybridController(IVehicleContainer container, IElectricSystem es) : base(container)
 		{
 			ElectricSystem = es;
 			//this.clutch = clutch;
@@ -70,12 +70,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public SimpleComponentState PreviousState => throw new NotImplementedException();
 
-		public IElectricMotorControl ElectricMotorControl(PowertrainPosition pos, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public IElectricMotorControl ElectricMotorControl(PowertrainPosition pos)
 		{
 			return _electricMotorCtl[pos];
 		}
 
-		public void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		public void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData)
 		{
 			if (_electricMotorCtl.ContainsKey(pos)) {
 				throw new VectoException("Electric motor already registered as position {0}", pos);

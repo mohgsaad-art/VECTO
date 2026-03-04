@@ -1,6 +1,8 @@
-﻿using Moq;
+﻿using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -13,6 +15,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -375,7 +378,7 @@ public class ATShiftStrategyOptimizedTests
   
 		var mockPort = new Mock<ITnOutPort>();
 		
-		simplePt.Setup(s => s.GearboxOutPort).Returns(mockPort.Object);
+		// simplePt.Setup(s => s.GearboxOutPort).Returns(mockPort.Object);
 		mockPort.Setup(p => p.Request(
 			It.IsAny<Second>(),
 			It.IsAny<Second>(),
@@ -458,7 +461,7 @@ public class ATShiftStrategyOptimizedTests
 		var testPt =
 			vehicleContainer.Object.SimplePowertrainBuilder.CreateTestPowertrain(vehicleContainer.Object, false);
 		
-		var mockGb = Mock.Get(testPt.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN));
+		var mockGb = Mock.Get(testPt.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
 		mockGb.Setup(g => g.Request(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PerSecond>(), true)).Returns(dryRunResponse);
 		
@@ -588,7 +591,7 @@ public class ATShiftStrategyOptimizedTests
 		
 		//AxleGearInfo
 		var axleGearInfo = new Mock<IAxlegearInfo>();
-		vehicleContainer.Setup(c => c.AxlegearInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(axleGearInfo.Object);
+		vehicleContainer.Setup(c => c.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(axleGearInfo.Object);
 		axleGearInfo.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
 
 		//WheelsInfo
@@ -687,7 +690,7 @@ public class ATShiftStrategyOptimizedTests
 
 
 		testPt.Setup(t => t.Container).Returns(simpleContainer.Object);
-		testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
+		testPt.Setup(t => t.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 		//Vehicle
 		var vehicle = new Mock<ITestPowertrainVehicle>();
@@ -780,7 +783,8 @@ public class ATShiftStrategyOptimizedTests
 			},
 			Cycle = new DrivingCycleData() {
 				CycleType = CycleType.DistanceBased
-			}
+			},
+			AxlePowertrainsDict = new Dictionary<AxleNumber, AxlePowertrainData>(){{AxleNumber.NOT_IN_AXLE_POWERTRAIN, new AxlePowertrainData()}}
 		};
 		for (uint i = 0; i <= nrOfGears; i++) {
 			runData.EngineData.FullLoadCurves[i] = fld;
@@ -801,6 +805,7 @@ public class ATShiftStrategyOptimizedTests
 			gbxDataAdapter.CreateGearshiftData(1.0, runData.EngineData.IdleSpeed, GearboxType.ATSerial, nrOfGears);
 
 		runData.GearboxSinglePwt = gearboxData;
+		runData.AxlePowertrainsDict[AxleNumber.NotInAxlePowertrain()].GearboxData = gearboxData;
 		runData.GearshiftParametersSinglePwt = gearShiftParams;
 		return runData;
 	}
@@ -810,11 +815,25 @@ public class ATShiftStrategyOptimizedTests
 	{
 		var simplePt = new Mock<ISimpleVehicleContainer>();
 
-		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears);
+		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears).WithDefaultAxleNumber();
 
 
-		simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
-		simplePt.Setup(s => s.GearboxOutPort).Returns(testGearbox.Object);
+		var powertrainContainers = new Dictionary<AxleNumber, ISimplePowertrainContainer>();
+
+		simplePt.Setup(s => s.AddPowertrainContainer(It.IsAny<IPowertrainContainer>()))
+			.Callback((IPowertrainContainer container) =>
+			{
+				var simplePtContainer = container as ISimplePowertrainContainer ?? throw new ArgumentException();
+				powertrainContainers.Add(container.AxleNumber, simplePtContainer);
+			} );
+		
+		simplePt.Setup(s => s.SimplePowertrains).Returns(() => powertrainContainers.AsReadOnly());
+		
+		simplePt.Setup(s => s.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
+		simplePt.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){testGearbox.Object});
+
+		var container = new SimplePowertrainContainer(simplePt.Object);
+		// simplePt.Setup(s => s.GearboxOutPort).Returns(testGearbox.Object);
 
 
 
@@ -963,7 +982,8 @@ public class ATShiftStrategyOptimizedTests
 		out Mock<IAPTGearbox> gbx,
 		out Mock<ITnOutPort> gbxNextComponent)
 	{
-		var shiftStrategy = new ATShiftStrategyOptimized(vehicleContainer.Object);
+		var powertrainContainer = new PowertrainContainer(vehicleContainer.Object);
+		var shiftStrategy = new ATShiftStrategyOptimized(vehicleContainer.Object, powertrainContainer);
 		
 		gbx = GetGearbox(vehicleContainer.Object.RunData);
 

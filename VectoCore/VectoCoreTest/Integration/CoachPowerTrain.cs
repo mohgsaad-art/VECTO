@@ -115,9 +115,10 @@ namespace TUGraz.VectoCore.Tests.Integration
 			modData.WriteModalResults = true;
 
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var engine = new CombustionEngine(container, engineData);
-			var clutch = new Clutch(container, engineData);
+			var engine = new CombustionEngine(container, powertrainContainer, engineData);
+			var clutch = new Clutch(container, powertrainContainer, engineData);
 			
 
             
@@ -125,8 +126,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Vehicle(container, vehicleData, airDragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
+				.AddComponent(new AxleGear(container, powertrainContainer, axleGearData))
+				.AddComponent(new AMTGearbox(container, powertrainContainer, new AMTShiftStrategyOptimized(container, powertrainContainer)))
 				.AddComponent(clutch)
 				.AddComponent(engine);
 			

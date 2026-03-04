@@ -41,7 +41,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 {
     public class MockComponent : VectoSimulationComponent, ITnOutPort
 	{
-		public MockComponent(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(null, axleNumber) {}
+		public MockComponent() : base(null) {}
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container) {}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}

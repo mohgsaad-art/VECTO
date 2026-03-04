@@ -51,7 +51,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		internal RequestData LastRequest = new RequestData();
 
-		public MockVehicle(IVehicleContainer cockpit) : base(cockpit, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public MockVehicle(IVehicleContainer cockpit) : base(cockpit)
 		{
 		}
 

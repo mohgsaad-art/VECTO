@@ -5159,7 +5159,7 @@ namespace TUGraz.VectoCore.Tests.XML
             Assert.AreEqual(3, vehicle.ElectricMotorTorqueLimits.Count);
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE3) && (x.Key.AxleNumber == 1)));
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE4) && (x.Key.AxleNumber == 2)));
-            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)));
+            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)));
             Assert.AreEqual(HydrogenStorageTechnology.Compressed, vehicle.HydrogenStorageTechnology);
             Assert.AreEqual(80, vehicle.H2StorageUsableCapacity.Value());
 
@@ -5250,7 +5250,7 @@ namespace TUGraz.VectoCore.Tests.XML
             Assert.AreEqual(EcoRollType.None, vehicle.ADAS.EcoRoll);
             Assert.AreEqual(PredictiveCruiseControlType.Option_1_2_3, vehicle.ADAS.PredictiveCruiseControl);
             Assert.AreEqual(2, vehicle.ElectricMotorTorqueLimits.Count);
-            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)));
+            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)));
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE2) && (x.Key.AxleNumber == 1)));
             Assert.AreEqual(HydrogenStorageTechnology.Compressed, vehicle.HydrogenStorageTechnology);
             Assert.AreEqual(true, vehicle.H2StorageUsableCapacity.IsEqual(80));
@@ -5423,7 +5423,7 @@ namespace TUGraz.VectoCore.Tests.XML
             Assert.AreEqual(3, vehicle.ElectricMotorTorqueLimits.Count);
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE3) && (x.Key.AxleNumber == 1)));
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE4) && (x.Key.AxleNumber == 2)));
-            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)));
+            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)));
             Assert.AreEqual(HydrogenStorageTechnology.Compressed, vehicle.HydrogenStorageTechnology);
             Assert.AreEqual(80, vehicle.H2StorageUsableCapacity.Value());
 
@@ -8342,7 +8342,7 @@ namespace TUGraz.VectoCore.Tests.XML
             Assert.AreEqual(EcoRollType.None, vehicle.ADAS.EcoRoll);
             Assert.AreEqual(PredictiveCruiseControlType.Option_1_2_3, vehicle.ADAS.PredictiveCruiseControl);
             Assert.AreEqual(2, vehicle.ElectricMotorTorqueLimits.Count);
-            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)));
+            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)));
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE2) && (x.Key.AxleNumber == 1)));
             Assert.AreEqual(HydrogenStorageTechnology.Compressed, vehicle.HydrogenStorageTechnology);
             Assert.AreEqual(true, vehicle.H2StorageUsableCapacity.IsEqual(1));
@@ -8517,7 +8517,7 @@ namespace TUGraz.VectoCore.Tests.XML
             Assert.AreEqual(3, vehicle.ElectricMotorTorqueLimits.Count);
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE3) && (x.Key.AxleNumber == 1)));
             Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.BatteryElectricE4) && (x.Key.AxleNumber == 2)));
-            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)));
+            Assert.AreEqual(true, vehicle.ElectricMotorTorqueLimits.Any(x => (x.Key.Position == PowertrainPosition.GEN) && (x.Key.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)));
             Assert.AreEqual(HydrogenStorageTechnology.Compressed, vehicle.HydrogenStorageTechnology);
             Assert.AreEqual(1, vehicle.H2StorageUsableCapacity.Value());
 

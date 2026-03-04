@@ -6,6 +6,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
@@ -45,7 +46,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			
 			if (!TestPowertrain.Container.VehicleArchitecture.IsMultiplePowertrains())
 			{
-                switch (TestPowertrain.Container.GearboxInfo())
+                switch (TestPowertrain.Container.GearboxesInfo.SingleOrDefault())
                 {
                     case IAMTGearbox _:
 					case IAPTNGearbox _:
@@ -102,7 +103,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			var modData = TestPowertrain.Container.ModalData;
 			SlopeData.Clear();
-			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
+			AxleNumber axleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
 			for (var speed = MinSpeed; speed <= MaxSpeed + SpeedStep; speed += SpeedStep) {
 				var gear = FindLowestGearForSpeed(speed, axleNumber);
@@ -132,7 +133,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			var modData = TestPowertrain.Container.ModalData;
 			SlopeData.Clear();
-            int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
+            AxleNumber axleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
             for (var speed = MinSpeed; speed <= MaxSpeed + SpeedStep; speed += SpeedStep) {
 				var gear = FindLowestGearForSpeed(speed, axleNumber);
@@ -146,7 +147,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 		}
 
-		private GearshiftPosition FindLowestGearForSpeed(MeterPerSecond speed, int axleNumber)
+		private GearshiftPosition FindLowestGearForSpeed(MeterPerSecond speed, AxleNumber axleNumber)
 		{
 			var data = TestPowertrain.Container.RunData;
 

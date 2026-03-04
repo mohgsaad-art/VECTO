@@ -12,6 +12,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -37,13 +38,13 @@ public class GearboxLossMapExtrapolationTests
 		};
 
 		var container = GetMockVehicleContainer(runData);
-
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var shiftStrategy = new Mock<IShiftStrategy>();
 		shiftStrategy
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+		var gearbox = new AMTGearbox(container.Object, powertrainContainer, shiftStrategy.Object);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -101,13 +102,13 @@ public class GearboxLossMapExtrapolationTests
 		};
 
 		var container = GetMockVehicleContainer(runData);
-
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var shiftStrategy = new Mock<IShiftStrategy>();
 		shiftStrategy
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+		var gearbox = new AMTGearbox(container.Object, powertrainContainer, shiftStrategy.Object);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -169,13 +170,13 @@ public class GearboxLossMapExtrapolationTests
 		};
 
 		var container = GetMockVehicleContainer(runData);
-
+		var powertrainContainer = new PowertrainContainer(container.Object);
 		var shiftStrategy = new Mock<IShiftStrategy>();
 		shiftStrategy
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
+		var gearbox = new AMTGearbox(container.Object, powertrainContainer, shiftStrategy.Object);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -224,7 +225,7 @@ public class GearboxLossMapExtrapolationTests
 		var container = new Mock<IVehicleContainer>();
 		container.Setup(c => c.RunData).Returns(runData);
 		container.Setup(c => c.ExecutionMode).Returns(runData.ExecutionMode);
-		var pi = new Mock<IPowertainInfo>();
+		var pi = new Mock<IPowertrainInfo>();
 		pi.Setup(p => p.HasCombustionEngine).Returns(true);
 		container.Setup(c => c.PowertrainInfo).Returns(pi.Object);
 

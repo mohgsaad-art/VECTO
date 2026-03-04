@@ -31,7 +31,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		var gi = new Mock<IGearboxInfo>();
 		retVal.Setup(c => c.MileageCounter).Returns(mc.Object);
 		retVal.Setup(c => c.VehicleInfo).Returns(vi.Object);
-		retVal.Setup(c => c.GearboxInfo(It.IsAny<int>())).Returns(gi.Object);
+		retVal.Setup(c => c.GetGearboxInfo(It.IsAny<AxleNumber>())).Returns(gi.Object);
 		retVal.Setup(c => c.ModalData).Returns(modData);
 		retVal.Setup(c => c.RunData).Returns(runData);
 		retVal.SetupProperty(c => c.RunStatus);
@@ -73,12 +73,12 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IDriver CreateDriver(IVehicleContainer container, DriverData driverData, IDriverStrategy strategy)
+	public IDriver CreateDriver(VectoSimulationJobType jobType, int numGearboxes, IVehicleContainer container, DriverData driverData, IDriverStrategy strategy)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IDriverStrategy CreateDriverStrategy(IVehicleContainer container)
+	public IDriverStrategy CreateDriverStrategy(VectoSimulationJobType jobType, int numGearboxes, IVehicleContainer container)
 	{
 		throw new NotImplementedException();
 	}
@@ -98,22 +98,17 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData,
-		int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+	public IAxlegear CreateAxleGear(IVehicleContainer container, IPowertrainContainer powertrainContainer, AxleGearData modelData)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IAngledrive CreateAngledrive(IVehicleContainer container, AngledriveData modelData,
-		int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+	public IAngledrive CreateAngledrive(IVehicleContainer container, IPowertrainContainer powertrainContainer,
+		AngledriveData modelData)
 	{
 		throw new NotImplementedException();
 	}
-
-	public IRetarder CreateRetarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio, int axleNumber)
-	{
-		throw new NotImplementedException();
-	}
+	
 
 	public IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData)
 	{
@@ -125,23 +120,47 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
+	public IRetarder CreateRetarder(IVehicleContainer container, IPowertrainContainer powertrainContainer, RetarderLossMap lossMap,
+		double ratio)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType,
+		IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IClutchInfo CreateATClutchInfo(IVehicleContainer container, IPowertrainContainer powertrainContainer)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IClutch CreateClutch(VectoSimulationJobType jobType, IVehicleContainer container,
+		IPowertrainContainer powertrainContainer, CombustionEngineData engineData)
+	{
+		throw new NotImplementedException();
+	}
+
+	public ICombustionEngine CreateCombustionEngine(CycleType cycleType, IVehicleContainer container,
+		IPowertrainContainer powertrainContainer, CombustionEngineData modelData, bool pt1Disabled = false)
+	{
+		throw new NotImplementedException();
+	}
+
 	public IRetarder CreateRetarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IClutchInfo CreateATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+	public IClutchInfo CreateATClutchInfo(IVehicleContainer container)
 	{
 		throw new NotImplementedException();
 	}
 
 	public IGearbox CreateGearbox(GearboxType gbxType, bool measuredSpeedHybrid, IVehicleContainer container,
 		IShiftStrategy strategy)
-	{
-		throw new NotImplementedException();
-	}
-
-	public IClutchInfo CreateATClutchInfo(IVehicleContainer container)
 	{
 		throw new NotImplementedException();
 	}
@@ -174,14 +193,26 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
+	public IBusAuxiliariesAdapter CreateBusAuxiliariesAdapter(IVehicleContainer container,
+		IPowertrainContainer powertrainContainer, IAuxiliaryConfig auxiliaryConfig, IAuxPort additionalAux = null)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IElectricMotor CreateElectricMotor(bool isIEPC, IVehicleContainer container, IPowertrainContainer powertrainContainer,
+		ElectricMotorData data, IElectricMotorControl control, PowertrainPosition position)
+	{
+		throw new NotImplementedException();
+	}
+
 	public IBusAuxiliariesAdapter CreateBusAuxiliariesAdapter(IVehicleContainer container, IAuxiliaryConfig auxiliaryConfig,
-		IAuxPort additionalAux = null, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		IAuxPort additionalAux = null)
 	{
 		throw new NotImplementedException();
 	}
 
 	public IElectricMotor CreateElectricMotor(bool isIEPC, IVehicleContainer container, ElectricMotorData data,
-		IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		IElectricMotorControl control, PowertrainPosition position, IPowertrainContainer powertrainContainer)
 	{
 		throw new NotImplementedException();
 	}
@@ -224,13 +255,18 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null,
-		int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+	public IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container,
+		IPowertrainContainer powertrainContainer, GearshiftPosition gear = null)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+	public IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container, IPowertrainContainer powertrainContainer)
 	{
 		throw new NotImplementedException();
 	}
@@ -260,14 +296,14 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IHybridControlStrategy CreateHybridStrategy(VectoSimulationJobType jobType, CycleType cycleType, bool atTransmission, bool batteryOnlyMode,
-		VectoRunData runData, IVehicleContainer container)
+	public IHybridControlStrategy CreateHybridStrategy(VectoSimulationJobType jobType, CycleType cycleType, bool atTransmission,
+		bool batteryOnlyMode, VectoRunData runData, IVehicleContainer container, IPowertrainContainer powertrainContainer)
 	{
 		throw new NotImplementedException();
 	}
 
 	public IHybridController CreateHybridController(CycleType cycleType, IVehicleContainer container,
-		IHybridControlStrategy strategy, IElectricSystem es)
+		IPowertrainContainer powertrainContainer, IHybridControlStrategy strategy, IElectricSystem es)
 	{
 		throw new NotImplementedException();
 	}
@@ -278,7 +314,8 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container, IElectricSystem es,
+	public IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container,
+		IPowertrainContainer powertrainContainer, IElectricSystem es,
 		AxlePowertrainData axlePt = null)
 	{
 		throw new NotImplementedException();
@@ -307,7 +344,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType,
-		PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy)
 	{
 		throw new NotImplementedException();
 	}
@@ -318,13 +355,35 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
+	public IPowertrainContainer CreatePowertrainContainer(IVehicleContainer vehicleContainer, AxleNumber axleNumber)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IPowertrainContainer CreatePowertrainContainer(IVehicleContainer vehicleContainer)
+	{
+		throw new NotImplementedException();
+	}
+
+	public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer,
+		AxleNumber axleNumber)
+	{
+		throw new NotImplementedException();
+	}
+
+
+	public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer)
+	{
+		throw new NotImplementedException();
+	}
+
 	public IExemptedVehicleContainer CreateExemptedVehicleContainer(VectoRunData runData, IModalDataContainer modData,
 		ISumData writeSumData)
 	{
 		return new Mock<IExemptedVehicleContainer>().Object;
 	}
 
-    public IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+    public IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, IVehicleContainer container, IShiftStrategy strategy)
     {
         throw new NotImplementedException();
     }

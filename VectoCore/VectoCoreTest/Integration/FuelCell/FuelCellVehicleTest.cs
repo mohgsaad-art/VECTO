@@ -308,7 +308,7 @@ namespace TUGraz.VectoCore.Tests.Integration.FuelCell
 				E2_FCHV_Job_var_capacity(jobFile, cycleIdx, usable_energy_kWh, min_fcPower_kW, max_fcPower_kW);
 			});
 			Assert.NotNull(exception);
-			Assert.That(exception.Message.Contains("FuelCell power not sufficient"), Is.True);
+			Assert.That(exception.Message.Contains("FuelCell power not sufficient"), Is.True, () => exception.Message);
 
 
 		}

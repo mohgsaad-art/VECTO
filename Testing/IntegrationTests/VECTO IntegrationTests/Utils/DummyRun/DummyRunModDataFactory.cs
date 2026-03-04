@@ -74,10 +74,10 @@ public class DummyRunModDataFactory : IModalDataFactory
 
         if (!vectoRunData.AxlePowertrains.Any())
 		{
-			modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
-            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);
-            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn);
-            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff);
+			modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, AxleNumber.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, AxleNumber.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, AxleNumber.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn);
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, AxleNumber.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff);
         }
         else
 		{

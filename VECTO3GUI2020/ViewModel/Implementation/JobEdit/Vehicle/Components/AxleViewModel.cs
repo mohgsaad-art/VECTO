@@ -37,8 +37,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
         private AxleType _axleType;
         public AxleType AxleType { get => _axleType; set => SetProperty(ref _axleType, value); }
 
-		private int _axleNumber;
-		public int AxleNumber { get => _axleNumber;
+		private AxleNumber _axleNumber;
+		public AxleNumber AxleNumber { get => _axleNumber;
 			set => SetProperty(ref _axleNumber, value);
 		}
 		public DataSource DataSource => null;
@@ -63,7 +63,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
             _axleType = _inputData.AxleType;
             _twinTyres = _inputData.TwinTyres;
-            _axleNumber = 0; //_inputData.AxleNumber;
+            _axleNumber = AxleNumber.NOT_IN_AXLE_POWERTRAIN; //_inputData.AxleNumber;
 			_steered = false; //_inputData.Steered;
 			_tyreViewModel = (ITyreViewModel)vmFactory.CreateComponentViewModel(_inputData.Tyre);
 		}

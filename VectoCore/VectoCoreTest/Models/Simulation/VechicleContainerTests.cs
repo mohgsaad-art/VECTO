@@ -50,8 +50,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		{
             var kernel = new StandardKernel(new VectoNinjectModule());
             var vehicle = kernel.Get<IPowertrainBuilder>().Build(null, null, null);
+            var powertrainContainer = kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(vehicle);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0);
-			var engine = new CombustionEngine(vehicle, engineData);
+			var engine = new CombustionEngine(vehicle, powertrainContainer, engineData);
 
 			Assert.IsNotNull(vehicle.EngineInfo.EngineSpeed);
 		}

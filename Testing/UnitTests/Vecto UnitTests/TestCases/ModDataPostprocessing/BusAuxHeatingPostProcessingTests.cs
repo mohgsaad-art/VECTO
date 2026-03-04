@@ -13,6 +13,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
@@ -524,8 +525,8 @@ public class BusAuxHeatingPostProcessingTests
             mockContainer.Setup(c => c.EngineInfo).Returns(eng.Object);
         }
 
-
-        var busAux = new BusAuxiliariesAdapter(mockContainer.Object, runData.BusAuxiliaries);
+        var powertrainContainer = new PowertrainContainer(mockContainer.Object);
+        var busAux = new BusAuxiliariesAdapter(mockContainer.Object, powertrainContainer, runData.BusAuxiliaries);
 
         var m = new Mock<IModalDataContainer>();
         m.Setup(x => x.Duration).Returns(3600.SI<Second>());
@@ -557,8 +558,8 @@ public class BusAuxHeatingPostProcessingTests
         }
 
         if (runData.ElectricMachinesSinglePwt.Any(x => x.Item1 != PowertrainPosition.GEN)) {
-            m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<int>(), It.IsAny<ModalResultField>()))
-                .Returns<PowertrainPosition, int, ModalResultField>((pos, axleNumber, mrf) =>
+            m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<AxleNumber>(), It.IsAny<ModalResultField>()))
+                .Returns<PowertrainPosition, AxleNumber, ModalResultField>((pos, axleNumber, mrf) =>
                     string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber()));
             var emPos = runData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item1;
             SetupMockEMotorValues(emLoss, m, emPos);
@@ -573,15 +574,15 @@ public class BusAuxHeatingPostProcessingTests
 
     private static void SetupMockEMotorValues(WattSecond emLoss, Mock<IModalDataContainer> m, PowertrainPosition emPos)
     {
-        var colName = m.Object.GetColumnName(emPos, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_electricMotorLoss_);
+        var colName = m.Object.GetColumnName(emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_electricMotorLoss_);
         if (emPos == PowertrainPosition.IEPC) {
-            colName = m.Object.GetColumnName(emPos, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_IEPC_electricMotorLoss_);
+            colName = m.Object.GetColumnName(emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_IEPC_electricMotorLoss_);
         }
 
         m.Setup(x => x.TimeIntegral<WattSecond>(It.Is<string>(c => colName.Equals(c)), null))
             .Returns(emLoss ?? 0.SI<WattSecond>());
-        m.Setup(x => x.ElectricMotorEfficiencyDrive(emPos, Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(0.94);
-        m.Setup(x => x.ElectricMotorEfficiencyGenerate(emPos, Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(0.92);
+        m.Setup(x => x.ElectricMotorEfficiencyDrive(emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(0.94);
+        m.Setup(x => x.ElectricMotorEfficiencyGenerate(emPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(0.92);
         SetupMockBatteryValues(m);
     }
 

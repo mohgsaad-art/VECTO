@@ -108,8 +108,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var cycleFile = new MemoryStream(Encoding.UTF8.GetBytes(inputData));
 			var drivingCycle = DrivingCycleDataReader.ReadFromStream(cycleFile, CycleType.PWheel, "", false);
-
-			var gearbox = new CycleGearbox(container, Constants.NOT_IN_AXLE_POWERTRAIN);
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
+			var gearbox = new CycleGearbox(container, powertrainContainer);
 
 			var cycle = new PWheelCycle(container, drivingCycle);
 			cycle.Connect(new MockTnOutPort());

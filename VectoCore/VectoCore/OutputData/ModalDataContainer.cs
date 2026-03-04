@@ -47,6 +47,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
@@ -283,7 +284,7 @@ namespace TUGraz.VectoCore.OutputData
 
 		public bool HasBattery => _runData.BatteryData != null;
 
-		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var offField = emPos == PowertrainPosition.IEPC ? ModalResultField.IEPC_Off_ : ModalResultField.EM_Off_;
 			var mechField = emPos == PowertrainPosition.IEPC ? ModalResultField.P_IEPC_out_ : ModalResultField.P_EM_mech_;
@@ -304,7 +305,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, int axleNumber) =>
+		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber) =>
 			!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber)) 
 			|| emPos == PowertrainPosition.IEPC
 				? null
@@ -312,7 +313,7 @@ namespace TUGraz.VectoCore.OutputData
 					string.Format(ModalResultField.P_EM_electricMotor_em_mech_.GetCaption(), emPos.GetName(), axleNumber.FormatAxleNumber()),
 					x => x < 0));
 
-		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, int axleNumber)
+		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var offField = emPos == PowertrainPosition.IEPC ? ModalResultField.IEPC_Off_ : ModalResultField.EM_Off_;
 			var mechField = emPos == PowertrainPosition.IEPC ? ModalResultField.P_IEPC_out_ : ModalResultField.P_EM_mech_;
@@ -333,7 +334,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, int axleNumber) =>
+		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber) =>
 			!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))
 				? null
 				: _eEmRecuperateMot.GetOrAdd(emPos, _ => TimeIntegral<WattSecond>(
@@ -341,7 +342,7 @@ namespace TUGraz.VectoCore.OutputData
 					x => x > 0));
 
 
-		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -370,7 +371,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eMech.Value() / eEl.Value();
 		}
 
-		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -403,7 +404,7 @@ namespace TUGraz.VectoCore.OutputData
 		}
 
 
-		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -435,7 +436,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eff;
 		}
 
-		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
+		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -466,7 +467,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eff;
 		}
 
-		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return null;
@@ -487,7 +488,7 @@ namespace TUGraz.VectoCore.OutputData
 			return selected.Where(x => !x.EM_off.IsEqual(0)).Sum(x => x.E_mech) ?? 0.SI<WattSecond>();
 		}
 
-		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var field = emPos == PowertrainPosition.IEPC
 				? ModalResultField.P_IEPC_electricMotorLoss_
@@ -499,7 +500,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (emPos == PowertrainPosition.IEPC) {
 				return null;
@@ -511,7 +512,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, int axleNumber)
+		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (emPos == PowertrainPosition.IEPC) {
 				return null;
@@ -523,7 +524,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, int axleNumber)
+		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (Duration == 0.SI<Second>()) {
 				return 0.SI<PerSecond>();
@@ -760,7 +761,7 @@ namespace TUGraz.VectoCore.OutputData
 				foreach (var em in Data.ElectricMotors.OrderBy(x => x).Reverse()) {
 					var cols = em.Item1 == PowertrainPosition.IEPC ? ModalResults.IEPCSignals : ModalResults.ElectricMotorSignals;
 					dataColumns.AddRange(cols.Select(emCol =>
-						string.Format(emCol.GetAttribute().Caption, em.Item1.GetName(), em.Item2.FormatAxleNumber())));
+						string.Format(emCol.GetAttribute().Caption, em.Item1.GetName(), new AxleNumber(em.Item2).FormatAxleNumber())));
 				}
 			}
 
@@ -927,11 +928,13 @@ namespace TUGraz.VectoCore.OutputData
 
 		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc) =>
 			Data.Rows.Cast<DataRow>().Select(selectorFunc);
+		
 
-		public T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) 
+		public T TimeIntegral<T>(ModalResultField field, AxleNumber axleNumber, Func<SI, bool> filter = null)
 			where T : SIBase<T> => TimeIntegral<T>(String.Format(field.GetAttribute().Caption, axleNumber.FormatAxleNumber()), filter);
+		
 
-        public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null)
+		public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null)
             where T : SIBase<T> => TimeIntegral<T>(field.GetName(), filter);
 
         public T TimeIntegral<T>(string field, Func<SI, bool> filter = null) where T : SIBase<T>
@@ -995,7 +998,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf)
+		public string GetColumnName(PowertrainPosition pos, AxleNumber axleNumber, ModalResultField mrf)
 		{
 			return string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber());
 		}
@@ -1018,17 +1021,30 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public object this[ModalResultField key, PowertrainPosition pos, int axleNumber]
+		public object this[ModalResultField key, PowertrainPosition pos, AxleNumber axleNumber]
 		{
 			get => CurrentRow[GetColumnName(pos, axleNumber, key)];
 			set => CurrentRow[GetColumnName(pos, axleNumber, key)] = value;
 		}
 
+		public object this[ModalResultField key, FuelCellData.FuelCellId fuelCellId]
+		{
+			get => this[key, fuelCellId.ToString()];
+			set => this[key, fuelCellId.ToString()] = value;
+		}
+
+		public object this[ModalResultField key, AxleNumber axleNumber]
+		{
+			get => this[key, axleNumber.FormatAxleNumber()];
+			set => this[key, axleNumber.FormatAxleNumber()] = value;
+		}
+		
+
 		public object this[ModalResultField key, string arg]
 		{
-			get => CurrentRow[GetColumnName(key, arg)]; 
+			get => CurrentRow[GetColumnName(key, arg)];
 			set => CurrentRow[GetColumnName(key, arg)] = value;
-        }
+		}
 
 		public object this[ModalResultField key, int? idx]
 		{

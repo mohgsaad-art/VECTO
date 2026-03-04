@@ -971,12 +971,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 			}
 
 			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, sumData);
-
+			var powertrainContainer = _kernel.Get<IPowertrainComponentFactory>().CreatePowertrainContainer(container);
 			var es = new ElectricSystem(container, runData.BatteryData);
 			var battery = new BatterySystem(container, batteryData);
 			battery.Initialize(initialBatCharge);
 
-			var ctl = new BatteryElectricMotorController(container, es);
+			var ctl = new BatteryElectricMotorController(container, powertrainContainer, es);
 
 			es.Connect(battery);
 
@@ -999,19 +999,19 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 				case PowertrainPosition.HybridP4:
 					throw new VectoException("testcase does not support parallel powertrain configurations");
 				case PowertrainPosition.BatteryElectricE4:
-					powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, runData.ElectricMachinesSinglePwt, container, es, ctl));
-					new DummyGearboxInfo(container);
+					powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
+					new DummyGearboxInfo(container, powertrainContainer);
 					//new MockEngineInfo(container);
-					new ATClutchInfo(container);
+					new ATClutchInfo(container, powertrainContainer);
 					break;
 				case PowertrainPosition.BatteryElectricE3:
 					powertrain
-						.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
-						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.AxlegearInputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
-						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, runData.ElectricMachinesSinglePwt, container, es, ctl));
-					new DummyGearboxInfo(container);
+						.AddComponent(new AxleGear(container, powertrainContainer, runData.AxleGearSinglePwt))
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.AxlegearInputRetarder ? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
+					new DummyGearboxInfo(container, powertrainContainer);
 					//new MockEngineInfo(container);
-					new ATClutchInfo(container);
+					new ATClutchInfo(container, powertrainContainer);
 					break;
 				case PowertrainPosition.BatteryElectricE2:
 					var strategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
@@ -1023,13 +1023,13 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 					}
 
 					powertrain
-						.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
-						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, runData.AngledriveSinglePwt) : null)
-						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
-						.AddComponent(new PEVGearbox(container, new PEVAMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN))
-						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
-						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, runData.ElectricMachinesSinglePwt, container, es, ctl));
-					new ATClutchInfo(container);
+						.AddComponent(new AxleGear(container, powertrainContainer, runData.AxleGearSinglePwt))
+						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, powertrainContainer, runData.AngledriveSinglePwt) : null)
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+						.AddComponent(new PEVGearbox(container, powertrainContainer, new PEVAMTShiftStrategy(container, powertrainContainer)))
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, powertrainContainer, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, runData.ElectricMachinesSinglePwt, container, powertrainContainer, es, ctl));
+					new ATClutchInfo(container, powertrainContainer);
 					break;
 				//throw new VectoException("Battery Electric configuration B2 currently not supported");
 				default: throw new ArgumentOutOfRangeException(nameof(pos), pos, null);
@@ -1040,16 +1040,17 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
 		private static IElectricMotor GetElectricMachine(PowertrainPosition pos,
 			IList<Tuple<PowertrainPosition, ElectricMotorData>> electricMachinesData, IVehicleContainer container,
+			IPowertrainContainer powertrainContainer,
 			IElectricSystem es, IElectricMotorControl ctl)
 		{
 			var motorData = electricMachinesData.FirstOrDefault(x => x.Item1 == pos);
 			if (motorData == null) {
 				return null;
 			}
-
+			
 			//container.ModData.AddElectricMotor(pos);
 			//ctl.AddElectricMotor(pos, motorData.Item2);
-			var motor = new ElectricMotor(container, motorData.Item2, ctl, pos);
+			var motor = new ElectricMotor(container, powertrainContainer, motorData.Item2, ctl, pos);
 			motor.Connect(es);
 			return motor;
 		}
@@ -1058,7 +1059,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 		{
 			var ratios = new[] { 3.86, 1.93 };
 
-			return new GearboxData {
+			var gbxData = new GearboxData {
+				
 				Gears = ratios.Select(
 					(ratio, i) => Tuple.Create(
 						(uint)i, new GearData {
@@ -1080,6 +1082,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 					}
 				}
 			};
+			
+			return gbxData;
 		}
 
 		private static AxleGearData CreateAxleGearData()
@@ -1204,8 +1208,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
 	public class MockEngineInfo : VectoSimulationComponent, IEngineInfo
 	{
-		public MockEngineInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : 
-			base(container, axleNumber)
+		public MockEngineInfo(IVehicleContainer container) : 
+			base(container)
 		{
 		}
 

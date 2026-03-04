@@ -32,15 +32,21 @@
 using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
+	public interface IHasAxleNumber
+	{
+		AxleNumber AxleNumber { get; }
+	}
+
 	/// <summary>
 	/// Defines a method to access shared data of the gearbox.
 	/// </summary>
-	public interface IGearboxInfo
+	public interface IGearboxInfo : IHasAxleNumber
 	{
 		GearboxType GearboxType { get; }
 
@@ -83,31 +89,24 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		bool RequestAfterGearshift { get; set; }
 
 		IShiftStrategy Strategy { get; }
-
-		int AxleNumber {  get; }
 	}
 
-	public interface IGearboxControl
+	public interface IGearboxControl : IHasAxleNumber
 	{
 		bool DisengageGearbox { set; }
 		void TriggerGearshift(Second absTime, Second dt);
 
 		event Action GearShiftTriggered;
-
-        int AxleNumber { get; }
+		
     }
 
-	public interface ITorqueConverterInfo
+	public interface ITorqueConverterInfo : IHasAxleNumber
 	{
 		Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed);
-
-        int AxleNumber { get; }
     }
 
-	public interface ITorqueConverterControl
+	public interface ITorqueConverterControl : IHasAxleNumber
 	{
 		TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
-
-        int AxleNumber { get; }
     }
 }

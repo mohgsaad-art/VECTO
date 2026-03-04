@@ -24,6 +24,7 @@
     <WarningLevel>5</WarningLevel>
     <DebugSymbols>false</DebugSymbols>
     <DefineConstants></DefineConstants>
+<!--    <SkipAddAllResxFilesAsAdditionalFiles>true</SkipAddAllResxFilesAsAdditionalFiles>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">

@@ -31,6 +31,7 @@
 
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
@@ -51,6 +52,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 		void CommitSimulationStep();
 
 		DrivingBehaviorEntry BrakeTrigger { get; }
+		IPowertrainContainer PowertrainContainer { get; }
 
 		MeterPerSecond ApplyOverspeed(MeterPerSecond targetSpeed);
 	}

@@ -41,6 +41,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.OutputData;
@@ -71,8 +72,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected readonly SI _clutchSpeedSlippingFactor;
 		private IIdleController _idleController;
-
-		public Clutch(IVehicleContainer container, CombustionEngineData engineData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		
+		public Clutch(IVehicleContainer container, IPowertrainContainer powertrainContainer,
+			CombustionEngineData engineData) : base(container, powertrainContainer)
 		{
 			_engineFullLoadCurves = engineData.FullLoadCurves;
 			_idleSpeed = engineData.IdleSpeed;
@@ -118,8 +120,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			bool dryRun = false)
 		{
 			firstInitialize = false;
-			if ((!DataBus.ClutchInfo(AxleNumber).ClutchClosed(absTime) 
-					|| !DataBus.GearboxInfo(AxleNumber).GearEngaged(absTime)) 
+			if ((!PowertrainContainer.ClutchInfo.ClutchClosed(absTime) 
+					|| !PowertrainContainer.GearboxInfo.GearEngaged(absTime)) 
 				&& !dryRun) 
 			{
 				return HandleClutchOpen(absTime, dt, outTorque, outAngularVelocity, false);
@@ -187,7 +189,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected virtual IResponse HandleClutchClosed(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
 			var startClutch = DataBus.VehicleInfo.VehicleStopped || !PreviousState.ClutchLoss.IsEqual(0, 1e-3) || (outAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineSpeed, 1e-3) && !DataBus.EngineInfo.EngineOn); // || (PreviousState.ClutchLoss.IsEqual(0) && outAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed));
-			var gearbox = DataBus.GearboxInfo(AxleNumber);
+			var gearbox = PowertrainContainer.GearboxInfo;
 
 			var slippingClutchWhenDriving = (gearbox.Gear.Gear <= 2 && DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking);
 			var slippingClutchDuringBraking = gearbox.Gear.Gear == 1 && DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.Brakes?.BrakePower == 0.SI<Watt>();

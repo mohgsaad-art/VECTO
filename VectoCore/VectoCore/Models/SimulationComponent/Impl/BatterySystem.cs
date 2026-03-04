@@ -139,7 +139,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private Scalar _minSoc;
 		private Scalar _maxSoc;
 
-		public BatterySystem(IVehicleContainer container, BatterySystemData batterySystemData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public BatterySystem(IVehicleContainer container, BatterySystemData batterySystemData) : base(container)
 		{
 			foreach (var entry in batterySystemData.Batteries) {
 				var bat = new Battery(null, entry.Item2);

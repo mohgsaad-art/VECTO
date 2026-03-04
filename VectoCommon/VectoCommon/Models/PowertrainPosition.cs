@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.InputData {
@@ -170,7 +171,7 @@ namespace TUGraz.VectoCommon.InputData {
 
     public class EMPlacement
     {
-        public EMPlacement(PowertrainPosition position, int axleNumber)
+        public EMPlacement(PowertrainPosition position, AxleNumber axleNumber)
         {
             Position = position;
             AxleNumber = axleNumber;
@@ -178,6 +179,6 @@ namespace TUGraz.VectoCommon.InputData {
 
         public PowertrainPosition Position { get; private set; }
 
-        public int AxleNumber { get; private set; }
+        public AxleNumber AxleNumber { get; private set; }
     }
 }

@@ -95,9 +95,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
             }
 		}
 
-		public virtual int AxleNumber => (_axlePt[JsonKeys.Vehicle_AxlePowertrain_AxleNumber] == null)
-			? int.MinValue
-			: _axlePt.GetEx<int>(JsonKeys.Vehicle_AxlePowertrain_AxleNumber);
+		public virtual AxleNumber AxleNumber => (_axlePt[JsonKeys.Vehicle_AxlePowertrain_AxleNumber] == null)
+			? AxleNumber.NOT_IN_AXLE_POWERTRAIN
+			: new AxleNumber(_axlePt.GetEx<int>(JsonKeys.Vehicle_AxlePowertrain_AxleNumber));
 
 		public virtual ArchitectureID Architecture => (_axlePt["Architecture"] == null)
 			? ArchitectureID.UNKNOWN
@@ -413,7 +413,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-        public virtual int AxleNumber => Constants.NOT_IN_AXLE_POWERTRAIN;
+        public virtual AxleNumber AxleNumber => AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
         public virtual string PTOTransmissionType => (_token == null) || (_token[JsonKeys.Vehicle_PTO_Type] == null)
 			? PTO_TYPE_NONE
@@ -557,7 +557,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		#region IPTOTransmissionInputData
 
-		public virtual int AxleNumber => Constants.NOT_IN_AXLE_POWERTRAIN;
+		public virtual AxleNumber AxleNumber => AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
 		public virtual string PTOTransmissionType
 		{

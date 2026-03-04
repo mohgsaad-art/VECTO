@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -9,6 +10,7 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -56,8 +58,8 @@ public class ClutchRequestTests
 				reqN = n;
 				return new ResponseSuccess(this) { };
 			});
-
-		var clutch = new Clutch(container.Object, engineData) { IdleController = mockIdleController.Object };
+		var powertrainContainer = new PowertrainContainer(container.Object);
+		var clutch = new Clutch(container.Object, powertrainContainer, engineData) { IdleController = mockIdleController.Object };
 
         var inPort = clutch.InPort();
 		inPort.Connect(outPort.Object);
@@ -73,17 +75,20 @@ public class ClutchRequestTests
 	private static Mock<IVehicleContainer> GetMockVehicleContainer(int gear, DrivingBehavior drivingBehavior)
 	{
 		var container = new Mock<IVehicleContainer>();
-		var gi = new Mock<IGearboxInfo>();
-		container.Setup(c => c.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
+		var gi = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
+		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
+		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>() { gi.Object });
 		gi.Setup(g => g.GearEngaged(It.IsAny<Second>())).Returns(true);
 		gi.Setup(g => g.Gear).Returns(new GearshiftPosition((uint)gear));
-		var ci = new Mock<IClutchInfo>();
-		container.Setup(c => c.ClutchInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
+		var ci = new Mock<IClutchInfo>().WithDefaultAxleNumber();
+		container.Setup(c => c.ClutchesInfo).Returns(new List<IClutchInfo>() { ci.Object });
+		container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
 		ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
+		
 		var vi = new Mock<IVehicleInfo>();
 		container.Setup(c => c.VehicleInfo).Returns(vi.Object);
 		vi.Setup(v => v.VehicleStopped).Returns(false);
-		var eng = new Mock<IEngineInfo>();
+		var eng = new Mock<IEngineInfo>().WithDefaultAxleNumber();
 		container.Setup(c => c.EngineInfo).Returns(eng.Object);
 		eng.Setup(e => e.EngineSpeed).Returns(800.RPMtoRad());
 		eng.Setup(e => e.EngineOn).Returns(true);

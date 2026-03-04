@@ -647,9 +647,9 @@ Public Class Vehicle
 
 #End Region
 
-    Public ReadOnly Property AxleNumber As Int32 Implements IPTOTransmissionInputData.AxleNumber
+    Public ReadOnly Property AxleNumber As AxleNumber Implements IPTOTransmissionInputData.AxleNumber
         Get
-            Return TUGraz.VectoCore.Configuration.Constants.NOT_IN_AXLE_POWERTRAIN
+            Return AxleNumber.NOT_IN_AXLE_POWERTRAIN
         End Get
     End Property
 

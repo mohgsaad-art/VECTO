@@ -117,7 +117,7 @@ namespace TUGraz.VectoCommon.Utils
 					context.DisplayName = p.Name;
 					context.MemberName = p.Name;
 
-					Validator.TryValidateValue(val, context, results, attributes);
+					var valid = Validator.TryValidateValue(val, context, results, attributes);
 				}
 			}
 
@@ -136,7 +136,7 @@ namespace TUGraz.VectoCommon.Utils
 					context.DisplayName = f.Name;
 					context.MemberName = f.Name;
 					
-					Validator.TryValidateValue(val, context, results, attributes);
+					var valid = Validator.TryValidateValue(val, context, results, attributes);
 				}
 			}
 			

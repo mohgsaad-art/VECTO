@@ -8,13 +8,14 @@ using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using System.Linq;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TestPowertrainMeasuredSpeedHybridsGearbox : MeasuredSpeedHybridsGearbox, ITestPowertrainTransmission
     {
-		public TestPowertrainMeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) 
-			: base(container, strategy, false, axleNumber)
+		public TestPowertrainMeasuredSpeedHybridsGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) 
+			: base(container, powertrainContainer, strategy, false)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");
@@ -48,8 +49,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
     public class MeasuredSpeedHybridsGearbox : AbstractAMTGearbox
     {
-		public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) 
-			: this(container, strategy, false, axleNumber)
+		public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) 
+			: this(container, powertrainContainer, strategy, false)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -57,8 +58,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        protected MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) 
-			: base(container, strategy, false, axleNumber) 
+        protected MeasuredSpeedHybridsGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, bool dummy) 
+			: base(container, powertrainContainer, strategy, false) 
         {}
 
         protected override void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)

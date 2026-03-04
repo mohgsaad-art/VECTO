@@ -4,6 +4,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
@@ -13,7 +14,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
     /// </summary>
     public class APTNGearbox : AbstractAMTGearbox, IAPTNGearbox
     {
-        public APTNGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : this(container, strategy, false, axleNumber)
+        public APTNGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) : this(container, powertrainContainer, strategy, false)
         {
             if (container.IsTestPowertrain) {
                 throw new VectoException(
@@ -21,8 +22,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             }
         }
 
-        protected APTNGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) : base(container,
-            strategy, dummy, axleNumber)
+        protected APTNGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy, bool dummy) : base(container, powertrainContainer,
+            strategy, dummy)
         {
             // common initialization goes here
         }
