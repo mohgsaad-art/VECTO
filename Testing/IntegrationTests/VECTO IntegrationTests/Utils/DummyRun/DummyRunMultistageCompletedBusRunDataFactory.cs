@@ -171,7 +171,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 				Fuel = { FuelData.H2 }
 			};
 			var fchviterativeStrategy =
-				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions() { WriteModAndSumData = false }, new PreRunOptions() });
 			fchviterativeStrategy.Update = UpdateFCHVRunData;
 
 			simulationRunData.IterativeRunStrategy = fchviterativeStrategy;
@@ -344,7 +344,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 				Fuel = { FuelData.H2 }
 			};
 			var fchviterativeStrategy =
-				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions() { WriteModAndSumData = false }, new PreRunOptions() });
 			fchviterativeStrategy.Update = UpdateFCHVRunData;
 
 			runData.IterativeRunStrategy = fchviterativeStrategy;

@@ -70,8 +70,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// <return>true if the run is executed again, false otherwise</return>
 		public bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action<PreRunOptions> beforeNextRun)
 		{
-
-			
 			var modalDataContainer = run.GetContainer().ModalData;
 			var vectoRunData = run.GetContainer().RunData;
 			if (!_strategy.RunAgain(_iteration, modalDataContainer, vectoRunData)) {
@@ -79,7 +77,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			_originalModfileSuffix = _originalModfileSuffix ?? (_originalModfileSuffix = vectoRunData.ModFileSuffix);
 
-	
 			Log.Info(string.Format("Run {0} again!", run.RunName));
 
 			var options = _strategy.GetPreRunOptions(_iteration);
