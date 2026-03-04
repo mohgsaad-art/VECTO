@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IElectricSystemInfo ElectricSystemInfo { get; protected set; }
 
-		public IElectricSystemInfo JunctionBox { get; protected set; }
+		public IElectricPowerJunctionBox JunctionBox { get; protected set; }
 
 		public ITorqueSplitter TorqueSplitter { get; protected set; }
 
@@ -220,17 +220,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (component is IRESSInfo c14) { BatteryInfo = c14; }
 			if (component is BusAuxiliariesAdapter c15) { BusAux = c15; }
 			if (component is IDCDCConverter c16) { DCDCConverter = c16; }
-			if (component is IElectricSystemInfo c24) 
-			{
-				if (component is ElectricPowerJunctionBox)
-				{
-					JunctionBox = c24;
-				}
-				else
-				{
-                    ElectricSystemInfo = c24;
-                }
-			}
+			if (component is IElectricSystemInfo c24) { ElectricSystemInfo = c24; }
+			if (component is IElectricPowerJunctionBox c29) { JunctionBox = c29; }
 			
 			if (component is IEngineInfo c17){
 				EngineInfo = c17;

@@ -184,7 +184,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
         protected XElement GetEM2Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_mrf + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "PowertrainEM2Type"),
                 _mrfFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt),
                 _mrfFactory.GetAxlePowertrainTransmissionType().GetElement(axlePt),
@@ -198,7 +198,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
         protected XElement GetEM3Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_mrf + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "PowertrainEM3Type"),
                 _mrfFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt),
                 _mrfFactory.GetAxlePowertrainAngleDriveType().GetElement(axlePt),
@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
         protected XElement GetEM4Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_mrf + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "PowertrainEM4Type"),
                 _mrfFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt)
             );
@@ -219,7 +219,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
         protected XElement GetIEPCPowertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_mrf + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "PowertrainIEPCType"),
                 _mrfFactory.GetAxlePowertrainIEPCSpecifications().GetElement(axlePt),
                 _mrfFactory.GetAxlePowertrainRetarderType().GetElement(axlePt),

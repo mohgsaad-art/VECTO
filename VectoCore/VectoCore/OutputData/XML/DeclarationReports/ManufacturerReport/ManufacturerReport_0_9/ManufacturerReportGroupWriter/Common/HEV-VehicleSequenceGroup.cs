@@ -22,7 +22,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
             var ihpc = vehicle.VehicleType.IsMultiplePowertrains() || (vehicle.Components?.GearboxInputData?.Type == GearboxType.IHPC);
             
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_mrf + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_mrf + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
                 : new List<XElement>() { new XElement(_mrf + "HEVArchitecture", ihpc ? GearboxType.IHPC.ToXMLFormat() : vehicle.ArchitectureID.GetLabel()) });
             
             result.AddRange(new List<XElement>()

@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IElectricSystemInfo ElectricSystemInfo { get; }
 
-		IElectricSystemInfo JunctionBox {  get; }
+        IElectricPowerJunctionBox JunctionBox {  get; }
 
 		ITorqueSplitter TorqueSplitter { get; }
 

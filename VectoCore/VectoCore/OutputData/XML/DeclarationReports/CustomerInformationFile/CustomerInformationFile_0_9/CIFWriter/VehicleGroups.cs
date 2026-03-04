@@ -212,7 +212,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
             var ihpc = vehicle.Components?.GearboxInputData?.Type == GearboxType.IHPC;
             
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
                 : new List<XElement>() { new XElement(_cif + "HEVArchitecture", ihpc ? GearboxType.IHPC.ToXMLFormat() : vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() {
@@ -238,7 +238,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 			result.AddRange(_cifFactory.GetFCHVLorryVehicleSequenceGroupWriter().GetElements(inputData));
 			result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-				? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+				? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
 				: new List<XElement>() { new XElement(_cif + "FCHVArchitecture", vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() {
@@ -264,7 +264,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			var ovCc = vehicle.OVC;
 
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "PEVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "PEVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
 				: new List<XElement>() { new XElement(_cif + "PEVArchitecture", vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() {
@@ -298,7 +298,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
             var ihpc = vehicle.Components?.GearboxInputData?.Type == GearboxType.IHPC;
 			
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "HEVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
 	            : new List<XElement>() { new XElement(_cif + "HEVArchitecture", ihpc ? GearboxType.IHPC.ToXMLFormat() : vehicle.ArchitectureID.GetLabel()) });
 
 			result.AddRange(new List<XElement>() {
@@ -330,7 +330,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
             var vehicle = multistep.JobInputData.PrimaryVehicle.Vehicle;
 
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "PEVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "PEVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
 				: new List<XElement>() { new XElement(_cif + "PEVArchitecture", vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() {
@@ -359,7 +359,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			var vehicle = multistep.JobInputData.PrimaryVehicle.Vehicle;
 
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_cif + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
 				: new List<XElement>() { new XElement(_cif + "FCHVArchitecture", vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() {

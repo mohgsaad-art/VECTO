@@ -403,7 +403,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Gearbox =  gearbox,
 				Clutch = AddClutch(data, container, powertrainContainer),
 				IdleController = GetIdleController(data.PTOSinglePwt, engine, container),
-				ElectricMotor = GetElectricMachine<MeasuredSpeedGearHybridsElectricMotor>(position, data.ElectricMachinesSinglePwt, container, es, ctl),
+				ElectricMotor = GetElectricMachine<MeasuredSpeedGearHybridsElectricMotor>(position, data.ElectricMachinesSinglePwt, container, es, ctl, powertrainContainer),
 				HybridController = ctl
 			};
 
@@ -459,7 +459,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			AddAuxiliaries(engine, container, data, powertrainContainer);
 
-			ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
+			if (!data.GearboxSinglePwt.Type.ManualTransmission())
+			{
+                ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
+            }
 			
 			return container;
 		}
@@ -828,7 +831,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = ComponentFactory.CreateCombustionEngine(data.Cycle.CycleType, container, powertrainContainer, data.EngineData);
-			var gearbox = GetGearbox(container, powertrainContainer, strategy: ctl.ShiftStrategy);
+			var gearbox = GetGearbox(container, powertrainContainer, strategy: ctl.ShiftStrategy, false);
 
 			var idleController = GetIdleController(data.PTOSinglePwt, engine, container);
 			
@@ -2142,7 +2145,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		}
 
 		protected IGearbox GetGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer,
-			IShiftStrategy strategy = null)
+			IShiftStrategy strategy = null, bool createClutch = true)
 		{
 			if (container.RunData.BatteryOnlyHybridMode && container.RunData.OVCMode == OvcHevMode.ChargeDepleting) {
 				var emPos = container.RunData.ElectricMachinesSinglePwt.First().Item1;
@@ -2155,7 +2158,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			strategy = strategy ?? GetShiftStrategy(container, powertrainContainer);
-			if (container.RunData.GearboxSinglePwt.Type.IsOneOf(GearboxType.ATSerial, GearboxType.ATPowerSplit)) {
+			if (createClutch && container.RunData.GearboxSinglePwt.Type.IsOneOf(GearboxType.ATSerial, GearboxType.ATPowerSplit)) {
 				ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
 			}
 

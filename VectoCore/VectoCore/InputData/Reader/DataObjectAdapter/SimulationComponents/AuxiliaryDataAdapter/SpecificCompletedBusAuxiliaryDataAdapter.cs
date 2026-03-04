@@ -32,7 +32,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				primaryVehicle, completedVehicle, mission, actuations, runData.VehicleData.VehicleClass);
 
             var retarderType = (runData.AxlePowertrains?.Count() > 0)
-                ? (runData.AxlePowertrains.FirstOrDefault(x => x.Retarder.Type != RetarderType.None)?.Retarder.Type ?? RetarderType.None)
+                ? (runData.AxlePowertrains.FirstOrDefault(x => (x.Retarder != null) && (x.Retarder.Type != RetarderType.None))?.Retarder.Type ?? RetarderType.None)
                 : runData.RetarderSinglePwt.Type;
 
             var pneumaticUserInputsConfig = CreatePneumaticUserInputsConfig(primaryVehicle, completedVehicle);
