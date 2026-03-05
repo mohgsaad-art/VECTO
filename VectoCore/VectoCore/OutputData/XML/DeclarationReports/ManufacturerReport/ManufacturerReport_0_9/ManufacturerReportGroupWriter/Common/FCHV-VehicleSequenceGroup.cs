@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
             var vehicle = inputData.JobInputData.Vehicle;
             
             result.AddRange(vehicle.VehicleType.IsMultiplePowertrains()
-                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_mrf + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber), x.Architecture.GetLabel()))
+                ? vehicle.Components.AxlePowertrainInputData.Select(x => new XElement(_mrf + "FCHVArchitecture", new XAttribute("axleNumber", x.AxleNumber.Value), x.Architecture.GetLabel()))
                 : new List<XElement>() { new XElement(_mrf + "FCHVArchitecture", vehicle.ArchitectureID.GetLabel()) });
 
             result.AddRange(new List<XElement>() 

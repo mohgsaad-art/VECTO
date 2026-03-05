@@ -183,7 +183,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
         protected XElement GetEM2Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_vif + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractVehicleInformationFile.XSI + XMLNames.XSIType, "xEV_EM2_Powertrain_VIFType"),
                 _vifReportFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt),
                 _vifReportFactory.GetAxlePowertrainTransmissionType().GetElement(axlePt),
@@ -197,7 +197,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
         protected XElement GetEM3Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_vif + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractVehicleInformationFile.XSI + XMLNames.XSIType, "xEV_EM3_Powertrain_VIFType"),
                 _vifReportFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt),
                 _vifReportFactory.GetAxlePowertrainAngleDriveType().GetElement(axlePt),
@@ -209,7 +209,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
         protected XElement GetEM4Powertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_vif + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractVehicleInformationFile.XSI + XMLNames.XSIType, "xEV_EM4_Powertrain_VIFType"),
                 _vifReportFactory.GetAxlePowertrainElectricMachineType().GetElement(axlePt)
             );
@@ -218,7 +218,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
         protected XElement GetIEPCPowertrain(IAxlePowertrainDeclarationInputData axlePt)
         {
             return new XElement(_vif + "Powertrain",
-                new XAttribute("axleNumber", axlePt.AxleNumber),
+                new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                 new XAttribute(AbstractVehicleInformationFile.XSI + XMLNames.XSIType, "xEV_IEPC_Powertrain_VIFType"),
                 _vifReportFactory.GetAxlePowertrainIEPCType().GetElement(axlePt),
                 _vifReportFactory.GetAxlePowertrainRetarderType().GetElement(axlePt),

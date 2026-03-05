@@ -420,7 +420,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
         protected IElectricMotor GetElectricMachine<TElectricMotor>(PowertrainPosition pos,
 			IList<Tuple<PowertrainPosition, ElectricMotorData>> electricMachinesData, IVehicleContainer container,
-			IElectricSystem es, IHybridController ctl) where TElectricMotor : ElectricMotor
+			IElectricSystem es, IHybridController ctl, IPowertrainContainer powertrainContainer) where TElectricMotor : ElectricMotor
 		{
 			var motorData = electricMachinesData.FirstOrDefault(x => x.Item1 == pos);
 			if (motorData == null) {
@@ -430,7 +430,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			ctl.AddElectricMotor(pos, motorData.Item2);
 
 			var motor = (TElectricMotor)Activator.CreateInstance(typeof(TElectricMotor),
-				new object[] { container, motorData.Item2, ctl.ElectricMotorControl(pos), pos });
+				new object[] { container, powertrainContainer, motorData.Item2, ctl.ElectricMotorControl(pos), pos });
 
 			motor.Connect(es);
 

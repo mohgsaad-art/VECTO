@@ -194,7 +194,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				IdleController = GetIdleController(data.PTOSinglePwt, engine, container),
 				ElectricMotor =
 					GetElectricMachine<MeasuredSpeedGearHybridsElectricMotor>(position, data.ElectricMachinesSinglePwt,
-						container, es, ctl),
+						container, es, ctl, powertrainContainer),
 				HybridController = ctl
 			};
 

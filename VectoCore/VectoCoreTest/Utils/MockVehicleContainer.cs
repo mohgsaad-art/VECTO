@@ -135,7 +135,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IElectricSystemInfo ElectricSystemInfo { get; }
 
-		public IElectricSystemInfo JunctionBox { get; }
+		public IElectricPowerJunctionBox JunctionBox { get; }
 
 		public IWheelEnd WheelEnd { get; }
 

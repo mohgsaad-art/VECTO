@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
         public IList<IElectricMotorInfo> ElectricMotorsInfo { get; set; }
 
-        public IElectricSystemInfo JunctionBox { get; set; }
+        public IElectricPowerJunctionBox JunctionBox { get; set; }
 
 		public IWheelEnd WheelEnd { get; set; }
 

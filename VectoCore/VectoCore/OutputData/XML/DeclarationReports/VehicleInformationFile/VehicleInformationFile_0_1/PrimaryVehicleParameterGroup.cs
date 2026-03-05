@@ -91,14 +91,14 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			foreach(var axlePt in vehicle.Components.AxlePowertrainInputData.Where(x => x.RetarderInputData != null))
 			{
 				result.Add(new XElement(_vif + XMLNames.Vehicle_RetarderType, 
-					new XAttribute("axleNumber", axlePt.AxleNumber),
+					new XAttribute("axleNumber", axlePt.AxleNumber.Value),
 					axlePt.RetarderInputData.Type.ToXMLFormat()));
 			}
 
             foreach (var axlePt in vehicle.Components.AxlePowertrainInputData.Where(x => x.RetarderInputData?.Type.IsDedicatedComponent() ?? false))
             {
 				result.Add(new XElement(_vif + XMLNames.Vehicle_RetarderRatio,
-                    new XAttribute("axleNumber", axlePt.AxleNumber),
+                    new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                     axlePt.RetarderInputData.Ratio.ToXMLFormat(3)));
             }
 
@@ -287,7 +287,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 			{
                 result.Add(new XElement(
 					_vif + XMLNames.Vehicle_AngledriveType,
-					new XAttribute("axleNumber", axlePt.AxleNumber),
+					new XAttribute("axleNumber", axlePt.AxleNumber.Value),
 					(axlePt.AngledriveInputData?.Type ?? AngledriveType.None).ToXMLFormat())
 				);
             }

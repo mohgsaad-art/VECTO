@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
             foreach (var entry in vehicle.ElectricMotorTorqueLimits)
             {
                 result.Add(new XElement(_v27 + XMLNames.Component_ElectricMachine,
-					(entry.Key.AxleNumber != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", entry.Key.AxleNumber) : null,
+					(entry.Key.AxleNumber != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", entry.Key.AxleNumber.Value) : null,
 					new XElement(_v27 + XMLNames.ElectricMachine_Position, entry.Key.Position.ToXmlFormat()),
 					GetVoltageLevels(entry.Value)));
             }

@@ -31,6 +31,7 @@
 
 using System.Xml;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
@@ -113,7 +114,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
         IXMLAngledriveInputData CreateAngledriveData(
-            string version, int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+            string version, AxleNumber axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
         IXMLEngineDeclarationInputData CreateEngineData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
@@ -122,7 +123,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLRetarderInputData CreateRetarderData(
-            string version, int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+            string version, AxleNumber axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLAuxiliariesDeclarationInputData CreateAuxiliariesData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
