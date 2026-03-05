@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -102,18 +103,42 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				return retVal;
 			}
 
-			var searchResult = SearchAlgorithm.Search(retVal, electricPower - elPwr.ElectricalPower,
-				interval: 10.SI<NewtonMeter>(),
-				getYValue: x => (Watt)x - electricPower,
-				evaluateFunction: x => LookupElectricPower(voltage, avgSpeed, x, gear, true).ElectricalPower,
-				criterion: x => ((Watt)x - electricPower).Value(),
-				searcher: this
-			);
+            var elPwrMaxTq = LookupElectricPower(voltage, avgSpeed, maxEmTorque, gear, true);
+            var inter = 20.SI<NewtonMeter>();
+            var found = false;
 
-			return searchResult;
-			//return null;
-			//throw new NotImplementedException("EfficientyMapLookupTorque");
-		}
+            while (!found && inter.IsGreaterOrEqual(5.0))
+            {
+                try
+                {
+                    var searchResult = SearchAlgorithm.Search(retVal, electricPower - elPwr.ElectricalPower,
+                        interval: inter,
+                        getYValue: x => (Watt)x - electricPower,
+                        evaluateFunction: x => LookupElectricPower(voltage, avgSpeed, x, gear, true).ElectricalPower,
+                        criterion: x => ((Watt)x - electricPower).Value(),
+                        searcher: this
+                    );
+
+					elPwr = LookupElectricPower(voltage, avgSpeed, searchResult, gear, true);
+					found = !(searchResult.IsGreater(maxEmTorque) && elPwr.ElectricalPower.IsSmaller(elPwrMaxTq.ElectricalPower));
+					// note: OK for recuperation Torque, condition must change for drive torque
+
+                    if (found)
+                    {
+                        return searchResult;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    found = false;
+                }
+                inter = inter / 2.0;
+
+            }
+
+			return null;
+        }
 
 		public EfficiencyMap.EfficiencyResult LookupElectricPower(Volt voltage, PerSecond avgSpeed, NewtonMeter torque, GearshiftPosition gear, bool allowExtrapolation = false)
 		{
