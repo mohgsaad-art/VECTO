@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
@@ -7,7 +6,6 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using Assert = NUnit.Framework.Assert;
 using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Components.WheelsTests;

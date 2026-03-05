@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 
@@ -76,9 +75,9 @@ public class BusAuxTests
         VehicleClass expecteClass, double expectedLength)
     {
         var semgent = segments.Lookup(numAxles, vc, regCode, passCntLow, height?.SI<Meter>(), lowEntry);
-        NUnit.Framework.Assert.AreEqual(semgent.VehicleClass, expecteClass);
+        Assert.AreEqual(semgent.VehicleClass, expecteClass);
 
         var len = DeclarationData.BusAuxiliaries.CorrectionLengthDrivetrainVolume(vc, lowEntry, numAxles, articulated);
-        NUnit.Framework.Assert.AreEqual(expectedLength, len.Value());
+        Assert.AreEqual(expectedLength, len.Value());
     }
 }

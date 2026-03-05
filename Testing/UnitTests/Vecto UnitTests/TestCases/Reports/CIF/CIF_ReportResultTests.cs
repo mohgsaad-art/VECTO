@@ -1,6 +1,5 @@
 ﻿using System.Xml.Linq;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -13,7 +12,6 @@ using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9.ResultWriter;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Reports.CIF;

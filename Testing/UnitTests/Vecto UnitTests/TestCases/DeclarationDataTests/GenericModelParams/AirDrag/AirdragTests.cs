@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils;
+﻿using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DeclarationDataTests.GenericModelParams.AirDrag;
 

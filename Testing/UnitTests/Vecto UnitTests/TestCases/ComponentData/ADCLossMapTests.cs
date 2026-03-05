@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Utils;
+﻿using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 

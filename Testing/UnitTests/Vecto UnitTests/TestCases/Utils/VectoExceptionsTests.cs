@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Exceptions;
+﻿using TUGraz.VectoCommon.Exceptions;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Utils;
 

@@ -1,6 +1,5 @@
 ﻿using System.Xml;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
@@ -14,7 +13,6 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 using TestContext = NUnit.Framework.TestContext;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.InputData.XML.DataProvider.v2_3;

@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -9,7 +8,6 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.AuxiliaryDataAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DataAdapter.Declaration.Components;
 
@@ -393,7 +391,7 @@ public class LorryAuxDataAdapterTests
             }
             else
             {
-                Assert.Fail(ex.Message, "Unexpected exception");
+                Assert.Fail($"Unexpected exception {ex.Message}");
             }
         }
         Assert.IsFalse(fail, "Expected fail");

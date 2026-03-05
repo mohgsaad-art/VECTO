@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -12,7 +11,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DataAdapter.Engineering;
 

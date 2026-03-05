@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils;
+﻿using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 

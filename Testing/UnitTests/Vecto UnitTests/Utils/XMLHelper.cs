@@ -3,7 +3,6 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.Utils;
 

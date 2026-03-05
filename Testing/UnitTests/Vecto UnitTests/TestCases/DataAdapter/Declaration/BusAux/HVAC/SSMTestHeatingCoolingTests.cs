@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils.MockInputData;
+﻿using TUGraz.Vecto.UnitTests.Utils.MockInputData;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
 using TUGraz.VectoCore.Models.Declaration;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DataAdapter.Declaration.BusAux.HVAC;
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;

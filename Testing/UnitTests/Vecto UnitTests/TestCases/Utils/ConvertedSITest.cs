@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto_UnitTests.TestCases.Utils
 {
@@ -52,7 +50,7 @@ namespace TUGraz.Vecto_UnitTests.TestCases.Utils
             var converted = (fc / distance / cargoVolume).ConvertToLiterPerCubicMeterKiloMeter();
 
             Assert.AreEqual(fcLiter / distanceKm / cargo, converted.Value, 1e-6);
-            Assert.AreEqual("l/m³-km", converted.Units);
+            Assert.AreEqual("l/mÂ³-km", converted.Units);
         }
 
         [Test]
@@ -68,7 +66,7 @@ namespace TUGraz.Vecto_UnitTests.TestCases.Utils
             var converted = (ec / distance / cargoVolume).ConvertToMegaJoulePerCubicMeterKiloMeter();
 
             Assert.AreEqual(ecMj / distanceKm / cargo, converted.Value, 1e-6);
-            Assert.AreEqual("MJ/m³-km", converted.Units);
+            Assert.AreEqual("MJ/mÂ³-km", converted.Units);
         }
 
         [Test]
@@ -145,7 +143,7 @@ namespace TUGraz.Vecto_UnitTests.TestCases.Utils
             var converted = (ec / distance / cargoVolume).ConvertToKiloWattHourPerCubicMeterKiloMeter();
 
             Assert.AreEqual(ec_kWh / distanceKm / cargo, converted.Value, 1e-6);
-            Assert.AreEqual("kWh/m³-km", converted.Units);
+            Assert.AreEqual("kWh/mÂ³-km", converted.Units);
         }
 
         [Test]
@@ -191,7 +189,7 @@ namespace TUGraz.Vecto_UnitTests.TestCases.Utils
             var converted = (ec / distance / cargoVolume).ConvertToMegaJoulePerCubicMeterKiloMeter();
 
             Assert.AreEqual(ec_MJ / distanceKm / cargo, converted.Value, 1e-6);
-            Assert.AreEqual("MJ/m³-km", converted.Units);
+            Assert.AreEqual("MJ/mÂ³-km", converted.Units);
         }
     }
 

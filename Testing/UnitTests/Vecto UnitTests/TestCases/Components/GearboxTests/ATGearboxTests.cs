@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -17,8 +16,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
-using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 using IIdleController = TUGraz.VectoCore.Models.SimulationComponent.IIdleController;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearboxTests;

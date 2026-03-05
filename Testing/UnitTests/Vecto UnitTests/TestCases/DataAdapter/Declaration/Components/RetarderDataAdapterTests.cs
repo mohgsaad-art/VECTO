@@ -1,11 +1,9 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 using TestContext = NUnit.Framework.TestContext;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DataAdapter.Declaration.Components;

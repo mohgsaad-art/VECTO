@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.BusAuxiliaries;
+﻿using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 

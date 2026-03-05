@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
@@ -20,7 +19,7 @@ public class VehicleOperationLookupBusTests
     public void VehicleOperationLookupChargingEventsBus(VehicleClass hdvClass, MissionType mission, double expected)
     {
         var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
-        NUnit.Framework.Assert.AreEqual(expected, val.StationaryChargingDuringMission_NbrEvents);
+        Assert.AreEqual(expected, val.StationaryChargingDuringMission_NbrEvents);
     }
 
     [TestCase(VehicleClass.ClassP31SD, MissionType.HeavyUrban, 0.17)]
@@ -34,7 +33,7 @@ public class VehicleOperationLookupBusTests
     public void VehicleOperationLookupChargingDurationBus(VehicleClass hdvClass, MissionType mission, double expected)
     {
         var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
-        NUnit.Framework.Assert.AreEqual(expected * 3600, val.StationaryChargingDuringMission_AvgDurationPerEvent.Value()); //stored in seconds
+        Assert.AreEqual(expected * 3600, val.StationaryChargingDuringMission_AvgDurationPerEvent.Value()); //stored in seconds
     }
 
     [TestCase(VehicleClass.ClassP31SD, MissionType.HeavyUrban, 450)]
@@ -48,7 +47,7 @@ public class VehicleOperationLookupBusTests
     public void VehicleOperationLookupMaxChargingPowerBus(VehicleClass hdvClass, MissionType mission, double expected)
     {
         var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
-        NUnit.Framework.Assert.AreEqual(expected * 1000, val.StationaryChargingMaxPwrInfrastructure.Value()); //stored in watt
+        Assert.AreEqual(expected * 1000, val.StationaryChargingMaxPwrInfrastructure.Value()); //stored in watt
     }
 
     [TestCase(VehicleClass.ClassP31SD, MissionType.HeavyUrban, 60000, 240)]
@@ -62,8 +61,8 @@ public class VehicleOperationLookupBusTests
     public void VehicleOperationLookupMileageBus(VehicleClass hdvClass, MissionType mission, double expectedAnnual, double expectedDaily)
     {
         var val = DeclarationData.VehicleOperation.LookupVehicleOperation(hdvClass, mission);
-        NUnit.Framework.Assert.AreEqual(expectedAnnual * 1000, val.Mileage.AnnualMileage.Value()); //stored in meter
-        NUnit.Framework.Assert.AreEqual(expectedDaily * 1000, val.Mileage.DailyMileage.Value()); //stored in meter
+        Assert.AreEqual(expectedAnnual * 1000, val.Mileage.AnnualMileage.Value()); //stored in meter
+        Assert.AreEqual(expectedDaily * 1000, val.Mileage.DailyMileage.Value()); //stored in meter
     }
 
     [TestCaseSource(nameof(VehicleOperationTestSourcePrimaryBus))]

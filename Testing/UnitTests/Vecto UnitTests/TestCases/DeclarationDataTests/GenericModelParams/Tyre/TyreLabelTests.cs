@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCore.Models.Declaration;
+﻿using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DeclarationDataTests.GenericModelParams.Tyre;
 

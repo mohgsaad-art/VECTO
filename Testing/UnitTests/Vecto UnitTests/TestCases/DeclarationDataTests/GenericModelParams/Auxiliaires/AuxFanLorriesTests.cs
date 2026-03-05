@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils;
+﻿using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.Declaration;
@@ -56,7 +55,7 @@ public class AuxFanLorriesTests
             if (expected[i] == 0)
                 continue;
             var lookup = DeclarationData.Fan.LookupPowerDemand(vehicleClass, _missions[i], technology);
-            NUnit.Framework.Assert.AreEqual(expected[i], lookup.Value(), Tolerance);
+            Assert.AreEqual(expected[i], lookup.Value(), Tolerance);
         }
     }
 

@@ -10,7 +10,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
 {

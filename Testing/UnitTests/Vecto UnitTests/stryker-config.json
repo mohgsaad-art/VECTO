@@ -1,0 +1,13 @@
+{
+    "stryker-config":
+    {
+        "project": "VectoCore.csproj",
+        "target-framework": "net8.0",
+        "test-projects": ["Vecto UnitTests.csproj"],
+        "test-case-filter": "(TestCategory=Mutation)",
+        "language-version": "Csharp12",
+        "coverage-analysis": "perTest"
+    }
+
+}
+

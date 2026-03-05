@@ -38,7 +38,6 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 using TestContext = NUnit.Framework.TestContext;
 
 namespace TUGraz.Vecto.UnitTests.Utils
@@ -53,7 +52,7 @@ namespace TUGraz.Vecto.UnitTests.Utils
 		{
 			try {
 				func();
-				Assert.Fail("Expected Exception {0}, but no exception occured.", typeof(T));
+				Assert.Fail($"Expected Exception {typeof(T)}, but no exception occured.");
 			} catch (T ex) {
 				if (message != null) {
 					Assert.AreEqual(message, ex.Message);

@@ -51,13 +51,13 @@ namespace TUGraz.VectoCommon.Models {
 			{
 				Cost = (FuelCosts + EquivalenceFactor * (BatCosts + ICEStartPenalty1) * SoCPenalty + ICEStartPenalty2 +
 				RampUpPenalty);
-				var gearshift = Cost.IsSmaller(0) ? GearshiftPenalty : 1 / GearshiftPenalty;
+				var gearshift = Cost.IsSmaller(0) ? GearshiftPenaltyFactor : 1 / GearshiftPenaltyFactor;
 				return Cost * gearshift;
 			}
 		}
 
-		public double Cost { get; set; }
-
+		public double Cost { get; private set; }
+		
 		public double FuelCosts { get; set; }
 
 		public double BatCosts { get; set; }
@@ -66,7 +66,7 @@ namespace TUGraz.VectoCommon.Models {
 
 		public double EquivalenceFactor { get; set; }
 
-		public double GearshiftPenalty { get; set; }
+		public double GearshiftPenaltyFactor { get; set; } = 1;
 
 		public double ICEStartPenalty1 { get; set; }
 
@@ -86,7 +86,7 @@ namespace TUGraz.VectoCommon.Models {
 		}
 
 		public override string ToString() {
-			var setting = Setting.MechanicalAssistPower.Select(x => $"{x.Key}, {x.Value}").Join();
+			var setting = Setting?.MechanicalAssistPower.Select(x => $"{x.Key}, {x.Value}").Join() ?? "-";
 			return $"{U}: {setting} {Score} G{Gear}";
 		}
 	}
@@ -116,53 +116,61 @@ namespace TUGraz.VectoCommon.Models {
 		public static string HumanReadable(this HybridConfigurationIgnoreReason x)
 		{
 			var retVal = new List<string>();
-			foreach (var entry in EnumHelper.GetValues<HybridConfigurationIgnoreReason>()) {
-
+			if (x == HybridConfigurationIgnoreReason.NotEvaluated) {
+				return nameof(HybridConfigurationIgnoreReason.NotEvaluated);
+			}
+			foreach (var entry in EnumHelper.GetValues<HybridConfigurationIgnoreReason>().Where(r => r != HybridConfigurationIgnoreReason.NotEvaluated)) {
+				
 				var tmp = x & entry;
-				switch (tmp) {
-
-					case HybridConfigurationIgnoreReason.Evaluated:
-						retVal.Add("OK");
-						break;
-					case HybridConfigurationIgnoreReason.NotEvaluated:
-						//retVal.Add("not evaluated");
-						break;
-					case HybridConfigurationIgnoreReason.EngineSpeedTooLow:
-						retVal.Add("engine speed too low");
-						break;
-					case HybridConfigurationIgnoreReason.EngineSpeedTooHigh:
-						retVal.Add("engine speed too high");
-						break;
-					case HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh:
-						retVal.Add("engine torque demand too high");
-						break;
-					case HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow:
-						retVal.Add("engine torque demand too low");
-						break;
-					case HybridConfigurationIgnoreReason.EngineSpeedAboveUpshift: retVal.Add("engine speed above upshift"); break;
-					case HybridConfigurationIgnoreReason.EngineSpeedBelowDownshift:
-						retVal.Add("engine speed below downshift");
-						break;
-					case HybridConfigurationIgnoreReason.NoResponseAvailable: return "no response available";
-
-					case HybridConfigurationIgnoreReason.BatteryBelowMinSoC:
-						retVal.Add("battery below MinSoC");
-						break;
-					case HybridConfigurationIgnoreReason.BatteryAboveMaxSoc:
-						retVal.Add("battery above MaxSoC");
-						break;
-					case HybridConfigurationIgnoreReason.BatterySoCTooLow:
-						retVal.Add("battery SoC too low");
-						break;
-					case HybridConfigurationIgnoreReason.ClutchSlipping:
-						retVal.Add("clutch is slipping");
-						break;
-
-					default: throw new ArgumentOutOfRangeException(nameof(x), x, null);
+				if (tmp != HybridConfigurationIgnoreReason.NotEvaluated) {
+					retVal.Add(tmp.ToString());
 				}
+
+				// switch (tmp) {
+				//
+				// 	case HybridConfigurationIgnoreReason.Evaluated:
+				// 		retVal.Add("OK");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.NotEvaluated:
+				// 		//retVal.Add("not evaluated");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.EngineSpeedTooLow:
+				// 		retVal.Add("engine speed too low");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.EngineSpeedTooHigh:
+				// 		retVal.Add("engine speed too high");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh:
+				// 		retVal.Add("engine torque demand too high");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow:
+				// 		retVal.Add("engine torque demand too low");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.EngineSpeedAboveUpshift: retVal.Add("engine speed above upshift"); break;
+				// 	case HybridConfigurationIgnoreReason.EngineSpeedBelowDownshift:
+				// 		retVal.Add("engine speed below downshift");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.NoResponseAvailable: return "no response available";
+				//
+				// 	case HybridConfigurationIgnoreReason.BatteryBelowMinSoC:
+				// 		retVal.Add("battery below MinSoC");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.BatteryAboveMaxSoc:
+				// 		retVal.Add("battery above MaxSoC");
+				// 		break;
+				// 	case HybridConfigurationIgnoreReason.BatterySoCTooLow:
+				// 		retVal.Add("battery SoC too low");
+				// 		break;
+				// 	default: throw new ArgumentOutOfRangeException(nameof(x), x, null);
+				
 			}
 
-			return retVal.Join("/");
+			if (retVal.Any()) {
+				return retVal.Join("|");
+			} else {
+				return "-";
+			}
+
 		}
 
 		public static bool InvalidEngineSpeed(this HybridConfigurationIgnoreReason x)
@@ -225,6 +233,11 @@ namespace TUGraz.VectoCommon.Models {
 			return (x & HybridConfigurationIgnoreReason.BatteryBelowMinSoC) != 0;
 		}
 
+		/// <summary>
+		/// Evaluated is set but no other flag
+		/// </summary>
+		/// <param name="x"></param>
+		/// <returns></returns>
 		public static bool ClutchSlipping(this HybridConfigurationIgnoreReason x)
 		{
 			return (x & HybridConfigurationIgnoreReason.ClutchSlipping) != 0;

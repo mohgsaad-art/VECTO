@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Models.Simulation.Data;

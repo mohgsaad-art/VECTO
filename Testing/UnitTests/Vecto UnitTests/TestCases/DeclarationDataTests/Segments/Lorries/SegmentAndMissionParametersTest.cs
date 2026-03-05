@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils;
+﻿using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
@@ -30,12 +29,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class2, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class2, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(3, segment.Missions.Length);
+        Assert.AreEqual(3, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -104,12 +103,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class2, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class2, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(3, segment.Missions.Length);
+        Assert.AreEqual(3, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -178,9 +177,9 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class3, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class3, segment.VehicleClass);
 
-        NUnit.Framework.Assert.AreEqual(2, segment.Missions.Length);
+        Assert.AreEqual(2, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -232,12 +231,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class4, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class4, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -321,12 +320,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, true);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class4, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class4, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[3],
             vehicleData: vehicleData,
@@ -378,12 +377,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class5, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class5, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(6, segment.Missions.Length);
+        Assert.AreEqual(6, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -482,12 +481,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, true);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class5, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class5, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(6, segment.Missions.Length);
+        Assert.AreEqual(6, segment.Missions.Length);
 
         AssertMission(segment.Missions[5],
             vehicleData: vehicleData,
@@ -523,12 +522,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class9, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class9, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(6, segment.Missions.Length);
+        Assert.AreEqual(6, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -630,12 +629,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, true);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class9, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class9, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(6, segment.Missions.Length);
+        Assert.AreEqual(6, segment.Missions.Length);
 
         AssertMission(segment.Missions[4],
             vehicleData: vehicleData,
@@ -688,12 +687,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class10, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class10, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -779,12 +778,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, true);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class10, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class10, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[4],
             vehicleData: vehicleData,
@@ -821,12 +820,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class11, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class11, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(6, segment.Missions.Length);
+        Assert.AreEqual(6, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -943,12 +942,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class12, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class12, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -1051,12 +1050,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class16, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class16, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(5, segment.Missions.Length);
+        Assert.AreEqual(5, segment.Missions.Length);
 
         AssertMission(segment.Missions[4],
             vehicleData: vehicleData,
@@ -1092,12 +1091,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class53, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class53, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(2, segment.Missions.Length);
+        Assert.AreEqual(2, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -1148,12 +1147,12 @@ public class SegmentAndMissionParametersTest
         var segment = DeclarationData.TruckSegments.Lookup(vehicleData.VehicleCategory, vehicleData.AxleConfiguration,
             vehicleData.GrossVehicleMassRating, vehicleData.CurbWeight, false);
 
-        NUnit.Framework.Assert.AreEqual(VehicleClass.Class54, segment.VehicleClass);
+        Assert.AreEqual(VehicleClass.Class54, segment.VehicleClass);
 
         var data = AccelerationCurveReader.ReadFromStream(segment.AccelerationFile);
         TestAcceleration(data);
 
-        NUnit.Framework.Assert.AreEqual(2, segment.Missions.Length);
+        Assert.AreEqual(2, segment.Missions.Length);
 
         AssertMission(segment.Missions[0],
             vehicleData: vehicleData,
@@ -1192,26 +1191,26 @@ public class SegmentAndMissionParametersTest
         double bodyCurbWeight, double[] trailerCurbWeight, TrailerType[] trailerType, double lowLoad, double refLoad,
         double maxLoad, double[] trailerGrossVehicleWeight, double deltaCdA, bool ems = false)
     {
-        NUnit.Framework.Assert.AreEqual(missionType, m.MissionType);
-        NUnit.Framework.Assert.AreEqual(cosswindCorrection, m.CrossWindCorrectionParameters);
-        NUnit.Framework.CollectionAssert.AreEqual(axleWeightDistribution, m.AxleWeightDistribution,
+        Assert.AreEqual(missionType, m.MissionType);
+        Assert.AreEqual(cosswindCorrection, m.CrossWindCorrectionParameters);
+        CollectionAssert.AreEqual(axleWeightDistribution, m.AxleWeightDistribution,
             "Axle distribution not equal.\nexpected: {0}\nactual: {1}", axleWeightDistribution.Join(),
             m.AxleWeightDistribution.Join());
-        NUnit.Framework.CollectionAssert.AreEqual(trailerAxleWeightDistribution, m.Trailer.Select(t => t.TrailerAxleWeightShare),
+        CollectionAssert.AreEqual(trailerAxleWeightDistribution, m.Trailer.Select(t => t.TrailerAxleWeightShare),
             "Trailer axle distribution not equal.\nexpected: {0}\nactual: {1}", trailerAxleWeightDistribution.Join(),
             m.Trailer.Select(t => t.TrailerAxleWeightShare).Join());
-        NUnit.Framework.Assert.AreEqual(bodyCurbWeight.SI<Kilogram>(), m.BodyCurbWeight);
-        NUnit.Framework.CollectionAssert.AreEqual(trailerCurbWeight, m.Trailer.Select(t => t.TrailerCurbWeight.Value()));
-        NUnit.Framework.CollectionAssert.AreEqual(trailerType, m.Trailer.Select(t => t.TrailerType));
-        NUnit.Framework.CollectionAssert.AreEqual(trailerAxleCount, m.Trailer.Select(t => t.TrailerWheels.Count));
+        Assert.AreEqual(bodyCurbWeight.SI<Kilogram>(), m.BodyCurbWeight);
+        CollectionAssert.AreEqual(trailerCurbWeight, m.Trailer.Select(t => t.TrailerCurbWeight.Value()));
+        CollectionAssert.AreEqual(trailerType, m.Trailer.Select(t => t.TrailerType));
+        CollectionAssert.AreEqual(trailerAxleCount, m.Trailer.Select(t => t.TrailerWheels.Count));
         //Assert.IsNotNull(m.CycleFile);
         //Assert.IsTrue(!string.IsNullOrEmpty(new StreamReader(m.CycleFile).ReadLine()));
-        NUnit.Framework.Assert.AreEqual(null, m.MinLoad);
+        Assert.AreEqual(null, m.MinLoad);
         AssertHelper.AreRelativeEqual(lowLoad, m.LowLoad);
         AssertHelper.AreRelativeEqual(refLoad, m.RefLoad);
-        NUnit.Framework.Assert.AreEqual(maxLoad.SI<Kilogram>(), m.MaxPayload);
-        NUnit.Framework.CollectionAssert.AreEqual(trailerGrossVehicleWeight, m.Trailer.Select(t => t.TrailerGrossVehicleWeight.Value()));
-        NUnit.Framework.Assert.AreEqual(
+        Assert.AreEqual(maxLoad.SI<Kilogram>(), m.MaxPayload);
+        CollectionAssert.AreEqual(trailerGrossVehicleWeight, m.Trailer.Select(t => t.TrailerGrossVehicleWeight.Value()));
+        Assert.AreEqual(
             VectoMath.Min(
                 vehicleData.GrossVehicleMassRating +
                 m.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0),
@@ -1219,7 +1218,7 @@ public class SegmentAndMissionParametersTest
             - m.BodyCurbWeight - m.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0) -
             vehicleData.CurbWeight,
             m.MaxPayload);
-        NUnit.Framework.Assert.AreEqual(deltaCdA.SI<SquareMeter>(),
+        Assert.AreEqual(deltaCdA.SI<SquareMeter>(),
             m.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0));
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
@@ -11,7 +10,6 @@ using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing;
 

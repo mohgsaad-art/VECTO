@@ -1,7 +1,6 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;

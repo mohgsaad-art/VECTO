@@ -1,7 +1,6 @@
 ﻿using System.Xml;
 using Moq;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;

@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Utils;
+﻿using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 

@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
@@ -11,7 +10,6 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentReader;
 

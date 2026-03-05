@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Moq;
-using NUnit.Framework;
 using NUnit.Framework.Internal;
 using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
@@ -24,7 +23,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies.ShiftPolygonCalc;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy;
 

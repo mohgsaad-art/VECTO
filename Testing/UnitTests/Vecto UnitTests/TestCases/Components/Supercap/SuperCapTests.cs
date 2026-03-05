@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
-using TUGraz.Vecto.UnitTests.Utils.MockComponents;
+﻿using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Components.Supercap;
 

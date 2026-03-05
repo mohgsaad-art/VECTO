@@ -30,13 +30,10 @@
 */
 
 using System.Data;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
-using CollectionAssert = NUnit.Framework.CollectionAssert;
 
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Utils

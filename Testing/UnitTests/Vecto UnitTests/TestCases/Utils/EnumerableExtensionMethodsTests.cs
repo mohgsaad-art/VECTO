@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Utils;

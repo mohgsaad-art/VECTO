@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DeclarationDataTests.Segments.PrimaryBuses;
 

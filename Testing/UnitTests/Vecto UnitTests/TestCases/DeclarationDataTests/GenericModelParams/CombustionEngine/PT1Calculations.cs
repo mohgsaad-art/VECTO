@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Utils;
+﻿using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DeclarationDataTests.GenericModelParams.CombustionEngine;
@@ -35,8 +34,8 @@ public class PT1Calculations
 	public void PT1Test(double rpm, double expectedPt1)
 	{
 		var pt1 = DeclarationData.PT1.Lookup(rpm.RPMtoRad());
-		NUnit.Framework.Assert.AreEqual(expectedPt1, pt1.Value.Value(), Tolerance);
-		NUnit.Framework.Assert.IsFalse(pt1.Extrapolated);
+		Assert.AreEqual(expectedPt1, pt1.Value.Value(), Tolerance);
+		Assert.IsFalse(pt1.Extrapolated);
 	}
 
 	[TestCase(200),
@@ -46,6 +45,6 @@ public class PT1Calculations
 	{
 		// EXTRAPOLATE 
 		var tmp = DeclarationData.PT1.Lookup(rpm.RPMtoRad());
-		NUnit.Framework.Assert.IsTrue(tmp.Extrapolated);
+		Assert.IsTrue(tmp.Extrapolated);
 	}
 }
