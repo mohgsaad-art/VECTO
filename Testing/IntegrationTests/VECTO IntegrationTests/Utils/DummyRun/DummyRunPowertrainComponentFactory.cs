@@ -29,6 +29,8 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		var mc = new Mock<IMileageCounter>();
 		var vi = new Mock<IVehicleInfo>();
 		var gi = new Mock<IGearboxInfo>();
+		var pi = new Mock<IPowertrainInfo>();
+		retVal.Setup(c => c.PowertrainInfo).Returns(pi.Object);
 		retVal.Setup(c => c.MileageCounter).Returns(mc.Object);
 		retVal.Setup(c => c.VehicleInfo).Returns(vi.Object);
 		retVal.Setup(c => c.GetGearboxInfo(It.IsAny<AxleNumber>())).Returns(gi.Object);
