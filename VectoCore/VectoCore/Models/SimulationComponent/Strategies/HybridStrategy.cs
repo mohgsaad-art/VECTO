@@ -1007,7 +1007,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 
 				do {
-					nextGear = GearList.Predecessor(nextGear);
+					var tmpNextGear = GearList.Predecessor(nextGear);
+					nextGear = tmpNextGear;
 					response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, nextGear, tmp);
 					debug.Add($"[AHS.HBA-1] DryRun Gear={nextGear}", response);
 				} while (GearList.HasPredecessor(nextGear) && response == null);
@@ -1462,7 +1463,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 		}
 
-		private HybridResultEntry SelectBestOption(
+		protected internal HybridResultEntry SelectBestOption(
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
@@ -1545,15 +1546,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return best;
 		}
 
-		private HybridResultEntry DoSelectBestOption(
+		protected internal HybridResultEntry DoSelectBestOption(
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
 			if (eval.Count == 0) {
 				return null;
 			}
-			HybridResultEntry best;
 
+			HybridResultEntry best;
+			
 			if (DataBus.VehicleInfo.VehicleSpeed.IsSmallerOrEqual(ModelData.GearshiftParametersSinglePwt.StartSpeed) &&
 				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(DataBus.DrivingCycleInfo.TargetSpeed, 1.KMPHtoMeterPerSecond())) {
 				best = eval.Where(x => !double.IsNaN(x.Score)).Where(x => !x.IgnoreReason.EngineSpeedTooHigh())
@@ -1584,7 +1586,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 
 			best = eval.Where(x => !double.IsNaN(x.Score)).OrderBy(x => x.Score).FirstOrDefault();
-			if (best != null && !(best.Gear != currentGear && best.IgnoreReason.EngineSpeedTooHigh())) {
+			//Could be simlipfied to (best != null && (GearEqual || !Enginespeed too high)
+			if (best != null && !(!best.Gear.Equals(currentGear) && best.IgnoreReason.EngineSpeedTooHigh())) {
 				return best;
 			}
 
@@ -2323,7 +2326,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			tmp.EquivalenceFactor = resp.ElectricSystem.RESSPowerDemand.IsSmaller(0)
 				? StrategyParameters.EquivalenceFactorDischarge
 				: StrategyParameters.EquivalenceFactorCharge;
-			tmp.GearshiftPenalty = resp.Gearbox.Gear.Engaged && !resp.Gearbox.Gear.Equals(CurrentGear)
+			tmp.GearshiftPenaltyFactor = resp.Gearbox.Gear.Engaged && !resp.Gearbox.Gear.Equals(CurrentGear)
 				? ModelData.GearshiftParametersSinglePwt.RatingFactorCurrentGear
 				: 1;
 

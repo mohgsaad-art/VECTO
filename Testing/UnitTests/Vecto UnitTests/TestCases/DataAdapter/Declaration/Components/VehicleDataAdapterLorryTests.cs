@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils.DataAdapter;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -12,8 +11,6 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Ninject;
-using Assert = NUnit.Framework.Assert;
-using CollectionAssert = NUnit.Framework.CollectionAssert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DataAdapter.Declaration.Components;
 

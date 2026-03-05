@@ -1,7 +1,5 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.Declaration;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.DeclarationDataTests.CO2StandardsGroups;
 

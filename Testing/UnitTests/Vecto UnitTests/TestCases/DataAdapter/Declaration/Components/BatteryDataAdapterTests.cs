@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using Moq;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;

@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Ninject;
-using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore;
@@ -14,7 +13,6 @@ using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunData
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
 using TUGraz.VectoCore.Ninject;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.RunDataFactory
 {

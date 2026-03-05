@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -187,15 +186,15 @@ public class TransmissionLossMapDataTests
 
 		var validation = lossMap.Validate(ExecutionMode.Declaration, VectoSimulationJobType.ConventionalVehicle, null, GearboxType.AMT, false);
 
-		NUnit.Framework.Assert.AreEqual(0, validation.Count);
+		Assert.AreEqual(0, validation.Count);
 
 		var lookup1 = lossMap.GetTorqueLoss(200.RPMtoRad(), 500.SI<NewtonMeter>());
-		NUnit.Framework.Assert.IsFalse(lookup1.Extrapolated);
-		NUnit.Framework.Assert.AreEqual(31.8725, lookup1.Value.Value(), 1e-3);
+		Assert.IsFalse(lookup1.Extrapolated);
+		Assert.AreEqual(31.8725, lookup1.Value.Value(), 1e-3);
 
 		var lookup2 = lossMap.GetTorqueLoss(200.RPMtoRad(), 7000.SI<NewtonMeter>());
-		NUnit.Framework.Assert.IsFalse(lookup2.Extrapolated);
-		NUnit.Framework.Assert.AreEqual(23, lookup2.Value.Value());
+		Assert.IsFalse(lookup2.Extrapolated);
+		Assert.AreEqual(23, lookup2.Value.Value());
 	}
 
 

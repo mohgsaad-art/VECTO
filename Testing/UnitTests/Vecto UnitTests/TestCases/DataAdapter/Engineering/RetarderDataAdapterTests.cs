@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -66,10 +65,10 @@ public class RetarderDataAdapterTests
         }
 
         if (throwsExeption) {
-            NUnit.Framework.Assert.Throws<VectoException>(() => adapter.CreateRetarderData(inputData.Object, arch));
+            Assert.Throws<VectoException>(() => adapter.CreateRetarderData(inputData.Object, arch));
         } else {
             var retarderData = adapter.CreateRetarderData(inputData.Object, arch);
-            NUnit.Framework.Assert.NotNull(retarderData);
+            Assert.NotNull(retarderData);
         }
 
     }

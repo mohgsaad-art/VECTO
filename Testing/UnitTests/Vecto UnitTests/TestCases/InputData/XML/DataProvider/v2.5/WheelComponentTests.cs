@@ -1,11 +1,9 @@
 ﻿using System.Xml;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
-using Assert = NUnit.Framework.Assert;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.InputData.XML;

@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCommon.Utils;
-using Assert = NUnit.Framework.Assert;
+﻿using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Utils
 {

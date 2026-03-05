@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System.Reflection;
+﻿using System.Reflection;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Specific;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.AuxiliaryDataAdapter;

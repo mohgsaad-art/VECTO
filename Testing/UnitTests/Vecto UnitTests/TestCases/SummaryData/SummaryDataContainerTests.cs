@@ -1,5 +1,4 @@
 ﻿using Ninject;
-using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
@@ -13,7 +12,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
-using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.SummaryData;
 

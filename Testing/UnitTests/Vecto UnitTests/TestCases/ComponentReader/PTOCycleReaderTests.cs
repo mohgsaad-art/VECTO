@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
+﻿using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentReader;
