@@ -284,8 +284,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			var nextGear = currentGear;
 			var derated = r.ElectricMotor.DeRatingActive;
-			// upshift
-			if (IsAboveUpShiftCurve(currentGear, inTorque, inAngularVelocity, derated)) {
+
+			var EMinfo = DataBus.ElectricMotorsInfo.First(x => x.Position == EMPos);
+			var EMInertia = DataBus.RunData.GetEMData().FirstOrDefault().Item2.Inertia;
+            //var EMcurrentAngularVelocity = 
+            var currentResponse = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, nextGear);
+
+            // upshift
+            if (IsAboveUpShiftCurve(currentGear, inTorque, inAngularVelocity, derated)) {
 				
 				inTorque = null;
 				inAngularVelocity = null;
@@ -309,8 +315,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					
 					var reserve = 1 - nextInTorque / maxTorque;
 
-					if (reserve >= 0 /*ModelData.TorqueReserve */ &&
-						IsAboveDownShiftCurve(nextGear, nextInTorque, nextInAngularVelocity, derated)) {
+					var avgElectricMotorSpeed = (nextResponse.ElectricMotor.AngularVelocity + EMinfo.ElectricMotorSpeed) / 2.0;
+
+                    var inertiaTorque = -Formulas.InertiaPower(nextResponse.ElectricMotor.AngularVelocity, EMinfo.ElectricMotorSpeed, EMInertia, dt) / avgElectricMotorSpeed;
+                    var avgMaxRecuperationTorqueEM = VectoMath.Min(nextResponse.ElectricMotor.MaxRecuperationTorqueEM,
+                        currentResponse.ElectricMotor.MaxRecuperationTorqueEM * EMinfo.ElectricMotorSpeed / avgElectricMotorSpeed);
+					// recupTorque esti;ation is correct at 5%
+                    var inertiaTorqueReserve = 1 - inertiaTorque / avgMaxRecuperationTorqueEM;
+					
+
+                    if (reserve >= 0 /*ModelData.TorqueReserve */ && inertiaTorqueReserve >= 0 &&
+                        IsAboveDownShiftCurve(nextGear, nextInTorque, nextInAngularVelocity, derated)) {
 						continue;
 					}
 
@@ -343,7 +358,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 				DataBus.ElectricMotorsInfo.First(x => x.Position == EMPos).ElectricMotorSpeed /
 				DataBus.VehicleInfo.VehicleSpeed;
 
-			var results = new List<Tuple<GearshiftPosition, double>>();
+            var EMinfo = DataBus.ElectricMotorsInfo.First(x => x.Position == EMPos);
+            var EMInertia = DataBus.RunData.GetEMData().FirstOrDefault().Item2.Inertia;
+            //var EMcurrentAngularVelocity = 
+            var currentResponse = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
+
+            var results = new List<Tuple<GearshiftPosition, double>>();
 			foreach (var tryNextGear in GearList.IterateGears(GearList.Successor(currentGear),
 				GearList.Successor(currentGear, (uint)_shiftStrategyParameters.AllowedGearRangeFC))) {
 				var response = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, tryNextGear);
@@ -363,7 +383,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 				var fullLoadPower = -response.ElectricMotor.MaxDriveTorque * response.ElectricMotor.AngularVelocity;
 				var reserve = 1 - response.ElectricMotor.PowerRequest / fullLoadPower;
-				if (reserve < GearshiftParams.StartTorqueReserve / 2.0) {
+
+                var avgElectricMotorSpeed = (response.ElectricMotor.AngularVelocity + EMinfo.ElectricMotorSpeed) / 2.0;
+
+                var inertiaTorque = -Formulas.InertiaPower(response.ElectricMotor.AngularVelocity, EMinfo.ElectricMotorSpeed, EMInertia, dt) / avgElectricMotorSpeed;
+                var avgMaxRecuperationTorqueEM = VectoMath.Min(response.ElectricMotor.MaxRecuperationTorqueEM,
+                    currentResponse.ElectricMotor.MaxRecuperationTorqueEM * EMinfo.ElectricMotorSpeed / avgElectricMotorSpeed);
+                // recupTorque esti;ation is correct at 5%
+                var inertiaTorqueReserve = 1 - inertiaTorque / avgMaxRecuperationTorqueEM;
+
+                if (reserve < GearshiftParams.StartTorqueReserve / 2.0 || inertiaTorqueReserve<=0.0) {
 					continue;
 				}
 
