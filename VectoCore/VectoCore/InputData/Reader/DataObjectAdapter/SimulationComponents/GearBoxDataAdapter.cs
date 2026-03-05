@@ -508,7 +508,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					}
 				},
 				RatioADC = em.RatioADC,
-				RatioPerGear = em.RatioPerGear
+				RatioPerGear = em.RatioPerGear,
+				TransmissionLossMap = em.TransmissionLossMap
 			};
 			var deratedEmShiftPolygon = shiftPolygonCalculator.ComputeElectricMotorDeclarationShiftPolygon(
 				gearbox.Type, (int)i,
