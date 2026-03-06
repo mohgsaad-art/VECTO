@@ -491,7 +491,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				// this has to be done _after_ the powertrain is connected together so that the cluch already has its nextComponent set (necessary in the idle controlelr)
 				if (gearbox is IAPTGearbox atGbx) {
 					atGbx.IdleController = idleController;
-					ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
 				} else {
 					clutch.IdleController = idleController;
 				}
