@@ -2445,6 +2445,82 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return result;
 		}
 
+		public static IWeightedResult CalculateWeightedSummary(IList<IResultEntry> entries, IDictionary<Tuple<MissionType, LoadingType>, double> weightingFactors)
+		{
+			if (entries == null || !entries.Any()) {
+				return null;
+			}
+
+			if (weightingFactors.Values.Sum().IsEqual(0)) {
+				return null;
+			}
+
+			double WeightFactor(IResultEntry e) => weightingFactors[Tuple.Create(e.Mission, e.LoadingType)];
+
+			var fuels = entries.First().FuelData;
+			var result = new WeightedResult()
+			{
+				Status = VectoRun.Status.Success,
+				JobType = entries.First().VectoRunData.JobType,
+				OffVehicleCharging = false,
+				AverageSpeed = null,
+				AverageDrivingSpeed = null,
+				Distance = entries.Sum(e => e.Distance * WeightFactor(e)),
+				Payload = entries.Sum(e => e.Payload * WeightFactor(e)),
+				CargoVolume = entries.All(e => e.CargoVolume != null) ? entries.Sum(e => e.CargoVolume * WeightFactor(e)) : 0.SI<CubicMeter>(),
+				PassengerCount = entries.All(e => e.PassengerCount != null) ? entries.Sum(e => e.PassengerCount.GetValueOrDefault(0) * WeightFactor(e)) : (double?)null,
+				FuelConsumption = fuels.Select(f => Tuple.Create(f,
+						entries.All(e => e.FuelConsumptionFinal(f.FuelType) != null) ? entries.Sum(e =>
+							e.FuelConsumptionFinal(f.FuelType).TotalFuelConsumptionCorrected * WeightFactor(e)) : null))
+					.ToDictionary(x => x.Item1, x => x.Item2),
+				FuelConsumptionPerMeter = fuels.Select(f => Tuple.Create(f,
+						entries.All(e => e.FuelConsumptionFinal(f.FuelType) != null) ? entries.Sum(e =>
+							(e.FuelConsumptionFinal(f.FuelType).TotalFuelConsumptionCorrected / e.Distance) * WeightFactor(e)) : null))
+					.ToDictionary(x => x.Item1, x => x.Item2),
+				ElectricEnergyConsumption = entries.All(e => e.ElectricEnergyConsumption != null) ? entries.Sum(e => e.ElectricEnergyConsumption * WeightFactor(e)) : null,
+				CO2PerMeter = entries.All(e => e.CO2Total != null) ? entries.Sum(e => (e.CO2Total / e.Distance) * WeightFactor(e)) : null,
+				ActualChargeDepletingRange = entries.All(e => e.ActualChargeDepletingRange != null) ? entries.Sum(e => e.ActualChargeDepletingRange * WeightFactor(e)) : null,
+				EquivalentAllElectricRange = entries.All(e => e.EquivalentAllElectricRange != null) ? entries.Sum(e => e.EquivalentAllElectricRange * WeightFactor(e)) : null,
+				ZeroCO2EmissionsRange = entries.All(e => e.ZeroCO2EmissionsRange != null) ? entries.Sum(e => e.ZeroCO2EmissionsRange * WeightFactor(e)) : null,
+				HydrogenRange = entries.All(e => e.HydrogenRange != null) ? entries.Sum(e => e.HydrogenRange * WeightFactor(e)) : null,
+				BeginOfLifeRanges = new ElectricRangesPEV() {
+					ActualChargeDepletingRange = entries.All(e => e.BeginOfLifeRanges.ActualChargeDepletingRange != null)
+						? entries.Sum(e => e.BeginOfLifeRanges.ActualChargeDepletingRange * WeightFactor(e))
+						: null,
+					EquivalentAllElectricRange = entries.All(e => e.BeginOfLifeRanges.EquivalentAllElectricRange != null)
+						? entries.Sum(e => e.BeginOfLifeRanges.EquivalentAllElectricRange * WeightFactor(e))
+						: null,
+					ZeroCO2EmissionsRange = entries.All(e => e.BeginOfLifeRanges.ZeroCO2EmissionsRange != null)
+						? entries.Sum(e => e.BeginOfLifeRanges.ZeroCO2EmissionsRange * WeightFactor(e))
+						: null,
+					ElectricEnergyConsumption = entries.All(e => e.BeginOfLifeRanges.ElectricEnergyConsumption != null)
+						? entries.Sum(e => e.BeginOfLifeRanges.ElectricEnergyConsumption * WeightFactor(e))
+						: null,
+				},
+				EndOfLifeRanges = new ElectricRangesPEV()
+				{
+					ActualChargeDepletingRange = entries.All(e => e.EndOfLifeRanges.ActualChargeDepletingRange != null)
+						? entries.Sum(e => e.EndOfLifeRanges.ActualChargeDepletingRange * WeightFactor(e))
+						: null,
+					EquivalentAllElectricRange = entries.All(e => e.EndOfLifeRanges.EquivalentAllElectricRange != null)
+						? entries.Sum(e => e.EndOfLifeRanges.EquivalentAllElectricRange * WeightFactor(e))
+						: null,
+					ZeroCO2EmissionsRange = entries.All(e => e.EndOfLifeRanges.ZeroCO2EmissionsRange != null)
+						? entries.Sum(e => e.EndOfLifeRanges.ZeroCO2EmissionsRange * WeightFactor(e))
+						: null,
+					ElectricEnergyConsumption = entries.All(e => e.EndOfLifeRanges.ElectricEnergyConsumption != null)
+						? entries.Sum(e => e.EndOfLifeRanges.ElectricEnergyConsumption * WeightFactor(e))
+						: null,
+				},
+				UtilityFactor = double.NaN,
+				AuxHeaterFuel = entries.First().AuxHeaterFuel,
+				ZEV_CO2 = entries.Sum(e => ((e?.ZEV_CO2 ?? 0.SI<Kilogram>()) / e.Distance) * WeightFactor(e)),
+				ZEV_FuelConsumption_AuxHtr = entries.Sum(e => ((e?.ZEV_FuelConsumption_AuxHtr ?? 0.SI<Kilogram>()) / e.Distance) * WeightFactor(e)),
+			};
+
+			return result;
+		}
+
 		public static IWeightedResult CalculateWeightedSummary(IList<IOVCResultEntry> entries)
 		{
 			if (entries == null || !entries.Any()) {

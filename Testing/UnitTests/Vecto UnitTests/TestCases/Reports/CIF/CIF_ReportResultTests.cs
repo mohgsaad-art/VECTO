@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -295,5 +297,92 @@ public class CIF_ReportResultTests
         // WriteToFile("CIF", doc, runData, success, exempted);
     }
 
-   
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_Summary: Class11 has 3 summaries"),
+        TestCase(VehicleClass.Class12, VehicleCategory.Tractor, TestName = "CIF_EHC_Summary: Class12 has 3 summaries"),
+        TestCase(VehicleClass.Class16, VehicleCategory.RigidTruck, TestName = "CIF_EHC_Summary: Class16 has 3 summaries"),
+    ]
+    public void Test_CIF_EHC_Summary_ThreeSummariesForEHCGroups(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        var missions = new[]
+        {
+            (MissionType.LongHaul,            LoadingType.LowLoading),
+            (MissionType.LongHaul,            LoadingType.ReferenceLoad),
+            (MissionType.RegionalDelivery,    LoadingType.LowLoading),
+            (MissionType.RegionalDelivery,    LoadingType.ReferenceLoad),
+            (MissionType.Construction,        LoadingType.LowLoading),
+            (MissionType.Construction,        LoadingType.ReferenceLoad),
+            (MissionType.LongHaulEMS,         LoadingType.LowLoading),
+            (MissionType.LongHaulEMS,         LoadingType.ReferenceLoad),
+            (MissionType.RegionalDeliveryEMS, LoadingType.LowLoading),
+            (MissionType.RegionalDeliveryEMS, LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = missions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = vehicleClass;
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var firstEntry = resultEntries.First();
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+
+        Assert.NotNull(results);
+
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var summaryCount = doc.Descendants(CIF_NS + "Summary").Count();
+
+        Assert.AreEqual(3, summaryCount, "Expected 3 Summary elements in CIF report for EHC group");
+    }
+
+    [Test]
+    public void Test_CIF_EHC_Summary_NonEHCGroupHasNoThirdSummary()
+    {
+        var missions = new[]
+        {
+            (MissionType.LongHaul,         LoadingType.LowLoading),
+            (MissionType.LongHaul,         LoadingType.ReferenceLoad),
+            (MissionType.RegionalDelivery, LoadingType.LowLoading),
+            (MissionType.RegionalDelivery, LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = missions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(VehicleCategory.RigidTruck,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = VehicleClass.Class5;
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            VehicleCategory.RigidTruck.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+
+        Assert.NotNull(results);
+
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var summaryCount = doc.Descendants(CIF_NS + "Summary").Count();
+
+        Assert.AreEqual(1, summaryCount, "Expected 1 Summary element in CIF report for non-EHC group");
+    }
+
+
 }

@@ -152,6 +152,23 @@ namespace TUGraz.VectoCommon.Utils
 			return (xint - x1) * (y2 - y1) / (x2 - x1) + y1;
 		}
 
+		public static double? Extrapolate(double? x0, double? x1, double? y0, double? y1, double? interpolationTarget)
+		{
+			double? a = 0; 
+			if (!(x0 - x1).Value.IsEqual(0, 1e-9))
+			{
+				a = ((y0 - y1) / (x0 - x1)) * interpolationTarget;
+			}
+
+			double? b = y1;
+			if (!(x0 - x1).Value.IsEqual(0, 1e-9))
+			{
+				b += ((y1 - y0) / (x0 - x1)) * x1;
+			}
+
+			return a + b;
+		}
+
 		/// <summary>
 		/// Returns the absolute value.
 		/// </summary>
