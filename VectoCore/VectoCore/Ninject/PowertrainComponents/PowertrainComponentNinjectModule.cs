@@ -292,10 +292,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
                 {IEPCGearbox, iepcGearboxT},
 				{APTNGearbox, iepcGearboxT},
             };
-			var GbxClass_Distance_Multiple = new Dictionary<GearboxType, Type>() {
-                {IEPCGearbox, iepcGearboxT},
-                {APTNGearbox, aptnGearboxT},
-            };
+
             #endregion
 
             #region measured speed
@@ -390,11 +387,8 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
                     { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.BatteryElectricVehicle) , GbxClass_Distance_PEV},
                     { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.IEPC_E) , GbxClass_Distance_EIEPC},
 					{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV) , GbxClass_Distance_PEV},
-					{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV_IEPC) , GbxClass_Distance_EIEPC},
-					{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_PEV), GbxClass_Distance_Multiple },
-                    { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_FCHV), GbxClass_Distance_Multiple },
-                    { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_SHEV), GbxClass_Distance_Multiple },
-					// measured speed cycles
+					{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV_IEPC) , GbxClass_Distance_EIEPC}, 
+                    // measured speed cycles
 					{ Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ConventionalVehicle) , GbxClass_MeasSpd_Conv},
                     { Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasSpd_PHEV},
                     { Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.IHPC) , GbxClass_MeasSpd_IHPC},
@@ -510,10 +504,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.IEPC_E) , GbxClass_Distance_EIEPC},
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV) , GbxClass_Distance_PEV},
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV_IEPC) , GbxClass_Distance_EIEPC},
-				
-
-				
-			
+                
 
                 { Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ConventionalVehicle) , GbxClass_MeasuredSpd_Conv},
 				{ Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasuredSpd_PHEV},
@@ -524,9 +515,9 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				{ Tuple.Create(CycleType.MeasuredSpeedGear, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasuredSpdGear_PHEV},
 				
 				//Multiple Powertrains
-				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_FCHV), GbxClass_Distance_PEV},
-				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_PEV) , GbxClass_Distance_PEV},
-				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_SHEV) , GbxClass_Distance_SHEV},
+				//{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_FCHV), GbxClass_Distance_PEV},
+				//{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_PEV) , GbxClass_Distance_PEV},
+				//{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_SHEV) , GbxClass_Distance_SHEV},
             };
         }
 

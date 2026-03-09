@@ -197,7 +197,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 			if (Validate && firstRun) {
 				ValidateVectoRunData(
-					run, data.JobType, data.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item1, data.GearboxSinglePwt?.Type,
+					run, data.JobType, 
+                    data.AxlePowertrains.Count > 1 ? null : data.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item1, 
+                    data.AxlePowertrains.Count > 1 ? null : data.GearboxSinglePwt?.Type,
 					data.Mission != null && data.Mission.MissionType.IsEMS());
 				firstRun = false;
 			}

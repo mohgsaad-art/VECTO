@@ -1247,7 +1247,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
 
 			var shiftstrategy = (axlePt.GearboxData.Gears.Count > 1) ? ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container, powertrainContainer) : null;
-			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftstrategy);
+			var gearbox = ComponentFactory.CreateGearbox(VectoSimulationJobType.IEPC_E, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftstrategy);
 
 			ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
 
