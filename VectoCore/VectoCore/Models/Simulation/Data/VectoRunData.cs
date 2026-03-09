@@ -85,22 +85,22 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ValidateObject]
 		public CombustionEngineData EngineData { get; internal set; }
 
-		[ValidateObject]
+		[JsonIgnore]
 		public GearboxData GearboxSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.GearboxData);
 			internal set => SetInSinglePowertrain((pt) => pt.GearboxData = value);
 		}
 
-		[ValidateObject]
-		public AxleGearData AxleGearSinglePwt
+        [JsonIgnore]
+        public AxleGearData AxleGearSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.AxleGearData);
 			internal set => SetInSinglePowertrain((pt) => pt.AxleGearData = value);
 		}
 
-		[ValidateObject]
-		public AngledriveData AngledriveSinglePwt
+        [JsonIgnore]
+        public AngledriveData AngledriveSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.AngledriveData);
 			internal set => SetInSinglePowertrain((pt) => pt.AngledriveData = value);
@@ -145,6 +145,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			}
 		}
 
+		[ValidateObject]
 		public IDictionary<AxleNumber, AxlePowertrainData> AxlePowertrainsDict = new Dictionary<AxleNumber, AxlePowertrainData>();
 
 
@@ -157,15 +158,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public IAuxiliaryConfig BusAuxiliaries { get; internal set; }
 
-		[ValidateObject]
-		public RetarderData RetarderSinglePwt
+        [JsonIgnore]
+        public RetarderData RetarderSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.Retarder);
 			internal set => SetInSinglePowertrain((pt) => pt.Retarder = value);
 		}
 
-		[ValidateObject]
-		public PTOData PTOSinglePwt
+        [JsonIgnore]
+        public PTOData PTOSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.PTO);
 			internal set => SetInSinglePowertrain((pt) => pt.PTO = value);
@@ -199,6 +200,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public AuxFanData FanDataVTP { get; internal set; }
 
+		[JsonIgnore]
 		public IList<Tuple<PowertrainPosition, ElectricMotorData>> ElectricMachinesSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.ElectricMachinesData);
@@ -217,6 +219,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public VTPData VTPData { get; internal set; }
 
+		[JsonIgnore]
 		public ShiftStrategyParameters GearshiftParametersSinglePwt
 		{
 			get => GetFromSinglePowertrain(pt => pt.GearshiftParameters); 
@@ -320,29 +323,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public static ValidationResult ValidateRunData(VectoRunData runData, ValidationContext validationContext)
 		{
-			var gearboxData = runData.GearboxSinglePwt;
-			var engineData = runData.EngineData;
-
-			var jobType = GetSimulationJobType(validationContext);
-
-			if (jobType == VectoSimulationJobType.ConventionalVehicle || jobType == VectoSimulationJobType.ParallelHybridVehicle) {
-				if (runData.AxleGearSinglePwt == null) {
-					return new ValidationResult("Axlegear data is required for conventional and parallel hybrid vehicles!");
-				}
-				
-				if (gearboxData == null) {
-					return new ValidationResult("Gearbox data is required for conventional and parallel hybrid vehicles!");
-				}
-
-				if (engineData == null) {
-					return new ValidationResult("Combustion engine data is required for conventional and parallel hybrid vehicles!");
-				}
-
-				var validationResult = CheckPowertrainLossMapsSizeConventionalPT(runData, gearboxData, engineData);
-				if (validationResult != null) {
-					return validationResult;
-				}
-			}
+            var jobType = GetSimulationJobType(validationContext);
+            var result = runData.AxlePowertrains.Count == 1 
+                ? ValidateRunDataSinglePowertrain(runData, validationContext) 
+                : ValidateRunDataMultiplePowertrains(runData, validationContext);
+            if (result != ValidationResult.Success) {
+                return result;
+            }
 
 			if (runData.Cycle != null && runData.Cycle.Entries.Any(e => e.PTOActive == PTOActivity.PTOActivityDuringStop)) {
 
@@ -377,14 +364,48 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 				}
 			}
 
-			if (runData.ElectricMachinesSinglePwt?.Any(e => e.Item1 == PowertrainPosition.HybridP0) ?? false){
+			if (runData.AxlePowertrains.Count == 1 && (runData.ElectricMachinesSinglePwt?.Any(e => e.Item1 == PowertrainPosition.HybridP0) ?? false)){
 				return new ValidationResult("P0 Hybrids are modeled as SmartAlternator in the BusAuxiliary model.");
 			}
 
 			return ValidationResult.Success;
 		}
 
-		public IList<Tuple<EMPlacement, ElectricMotorData>> GetEMData()
+        private static ValidationResult ValidateRunDataMultiplePowertrains(VectoRunData runData, ValidationContext validationContext)
+        {
+			// TODO MQ 2026-03-09: Validate Rundata per Axlegear
+            return ValidationResult.Success;
+        }
+
+        private static ValidationResult ValidateRunDataSinglePowertrain(VectoRunData runData, ValidationContext validationContext)
+        {
+            var gearboxData = runData.GearboxSinglePwt;
+            var engineData = runData.EngineData;
+
+            var jobType = GetSimulationJobType(validationContext);
+
+            if (jobType == VectoSimulationJobType.ConventionalVehicle || jobType == VectoSimulationJobType.ParallelHybridVehicle) {
+                if (runData.AxleGearSinglePwt == null) {
+                    return new ValidationResult("Axlegear data is required for conventional and parallel hybrid vehicles!");
+                }
+
+                if (gearboxData == null) {
+                    return new ValidationResult("Gearbox data is required for conventional and parallel hybrid vehicles!");
+                }
+
+                if (engineData == null) {
+                    return new ValidationResult("Combustion engine data is required for conventional and parallel hybrid vehicles!");
+                }
+
+                var validationResult = CheckPowertrainLossMapsSizeConventionalPT(runData, gearboxData, engineData);
+                if (validationResult != null) {
+                    return validationResult;
+                }
+            }
+            return ValidationResult.Success;
+        }
+
+        public IList<Tuple<EMPlacement, ElectricMotorData>> GetEMData()
 		{
 			return AxlePowertrainsDict
 				.SelectMany(kv => kv.Value.ElectricMachinesData
