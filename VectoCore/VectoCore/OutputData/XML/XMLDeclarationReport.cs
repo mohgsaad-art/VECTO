@@ -445,7 +445,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			bool isNormalWeights = sumWeightingFactors.IsEqual(0) || sumWeightingFactors.IsEqual(1, 1e-12);
 			bool isVocationalWeights = sumWeightingFactors.IsEqual(2.0, 1e-12); ;
 			if (!isNormalWeights && !isVocationalWeights) {
-				throw new VectoException("Mission Profile Weighting factors or Mission Profile Weighting factors for Vocational misisons do not sum up to 1!");
+				throw new VectoException("Mission Profile Weighting factors or Mission Profile Weighting factors for Vocational missions do not sum up to 1!");
 			}
 
 			ManufacturerRpt.WriteResult(result);

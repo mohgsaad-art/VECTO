@@ -22,6 +22,11 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.Mission)).ToList());
 			var weightedVocationals = DeclarationData.CalculateWeightedSummary(entries.Where(e => vocationalMissions.Contains(e.Mission)).ToList());
+
+			// For Group 16 vehicles normal weights is null. The report needs both always.
+			bool isClass16 = entries.All(e => e.VehicleClass == VehicleClass.Class16);
+			weighted = isClass16 && weighted  == null ? weightedVocationals : weighted;
+
 			return DoGetElement(weighted, weightedVocationals);
 		}
 
@@ -29,6 +34,11 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.ChargeDepletingResult.Mission)).ToList());
 			var weightedVocationals = DeclarationData.CalculateWeightedSummary(entries.Where(e => vocationalMissions.Contains(e.ChargeDepletingResult.Mission)).ToList());
+
+			// For Group 16 vehicles normal weights is null. The report needs both always.
+			bool isClass16 = entries.All(e => e.ChargeDepletingResult.VehicleClass == VehicleClass.Class16);
+			weighted = isClass16 && weighted == null ? weightedVocationals : weighted;
+
 			return DoGetElement(weighted, weightedVocationals);
 		}
 
@@ -41,6 +51,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 				if (weightedResult == null)
 				{
 					results.Add(null);
+					isVocational = !isVocational;
 					continue;
 				}
 
