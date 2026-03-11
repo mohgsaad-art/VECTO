@@ -1,12 +1,92 @@
 ﻿using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
 using TUGraz.VectoCore.Tests.Utils;
+using static TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor.ElectricMotorFullLoadCurve;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 
 public class ElectricMotorFullLoadCurveTests
 {
+    const double Epsilon = 1e-7;
+    static FullLoadEntry _entry1 = new FullLoadEntry() { MotorSpeed = 0.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+    static FullLoadEntry _entry1Equal = new FullLoadEntry() { MotorSpeed = 0.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+    static FullLoadEntry _entry2 = new FullLoadEntry() { MotorSpeed = 1.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+    static FullLoadEntry _entry3 = new FullLoadEntry() { MotorSpeed = 0.SI<PerSecond>(), FullDriveTorque = 1.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+    static FullLoadEntry _entry4 = new FullLoadEntry() { MotorSpeed = 0.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 1.SI<NewtonMeter>() };
+    static FullLoadEntry _entry1Close = new FullLoadEntry() { MotorSpeed = 0.001.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+    static FullLoadEntry _entry1Epsilon = new FullLoadEntry() { MotorSpeed = Epsilon.SI<PerSecond>(), FullDriveTorque = 0.SI<NewtonMeter>(), FullGenerationTorque = 0.SI<NewtonMeter>() };
+
+    public static IEnumerable<object[]> FullLoadEntryComparerEqualsTestCases()
+    {
+        yield return new object[] { null, null, true };
+        yield return new object[] { _entry1, null, false };
+        yield return new object[] { null, _entry1, false };
+        yield return new object[] { _entry1, _entry1, true };
+        yield return new object[] { _entry1, _entry1Equal, true };
+        yield return new object[] { _entry1, _entry2, false };
+        yield return new object[] { _entry1, _entry3, false };
+        yield return new object[] { _entry1, _entry4, false };
+        yield return new object[] { _entry1, _entry1Close, false };
+        yield return new object[] { _entry1, _entry1Epsilon, true };
+    }
+
+    [Test, TestCaseSource(nameof(FullLoadEntryComparerEqualsTestCases))]
+    public void Test_FullLoadEntryComparer_Equals(FullLoadEntry a, FullLoadEntry b, bool expected)
+    {
+        var result = (new FullLoadEntryComparer()).Equals(a, b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    public static IEnumerable<object[]> EqualityTestCases()
+    {
+        var dc1 = new ElectricMotorFullLoadCurve(new List<FullLoadEntry>() { _entry1 });
+        var dc1Equal = new ElectricMotorFullLoadCurve(new List<FullLoadEntry>() { _entry1 });
+        var dc2 = new ElectricMotorFullLoadCurve(new List<FullLoadEntry>() { _entry2 });
+        var dc3 = new ElectricMotorFullLoadCurve(new List<FullLoadEntry>() { _entry3 });
+        var dc4 = new ElectricMotorFullLoadCurve(new List<FullLoadEntry>() { _entry1, _entry1 });
+
+        yield return new object[] { null, null, true };
+        yield return new object[] { dc1, null, false };
+        yield return new object[] { null, dc1, false };
+        yield return new object[] { dc1, dc1, true };
+        yield return new object[] { dc1, dc1Equal, true };
+        yield return new object[] { dc2, dc1, false };
+        yield return new object[] { dc3, dc1, false };
+        yield return new object[] { dc4, dc1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorFullLoadCurve_OperatorEqual(ElectricMotorFullLoadCurve a, ElectricMotorFullLoadCurve b, bool expected)
+    {
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorFullLoadCurve_OperatorNotEqual(ElectricMotorFullLoadCurve a, ElectricMotorFullLoadCurve b, bool notExpected)
+    {
+        var result = (a != b);
+
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorFullLoadCurve_Equals(ElectricMotorFullLoadCurve a, ElectricMotorFullLoadCurve b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase()]
     public void TestEmTorqueLimit_DriveTorqueBelowEM()
     {

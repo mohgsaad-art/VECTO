@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -37,7 +38,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
-	public class AngledriveData : SimulationComponentData
+	public class AngledriveData : SimulationComponentData, IEquatable<AngledriveData>
 	{
 		[ValidateObject] public TransmissionData Angledrive;
 
@@ -45,5 +46,44 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[JsonIgnore]
 		public IAngledriveInputData InputData { get; internal set; }
-	}
+
+        public override bool Equals(object obj) => Equals(obj as AngledriveData);
+
+        public override int GetHashCode()
+        {
+            return (Angledrive, Type).GetHashCode();
+        }
+
+        public bool Equals(AngledriveData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (Angledrive == other.Angledrive) && (Type == other.Type);
+        }
+
+        public static bool operator ==(AngledriveData ang1, AngledriveData ang2)
+        {
+            if (ReferenceEquals(ang1, ang2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(ang1, null) || ReferenceEquals(ang2, null))
+            {
+                return false;
+            }
+
+            return ang1.Equals(ang2);
+        }
+
+        public static bool operator !=(AngledriveData ang1, AngledriveData ang2) => !(ang1 == ang2);
+    }
 }

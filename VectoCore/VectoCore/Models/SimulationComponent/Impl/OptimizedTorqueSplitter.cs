@@ -35,6 +35,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override Dictionary<ITnOutPort, double> ConfigureTorqueRatio(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
+            var same = DataBus.Powertrains.First().Value.AxlePowertrainData == DataBus.Powertrains.Last().Value.AxlePowertrainData;
+
             var bestTorqueRatio = (_torqueRatioCombinations.Count() == 1)
                 ? _torqueRatioCombinations.First()
                 : SelectBestTorqueRatio(PerformRequestOnTestPowertrainForEachTorqueRatioCombination(absTime, dt, outTorque, outAngularVelocity, dryRun));

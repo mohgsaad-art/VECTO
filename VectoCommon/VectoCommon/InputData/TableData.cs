@@ -29,11 +29,12 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Data;
 
 namespace TUGraz.VectoCommon.InputData
 {
-	public class TableData : DataTable
+	public class TableData : DataTable, IEquatable<TableData>
 	{
 		public TableData(string fileName, DataSourceType sourceType = DataSourceType.CSVFile)
 		{
@@ -50,5 +51,66 @@ namespace TUGraz.VectoCommon.InputData
 		public DataSourceType SourceType { get; protected set; }
 
 		public string Source { get; protected set; }
-	}
+
+        public override bool Equals(object obj) => Equals(obj as TableData);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(TableData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            
+            return IsEqual(other);
+        }
+
+        private bool IsEqual(TableData tbl2)
+        {
+            if ((Rows.Count != tbl2.Rows.Count) || (Columns.Count != tbl2.Columns.Count))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < Rows.Count; i++)
+            {
+                for (int c = 0; c < Columns.Count; c++)
+                {
+                    if (!Equals(Rows[i][c], tbl2.Rows[i][c]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public static bool operator ==(TableData td1, TableData td2)
+        {
+            if (ReferenceEquals(td1, td2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(td1, null) || ReferenceEquals(td2, null))
+            {
+                return false;
+            }
+
+            return td1.Equals(td2);
+        }
+
+        public static bool operator !=(TableData td1, TableData td2) => !(td1 == td2);
+    }
+
 }

@@ -334,6 +334,42 @@ public class SIMathTests
         AssertHelper.AreRelativeEqual(3.SI(), (-3).SI().Abs());
     }
 
+    [
+        TestCase(null, null, true),
+        TestCase(0, null, false),
+        TestCase(null, 0, false),
+        TestCase(0, 0, true),
+        TestCase(0.001, 0.0, false),
+        TestCase(0.0000001, 0.0, true),
+    ]
+    public void SI_OperatorEqual(double? a, double? b, bool expected)
+    {
+        SI aSI = a?.SI<Watt>();
+        SI bSI = b?.SI<Watt>();
+
+        var result = (aSI == bSI);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [
+        TestCase(null, null, false),
+        TestCase(0, null, true),
+        TestCase(null, 0, true),
+        TestCase(0, 0, false),
+        TestCase(0.001, 0.0, true),
+        TestCase(0.0000001, 0.0, false),
+    ]
+    public void SI_OperatorNotEqual(double? a, double? b, bool expected)
+    {
+        SI aSI = a?.SI<Watt>();
+        SI bSI = b?.SI<Watt>();
+
+        var result = (aSI != bSI);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase]
     [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
     public void SI_Equality()

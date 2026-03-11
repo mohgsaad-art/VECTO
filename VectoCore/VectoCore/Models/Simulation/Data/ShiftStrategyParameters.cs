@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.Data {
-	public class ShiftStrategyParameters
+	public class ShiftStrategyParameters : IEquatable<ShiftStrategyParameters> 
 	{
 		public ShiftStrategyParameters()
 		{
@@ -15,8 +17,70 @@ namespace TUGraz.VectoCore.Models.Simulation.Data {
 			PEV_DownshiftSpeedFactor = 1;
 		}
 
-		
-		[Required, Range(0, 0.5)]
+        public override bool Equals(object obj) => Equals(obj as ShiftStrategyParameters);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(ShiftStrategyParameters other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+			
+            return TorqueReserve.IsEqual(other.TorqueReserve)
+				&& (TimeBetweenGearshifts == other.TimeBetweenGearshifts)
+				&& StartTorqueReserve.IsEqual(other.StartTorqueReserve)
+				&& (StartSpeed == other.StartSpeed)
+				&& (StartAcceleration == other.StartAcceleration)
+				&& (UpshiftAfterDownshiftDelay == other.UpshiftAfterDownshiftDelay)
+				&& (DownshiftAfterUpshiftDelay == other.DownshiftAfterUpshiftDelay)
+				&& (UpshiftMinAcceleration == other.UpshiftMinAcceleration)
+				&& RatingFactorCurrentGear.IsEqual(other.RatingFactorCurrentGear)
+				&& RatioEarlyDownshiftFC.IsEqual(other.RatioEarlyDownshiftFC)
+				&& RatioEarlyUpshiftFC.IsEqual(other.RatioEarlyUpshiftFC)
+				&& (AllowedGearRangeFC == other.AllowedGearRangeFC)
+				&& AccelerationFactor.IsEqual(other.AccelerationFactor)
+				&& VelocityDropFactor.IsEqual(other.VelocityDropFactor)
+				&& (GearshiftLines == other.GearshiftLines)
+                && LoadstageThresholds.IsEqual(other.LoadstageThresholds, new DoubleComparer())
+                && (MinEngineSpeedPostUpshift == other.MinEngineSpeedPostUpshift)
+                && (ATLookAheadTime == other.ATLookAheadTime)
+                && LoadStageThresoldsUp.IsEqual(other.LoadStageThresoldsUp, new DoubleComparer())
+				&& LoadStageThresoldsDown.IsEqual(other.LoadStageThresoldsDown, new DoubleComparer())
+                && ShiftSpeedsTCToLocked.IsEqual(other.ShiftSpeedsTCToLocked, new DoubleComparer())
+                && PEV_TargetSpeedBrakeNorm.IsEqual(other.PEV_TargetSpeedBrakeNorm)
+				&& PEV_DownshiftMinSpeedFactor.IsEqual(other.PEV_DownshiftMinSpeedFactor)
+				&& PEV_DeRatedDownshiftSpeedFactor.IsEqual(other.PEV_DeRatedDownshiftSpeedFactor)
+				&& PEV_DownshiftSpeedFactor.IsEqual(other.PEV_DownshiftSpeedFactor);
+        }
+
+        public static bool operator ==(ShiftStrategyParameters param1, ShiftStrategyParameters param2)
+        {
+            if (ReferenceEquals(param1, param2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(param1, null) || ReferenceEquals(param2, null))
+            {
+                return false;
+            }
+
+            return param1.Equals(param2);
+        }
+
+        public static bool operator !=(ShiftStrategyParameters param1, ShiftStrategyParameters param2) => !(param1 == param2);
+
+        [Required, Range(0, 0.5)]
 		public double TorqueReserve { get; internal set; } 
 
 		/// <summary>

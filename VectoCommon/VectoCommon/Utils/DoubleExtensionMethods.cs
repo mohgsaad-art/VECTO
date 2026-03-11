@@ -69,7 +69,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsEqual(this double self, double other, double tolerance = Tolerance)
 		{
-			return Math.Abs(self - other) < tolerance;
+			return ((self is double.NaN) && (other is double.NaN)) || (Math.Abs(self - other) < tolerance);
 		}
 
 		[DebuggerStepThrough]
@@ -330,6 +330,19 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsNaN(this double self) => double.IsNaN(self);
 	}
+
+	public class DoubleComparer : IEqualityComparer<double>
+	{
+        public bool Equals(double x, double y)
+        {
+            return x.IsEqual(y);
+        }
+
+        public int GetHashCode(double number)
+        {
+            return number.GetHashCode();
+        }
+    }
 
 	public static class FloatExtensionMethods
 	{

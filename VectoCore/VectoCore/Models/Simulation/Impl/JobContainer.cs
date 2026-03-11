@@ -226,7 +226,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					_runsRwLock.EnterWriteLock();
 					foreach (var run in factory.SimulationRuns())
 					{
-						var entry = new RunEntry(run, this, factory.JobNumber);
+                        var entry = new RunEntry(run, this, factory.JobNumber);
 						Runs.Add(entry);
 						_unfinishedRuns[run.RunIdentifier] = Byte.MinValue;
 						//_unfinishedRuns.Add(run.RunIdentifier);

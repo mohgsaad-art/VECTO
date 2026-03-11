@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TUGraz.VectoCommon.InputData;
@@ -37,17 +38,57 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 {
-	public class TransmissionData
-	{
+	public class TransmissionData : IEquatable<TransmissionData>
+
+    {
 		[ValidateObject]
 		public TransmissionLossMap LossMap { get; internal set; }
 
 		[Required, RangeOrNaN(double.Epsilon, 500)]
 		public double Ratio { get; internal set; }
-	}
+
+        public override bool Equals(object obj) => Equals(obj as TransmissionData);
+
+        public override int GetHashCode()
+        {
+            return (LossMap, Ratio).GetHashCode();
+        }
+
+        public bool Equals(TransmissionData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+			return (other.LossMap == LossMap) && other.Ratio.IsEqual(Ratio);
+        }
+
+        public static bool operator ==(TransmissionData transmission1, TransmissionData transmission2)
+        {
+            if (ReferenceEquals(transmission1, transmission2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(transmission1, null) || ReferenceEquals(transmission2, null))
+            {
+                return false;
+            }
+
+            return transmission1.Equals(transmission2);
+        }
+
+        public static bool operator !=(TransmissionData transmission1, TransmissionData transmission2) => !(transmission1 == transmission2);
+    }
 
 	[CustomValidation(typeof(GearData), "ValidateGearData")]
-	public class GearData : TransmissionData
+	public class GearData : TransmissionData, IEquatable<GearData>
 	{
 		public GearData()
 		{
@@ -72,7 +113,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		public NewtonMeter MaxTorque { get; internal set; }
 
 		public ShiftPolygon TorqueConverterShiftPolygon { get; set; }
-		
+
 		public ShiftPolygon DeRatedEmShiftPolygon { get; set; }
 
 		// ReSharper disable once UnusedMember.Global -- used via validation
@@ -86,16 +127,67 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			var jobType = validationService?.JobType ?? VectoSimulationJobType.ConventionalVehicle;
 			var emPos = validationService?.EMPowertrainPosition;
 
-			if (gearData.HasTorqueConverter) {
-				if (gearData.TorqueConverterShiftPolygon == null) {
+			if (gearData.HasTorqueConverter)
+			{
+				if (gearData.TorqueConverterShiftPolygon == null)
+				{
 					return new ValidationResult("Shift Polygon for Torque Converter Gear required!");
 				}
 				var result = gearData.TorqueConverterShiftPolygon.Validate(mode, jobType, emPos, gbxType, emsMission);
-				if (result.Any()) {
+				if (result.Any())
+				{
 					return new ValidationResult("Validation of GearData failed", result.Select(x => x.ErrorMessage));
 				}
 			}
 			return ValidationResult.Success;
 		}
-	}
+
+		public override bool Equals(object obj) => Equals(obj as GearData);
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		public bool Equals(GearData other)
+		{
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(other, null))
+			{
+				return false;
+			}
+
+			return base.Equals(other)
+				&& TorqueConverterRatio.IsEqual(other.TorqueConverterRatio)
+				&& (TorqueConverterGearLossMap == other.TorqueConverterGearLossMap)
+				&& (MaxSpeed == other.MaxSpeed)
+				&& (MaxTorque == other.MaxTorque)
+				&& (ShiftPolygon == other.ShiftPolygon)
+				&& (ExtendedShiftPolygon == other.ExtendedShiftPolygon)
+				&& (TorqueConverterShiftPolygon == other.TorqueConverterShiftPolygon)
+				&& (DeRatedEmShiftPolygon == other.DeRatedEmShiftPolygon);
+		}
+
+        public static bool operator ==(GearData gear1, GearData gear2)
+        {
+            if (ReferenceEquals(gear1, gear2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(gear1, null) || ReferenceEquals(gear2, null))
+            {
+                return false;
+            }
+
+            return gear1.Equals(gear2);
+        }
+
+        public static bool operator !=(GearData gear1, GearData gear2) => !(gear1 == gear2);
+
+    }
 }

@@ -46,7 +46,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace TUGraz.VectoCore.Utils
 {
-	public sealed class DelaunayMap : LoggingObject
+	public sealed class DelaunayMap : LoggingObject, IEquatable<DelaunayMap>
 	{
 		private ICollection<Point> _points = new HashSet<Point>();
 		private Triangle[] _triangles;
@@ -63,7 +63,46 @@ namespace TUGraz.VectoCore.Utils
 			_mapName = name;
 		}
 
-		public string Name => _mapName;
+        public override bool Equals(object obj) => Equals(obj as DelaunayMap);
+
+        public override int GetHashCode()
+        {
+            return _points.GetHashCode();
+        }
+
+		public bool Equals(DelaunayMap other)
+		{
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(other, null))
+			{
+				return false;
+			}
+
+			return (_mapName == other._mapName) &&_points.SequenceEqual(other._points, new PointComparer());
+		}
+
+        public static bool operator ==(DelaunayMap map1, DelaunayMap map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(DelaunayMap map1, DelaunayMap map2) => !(map1 == map2);
+
+        public string Name => _mapName;
 
 		public void AddPoint(double x, double y, double z)
 		{

@@ -2282,12 +2282,21 @@ namespace TUGraz.VectoCommon.Utils
 
 		public static bool operator ==(SI left, SI right)
 		{
-			return Equals(left, right);
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+            {
+                return false;
+            }
+
+            return left.IsEqual(right);
 		}
 
 		public static bool operator !=(SI left, SI right)
 		{
-			return !Equals(left, right);
+			return !(left == right);
 		}
 
 		#endregion

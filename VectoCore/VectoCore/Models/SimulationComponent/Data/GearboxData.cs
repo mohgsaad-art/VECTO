@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	/// <remarks>The Axle Gear has its own Property "AxleGearData" and is *not included* in the Gears-Dictionary.</remarks>
 	[CustomValidation(typeof(GearboxData), "ValidateGearboxData")]
 	[DebuggerDisplay("GearboxData({Type}, #Gears: {Gears.Count}, ...)")]
-	public class GearboxData : SimulationComponentData
+	public class GearboxData : SimulationComponentData, IEquatable<GearboxData>
 	{
 		public GearboxData() {}
 
@@ -154,5 +154,52 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			}
 			return ValidationResult.Success;
 		}
-	}
+
+        public override bool Equals(object obj) => Equals(obj as GearboxData);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+		public bool Equals(GearboxData other)
+		{
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(other, null))
+			{
+				return false;
+			}
+
+            return (Type == other.Type)
+                && Gears.SequenceEqual(other.Gears)
+                && (TorqueConverterData == other.TorqueConverterData)
+                && (Inertia == other.Inertia)
+                && (TractionInterruption == other.TractionInterruption)
+                && (PowershiftShiftTime == other.PowershiftShiftTime)
+                && (ATEcoRollReleaseLockupClutch == other.ATEcoRollReleaseLockupClutch)
+                && (DisengageWhenHaltingSpeed == other.DisengageWhenHaltingSpeed)
+                && (ShiftStrategy == other.ShiftStrategy);
+        }
+
+        public static bool operator ==(GearboxData gbx1, GearboxData gbx2)
+		{
+            if (ReferenceEquals(gbx1, gbx2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(gbx1, null) || ReferenceEquals(gbx2, null))
+            {
+                return false;
+            }
+
+            return gbx1.Equals(gbx2);
+        }
+
+        public static bool operator !=(GearboxData gbx1, GearboxData gbx2) => !(gbx1 == gbx2);
+    }
 }

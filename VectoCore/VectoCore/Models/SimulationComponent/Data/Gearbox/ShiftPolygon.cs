@@ -42,7 +42,7 @@ using TUGraz.VectoCommon.Utils;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 {
 	[CustomValidation(typeof(ShiftPolygon), "ValidateShiftPolygon")]
-	public class ShiftPolygon : SimulationComponentData
+	public class ShiftPolygon : SimulationComponentData, IEquatable<ShiftPolygon>
 	{
 		private readonly List<ShiftPolygonEntry> _upShiftPolygon;
 		private readonly List<ShiftPolygonEntry> _downShiftPolygon;
@@ -58,7 +58,47 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			_downShiftPolygon = downshift.ToList();
 		}
 
-		[JsonIgnore]
+        public override bool Equals(object obj) => Equals(obj as ShiftPolygon);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+		public bool Equals(ShiftPolygon other)
+		{
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(other, null))
+			{
+				return false;
+			}
+
+			var comparer = new ShiftPolygonEntryComparer();
+            return Upshift.SequenceEqual(other.Upshift, comparer) && Downshift.SequenceEqual(other.Downshift, comparer);
+		}
+
+        public static bool operator ==(ShiftPolygon sp1, ShiftPolygon sp2)
+        {
+            if (ReferenceEquals(sp1, sp2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(sp1, null) || ReferenceEquals(sp2, null))
+            {
+                return false;
+            }
+
+            return sp1.Equals(sp2);
+        }
+
+        public static bool operator !=(ShiftPolygon sp1, ShiftPolygon sp2) => !(sp1 == sp2);
+
+        [JsonIgnore]
 		public ReadOnlyCollection<ShiftPolygonEntry> Upshift => _upShiftPolygon.AsReadOnly();
 
 		[JsonIgnore]
@@ -199,6 +239,29 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			/// </summary>
 			public PerSecond AngularSpeed { get; set; }
 		}
+
+		public class ShiftPolygonEntryComparer : IEqualityComparer<ShiftPolygonEntry>
+		{
+            public bool Equals(ShiftPolygonEntry x, ShiftPolygonEntry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return (x.Torque == y.Torque) && (x.AngularSpeed == y.AngularSpeed);
+            }
+
+            public int GetHashCode(ShiftPolygonEntry obj)
+            {
+                return (obj is null) ? 0 : (obj.Torque, obj.AngularSpeed).GetHashCode();
+            }
+        }
 
 		public NewtonMeter InterpolateDownshift(PerSecond inAngularVelocity)
 		{

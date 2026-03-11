@@ -6,7 +6,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor {
-	public class ElectricMotorFullLoadCurve : SimulationComponentData
+	public class ElectricMotorFullLoadCurve : SimulationComponentData, IEquatable<ElectricMotorFullLoadCurve>
 	{
 		internal readonly List<FullLoadEntry> FullLoadEntries;
 		private NewtonMeter _maxDriveTorque;
@@ -22,8 +22,46 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor {
 			FullLoadEntries = entries;
 		}
 
+        public override bool Equals(object obj) => Equals(obj as ElectricMotorFullLoadCurve);
 
-		public NewtonMeter FullLoadDriveTorque(PerSecond angularVelocity)
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(ElectricMotorFullLoadCurve other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return FullLoadEntries.SequenceEqual(other.FullLoadEntries, new FullLoadEntryComparer());
+        }
+
+        public static bool operator ==(ElectricMotorFullLoadCurve c1, ElectricMotorFullLoadCurve c2)
+        {
+            if (ReferenceEquals(c1, c2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(c1, null) || ReferenceEquals(c2, null))
+            {
+                return false;
+            }
+
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(ElectricMotorFullLoadCurve c1, ElectricMotorFullLoadCurve c2) => !(c1 == c2);
+
+        public NewtonMeter FullLoadDriveTorque(PerSecond angularVelocity)
 		{
 			var idx = FindIndex(angularVelocity);
 			return VectoMath.Interpolate(FullLoadEntries[idx - 1].MotorSpeed, FullLoadEntries[idx].MotorSpeed,
@@ -81,7 +119,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor {
 		}
 
 		[DebuggerDisplay("{MotorSpeed.AsRPM}: {FullDriveTorque} / {FullGenerationTorque}")]
-		internal class FullLoadEntry
+        public class FullLoadEntry
 		{
 			public PerSecond MotorSpeed { get; set; }
 
@@ -90,7 +128,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor {
 			public NewtonMeter FullGenerationTorque { get; set; }
 		}
 
-		public string[] SerializedEntriesFullLoad
+        public class FullLoadEntryComparer : IEqualityComparer<FullLoadEntry>
+		{
+            public bool Equals(FullLoadEntry x, FullLoadEntry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return (x.MotorSpeed == y.MotorSpeed) && (x.FullDriveTorque == y.FullDriveTorque) && (x.FullGenerationTorque == y.FullGenerationTorque);
+            }
+
+            public int GetHashCode(FullLoadEntry obj)
+            {
+                return (obj is null) ? 0 : (obj.MotorSpeed, obj.FullDriveTorque, obj.FullGenerationTorque).GetHashCode();
+            }
+        }
+
+        public string[] SerializedEntriesFullLoad
 		{
 			get { return FullLoadEntries.Select(x => $"{x.MotorSpeed.AsRPM} [rpm] {x.FullDriveTorque} {x.FullGenerationTorque}").ToArray(); }
 		}
