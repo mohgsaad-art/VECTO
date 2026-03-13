@@ -144,29 +144,14 @@ namespace TUGraz.VectoCommon.Utils
 		/// Linearly interpolates a value between two points.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static double Interpolate(double x1, double x2, double y1, double y2, double xint)
+		public static double Interpolate(double x0, double x1, double y0, double y1, double target)
 		{
-			if ((x1 - x2).IsEqual(0, 1e-9) || (x1 - xint).IsEqual(0, 1e-9)) {
-				return y1;
-			}
-			return (xint - x1) * (y2 - y1) / (x2 - x1) + y1;
-		}
-
-		public static double? Extrapolate(double? x0, double? x1, double? y0, double? y1, double? interpolationTarget)
-		{
-			double? a = 0; 
-			if (!(x0 - x1).Value.IsEqual(0, 1e-9))
+			if ((x0 - x1).IsEqual(0, 1e-9) || (x0 - target).IsEqual(0, 1e-9))
 			{
-				a = ((y0 - y1) / (x0 - x1)) * interpolationTarget;
+				return y0;
 			}
 
-			double? b = y1;
-			if (!(x0 - x1).Value.IsEqual(0, 1e-9))
-			{
-				b += ((y1 - y0) / (x0 - x1)) * x1;
-			}
-
-			return a + b;
+			return (target - x0) * (y1 - y0) / (x1 - x0) + y0;
 		}
 
 		/// <summary>

@@ -175,8 +175,12 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 				if (y0 == null || y1 == null) continue;
 
-				var ehcFC = VectoMath.Extrapolate(x0.Value(), x1.Value(), y0.Value(), y1.Value(), ehcPayload.Value())
-					.Value.SI<KilogramPerMeter>();
+				var ehcFC = VectoMath.Interpolate(
+					x0.Value(),
+					x1.Value(),
+					y0.Value(),
+					y1.Value(),
+					ehcPayload.Value()).SI<KilogramPerMeter>();
 
 				var weightedFCPerKm = GetEHCWeightedValue(
 					ehcSegment,
@@ -186,10 +190,12 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 					ehcFC.Value(),
 					weightFactors)?.SI<KilogramPerMeter>();
 
+				var rdlFcTotal = rdl == null ? null : rdl.FuelConsumptionFinal(fuel.FuelType)?.FC_FINAL_KM * rdl.Distance;
+				var rdrFcTotal = rdr == null ? null : rdr.FuelConsumptionFinal(fuel.FuelType)?.FC_FINAL_KM * rdr.Distance;
 				var weightedFCTotal = GetEHCWeightedValue(
 					ehcSegment,
-					(rdl?.FuelConsumptionFinal(fuel.FuelType)?.FC_FINAL_KM * rdl?.Distance)?.Value(),
-					(rdr?.FuelConsumptionFinal(fuel.FuelType)?.FC_FINAL_KM * rdr?.Distance)?.Value(),
+					rdlFcTotal?.Value(),
+					rdrFcTotal?.Value(),
 					(lel.FuelConsumptionFinal(fuel.FuelType).FC_FINAL_KM * lel.Distance).Value(),
 					(ehcFC * ler.Distance).Value(),
 					weightFactors)?.SI<Kilogram>();
@@ -199,14 +205,15 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			}
 
 			var result = (WeightedResult)weightedEHC;
-			result.CO2PerMeter = fcPerMeter.Select((k) => k.Value * k.Key.CO2PerFuelWeight).Sum();
+			if (fcPerMeter.Any())
+				result.CO2PerMeter = fcPerMeter.Select((k) => k.Value * k.Key.CO2PerFuelWeight).Sum();
 			result.FuelConsumptionPerMeter = fcPerMeter;
 			result.FuelConsumption = fcTotal;
 			result.Payload = GetEHCWeightedValue(
 				ehcSegment,
-				rdl.Payload?.Value(),
-				rdr.Payload?.Value(),
-				lel.Payload?.Value(),
+				rdl?.Payload?.Value(),
+				rdr?.Payload?.Value(),
+				lel?.Payload?.Value(),
 				ehcPayload.Value(),
 				weightFactors)?.SI<Kilogram>();
 			return result;
@@ -221,7 +228,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			Dictionary<string, double> weights)
 		{
 			var rdEmsMission = ehcSegment.Missions.FirstOrDefault(m => m.MissionType == MissionType.RegionalDelivery);
-			if (rdEmsMission != null)
+			if (rdEmsMission != null && rdlValue != null && rdrValue != null)
 			{
 				return weights["rdl"] * rdlValue + weights["rdr"] * rdrValue + weights["lel"] * lelValue + weights["ler"] * lerValue;
 			}

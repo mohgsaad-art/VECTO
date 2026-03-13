@@ -225,6 +225,7 @@ public class ReportResultTestUtils
 			fc.Setup(x => x.TotalFuelConsumptionCorrected).Returns(31.SI<Kilogram>() * factor * ovcFactor);
 			fc.Setup(x => x.EnergyDemand).Returns(31.SI<Kilogram>() * factor * ovcFactor * FuelData.Diesel.LowerHeatingValueVecto);
 			fc.Setup(x => x.FC_AUXHTR_KM).Returns(0.SI<KilogramPerMeter>());
+			fc.Setup(x => x.FC_FINAL_KM).Returns((31.SI<Kilogram>() * factor * ovcFactor / 30000.SI<Meter>()).Cast<KilogramPerMeter>());
 			fcCorrected.Add(fuelType, fc.Object);
 		}
 		mc.Setup(x => x.FuelCorrection).Returns(fcCorrected);
