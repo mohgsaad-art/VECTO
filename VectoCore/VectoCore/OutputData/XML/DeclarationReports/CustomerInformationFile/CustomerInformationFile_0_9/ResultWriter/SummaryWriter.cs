@@ -76,10 +76,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 					new XAttribute(xsi + XMLNames.XSIType, ResultSummaryXMLType),
 					new XElement(TNS + XMLNames.XMLCustomerReportIsVocational, isVocational),
 					GetSummary(weightedResult),
-					FuelConsumptionWriter != null
-						? weightedResult.FuelConsumption.Select(x =>
-							FuelConsumptionWriter.GetElements(weightedResult))
-						: null,
+					FuelConsumptionWriter?.GetElements(weightedResult),
 					ElectricEnergyConsumptionWriter?.GetElement(weightedResult),
 					CO2Writer?.GetElements(weightedResult),
 					ElectricRangeWriter?.GetElements(weightedResult),
