@@ -92,10 +92,23 @@ public class VectoMathTests
         foreach (var comp in comparison) {
             Assert.AreEqual(0, comp, 1e-12);
         }
-    }
+	}
+
+	[TestCase(0.0, 10.0, 0.0, 5.0, 10.0, 5.0, TestName = "Extrapolate_AtX1_ReturnsY1")]
+	[TestCase(0.0, 10.0, 0.0, 5.0, 0.0, 0.0, TestName = "Extrapolate_AtX0_ReturnsY0")]
+	[TestCase(0.0, 10.0, 0.0, 5.0, 5.0, 2.5, TestName = "Extrapolate_Midpoint_ReturnsInterpolated")]
+	[TestCase(0.0, 10.0, 0.0, 5.0, 20.0, 10.0, TestName = "Extrapolate_BeyondX1_Extrapolates")]
+	[TestCase(0.0, 10.0, 0.0, 5.0, -5.0, -2.5, TestName = "Extrapolate_BelowX0_Extrapolates")]
+	[TestCase(5.0, 5.0, 3.0, 7.0, 99.0, 3.0, TestName = "Extrapolate_X0EqualsX1_ReturnsY1")]
+	public void VectoMath_Interpolate(double x0, double x1, double y0, double y1, double target, double expected)
+	{
+		var result = VectoMath.Interpolate(x0, x1, y0, y1, target);
+		Assert.IsNotNull(result);
+		Assert.AreEqual(expected, result, 1e-9);
+	}
 
 
-    [TestCase()]
+	[TestCase()]
     public void TestLeastSquaresFittingExact()
     {
         var entries = new[] {

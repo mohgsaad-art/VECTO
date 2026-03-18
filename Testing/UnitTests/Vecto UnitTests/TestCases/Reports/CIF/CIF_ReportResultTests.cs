@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using Moq;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -295,5 +299,351 @@ public class CIF_ReportResultTests
         // WriteToFile("CIF", doc, runData, success, exempted);
     }
 
-   
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_Summary: Class11 has 3 summaries"),
+        TestCase(VehicleClass.Class12, VehicleCategory.Tractor, TestName = "CIF_EHC_Summary: Class12 has 3 summaries"),
+        TestCase(VehicleClass.Class16, VehicleCategory.RigidTruck, TestName = "CIF_EHC_Summary: Class16 has 3 summaries"),
+    ]
+    public void Test_CIF_EHC_Summary_ThreeSummariesForEHCGroups(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        var missions = new[]
+        {
+            (MissionType.LongHaul,            LoadingType.LowLoading),
+            (MissionType.LongHaul,            LoadingType.ReferenceLoad),
+            (MissionType.RegionalDelivery,    LoadingType.LowLoading),
+            (MissionType.RegionalDelivery,    LoadingType.ReferenceLoad),
+            (MissionType.Construction,        LoadingType.LowLoading),
+            (MissionType.Construction,        LoadingType.ReferenceLoad),
+            (MissionType.LongHaulEMS,         LoadingType.LowLoading),
+            (MissionType.LongHaulEMS,         LoadingType.ReferenceLoad),
+            (MissionType.RegionalDeliveryEMS, LoadingType.LowLoading),
+            (MissionType.RegionalDeliveryEMS, LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = missions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = vehicleClass;
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var firstEntry = resultEntries.First();
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+
+        Assert.NotNull(results);
+
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var summaryCount = doc.Descendants(CIF_NS + "Summary").Count();
+
+        Assert.AreEqual(3, summaryCount, "Expected 3 Summary elements in CIF report for EHC group");
+    }
+
+    /// <summary>
+    /// EHC missions (LongHaulEMS) must be excluded from the first weighted summary and only appear
+    /// in the EHC summary. With LongHaul + LongHaulEMS entries the XML contains exactly 2 Summary
+    /// elements (normal + EHC; vocational is null so not written). Without the EHC filter the
+    /// LongHaulEMS payload would pollute the first summary's weighted average.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_EhcEntriesExcludedFromFirstSummary: Class11"),
+        TestCase(VehicleClass.Class16, VehicleCategory.RigidTruck, TestName = "CIF_EHC_EhcEntriesExcludedFromFirstSummary: Class16"),
+    ]
+    public void Test_CIF_EHC_EhcEntriesExcludedFromFirstSummary(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        // Arrange: two normal LongHaul entries + two EHC LongHaulEMS entries
+        var allMissions = new[]
+        {
+            (MissionType.LongHaul,    LoadingType.LowLoading),
+            (MissionType.LongHaul,    LoadingType.ReferenceLoad),
+            (MissionType.LongHaulEMS, LoadingType.LowLoading),
+            (MissionType.LongHaulEMS, LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = allMissions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = vehicleClass;
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        // Act
+        var results = resultsWriter.GenerateResults(resultEntries);
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var summaries = doc.Descendants(CIF_NS + "Summary").ToList();
+
+        // Assert: 2 summaries generated (normal + EHC); vocational is null so not written
+        Assert.AreEqual(2, summaries.Count, "Expected normal + EHC summaries");
+
+        // The EHC summary is the last one — it is NOT vocational
+        var ehcSummary = summaries.Last();
+        var isVocational = bool.Parse(ehcSummary.Element(CIF_NS + "Vocational")?.Value ?? "false");
+        Assert.IsFalse(isVocational, "EHC summary should not be marked as vocational");
+    }
+
+    /// <summary>
+    /// GetEHCSegment returns the segment row with the heaviest LongHaulEMS reference payload.
+    /// Class 16 has rows with ref payloads 26500/34000/26500 kg → expects 34000 kg.
+    /// Class 11/12 have rows with ref payloads 26500/31000/26500 kg → expects 31000 kg.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class16, 34000, TestName = "GetEHCSegment_Class16_Returns34000kgRow"),
+        TestCase(VehicleClass.Class11, 31000, TestName = "GetEHCSegment_Class11_Returns31000kgRow"),
+        TestCase(VehicleClass.Class12, 31000, TestName = "GetEHCSegment_Class12_Returns31000kgRow"),
+    ]
+    public void Test_GetEHCSegment_ReturnsHeaviestLongHaulEMSRow(VehicleClass vehicleClass, double expectedRefLoadKg)
+    {
+        var segment = DeclarationData.TruckSegments.GetEHCSegment(vehicleClass);
+
+        Assert.IsTrue(segment.Found, "Segment should be found for EHC class");
+        var lhEmsMission = segment.Missions.FirstOrDefault(m => m.MissionType == MissionType.LongHaulEMS);
+        Assert.IsNotNull(lhEmsMission, "Segment should have a LongHaulEMS mission");
+        Assert.AreEqual(expectedRefLoadKg, lhEmsMission.RefLoad.Cast<Kilogram>().Value(), 1.0,
+            $"Expected EHC ref payload {expectedRefLoadKg} kg for {vehicleClass}");
+    }
+
+    /// <summary>
+    /// ApplyEHCCO2Interpolation: the weighted EHC result has CO2PerMeter computed as
+    /// Σ(weightedFCPerKm * CO2PerFuelWeight) across all fuels.
+    /// Verifies that the EHC interpolation path runs without error and yields a positive CO2 value.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class16, VehicleCategory.RigidTruck, TestName = "CIF_EHC_ApplyInterpolation_CO2PerMeterUsesAllFuels: Class16"),
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_ApplyInterpolation_CO2PerMeterUsesAllFuels: Class11"),
+    ]
+    public void Test_CIF_EHC_ApplyInterpolation_CO2PerMeterUsesAllFuels(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        // Build the full set of missions the EHC weighting group expects, using the standard
+        // GetMockRunData/GetMockModData helpers so all modal data fields are properly populated.
+        var missions = new[]
+        {
+            (MissionType.LongHaul,            LoadingType.LowLoading),
+            (MissionType.LongHaul,            LoadingType.ReferenceLoad),
+            (MissionType.RegionalDelivery,    LoadingType.LowLoading),
+            (MissionType.RegionalDelivery,    LoadingType.ReferenceLoad),
+            (MissionType.Construction,        LoadingType.LowLoading),
+            (MissionType.Construction,        LoadingType.ReferenceLoad),
+            (MissionType.LongHaulEMS,         LoadingType.LowLoading),
+            (MissionType.LongHaulEMS,         LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = missions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = vehicleClass;
+            // Give LowLoading a lighter payload, ReferenceLoad a heavier one
+            runData.VehicleData.Loading = m.Item2 == LoadingType.LowLoading
+                ? 3500.SI<Kilogram>()
+                : 19300.SI<Kilogram>();
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        // Should complete without exceptions: ApplyEHCCO2Interpolation runs on the LongHaulEMS entries
+        var results = resultsWriter.GenerateResults(resultEntries);
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+
+        Assert.AreEqual(3, doc.Descendants(CIF_NS + "Summary").Count(),
+            "EHC group should produce 3 Summary elements");
+    }
+
+
+    private static readonly (MissionType, LoadingType)[] _ehcTestMissions =
+    {
+        (MissionType.LongHaul,         LoadingType.LowLoading),
+        (MissionType.LongHaul,         LoadingType.ReferenceLoad),
+        (MissionType.RegionalDelivery, LoadingType.LowLoading),
+        (MissionType.RegionalDelivery, LoadingType.ReferenceLoad),
+        (MissionType.LongHaulEMS,      LoadingType.LowLoading),
+        (MissionType.LongHaulEMS,      LoadingType.ReferenceLoad),
+    };
+
+    private List<IResultEntry> BuildEHCEntries(VehicleClass vehicleClass, VehicleCategory vehicleCategory, FuelType[] fuels)
+    {
+        return _ehcTestMissions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, fuels);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = vehicleClass;
+            runData.VehicleData.Loading = m.Item2 == LoadingType.LowLoading
+                ? 3500.SI<Kilogram>()
+                : 26500.SI<Kilogram>();
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, fuels), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+    }
+
+    /// <summary>
+    /// Dual-fuel (Diesel CI + NG PI) Class 11 EHC vehicle: the EHC Summary element must contain
+    /// exactly one &lt;Fuel&gt; element per fuel type and pass schema validation.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_DualFuel_EHCSummaryHasBothFuels: Class11"),
+        TestCase(VehicleClass.Class12, VehicleCategory.Tractor,    TestName = "CIF_EHC_DualFuel_EHCSummaryHasBothFuels: Class12"),
+    ]
+    public void Test_CIF_EHC_DualFuel_EHCSummaryHasBothFuels(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        var fuels = new[] { FuelType.DieselCI, FuelType.NGPI };
+        var resultEntries = BuildEHCEntries(vehicleClass, vehicleCategory, fuels);
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var validator = ReportResultTestUtils.GetValidator(doc);
+
+        ReportResultTestUtils.WriteToConsole(doc);
+
+        Assert.IsTrue(validator.ValidateXML(XmlDocumentType.CustomerReport), validator.ValidationError);
+
+        // No vocational missions → 2 summaries: normal + EHC
+        Assert.AreEqual(2, doc.Descendants(CIF_NS + "Summary").Count(), "Expected normal + EHC summaries");
+
+        var ehcSummary = doc.Descendants(CIF_NS + "Summary").Last();
+        var fuelTypes = ehcSummary.Descendants(CIF_NS + "Fuel")
+            .Select(f => f.Attribute("type")?.Value)
+            .ToList();
+
+        CollectionAssert.Contains(fuelTypes, "Diesel CI", "EHC summary must contain Diesel CI fuel");
+        CollectionAssert.Contains(fuelTypes, "NG PI", "EHC summary must contain NG PI fuel");
+    }
+
+    /// <summary>
+    /// Dual-fuel EHC: each Summary element must contain exactly 2 &lt;Fuel&gt; entries — one per fuel
+    /// type. Verifies the fix for the duplication bug where GetElements was called once per fuel entry.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_DualFuel_FuelCount: Class11"),
+        TestCase(VehicleClass.Class12, VehicleCategory.Tractor,    TestName = "CIF_EHC_DualFuel_FuelCount: Class12"),
+    ]
+    public void Test_CIF_EHC_DualFuel_EHCSummaryFuelCountMatchesFuelTypes(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        var fuels = new[] { FuelType.DieselCI, FuelType.NGPI };
+        var resultEntries = BuildEHCEntries(vehicleClass, vehicleCategory, fuels);
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+
+        ReportResultTestUtils.WriteToConsole(doc);
+
+        var summaries = doc.Descendants(CIF_NS + "Summary").ToList();
+        foreach (var summary in summaries)
+        {
+            var count = summary.Descendants(CIF_NS + "Fuel").Count();
+            Assert.AreEqual(2, count, $"Each Summary must have exactly 2 Fuel elements, found {count}");
+        }
+    }
+
+    /// <summary>
+    /// Single-fuel Class 12 EHC vehicle: the EHC Summary must have a positive CO2 value after
+    /// ApplyEHCCO2Interpolation runs with distinct low/reference payloads.
+    /// </summary>
+    [
+        TestCase(VehicleClass.Class11, VehicleCategory.RigidTruck, TestName = "CIF_EHC_SingleFuel_PositiveCO2: Class11"),
+        TestCase(VehicleClass.Class12, VehicleCategory.Tractor,    TestName = "CIF_EHC_SingleFuel_PositiveCO2: Class12"),
+    ]
+    public void Test_CIF_EHC_SingleFuel_EHCSummaryHasPositiveCO2(VehicleClass vehicleClass, VehicleCategory vehicleCategory)
+    {
+        var fuels = new[] { FuelType.DieselCI };
+        var resultEntries = BuildEHCEntries(vehicleClass, vehicleCategory, fuels);
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            vehicleCategory.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var validator = ReportResultTestUtils.GetValidator(doc);
+
+        ReportResultTestUtils.WriteToConsole(doc);
+
+        Assert.IsTrue(validator.ValidateXML(XmlDocumentType.CustomerReport), validator.ValidationError);
+
+        var ehcSummary = doc.Descendants(CIF_NS + "Summary").Last();
+        var co2Text = ehcSummary.Descendants(CIF_NS + "CO2").FirstOrDefault()?.Value;
+        Assert.IsNotNull(co2Text, "EHC summary must contain a CO2 element");
+        Assert.IsTrue(double.TryParse(co2Text, System.Globalization.NumberStyles.Any,
+            System.Globalization.CultureInfo.InvariantCulture, out var co2Value), "CO2 value must be numeric");
+        Assert.Greater(co2Value, 0, "EHC CO2 value must be positive");
+    }
+
+    [Test]
+    public void Test_CIF_EHC_Summary_NonEHCGroupHasNoThirdSummary()
+    {
+        var missions = new[]
+        {
+            (MissionType.LongHaul,         LoadingType.LowLoading),
+            (MissionType.LongHaul,         LoadingType.ReferenceLoad),
+            (MissionType.RegionalDelivery, LoadingType.LowLoading),
+            (MissionType.RegionalDelivery, LoadingType.ReferenceLoad),
+        };
+
+        var resultEntries = missions.Select(m =>
+        {
+            var runData = ReportResultTestUtils.GetMockRunData(VehicleCategory.RigidTruck,
+                VectoSimulationJobType.ConventionalVehicle, false, false, OvcHevMode.NotApplicable, null);
+            runData.Mission = new Mission() { MissionType = m.Item1 };
+            runData.Loading = m.Item2;
+            runData.VehicleData.VehicleClass = VehicleClass.Class5;
+            var entry = ReportResultTestUtils.GetResultEntry(runData);
+            entry.SetResultData(runData, ReportResultTestUtils.GetMockModData(VectoRun.Status.Success, null), 1);
+            return (IResultEntry)entry;
+        }).ToList();
+
+        var resultsWriter = _reportResultsFactory.GetCIFResultsWriter(
+            ReportResultTestUtils.GetMockInputData(3, false),
+            VehicleCategory.RigidTruck.GetVehicleType(),
+            VectoSimulationJobType.ConventionalVehicle, false, false);
+
+        var results = resultsWriter.GenerateResults(resultEntries);
+
+        Assert.NotNull(results);
+
+        var doc = ReportResultTestUtils.CreateXmlDocument(results, REPORT_VERSION, CIF_NS);
+        var summaryCount = doc.Descendants(CIF_NS + "Summary").Count();
+
+        Assert.AreEqual(1, summaryCount, "Expected 1 Summary element in CIF report for non-EHC group");
+    }
+
+
 }

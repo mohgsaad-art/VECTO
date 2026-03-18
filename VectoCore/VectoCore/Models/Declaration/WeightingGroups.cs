@@ -61,6 +61,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 		Group12,
 		Group16,
 
+		Group11EHC,
+		Group12EHC,
+		Group16EHC,
+
 		// medium lorries
 		Group51,
 		Group52,

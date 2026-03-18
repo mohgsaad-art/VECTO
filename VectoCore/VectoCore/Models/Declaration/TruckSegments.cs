@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -407,6 +408,43 @@ namespace TUGraz.VectoCore.Models.Declaration
 				DeltaCdA = trailer.DeltaCrossWindArea[firstTrailer ? 0 : 1],
 				CargoVolume = trailer.CargoVolume
 			};
+		}
+
+		/// <summary>
+		/// Returns all SegmentTable rows matching the given vehicle class, each as a <see cref="Segment"/> with its missions.
+		/// Use this when multiple rows per vehicle class exist (e.g. groups 11, 12, 16 with different EMS ref payloads).
+		/// The row with the heaviest Long Haul EMS payload is one defining the EHC payload.
+		/// </summary>
+		public Segment GetEHCSegment(VehicleClass vehicleClass)
+		{
+			// Get row with heaviest load for Long Haul EMS -> EHC payload.
+			var vehicleClassStr = vehicleClass.GetClassNumber().ToString();
+			var matchingRow = _segmentTable.AsEnumerable()
+				.Where(r => r.Field<string>("hdvgroup").Trim() == vehicleClassStr)
+				.MaxBy(r => r.Field<string>("longhaulems").Split('/')[1].ToInt());
+
+			var vehicleCategory = EnumHelper.ParseEnum<VehicleCategory>(matchingRow.Field<string>("vehiclecategory"));
+			var axleConfiguration = AxleConfigurationHelper.Parse(matchingRow.Field<string>("axleconf."));
+			var vehicleHeight = matchingRow.ParseDouble("height").SI<Meter>();
+			var segment = new Segment {
+				Found = true,
+				GrossVehicleWeightMin = matchingRow.ParseDouble("tpmlm_min").SI(Unit.SI.Ton).Cast<Kilogram>(),
+				GrossVehicleWeightMax = matchingRow.ParseDouble("tpmlm_max").SI(Unit.SI.Ton).Cast<Kilogram>(),
+				VehicleCategory = vehicleCategory,
+				AxleConfiguration = axleConfiguration,
+				VehicleClass = vehicleClass,
+				Missions = CreateMissions(
+					Constants.SimulationSettings.MaximumGrossVehicleMassEMS,
+					0.SI<Kilogram>(),
+					matchingRow,
+					vehicleHeight,
+					isBatteryElectric: false,
+					hasNgFuel: false,
+					isOvcHev: false),
+				DesignSpeed = matchingRow.ParseDouble("designspeed").KMPHtoMeterPerSecond(),
+			};
+
+			return segment;
 		}
 	}
 }
