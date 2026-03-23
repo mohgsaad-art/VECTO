@@ -334,25 +334,25 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container,
-		IElectricSystem es)
+        IPowertrainContainer powertrainContainer, IElectricSystem es)
 	{
 		throw new NotImplementedException();
 	}
 
-	public ICombustionEngine CreateCombustionEngineBatteryOnlyHybrid(CycleType cycleType, IVehicleContainer container,
-		CombustionEngineData modelData, bool pt1Disabled = false)
+	public ICombustionEngine CreateCombustionEngineBatteryOnlyHybrid(CycleType cycleType, IVehicleContainer container, IPowertrainContainer powertrainContainer,
+        CombustionEngineData modelData, bool pt1Disabled = false)
 	{
 		throw new NotImplementedException();
 	}
 
 	public IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType,
-		PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy)
+		PowertrainPosition emPos, IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IClutch CreateClutchBatteryOnlyHybrid(VectoSimulationJobType jobType, IVehicleContainer container,
-		CombustionEngineData engineData)
+	public IClutch CreateClutchBatteryOnlyHybrid(VectoSimulationJobType jobType, IVehicleContainer container, IPowertrainContainer powertrainContainer,
+        CombustionEngineData engineData)
 	{
 		throw new NotImplementedException();
 	}
