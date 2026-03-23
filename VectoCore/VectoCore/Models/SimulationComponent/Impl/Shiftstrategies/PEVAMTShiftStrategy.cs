@@ -324,7 +324,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                     var inertiaTorqueReserve = 1 - inertiaTorque / avgMaxRecuperationTorqueEM;
 					
 
-                    if (reserve >= 0 /*ModelData.TorqueReserve */ && inertiaTorqueReserve >= 0 &&
+                    if (reserve >= 0 /*ModelData.TorqueReserve */ && (inertiaTorqueReserve >= 0 || Gearbox.TractionInterruption.IsEqual(0.0)) &&
                         IsAboveDownShiftCurve(nextGear, nextInTorque, nextInAngularVelocity, derated)) {
 						continue;
 					}
@@ -392,7 +392,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                 // recupTorque esti;ation is correct at 5%
                 var inertiaTorqueReserve = 1 - inertiaTorque / avgMaxRecuperationTorqueEM;
 
-                if (reserve < GearshiftParams.StartTorqueReserve / 2.0 || inertiaTorqueReserve<=0.0) {
+                if (reserve < GearshiftParams.StartTorqueReserve / 2.0 || (inertiaTorqueReserve<0.0 && Gearbox.TractionInterruption.IsGreater(0.0))) {
 					continue;
 				}
 
