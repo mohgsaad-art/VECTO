@@ -1117,35 +1117,4 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		#endregion
 	}
 
-
-	// ----
-
-	public class CIF_Conventional_SingleBusVehicleWriter : VehicleWriter
-	{
-		public CIF_Conventional_SingleBusVehicleWriter(ICustomerInformationFileFactory cifFactory, IManufacturerReportFactory mrfFactory) : base(cifFactory, mrfFactory) { }
-
-		#region Overrides of VehicleWriter
-
-		public override XElement GetElement(IDeclarationInputDataProvider inputData)
-		{
-			var singleBus = (ISingleBusInputDataProvider)inputData;
-			var adas = singleBus.CompletedVehicle.ADAS ?? singleBus.PrimaryVehicle.ADAS;
-			return new XElement(_cif + XMLNames.Component_Vehicle,
-				new XAttribute(_xsi + XMLNames.XSIType, "Conventional_CompletedBusVehicleType"),
-				_cifFactory.GetSingleBusVehicleTypeGroup().GetElements(inputData),
-				_cifFactory.GetConventionalADASType().GetXmlType(adas).WithXName(_cif + "ADAS"),
-				_cifFactory.GetEngineGroup().GetElements(inputData),
-				_cifFactory.GetTransmissionGroup().GetElements(inputData),
-				GetRetarder(inputData),
-				GetAxleRatio(inputData),
-				_cifFactory.GetAxleWheelsGroup().GetElements(inputData),
-
-				_cifFactory.GetConventionalSingleBusAuxGroup().GetElements(inputData)
-			);
-		}
-
-		#endregion
-	}
-
-
 }

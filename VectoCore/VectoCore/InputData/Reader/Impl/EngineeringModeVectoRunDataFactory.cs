@@ -836,11 +836,5 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			return tmpBattery.InternalVoltage;
 		}
 
-		private class DummyVehicleContainer : VehicleContainer
-		{
-			public DummyVehicleContainer(VectoRunData runData) : base(runData, null,
-				null, null)
-			{ }
-		}
     }
 }

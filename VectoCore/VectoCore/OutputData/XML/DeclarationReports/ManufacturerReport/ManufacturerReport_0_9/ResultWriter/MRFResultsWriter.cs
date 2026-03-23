@@ -136,18 +136,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			public override IReportResultsSummaryWriter SummaryWriter => _mrfFactory.GetLorryPEVSummaryWriter(_mrfFactory, TNS);
 
 		}
-		
-		public class PEVNonOVCLorry : AbstractMRFResultsWriter
-		{
-			public PEVNonOVCLorry(IMRFResultsWriterFactory mrfFactory) : base(mrfFactory) { }
-
-			protected override IResultGroupWriter ResultSuccessWriter => _mrfFactory.GetLorryPEVNonOVCSuccessResultWriter(_mrfFactory, TNS);
-
-			protected override IResultGroupWriter ResultErrorWriter => _mrfFactory.GetLorryErrorResultWriter(_mrfFactory, TNS);
-
-			public override IReportResultsSummaryWriter SummaryWriter => _mrfFactory.GetLorryPEVNonOVCSummaryWriter(_mrfFactory, TNS);
-		}
-
+        
 		public class ConventionalBus : AbstractMRFResultsWriter
 		{
 			public ConventionalBus(IMRFResultsWriterFactory mrfFactory) : base(mrfFactory) { }
