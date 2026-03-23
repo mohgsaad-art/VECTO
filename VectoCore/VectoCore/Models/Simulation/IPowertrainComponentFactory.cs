@@ -130,15 +130,15 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		IFuelCellSystem CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData);
 
-		IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container, IElectricSystem es);
+		IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container, IPowertrainContainer powertrainContainer, IElectricSystem es);
 		
-		ICombustionEngine CreateCombustionEngineBatteryOnlyHybrid(CycleType cycleType, IVehicleContainer container, CombustionEngineData modelData,
+		ICombustionEngine CreateCombustionEngineBatteryOnlyHybrid(CycleType cycleType, IVehicleContainer container, IPowertrainContainer powertrainContainer, CombustionEngineData modelData,
 			bool pt1Disabled = false);
 
-		IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy);
+		IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, PowertrainPosition emPos, IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy);
 
-		IClutch CreateClutchBatteryOnlyHybrid(VectoSimulationJobType jobType, IVehicleContainer container,
-			CombustionEngineData engineData);
+		IClutch CreateClutchBatteryOnlyHybrid(VectoSimulationJobType jobType, IVehicleContainer container, IPowertrainContainer powertrainContainer,
+            CombustionEngineData engineData);
 
 		
 
