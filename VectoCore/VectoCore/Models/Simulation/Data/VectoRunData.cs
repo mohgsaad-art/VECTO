@@ -207,7 +207,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			internal set => SetInSinglePowertrain(pt => pt.ElectricMachinesData = value);
 		}
 
-		public BatterySystemData BatteryData { get; internal set; }
+        public ElectricMotorData MultipleSHEVGenerator { get; internal set; }
+
+        public BatterySystemData BatteryData { get; internal set; }
 
 		public SuperCapData SuperCapData { get; internal set; }
 

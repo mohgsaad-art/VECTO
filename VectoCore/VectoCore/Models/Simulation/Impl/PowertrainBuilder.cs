@@ -1098,7 +1098,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
             var defaultPowertrainContainer = ComponentFactory.CreatePowertrainContainer(container);
             ctl.GenSet
-				.AddComponent(GetElectricMachine(PowertrainPosition.GEN, data.ElectricMachinesSinglePwt, container, es, ctl, defaultPowertrainContainer))
+				.AddComponent(GetElectricMachine(
+					PowertrainPosition.GEN, 
+					new List<Tuple<PowertrainPosition, ElectricMotorData>>() { Tuple.Create(PowertrainPosition.GEN, data.MultipleSHEVGenerator) }, 
+					container, 
+					es, 
+					ctl, 
+					defaultPowertrainContainer))
 				.AddComponent(engine, engine.IdleController);
 
 			AddAuxiliariesSerialHybrid(engine, container, data, auxPowertrainContainer);
