@@ -525,9 +525,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             AddHighVoltageAuxiliaries(data, container, es, dcdc);
 
             //IMPORTANT HINT: add engine BEFORE gearbox to container that gearbox can obtain if an ICE is available
-            var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(data.Cycle.CycleType, container, data.EngineData);
+            var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(data.Cycle.CycleType, container, axlePtContainer, data.EngineData);
             var gearbox = ComponentFactory.CreateGearboxBatteryOnlyHybrid(data.JobType, data.Cycle.CycleType, data.GearboxSinglePwt.Type, container.RunData.ElectricMachinesSinglePwt.First().Item1
-			,container, null);
+			,container, axlePtContainer, null);
             
             var idleController = GetIdleController(data.PTOSinglePwt, engine, container);
             var clutch = (data.GearboxSinglePwt.Type.ManualTransmission() || data.GearboxSinglePwt.Type == GearboxType.IHPC)
@@ -559,7 +559,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 engine.WHRCharger = whrCharger;
             }
 
-			var ctl = ComponentFactory.CreateElectricMotorControllerBatteryOnlyHybrid(data.Cycle.CycleType, container, es);
+			var ctl = ComponentFactory.CreateElectricMotorControllerBatteryOnlyHybrid(data.Cycle.CycleType, container, axlePtContainer, es);
             vehicle.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius,
                     data.VehicleData.WheelsInertia))
 				.AddComponent(ComponentFactory.CreateBrakes(container))

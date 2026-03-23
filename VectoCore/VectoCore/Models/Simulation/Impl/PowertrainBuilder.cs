@@ -707,7 +707,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			//new ATClutchInfo(container);
 			ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
 
-			var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(CycleType.DistanceBased, container, data.EngineData);
+			var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(CycleType.DistanceBased, container, powertrainContainer, data.EngineData);
 			//new AlwaysOffCombustionEngine(container, data.EngineData);
 			AddAuxiliaries(engine, container, data, powertrainContainer);
 
@@ -740,13 +740,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var es = ConnectREESS(data, container);
 
 			// add engine before gearbox in the container, that gearbox can obtain it
-			var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(CycleType.DistanceBased, container, data.EngineData);
+			var engine = ComponentFactory.CreateCombustionEngineBatteryOnlyHybrid(CycleType.DistanceBased, container, powertrainContainer, data.EngineData);
 				//new AlwaysOffCombustionEngine(container, data.EngineData);
 
 			var gearbox = GetGearbox(container, powertrainContainer); //new DisengagedGearbox(container);
 			var numShiftableGearboxes = gearbox.NumGears > 1 ? 1 : 0;
 
-			var clutch = ComponentFactory.CreateClutchBatteryOnlyHybrid(data.JobType, container, data.EngineData);
+			var clutch = ComponentFactory.CreateClutchBatteryOnlyHybrid(data.JobType, container, powertrainContainer, data.EngineData);
 
 			if ((data.SuperCapData != null || data.BatteryData != null) && data.EngineData.WHRType.IsElectrical()) {
 				var dcDcConverterEfficiency = DeclarationData.WHRChargerEfficiency;
@@ -755,7 +755,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				engine.WHRCharger = whrCharger;
 			}
 
-			var ctl = ComponentFactory.CreateElectricMotorControllerBatteryOnlyHybrid(CycleType.DistanceBased, container, es);
+			var ctl = ComponentFactory.CreateElectricMotorControllerBatteryOnlyHybrid(CycleType.DistanceBased, container, powertrainContainer, es);
 				//new ParallelHybridBatteryOnlyElectricMotorController(container, es);
 
 			var cycle = ComponentFactory.CreateDistanceBasedDrivingCycle(container, data.Cycle);
@@ -2153,7 +2153,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					? strategy ?? GetShiftStrategy(container, powertrainContainer)
 					: null;
 				return ComponentFactory.CreateGearboxBatteryOnlyHybrid(container.RunData.JobType,
-					container.RunData.Cycle.CycleType, container.RunData.GearboxSinglePwt.Type, emPos, container,
+					container.RunData.Cycle.CycleType, container.RunData.GearboxSinglePwt.Type, emPos, container, powertrainContainer,
 					gsStrategy);
 			}
 
