@@ -138,16 +138,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 		}
 
-		public class PEVNonOVCLorry : AbstractCIFResultsWriter
-		{
-			public PEVNonOVCLorry(ICIFResultsWriterFactory cifFactory) : base(cifFactory) { }
-
-			protected override IResultGroupWriter ResultSuccessWriter => _cifFactory.GetLorryPEVNonOVCSuccessResultWriter(_cifFactory, TNS);
-			protected override IResultGroupWriter ResultErrorWriter => _cifFactory.GetLorryErrorResultWriter(_cifFactory, TNS);
-
-			public override Common.IReportResultsSummaryWriter SummaryWriter => _cifFactory.GetLorryPEVNonOVCSummaryWriter(_cifFactory, TNS);
-		}
-
 		public class ConventionalBus : AbstractCIFResultsWriter
 		{
 			public ConventionalBus(ICIFResultsWriterFactory cifFactory) : base(cifFactory) { }

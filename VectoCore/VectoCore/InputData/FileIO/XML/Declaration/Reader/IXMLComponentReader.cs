@@ -88,13 +88,5 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader
 		IREESSPackInputData CreateREESSInputData(XmlNode storageNode, REESSType reessType);
 	}
 
-	public interface IXMLFuelCellSystemReader
-	{
-		IFuelCellSystemDeclarationInputData CreateFuelCellSystemInputData(XmlNode xmlNode);
-	}
-
-	public interface IXMLFuelCellDeclarationInputData : IFuelCellDeclarationInputData
-	{
-	}
 
 }

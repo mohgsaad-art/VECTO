@@ -2182,12 +2182,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return entries;
 		}
 
-        private class DummyVehicleContainer : VehicleContainer
-        {
-            public DummyVehicleContainer(VectoRunData runData) : base(runData, null,
-                null, null)
-            { }
-        }
     }
 
 	public class IEPCGearboxInputData : IGearboxDeclarationInputData

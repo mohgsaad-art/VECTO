@@ -8,7 +8,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.Models.GenericModelData;
 using TUGraz.VectoCore.Utils;
@@ -196,7 +196,4 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         }
     }
 
-	public interface IXMLFuelCellSystemDeclarationInputData : IFuelCellSystemDeclarationInputData, IXMLResource
-	{
-	}
 }
