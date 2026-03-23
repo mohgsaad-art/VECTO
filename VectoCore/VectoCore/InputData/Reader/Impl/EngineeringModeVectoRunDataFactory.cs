@@ -372,13 +372,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				? dao.CreateElectricMachine(vehicle.Components.GeneratorEngineering, vehicle.ElectricMotorTorqueLimits, averageVoltage)
 				: null;
 
-			var emData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
-
-			if (generatorData != null)
-			{
-				emData.Add(generatorData);
-			}
-
 			var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode == CrossWindCorrectionMode.VAirBetaLookupTable;
 
 			var drivingCycle = GetDrivingCycle(cycle, crossWindRequired);
@@ -400,7 +393,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				JobType = InputDataProvider.JobInputData.JobType,
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				ElectricMachinesSinglePwt = emData,
+                MultipleSHEVGenerator = generatorData?.Item2,
 				WheelEndData = dao.CreateWheelEndData(vehicleData.VehicleClass, vehicle),
 				AirdragData = dao.CreateAirdragData(vehicle.Components.AirdragInputData, vehicle),
 				DriverData = driver,
