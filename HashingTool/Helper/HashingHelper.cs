@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -74,12 +75,12 @@ namespace HashingTool.Helper
 
 		public static bool? IsJobFile(XmlDocument x, IErrorLogger errorLog)
 		{
-			return IsVehicleJobFile(x, errorLog);
+			return IsVehicleJobFile(x, errorLog, new List<string>());
 		}
 
 		public static bool? IsPrimaryJobFile(XmlDocument x, IErrorLogger errorLog)
 		{
-			return IsVehicleJobFile(x, errorLog, XMLNames.PrimaryBusDeclarationType);
+			return IsVehicleJobFile(x, errorLog, new List<string>() { XMLNames.PrimaryBusDeclarationType });
 		}
 
 		public static bool? IsPrimaryManufacturerFile(XmlDocument x, IErrorLogger errorLog)
@@ -89,7 +90,7 @@ namespace HashingTool.Helper
 
 		public static bool? IsCompletedJobFile(XmlDocument x, IErrorLogger errorLog)
 		{
-			return IsVehicleJobFile(x, errorLog, XMLNames.CompletedBusVehicleVIFType);
+			return IsVehicleJobFile(x, errorLog, new List<string>() { XMLNames.CompletedBusVehicleVIFType, "VehicleType" });
 		}
 
 		public static bool? IsCompletedManufacturerFile(XmlDocument x, IErrorLogger errorLog)
@@ -99,7 +100,7 @@ namespace HashingTool.Helper
 
 		public static bool? IsPrimaryVifFile(XmlDocument x, IErrorLogger errorLog)
 		{
-			return IsVehicleJobFile(x, errorLog, XMLNames.Hashing_VehicleVIFType);
+			return IsVehicleJobFile(x, errorLog, new List<string>() { XMLNames.Hashing_VehicleVIFType, "VehicleType" });
 		}
 
 		public static bool? IsVehicleManufacturerReport(XmlDocument xdoc, IErrorLogger errorLog, string vehicleFileType = null)
@@ -127,7 +128,7 @@ namespace HashingTool.Helper
 			return valid;
 		}
 
-		public static bool? IsVehicleJobFile(XmlDocument xdoc, IErrorLogger errorLog, string vehicleFileType = null)
+		public static bool? IsVehicleJobFile(XmlDocument xdoc, IErrorLogger errorLog, List<string> vehicleFileTypes)
 		{
 			if (xdoc == null || xdoc.DocumentElement == null)
 			{
@@ -141,7 +142,7 @@ namespace HashingTool.Helper
 			var validMultiStep = (x.DocumentElement.LocalName == XMLNames.VectoOutputMultistep &&
 						x.DocumentElement.FirstChild.LocalName == XMLNames.Bus_PrimaryVehicle);
 
-			var isSupportedVehicleFile = IsSupportedVehicleFile(x, vehicleFileType);
+			var isSupportedVehicleFile = (vehicleFileTypes.Count > 0) ? vehicleFileTypes.Any(vft => IsSupportedVehicleFile(x, vft)) : IsSupportedVehicleFile(x, null);
 			var valid = (validMultiStep || validSingleStep) && isSupportedVehicleFile;
 
 			if (!valid)
@@ -150,7 +151,7 @@ namespace HashingTool.Helper
 					$"Expected Vehicle XML ({XMLNames.VectoInputDeclaration}/{XMLNames.Component_Vehicle}) or " +
 					$"({XMLNames.VectoOutputMultistep}/{XMLNames.Bus_PrimaryVehicle})!";
 
-				errorMessage = isSupportedVehicleFile ? errorMessage : $"Incorrect file provided. Select a {vehicleFileType} vehicle.";
+				errorMessage = isSupportedVehicleFile ? errorMessage : $"Incorrect file provided. Select a {string.Join(", ", vehicleFileTypes)} vehicle.";
 				errorLog.LogError(errorMessage);
 			}
 
