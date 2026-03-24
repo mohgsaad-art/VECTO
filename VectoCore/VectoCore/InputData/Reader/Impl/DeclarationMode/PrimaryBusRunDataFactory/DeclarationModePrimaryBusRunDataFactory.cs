@@ -1173,7 +1173,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 					throw new VectoException("Compressor drive is required to be electrically driven!");
 				}
 
-				if (busAux.InputData.ElectricSupply.ESSupplyFromHEVREESS) {
+				if (!busAux.InputData.ElectricSupply.ESSupplyFromHEVREESS) {
 					throw new VectoException("Electric system must be supplied from HV REESS!");
 				}
 			}
