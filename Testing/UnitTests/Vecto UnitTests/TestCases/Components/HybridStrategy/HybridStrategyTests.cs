@@ -149,7 +149,7 @@ public class HybridStrategyTests : HybridStrategyBase
 		var container = mockContainer.Object;
 		
 		Assert.AreEqual(container.RunData.GearboxSinglePwt.Type, container.GearboxesInfo.Single().GearboxType);
-		Assert.AreEqual(container.RunData.GearboxSinglePwt.Type, container.SimplePowertrainBuilder.CreateTestPowertrain(container, false).Gearboxes.Single().GearboxType);
+		Assert.AreEqual(container.RunData.GearboxSinglePwt.Type, container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, null).Gearboxes.Single().GearboxType);
 		
 	}
 }

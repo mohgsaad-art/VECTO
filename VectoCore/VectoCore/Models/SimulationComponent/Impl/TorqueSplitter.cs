@@ -9,8 +9,6 @@ using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Configuration;
-using TUGraz.VectoCommon.Exceptions;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -18,6 +16,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
 		protected IList<ITnOutPort> _nextComponents = new List<ITnOutPort>();
         private IElectricPowerJunctionBox _junctionBox;
+        private List<double> _torqueRatio;
 
         public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : base(container)
 		{
@@ -26,7 +25,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             TorqueRatio = new List<double>() { 0.5, 0.5 };
         }
 
-        public List<double> TorqueRatio { get; set; }
+        public List<double> TorqueRatio { 
+            get { return _torqueRatio; }
+            set { _torqueRatio = value; System.Diagnostics.Debug.Assert(_torqueRatio.Sum().IsEqual(1)); } 
+        }
 
         public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
@@ -41,6 +43,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
             var torqueRatio = ConfigureTorqueRatio(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
+            System.Diagnostics.Debug.Assert(torqueRatio.Values.Sum().IsEqual(1));
+
             var axlePowertrainResponses = MakeRequests(absTime, dt, outTorque, outAngularVelocity, dryRun, torqueRatio);
 
 			return axlePowertrainResponses.Values.ToList();
@@ -52,7 +56,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter outTorque, 
 			PerSecond outAngularVelocity, 
 			bool dryRun, 
-			Dictionary<ITnOutPort, double> torqueRatios)
+			Dictionary<ITnOutPort, double> torqueRatio)
 		{
             _junctionBox.ClearResults();
 
@@ -60,7 +64,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
             foreach (var nextComponent in _nextComponents)
             {
-                var response = nextComponent.Request(absTime, dt, outTorque * torqueRatios[nextComponent], outAngularVelocity, dryRun);
+                var response = nextComponent.Request(absTime, dt, outTorque * torqueRatio[nextComponent], outAngularVelocity, dryRun);
                 axlePowertrainResponses[nextComponent] = response;
             }
 
@@ -71,7 +75,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     .ToList()
 					.ForEach(t =>
                     {
-                        var response = t.Key.Request(absTime, dt, outTorque * torqueRatios[t.Key], outAngularVelocity, dryRun);
+                        var response = t.Key.Request(absTime, dt, outTorque * torqueRatio[t.Key], outAngularVelocity, dryRun);
                         axlePowertrainResponses[t.Key] = response;
                     });
             }
@@ -103,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
                 if (first.Gearbox != null)
                 {
-                    first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
+                    first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox?.PowerRequest != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
                 }
             }
 
@@ -119,9 +123,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			PreviousState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 
-            var responses = _nextComponents.Select((x, i) => x.Initialize(outTorque * TorqueRatio[i], outAngularVelocity));
+            IResponse response = null;
 
-            return responses.First();
+            for (var i = 0; i < _nextComponents.Count(); i++)
+            {
+                response = _nextComponents[i].Initialize(outTorque * TorqueRatio[i], outAngularVelocity);
+            }
+
+            return response;
 		}
 
 		public virtual void Connect(ITnOutPort other)

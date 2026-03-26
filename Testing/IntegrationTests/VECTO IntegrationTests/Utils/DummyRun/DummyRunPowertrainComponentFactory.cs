@@ -95,7 +95,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public ITorqueSplitter CreateTorqueSplitter(bool useSimpleTorqueSplitter, IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
+	public ITorqueSplitter CreateTorqueSplitter(string type, IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
 	{
 		throw new NotImplementedException();
 	}

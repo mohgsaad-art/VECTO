@@ -19,7 +19,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public OptimizedTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) :
             base(container, junctionBox)
         {
-            _testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, true);
+            _testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, nameof(TorqueSplitter));
 
             CreateTorqueRatioCombinations();
         }
@@ -28,15 +28,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         {
             _torqueRatioCombinations = new List<List<double>>()
             {
-                new List<double>() { 0.9, 0.1 },
+                //new List<double>() { 0.6, 0.4 },
                 new List<double>() { 0.5, 0.5 }
             };
         }
 
         protected override Dictionary<ITnOutPort, double> ConfigureTorqueRatio(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
-            var same = DataBus.Powertrains.First().Value.AxlePowertrainData == DataBus.Powertrains.Last().Value.AxlePowertrainData;
-
             var bestTorqueRatio = (_torqueRatioCombinations.Count() == 1)
                 ? _torqueRatioCombinations.First()
                 : SelectBestTorqueRatio(PerformRequestOnTestPowertrainForEachTorqueRatioCombination(absTime, dt, outTorque, outAngularVelocity, dryRun));

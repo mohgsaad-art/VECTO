@@ -57,7 +57,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
             // create testcontainer
-            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false);
+            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
             SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
            
             fcMap = RunData.EngineData.Fuels;

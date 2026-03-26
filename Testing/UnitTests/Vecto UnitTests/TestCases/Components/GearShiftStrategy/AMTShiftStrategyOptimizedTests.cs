@@ -406,12 +406,12 @@ TestCase(8, 4, 15000, 200, true),]
 		ptBuilder.Setup(p => p.CreateTestPowertrain(
 				It.IsAny<IVehicleContainer>(),
 				It.IsAny<bool>(), 
-				It.IsAny<bool>()))
+				It.IsAny<string>()))
 			.Returns(testPowertrain.Object);
 
 		ptBuilder.Setup(p => p.CreateTestPowertrain(
 			It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>())).Throws(new NotImplementedException());
+			It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>(), It.IsAny<string>())).Throws(new NotImplementedException());
 		
 		container.Setup(c => c.SimplePowertrainBuilder).Returns(ptBuilder.Object);
 		

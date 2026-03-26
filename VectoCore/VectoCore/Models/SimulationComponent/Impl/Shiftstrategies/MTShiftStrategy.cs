@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		public MTShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer)
 		{
 			// create testcontainer
-			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false);
+			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 			PreprocessorSpeed = ConfigureSpeedPreprocessor(container.RunData);
 			container.AddPreprocessor(PreprocessorSpeed);

@@ -13,7 +13,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
         void Connect(IElectricSystem powerSupply);
 
-        IElectricSystem GetElectricPowerJunctionBoxPort(IPowertrainContainer powertrainContainer);
+        IElectricSystem GetElectricPowerJunctionBoxPort();
 
     }
 }

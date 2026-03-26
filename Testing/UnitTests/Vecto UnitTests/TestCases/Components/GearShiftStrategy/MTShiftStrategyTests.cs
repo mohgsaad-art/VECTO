@@ -208,7 +208,7 @@ public class MTShiftStrategyTests
 		
 		ptBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
 		
-		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),It.IsAny<bool>(), It.IsAny<bool>()))
+		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),It.IsAny<bool>(), It.IsAny<string>()))
 			.Returns(testPt.Object);
 		
 

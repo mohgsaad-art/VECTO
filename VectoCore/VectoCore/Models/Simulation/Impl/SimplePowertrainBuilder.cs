@@ -36,15 +36,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             };
         }
 
-		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, VectoSimulationJobType overrideJobType)
+		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, VectoSimulationJobType overrideJobType, string torqueSplitterType)
 		{
-			var testContainer = BuildSimplePowertrain(realContainer, overrideJobType);
+			var testContainer = BuildSimplePowertrain(realContainer, overrideJobType, torqueSplitterType);
 			return new TestPowertrain(testContainer, realContainer, createDriver);
 		}
 
-		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, bool useSimpleTorqueSplitter = false)
+		public ITestPowertrain CreateTestPowertrain(IVehicleContainer realContainer, bool createDriver, string torqueSplitterType)
 		{
-			var testContainer = BuildSimplePowertrain(realContainer, null, useSimpleTorqueSplitter);
+			var testContainer = BuildSimplePowertrain(realContainer, null, torqueSplitterType);
 			return new TestPowertrain(testContainer, realContainer, createDriver);
 		}
 
@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 
 		protected ISimpleVehicleContainer BuildSimplePowertrain(IVehicleContainer realContainer,
-			VectoSimulationJobType? overrideJobType, bool useSimpleTorqueSplitter = false)
+			VectoSimulationJobType? overrideJobType, string torqueSplitterType)
 		{
 			var jobType = overrideJobType.HasValue ? overrideJobType.Value : realContainer.RunData.JobType;
 			var runData = realContainer.RunData;
@@ -92,9 +92,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case VectoSimulationJobType.IEPC_S:
 					return BuildSimpleIEPCHybridPowertrain(realContainer);
 				case VectoSimulationJobType.Multiple_PEV:
-					return BuildSimplePowertrainMultiplePEV(realContainer, useSimpleTorqueSplitter);
+					return BuildSimplePowertrainMultiplePEV(realContainer, torqueSplitterType);
 				case VectoSimulationJobType.Multiple_FCHV:
-					return BuildSimplePowertrainMultipleFCHV(realContainer, useSimpleTorqueSplitter);
+					return BuildSimplePowertrainMultipleFCHV(realContainer, torqueSplitterType);
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -681,7 +681,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-        public ISimpleVehicleContainer BuildSimplePowertrainMultiplePEV(IVehicleContainer realContainer, bool useSimpleTorqueSplitter = false)
+        public ISimpleVehicleContainer BuildSimplePowertrainMultiplePEV(IVehicleContainer realContainer, string torqueSplitterType)
 		{			
 			var data = realContainer.RunData;
             var container = GetVehicleContainer(realContainer);
@@ -711,7 +711,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(useSimpleTorqueSplitter, container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(torqueSplitterType, container, junctionBox));
 
             var dcdc = ComponentFactory.CreateDCDCConverter(container, data.DCDCData.DCDCEfficiency);
 
@@ -750,7 +750,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 true,
                 container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
             powertrain
                 .AddComponent(axlePt.AxleGearData != null ? ComponentFactory.CreateAxleGear(container, powertrainContainer, axlePt.AxleGearData) : null)
@@ -776,7 +776,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 false,
                 container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es), axlePt.ElectricMachineData.Item1);
 
-            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
             var gbx = GetSimpleGearbox(container, powertrainContainer, data);
             var gbxInfo = container.GearboxesInfo;
@@ -802,7 +802,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 false,
                 container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
             powertrain
                 .AddComponent(ComponentFactory.CreateAxleGear(container, powertrainContainer, axlePt.AxleGearData))
@@ -823,7 +823,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 false,
                 container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+            em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
             powertrain.AddComponent(em);
 
@@ -849,10 +849,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		public ISimpleVehicleContainer BuildSimplePowertrainMultipleFCHV(IVehicleContainer realContainer, bool useSimpleTorqueSplitter = false)
+		public ISimpleVehicleContainer BuildSimplePowertrainMultipleFCHV(IVehicleContainer realContainer, string torqueSplitterType)
 		{
 			var data = realContainer.RunData;
-			var container = BuildSimplePowertrainMultiplePEV(realContainer, useSimpleTorqueSplitter);
+			var container = BuildSimplePowertrainMultiplePEV(realContainer, torqueSplitterType);
 
             var es = container.ElectricSystemInfo as ElectricSystem;
 

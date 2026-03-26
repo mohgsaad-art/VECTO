@@ -542,8 +542,9 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
             Bind<IBrakes>().To<Brakes>().Named(namingHelper.Prefix);
 			Bind<IElectricPowerJunctionBox>().To<ElectricPowerJunctionBox>().Named(namingHelper.Prefix);
-			Bind<ITorqueSplitter>().To<OptimizedTorqueSplitter>().Named(namingHelper.TorqueSplitterName(false));
-            Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.TorqueSplitterName(true));
+			Bind<ITorqueSplitter>().To<OptimizedTorqueSplitter>().Named(namingHelper.TorqueSplitterName(nameof(OptimizedTorqueSplitter)));
+            Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.TorqueSplitterName(nameof(TorqueSplitter)));
+            Bind<ITorqueSplitter>().To<PCCTorqueSplitter>().Named(namingHelper.TorqueSplitterName(nameof(PCCTorqueSplitter)));
             Bind<IAxlegear>().To<AxleGear>().Named(namingHelper.Prefix);
             Bind<IAngledrive>().To<Angledrive>().Named(namingHelper.Prefix);
             Bind<IRetarder>().To<Retarder>().Named(namingHelper.Prefix);
@@ -702,9 +703,9 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
 		public string CreateGearboxInfoName(object[] arguments) => CheckArguments<bool>(arguments, GearboxInfoName);
 
-        public string CreateTorqueSplitterName(object[] arguments) => CheckArguments<bool>(arguments, TorqueSplitterName);
+        public string CreateTorqueSplitterName(object[] arguments) => CheckArguments<string>(arguments, TorqueSplitterName);
 
-        public string TorqueSplitterName(bool useSimpleTorqueSplitter) => $"{_prefix}_{(useSimpleTorqueSplitter ? "Simple" : "Optimized")}";
+        public string TorqueSplitterName(string torqueSplitterType) => $"{_prefix}_{torqueSplitterType}";
 
         public string GearboxInfoName(bool engineOnly) => $"{_prefix}_{(engineOnly ? "EngOnly" : "Full")}";
 

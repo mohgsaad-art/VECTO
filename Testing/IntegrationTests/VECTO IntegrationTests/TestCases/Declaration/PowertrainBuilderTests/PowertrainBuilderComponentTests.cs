@@ -100,12 +100,12 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             var retVal = new Mock<ISimplePowertrainBuilder>();
             //var ptBuilder = new SimplePowertrainBuilder(_kernel.Get<IPowertrainComponentFactory>(), _kernel.Get<IShiftStrategyFactory>());
 			retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(),
-					It.IsAny<VectoSimulationJobType>()))
-				.Returns((IVehicleContainer container, bool createDriver, VectoSimulationJobType jobType) =>
-					_simplePowertrainBuilder.CreateTestPowertrain(container, createDriver, jobType));
-            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns((IVehicleContainer container, bool createDriver) =>
-                    _simplePowertrainBuilder.CreateTestPowertrain(container, createDriver));
+					It.IsAny<VectoSimulationJobType>(), It.IsAny<string>()))
+				.Returns((IVehicleContainer container, bool createDriver, VectoSimulationJobType jobType, string torqueSplitter) =>
+					_simplePowertrainBuilder.CreateTestPowertrain(container, createDriver,jobType, torqueSplitter));
+            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<string>()))
+                .Returns((IVehicleContainer container, bool createDriver, string torqueSplitter) =>
+                    _simplePowertrainBuilder.CreateTestPowertrain(container, createDriver, torqueSplitter));
             return retVal.Object;
         }
 

@@ -146,7 +146,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
             // create testcontainer
 			var powertrainBuilder = dataBus.SimplePowertrainBuilder;
 			_jobtype = jobType;
-			TestPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, true, jobType);
+			TestPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, true, jobType, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 				// powertrainBuilder.CreateSimplePowertrainContainer(TestPowertrain.Container,
 				// 	powertrainContainer.AxleNumber);
@@ -179,7 +179,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var jobType = DataBus.HasMultiplePowertrains
 				? VectoSimulationJobType.Multiple_PEV
 				: VectoSimulationJobType.BatteryElectricVehicle;
-			var testPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, false, jobType);
+			var testPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, false, jobType, string.Empty);
 			var simplePowertrainContainer = testPowertrain.Container.SimplePowertrains[PowertrainContainer.AxleNumber];
 			var gearboxData = DataBus.RunData.AxlePowertrainsDict[PowertrainContainer.AxleNumber].GearboxData;
 			DataBus.AddPreprocessor(

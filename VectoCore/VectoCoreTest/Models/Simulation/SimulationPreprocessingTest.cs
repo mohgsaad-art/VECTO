@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		protected virtual Dictionary<MeterPerSecond, Radian> SimulationRunPreprocessingEcoRoll(IVectoRun run)
 		{
 			var data = run.GetContainer().RunData;
-			var simpleContainer = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false);
+			var simpleContainer = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false, null);
 
 			var tmp = new Dictionary<MeterPerSecond, Radian>();
 			var preprocessor = new PCCEcoRollEngineStopPreprocessor(simpleContainer, tmp, 50.KMPHtoMeterPerSecond(), 90.KMPHtoMeterPerSecond());
@@ -222,7 +222,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		protected virtual PCCSegments SimulationRunPreprocessingPCCSegments(IVectoRun run)
 		{
 			var data = run.GetContainer().RunData;
-			var simpleContainer = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false);
+			var simpleContainer = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false, null);
 
 			var tmp = new PCCSegments();
 			var preprocessor = new PCCSegmentPreprocessor(simpleContainer, tmp, data.DriverData.PCC);
@@ -292,7 +292,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		{
 			//var data = run.GetContainer().RunData;
 			//var simpleContainer = PowertrainBuilder.BuildSimplePowertrain(data);
-			var testPowertrain = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false);
+			var testPowertrain = PowertrainBuilder.CreateTestPowertrain(run.GetContainer(), false, null);
 			var testPowertrainAxleContainer = PowertrainBuilder.CreateSimplePowertrainContainer(testPowertrain.Container);
 			var tmp = new VelocityRollingLookup();
 			var preprocessor = new VelocitySpeedGearshiftPreprocessor(tmp, 1.SI<Second>(), testPowertrain, testPowertrainAxleContainer, minGradient: -12, maxGradient: 12);

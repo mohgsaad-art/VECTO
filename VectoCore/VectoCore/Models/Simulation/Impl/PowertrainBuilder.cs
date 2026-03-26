@@ -1089,7 +1089,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 .AddComponent(ctl)
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(false, container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(nameof(OptimizedTorqueSplitter), container, junctionBox));
 
             foreach (var pt in powertrains)
             {
@@ -1191,7 +1191,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 .AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
                 .AddComponent(ComponentFactory.CreateBrakes(container))
                 .AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
-                .AddComponent(ComponentFactory.CreateTorqueSplitter(false, container, junctionBox));
+                .AddComponent(ComponentFactory.CreateTorqueSplitter(nameof(OptimizedTorqueSplitter), container, junctionBox));
             foreach (var pt in powertrains)
             {
                 powertrain.AddComponent(pt);
@@ -1213,7 +1213,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				true,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ctl.ElectricMotorControl(axlePt.ElectricMachineData.Item1), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var shiftstrategy = ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container, powertrainContainer);
 			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftstrategy);
@@ -1250,7 +1250,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				true,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var shiftstrategy = (axlePt.GearboxData.Gears.Count > 1) ? ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container, powertrainContainer) : null;
 			var gearbox = ComponentFactory.CreateGearbox(VectoSimulationJobType.IEPC_E, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftstrategy);
@@ -1296,7 +1296,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ctl.ElectricMotorControl(axlePt.ElectricMachineData.Item1), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container, powertrainContainer);
 			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftStrategy);
@@ -1327,7 +1327,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container, powertrainContainer);
 			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, powertrainContainer, shiftStrategy);
@@ -1359,7 +1359,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ctl.ElectricMotorControl(axlePt.ElectricMachineData.Item1), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var retVal = ComponentFactory.CreateAxleGear(container, powertrainContainer, axlePt.AxleGearData);
             retVal
@@ -1383,7 +1383,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 			
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			var retVal = ComponentFactory.CreateAxleGear(container, powertrainContainer, axlePt.AxleGearData);
 			retVal
@@ -1409,7 +1409,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ctl.ElectricMotorControl(axlePt.ElectricMachineData.Item1), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
 			ComponentFactory.CreateDummyGearboxInfo(false, container, powertrainContainer, gear: new GearshiftPosition(0));
 			ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
@@ -1429,7 +1429,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				false,
 				container, powertrainContainer, axlePt.ElectricMachineData.Item2, ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, powertrainContainer, es, axlePt: axlePt), axlePt.ElectricMachineData.Item1);
 
-			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort(powertrainContainer));
+			em.Connect(junctionBox.GetElectricPowerJunctionBoxPort());
 
             ComponentFactory.CreateDummyGearboxInfo(false, container, powertrainContainer, gear: null);
 			ComponentFactory.CreateATClutchInfo(container, powertrainContainer);
