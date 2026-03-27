@@ -90,8 +90,8 @@ Synopsis:
 	vectocmd.exe [-h] [-v] [-q] -ams PREVIOUS_STEP.xml CURRENT_STEP.xml OUTPUT.xml
 
 Description:
-	FILE1.vecto [FILE2.vecto ...]: A list of vecto-job files (with the 
-	   extension: .vecto). At least one file must be given. Delimited by 
+	FILE1.vecto [FILE2.vecto ...]: A list of vecto-job files (with the
+	   extension: .vecto). At least one file must be given. Delimited by
 	   whitespace.
 	PREVIOUS_STEP.xml: Previous manufacturing step VIF.
 	CURRENT_STEP.xml: Current interim or completed manufacturing step VIF.
@@ -110,7 +110,7 @@ Description:
 	-q: Disables console output unless verbose information is enabled.
 	-V: Show version information.
 	-h: Displays this help.
-	
+
 Examples:
 	vecto.exe ""12t Delivery Truck.vecto"" 40t_Long_Haul_Truck.vecto
 	vecto.exe 24tCoach.vecto 40t_Long_Haul_Truck.vecto
@@ -194,6 +194,7 @@ Examples:
 
 				if (args.Contains("-V") || _debugEnabled) {
 					ShowVersionInformation();
+					return 0;
 				}
 
 				var fileList =
@@ -485,8 +486,7 @@ Examples:
 
 		private static void ShowVersionInformation()
 		{
-			WriteLine($@"VectoConsole: {Assembly.GetExecutingAssembly().GetName().Version}");
-			WriteLine($@"VectoCore: {VectoSimulationCore.VersionNumber}");
+			WriteLine(VectoSimulationCore.VersionNumber);
 		}
 
 		private static void PrintProgress(IDictionary<int, JobContainer.ProgressEntry> progessData,
