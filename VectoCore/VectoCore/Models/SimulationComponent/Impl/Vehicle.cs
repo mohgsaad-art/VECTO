@@ -111,14 +111,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					VectoSimulationJobType.Multiple_SHEV) 
 				&& DataBus.PowertrainInfo.HasCombustionEngine) 
 			{
-				if (DataBus.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null || 
-					DataBus.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null) 
+				if (DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null || 
+					DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null) 
 				{	
 					throw new VectoException("Powertrain with combustion engine requires gearbox and axlegear!");
 					//return;
 				}
 
-				var gearbox = DataBus.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
 
 				var maxDrivetrainSpeed = VectoMath.Min(
 					DataBus.EngineInfo.EngineN95hSpeed, 
@@ -126,8 +126,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				MaxVehicleSpeed = maxDrivetrainSpeed /
 					gearbox.GetGearData(gearbox.NumGears).Ratio /
-					DataBus.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).Ratio /
-					(DataBus.AngledriveInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)?.Ratio ?? 1.0) * 
+					DataBus.AxlegearsInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).Ratio /
+					(DataBus.AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)?.Ratio ?? 1.0) * 
 					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
 			}
 

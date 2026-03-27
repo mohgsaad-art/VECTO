@@ -346,7 +346,6 @@ public class ElectricMotorTests
 	{
 		var container = new Mock<IVehicleContainer>();
 		var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
-		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 		var bat = new Mock<IRESSInfo>();
 		container.SetupGet(c => c.BatteryInfo).Returns(bat.Object);

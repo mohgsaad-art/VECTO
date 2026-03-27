@@ -57,19 +57,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual IEngineInfo EngineInfo { get; protected internal set; }
 		public virtual IEngineControl EngineCtl { get; protected set; }
-		public virtual IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => 
-			FilterByAxleNumber(GearboxInfos, axleNumber);
-
-		public virtual IGearboxControl GearboxCtl(AxleNumber axleNumber) =>
-			FilterByAxleNumber(GearboxControls, axleNumber);
-
-		public virtual IAxlegearInfo AxlegearInfo(AxleNumber axleNumber) =>
-			FilterByAxleNumber(AxlegearsInfo, axleNumber);
-
-        public virtual IRetarder Retarder(AxleNumber axleNumber) => 
-	        FilterByAxleNumber(Retarders, axleNumber);
-        
-        public virtual IVehicleInfo VehicleInfo { get; protected set; }
+		public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }
 		public virtual IWheelsInfo WheelsInfo { get; protected set; }
 		public virtual IDriverInfo DriverInfo { get; protected set; }
@@ -96,13 +84,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return components.SingleOrDefault(c => c.AxleNumber == axleNumber);
 		}
 
-		public ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber) =>
-			FilterByAxleNumber(TorqueConverters, axleNumber);
-
-		public virtual ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber) =>
-			FilterByAxleNumber(TorqueConverterControls, axleNumber);
-
-        public IDCDCConverter DCDCConverter { get; protected set; }
+		public IDCDCConverter DCDCConverter { get; protected set; }
 
 		public IWHRCharger WHRCharger { get; protected set; }
 
@@ -166,10 +148,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual Second AbsTime { get; set; }
 
-		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position,
-			AxleNumber axleNumber) =>
-			FilterByAxleNumber(ElectricMotorsInfo.Where(em => em.Position == position), axleNumber);
-
         public IList<IElectricMotorInfo> ElectricMotorsInfo => EMs;
 
 		public IList<IGearboxInfo> GearboxesInfo => GearboxInfos.Cast<IGearboxInfo>().ToList();
@@ -180,12 +158,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IList<IClutchInfo> ClutchesInfo => Clutches;
 
-		public IClutchInfo GetClutchInfo(AxleNumber axleNumber) =>
-			FilterByAxleNumber(ClutchesInfo, axleNumber);
-		public IAngledriveInfo AngledriveInfo(AxleNumber axleNumber) =>
-            FilterByAxleNumber(Angledrives, axleNumber);
+		public IList<IRetarder> RetardersInfo => Retarders;
 
         public IList<IAngledriveInfo> AngledrivesInfo => Angledrives;
+
+		public IList<ITorqueConverterControl> TorqueConvertersCtl => TorqueConverterControls;
+
+		public IList<ITorqueConverterInfo> TorqueConvertersInfo => TorqueConverters;
 
 		public IPowertrainInfo PowertrainInfo => this;
 
@@ -482,10 +461,5 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 #endregion
 
-#region Overrides of VehicleContainer
-
-		public override IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => _gearboxInfo;
-
-#endregion
 	}
 }

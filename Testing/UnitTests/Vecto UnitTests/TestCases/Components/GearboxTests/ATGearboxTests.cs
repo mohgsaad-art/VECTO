@@ -266,8 +266,8 @@ public class ATGearboxTests
 
 		container.Setup(c => c.RunData).Returns(runData);
 		var ci = new Mock<IClutchInfo>();
-		container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
-		ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
+		container.Setup(c => c.ClutchesInfo).Returns(new List<IClutchInfo>() { ci.Object });
+        ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
 
 		var vi = new Mock<IVehicleInfo>();
 		container.Setup(c => c.VehicleInfo).Returns(vi.Object);

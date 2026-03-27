@@ -629,7 +629,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (dynFullPowerCalculated < 0) {
 				return 0.SI<Watt>();
 			}
-			var atGbx = (DataBus as IVehicleContainer)?.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN) as IAPTGearbox;
+			var atGbx = (DataBus as IVehicleContainer)?.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) as IAPTGearbox;
 			if (atGbx != null && atGbx.ShiftToLocked && PreviousState.EngineTorque.IsGreater(0)) {
 
 				return VectoMath.Min(PreviousState.EngineTorque * avgAngularVelocity, dynFullPowerCalculated);

@@ -33,7 +33,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		retVal.Setup(c => c.PowertrainInfo).Returns(pi.Object);
 		retVal.Setup(c => c.MileageCounter).Returns(mc.Object);
 		retVal.Setup(c => c.VehicleInfo).Returns(vi.Object);
-		retVal.Setup(c => c.GetGearboxInfo(It.IsAny<AxleNumber>())).Returns(gi.Object);
+		retVal.Setup(c => c.GearboxesInfo).Returns([gi.Object]);
 		retVal.Setup(c => c.ModalData).Returns(modData);
 		retVal.Setup(c => c.RunData).Returns(runData);
 		retVal.SetupProperty(c => c.RunStatus);

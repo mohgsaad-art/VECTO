@@ -267,7 +267,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         DriverStrategy.ATEcoRollReleaseLockupClutch)
                     {
                         DriverStrategy.EcoRollState.State = EcoRollStates.EcoRollOff;
-                        DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
+                        DataBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
                     }
 
                     second = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient);

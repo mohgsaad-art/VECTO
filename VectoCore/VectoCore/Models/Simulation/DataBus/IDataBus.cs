@@ -51,10 +51,14 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 	{
 		AxleNumber AxleNumber { get; }
 		IGearboxInfo GearboxInfo { get; }
+		IGearboxControl GearboxControl { get; }
 		IClutchInfo ClutchInfo { get; }
 		IAxlegearInfo AxlegearInfo { get; }
+		IRetarder Retarder { get; }
 		IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos);
-	}
+        ITorqueConverterControl TorqueConverterControl { get; }
+        ITorqueConverterInfo TorqueConverterInfo { get; }
+    }
 
 
 
@@ -69,19 +73,10 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IMileageCounter MileageCounter { get; }
 
-		[Obsolete]
-		IGearboxInfo GetGearboxInfo(AxleNumber axleNumber);
-
 		IList<IGearboxInfo> GearboxesInfo {  get; }
-
-		[Obsolete]
-		IGearboxControl GearboxCtl(AxleNumber axleNumber);
 
 		IList<IGearboxControl> GearboxesCtl { get; }
 
-		[Obsolete]
-		IAxlegearInfo AxlegearInfo(AxleNumber axleNumber);
-		
 		IList<IAxlegearInfo> AxlegearsInfo { get; }
 
 		IEngineInfo EngineInfo { get; }
@@ -90,13 +85,9 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IVehicleInfo VehicleInfo { get; }
 
-		[Obsolete]
-		IClutchInfo GetClutchInfo(AxleNumber axleNumber);
-
 		IList<IClutchInfo> ClutchesInfo { get; }
 
-		[Obsolete]
-		IRetarder Retarder(AxleNumber axleNumber);	
+		IList<IRetarder> RetardersInfo { get; }
 
 		IBrakes Brakes { get; }
 
@@ -105,10 +96,6 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		IDriverInfo DriverInfo { get; }
 
 		IDrivingCycleInfo DrivingCycleInfo { get; }
-
-		[Obsolete]
-		IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position,
-			AxleNumber axleNumber);
 
         IList<IElectricMotorInfo> ElectricMotorsInfo { get; }
 
@@ -122,20 +109,15 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IWheelEnd WheelEnd { get; }
 
-		[Obsolete]
-		ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber);
+		IList<ITorqueConverterInfo> TorqueConvertersInfo { get; }
 
-		[Obsolete]
-		ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber);
+		IList<ITorqueConverterControl> TorqueConvertersCtl { get; }
 
 		IPowertrainInfo PowertrainInfo { get; }
 
 		IHybridControllerInfo HybridControllerInfo { get; }
 
 		IHybridControllerCtl HybridControllerCtl { get; }
-
-		[Obsolete]
-		IAngledriveInfo AngledriveInfo(AxleNumber axleNumber);
 
         IList<IAngledriveInfo> AngledrivesInfo { get; }
 

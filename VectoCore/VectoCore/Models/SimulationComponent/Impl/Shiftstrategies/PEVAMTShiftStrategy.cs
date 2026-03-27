@@ -258,7 +258,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 				return currentGear;
 			}
 
-			var em = DataBus.ElectricMotorInfo(EMPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+			var em = PowertrainContainer.ElectricMotorInfo(EMPos);
             if (em.EmOffCurr.HasValue && em.EmOffCurr.Value) {
 				return currentGear;
 			}
@@ -285,7 +285,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var nextGear = currentGear;
 			var derated = r.ElectricMotor.DeRatingActive;
 
-			var EMinfo = DataBus.ElectricMotorsInfo.First(x => x.Position == EMPos);
+			var EMinfo = PowertrainContainer.ElectricMotorInfo(EMPos);
 			var EMInertia = DataBus.RunData.GetEMData().FirstOrDefault().Item2.Inertia;
             //var EMcurrentAngularVelocity = 
             var currentResponse = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, nextGear);
@@ -522,7 +522,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var firstGear = GearList.Predecessor(currentGear, 1);
 			var lastGear = GearList.Predecessor(currentGear, (uint)GearshiftParams.AllowedGearRangeFC);
 
-			var electricMotor = DataBus.ElectricMotorInfo(EMPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+			var electricMotor = DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].ElectricMotorInfo(EMPos);
 			var maxEmSpeedDt = electricMotor.MaxSpeedDt; //Drivetrain
 			
 			foreach (var gear in GearList.IterateGears(firstGear, lastGear)) {
@@ -841,7 +841,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			return
 				(outAngularSpeed * GearboxModelData.Gears[gear.Gear].Ratio).IsGreaterOrEqual(VectoMath.Min(GearboxModelData.Gears[gear.Gear].MaxSpeed,
-					DataBus.ElectricMotorInfo(EMPos, AxleNumber.NOT_IN_AXLE_POWERTRAIN).MaxSpeedDt));
+					DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].ElectricMotorInfo(EMPos).MaxSpeedDt));
 		}
 
 		public void Disengage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity) { }

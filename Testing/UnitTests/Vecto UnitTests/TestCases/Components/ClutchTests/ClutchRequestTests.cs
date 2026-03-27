@@ -76,13 +76,11 @@ public class ClutchRequestTests
 	{
 		var container = new Mock<IVehicleContainer>();
 		var gi = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
-		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
 		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>() { gi.Object });
 		gi.Setup(g => g.GearEngaged(It.IsAny<Second>())).Returns(true);
 		gi.Setup(g => g.Gear).Returns(new GearshiftPosition((uint)gear));
 		var ci = new Mock<IClutchInfo>().WithDefaultAxleNumber();
 		container.Setup(c => c.ClutchesInfo).Returns(new List<IClutchInfo>() { ci.Object });
-		container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
 		ci.Setup(c => c.ClutchClosed(It.IsAny<Second>())).Returns(true);
 		
 		var vi = new Mock<IVehicleInfo>();

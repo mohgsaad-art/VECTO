@@ -47,7 +47,8 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-    public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, IMileageCounter, IGearboxInfo, IGearboxControl, IPowertrainInfo, IUpdateable
+    public class MockVehicleContainer : IVehicleContainer, IEngineInfo, IEngineControl, IVehicleInfo, IClutchInfo, IBrakes, IAxlegearInfo, IWheelsInfo, IDriverInfo, IDrivingCycleInfo, 
+		IMileageCounter, IGearboxInfo, IGearboxControl, IPowertrainInfo, IRetarder, ITorqueConverterControl, ITorqueConverterInfo, IUpdateable
 	{
 		// only CycleData Lookup is set / accessed...
 
@@ -57,21 +58,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public AxleNumber AxleNumber => AxleNumber.NOT_IN_AXLE_POWERTRAIN;
 
-		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, AxleNumber axleNumber) => null;
-
-        public IList<IElectricMotorInfo> ElectricMotorsInfo { get; set; }
+		public IList<IElectricMotorInfo> ElectricMotorsInfo { get; set; }
 
         public IElectricPowerJunctionBox JunctionBox { get; set; }
 
 		public IWheelEnd WheelEnd { get; set; }
 
 		public ITorqueSplitter TorqueSplitter { get; set; }
-
-        public IAxlegearInfo AxlegearInfo(AxleNumber axleNumber) => this;
-
-		public IAngledriveInfo AngledriveInfo(AxleNumber axleNumber) => null;
-
-        public IRetarder Retarder(AxleNumber axleNumber) => null;
 
         public IList<IAxlegearInfo> AxlegearsInfo { get; set; }
 
@@ -80,8 +73,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IEngineControl EngineCtl => this;
 
 		public IVehicleInfo VehicleInfo => this;
-
-		public IClutchInfo GetClutchInfo(AxleNumber axleNumber) => this;
 
 		public IList<IClutchInfo> ClutchesInfo => new List<IClutchInfo>() { this };
 
@@ -116,17 +107,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IGearboxInfo GearboxInfo(AxleNumber axleNumber) => this;
 
-		public IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => this;
-		
 		public IList<IGearboxInfo> GearboxesInfo  => new List<IGearboxInfo>(){this};
+
+		public IList<IRetarder> RetardersInfo => new List<IRetarder>() { this };
+
+		public IList<ITorqueConverterControl> TorqueConvertersCtl => new List<ITorqueConverterControl>() { this };
+
+		public IList<ITorqueConverterInfo> TorqueConvertersInfo => new List<ITorqueConverterInfo>() { this };
 
         public IShiftStrategy Strategy => null;
 
 		public event Action GearShiftTriggered;
 
-		public IGearboxControl GearboxCtl(AxleNumber axleNumber) => this;
-
-        public IList<IGearboxControl> GearboxesCtl { get; set; }
+		public IList<IGearboxControl> GearboxesCtl { get; set; }
 
         public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos)
 		{
@@ -141,10 +134,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IElectricSystemInfo ElectricSystemInfo { get; }
 
-		public ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber) => null;
-
-		public ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber) => null;
-
 		public IPowertrainInfo PowertrainInfo => this;
 
 		public IHybridControllerInfo HybridControllerInfo { get; }
@@ -155,7 +144,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public bool IsTestPowertrain => false;
 
-		public Watt GearboxLoss()
+        public TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
+
+        public Watt GearboxLoss()
 		{
 			throw new NotImplementedException();
 		}
@@ -173,7 +164,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public PerSecond EngineSpeed { get; set; }
 		public NewtonMeter EngineTorque { get; set; }
 
-		public Watt EngineStationaryFullPower(PerSecond angularSpeed)
+        public Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed) => throw new NotImplementedException();
+
+        public Watt EngineStationaryFullPower(PerSecond angularSpeed)
 		{
 			return EngineInfo.EngineStationaryFullPower(angularSpeed);
 		}

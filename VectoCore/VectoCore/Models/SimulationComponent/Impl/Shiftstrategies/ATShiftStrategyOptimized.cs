@@ -475,7 +475,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
+			var axleLoss = Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss();
 
 			return gbxOutSpeed * gbxOutTorque - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 		}
@@ -912,7 +912,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
+			var axleLoss = Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss();
 
 			var tcLossesCurrentGear = tcInSpeed * tcInTorque - gbxOutSpeed * gbxOutTorque;
 

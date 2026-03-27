@@ -197,7 +197,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
 			TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 			if (nextGear.TorqueConverterLocked.HasValue && !nextGear.TorqueConverterLocked.Value) {
-				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
+				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].TorqueConverterInfo);
 			}
 
 			var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;

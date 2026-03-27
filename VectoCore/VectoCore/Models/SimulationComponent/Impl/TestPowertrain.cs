@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             {
                 if (gearbox.GearboxType.AutomaticTransmission() && (gearbox.GearboxType != GearboxType.APTN) && (gearbox.GearboxType != GearboxType.IHPC))
                 {
-                    var torqueConverter = Container.TorqueConverterInfo((gearbox as IGearboxInfo).AxleNumber) as ITorqueConverter;
+                    var torqueConverter = Container.Powertrains[(gearbox as IGearboxInfo).AxleNumber].TorqueConverterInfo as ITorqueConverter;
                     if (torqueConverter != null)
                     {
                         TorqueConverters.Add(torqueConverter);
@@ -86,7 +86,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     else
                     {
                         throw new VectoException(
-                            "Torque converter missing for automatic transmission: {0}", Container.TorqueConverterInfo((gearbox as IGearboxInfo).AxleNumber)?.GetType().FullName);
+                            "Torque converter missing for automatic transmission: {0}", Container.Powertrains[(gearbox as IGearboxInfo).AxleNumber].TorqueConverterInfo?.GetType().FullName);
                     }
                 }
             }
