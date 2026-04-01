@@ -111,7 +111,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				consideredAuxiliaries = consideredAuxiliaries?.Where(aux => !auxiliarieIgnoredDuringVehicleStop.Contains(aux.Key));
 			}
 
-			if (DataBus.EngineInfo != null && !DataBus.EngineInfo.EngineOn) {
+			if (DataBus.EngineInfo == null || !DataBus.EngineInfo.EngineOn) {
 				consideredAuxiliaries = consideredAuxiliaries?.Where(aux => !auxiliariesIgnoredWhenICEIsOff.Contains(aux.Key));
 			}
 
