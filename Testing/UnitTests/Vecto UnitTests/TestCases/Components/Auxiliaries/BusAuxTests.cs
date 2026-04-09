@@ -77,11 +77,9 @@ public class BusAuxTests
         var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
         gbx.Setup(g => g.GearEngaged(It.IsNotNull<Second>())).Returns(true);
         gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(1));
-        container.Setup(v => v.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
         container.Setup(v => v.GearboxesInfo).Returns(() => new List<IGearboxInfo>(){ gbx.Object });
         var clutch = new Mock<IClutchInfo>().WithDefaultAxleNumber();
         clutch.Setup(c => c.ClutchClosed(It.IsNotNull<Second>())).Returns(true);
-        container.Setup(v => v.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(clutch.Object);
         container.Setup(v => v.ClutchesInfo).Returns(() => new List<IClutchInfo>(){ clutch.Object });
         var brk = new Mock<IBrakes>();
         brk.Setup(b => b.BrakePower).Returns(0.SI<Watt>());

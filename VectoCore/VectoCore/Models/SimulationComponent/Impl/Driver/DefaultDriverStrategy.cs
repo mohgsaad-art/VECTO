@@ -338,14 +338,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					switch (ADAS.EcoRoll) {
 						case EcoRollType.None: break;
 						case EcoRollType.WithoutEngineStop:
-							if (DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
-								DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
+							if (DataBus.GearboxesCtl.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
+								DataBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
 							}
 						
 							break;
 						case EcoRollType.WithEngineStop:
-							if (DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
-								DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
+							if (DataBus.GearboxesCtl.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
+								DataBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
 							}
 							if (DataBus.EngineCtl != null) {
 								DataBus.EngineCtl.CombustionEngineOn = false;
@@ -358,8 +358,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case PCCStates.OutsideSegment:
 				case PCCStates.WithinSegment:
 				case PCCStates.PCCinterrupt:
-					if (DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
-						DataBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
+					if (DataBus.GearboxesCtl.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
+						DataBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
 					}
 
 					if (DataBus.EngineCtl != null) {
@@ -520,7 +520,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (GearboxInfo.GearboxType.AutomaticTransmission() && ATEcoRollReleaseLockupClutch && dBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
 				// for AT transmissions consider engine drag losses during eco-roll events
 				forces -= dBus.EngineInfo.EngineDragPower(dBus.EngineInfo.EngineSpeed) / dBus.VehicleInfo.VehicleSpeed;
-				forces += (GearboxInfo.GearboxLoss() + dBus.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
+				forces += (GearboxInfo.GearboxLoss() + dBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
 			}
 			var accelerationWithinLimits = (-forces / dBus.VehicleInfo.TotalMass).IsBetween(
 				Driver.DriverData.EcoRoll.AccelerationLowerLimit, Driver.DriverData.EcoRoll.AccelerationUpperLimit);
@@ -563,8 +563,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			switch (EcoRollState.State) {
 				case EcoRollStates.EcoRollOn:
-					if (dBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
-						dBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
+					if (dBus.GearboxesCtl.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
+						dBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = true;
 					}
 			
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {
@@ -572,8 +572,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					}
 					return;
 				case EcoRollStates.EcoRollOff:
-					if (dBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
-						dBus.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
+					if (dBus.GearboxesCtl.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) != null) {
+						dBus.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).DisengageGearbox = false;
 					} 
 					
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {

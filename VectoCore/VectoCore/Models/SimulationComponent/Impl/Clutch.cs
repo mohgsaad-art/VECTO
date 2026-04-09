@@ -249,8 +249,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var gearbox = DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber);
 				var slipGear = Math.Min(Math.Max(gearbox?.Gear?.Gear ?? 1, 1), 2);
 				var ratioGB = gearbox?.GetGearData(slipGear)?.Ratio ?? 1.0;
-				var ratioAxl = DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber)?.Ratio ?? 1.0;
-				var axlegearlossP = DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber)?.AxlegearLoss() ?? 0.0.SI<Watt>();
+				var ratioAxl = DataBus.Powertrains[AxleNumber].AxlegearInfo?.Ratio ?? 1.0;
+				var axlegearlossP = DataBus.Powertrains[AxleNumber].AxlegearInfo?.AxlegearLoss() ?? 0.0.SI<Watt>();
 				var gearboxlossP = gearbox?.GearboxLoss() ?? 0.0.SI<Watt>();
 
 				var fWheel = DataBus.VehicleInfo.RollingResistance(DataBus.DrivingCycleInfo.RoadGradient)

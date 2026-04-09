@@ -197,7 +197,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
 			TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 			if (nextGear.TorqueConverterLocked.HasValue && !nextGear.TorqueConverterLocked.Value) {
-				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
+				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].TorqueConverterInfo);
 			}
 
 			var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;
@@ -639,13 +639,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					var emTq = dryRunResponse.ElectricMotor.ElectricMotorPowerMech /
 									dryRunResponse.ElectricMotor.AvgDrivetrainSpeed;
 
-					var axlegear = DataBus.AxlegearsInfo.First();
+					var axlegear = DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo;
 					var axlOutTorque = dryRunResponse.Axlegear.OutputTorque - emTq;
 					var prevAxlSpeed = (axlegear as TransmissionComponent).PreviousState.OutAngularVelocity;
 					var axleLoss = ModelData.AxleGearSinglePwt.AxleGear.LossMap.GetTorqueLoss((dryRunResponse.Axlegear.OutputSpeed + prevAxlSpeed) / 2.0, axlOutTorque);
 					var axlInTorque = axlOutTorque / ModelData.AxleGearSinglePwt.AxleGear.Ratio + axleLoss.Value;
 					var gbxInTorque = axlInTorque;
-					if (ModelData.AngledriveSinglePwt != null && DataBus.AxlegearsInfo.Count() > 0) {
+					if ((ModelData.AngledriveSinglePwt != null) && (DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo != null)) {
 						var prevAnglSpeed = (axlegear as TransmissionComponent).PreviousState
 							.OutAngularVelocity;
 						var anglLoss =

@@ -354,8 +354,6 @@ public partial class HybridStrategyBase
 
 		//ElectricMotorInfo
 		var emInfo = GetElectricMotorInfo(runData).Object;
-		vehicleContainer
-			.Setup(v => v.ElectricMotorInfo(runData.ElectricMachinesSinglePwt.Single().Item1, It.IsAny<AxleNumber>())).Returns((IElectricMotorInfo)emInfo);
 		vehicleContainer.Setup(v => v.ElectricMotorsInfo).Returns([emInfo]);
 		
 		SetBrakePower(vehicleContainer.Object, 0.SI<Watt>());
