@@ -112,10 +112,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				&& DataBus.PowertrainInfo.HasCombustionEngine) 
 			{
 				if (DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null || 
-					DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null) 
+					DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo == null) 
 				{	
 					throw new VectoException("Powertrain with combustion engine requires gearbox and axlegear!");
-					//return;
 				}
 
 				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
@@ -126,8 +125,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				MaxVehicleSpeed = maxDrivetrainSpeed /
 					gearbox.GetGearData(gearbox.NumGears).Ratio /
-					DataBus.AxlegearsInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).Ratio /
-					(DataBus.AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)?.Ratio ?? 1.0) * 
+					DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.Ratio /
+					(DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AngledriveInfo?.Ratio ?? 1.0) * 
 					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
 			}
 
@@ -142,7 +141,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 					if (em.Position == PowertrainPosition.BatteryElectricE3)
 					{
-						ratio = DataBus.AxlegearsInfo.First(x => x.AxleNumber == em.AxleNumber).Ratio;
+						ratio = DataBus.Powertrains[em.AxleNumber].AxlegearInfo.Ratio;
 					}
 
 					if (em.Position == PowertrainPosition.BatteryElectricE2 || em.Position == PowertrainPosition.IEPC)
@@ -150,8 +149,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == em.AxleNumber);
 
 						ratio = gearbox.GetGearData(gearbox.NumGears).Ratio *
-								(DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0) *
-								(DataBus.AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0);
+								(DataBus.Powertrains[em.AxleNumber].AxlegearInfo?.Ratio ?? 1.0) *
+								(DataBus.Powertrains[em.AxleNumber].AngledriveInfo?.Ratio ?? 1.0);
 						
 						maxEMSpeed = VectoMath.Min(em.MaxSpeedDt, gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
 					}
@@ -173,15 +172,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 					var ratio = 1.0;
 					if (pos == PowertrainPosition.BatteryElectricE3) {
-						ratio = DataBus.AxlegearsInfo.First().Ratio;
+						ratio = DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.Ratio;
 					}
 
 					if (pos == PowertrainPosition.BatteryElectricE2 || pos == PowertrainPosition.IEPC) {
 						var gearbox = DataBus.GearboxesInfo.First();
 
 						ratio = gearbox.GetGearData(gearbox.NumGears).Ratio *
-								(DataBus.AxlegearsInfo.FirstOrDefault()?.Ratio ?? 1.0) *
-								(DataBus.AngledrivesInfo.FirstOrDefault()?.Ratio ?? 1.0);
+								(DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo?.Ratio ?? 1.0) *
+								(DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AngledriveInfo?.Ratio ?? 1.0);
 
 						maxEMSpeed = VectoMath.Min(
 							em.MaxSpeedDt,

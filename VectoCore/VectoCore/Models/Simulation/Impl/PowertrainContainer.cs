@@ -80,6 +80,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
         public IRetarder Retarder => GetFromAxleNumber(_vehicleContainer.RetardersInfo);
         public ITorqueConverterControl TorqueConverterControl => GetFromAxleNumber(_vehicleContainer.TorqueConvertersCtl);
         public ITorqueConverterInfo TorqueConverterInfo => GetFromAxleNumber(_vehicleContainer.TorqueConvertersInfo);
+        public IAngledriveInfo AngledriveInfo => GetFromAxleNumber(_vehicleContainer.AngledrivesInfo);
         public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos) => _vehicleContainer.ElectricMotorsInfo.FirstOrDefault(x => (x.Position == pos) && (x.AxleNumber == AxleNumber));
         public AxlePowertrainData AxlePowertrainData => _vehicleContainer.RunData.AxlePowertrainsDict[AxleNumber];
     }

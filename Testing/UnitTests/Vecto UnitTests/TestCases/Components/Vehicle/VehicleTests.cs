@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.ObjectModel;
+using Moq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -63,8 +64,18 @@ public class VehicleTests
 	private static Mock<IVehicleContainer> GetMockContainer()
 	{
 		var container = new Mock<IVehicleContainer>();
-		var powertrainContainer = new PowertrainContainer(container.Object);
-		var runData = new VectoRunData() {
+		var powertrainContainers = new Dictionary<AxleNumber, IPowertrainContainer>();
+        container.Setup(c => c.AddPowertrainContainer(It.IsAny<IPowertrainContainer>())).Callback((
+            IPowertrainContainer ptContainer) =>
+        {
+            powertrainContainers.Add(ptContainer.AxleNumber, ptContainer);
+        });
+        var ptContainer = new Mock<IPowertrainContainer>();
+        ptContainer.Setup(c => c.AxleNumber).Returns(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+        powertrainContainers[AxleNumber.NOT_IN_AXLE_POWERTRAIN] = ptContainer.Object;
+        container.Setup(c => c.Powertrains).Returns(new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(powertrainContainers));
+
+        var runData = new VectoRunData() {
 			ExecutionMode = ExecutionMode.Declaration,
 			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 		};
@@ -86,11 +97,11 @@ public class VehicleTests
         var axl = new Mock<IAxlegearInfo>();
         axl.Setup(a => a.Ratio).Returns(1);
         axl.Setup(a => a.AxleNumber).Returns(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
-        container.Setup(c => c.AxlegearsInfo).Returns(new List<IAxlegearInfo>() { axl.Object });
+        ptContainer.Setup(c => c.AxlegearInfo).Returns(axl.Object);
         var angledrive = new Mock<IAngledriveInfo>();
         angledrive.Setup(a => a.Ratio).Returns(1);
         angledrive.Setup(a => a.AxleNumber).Returns(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
-        container.Setup(c => c.AngledrivesInfo).Returns(new List<IAngledriveInfo>() { angledrive.Object });
+        ptContainer.Setup(c => c.AngledriveInfo).Returns(angledrive.Object);
         var whl = new Mock<IWheelsInfo>();
 		whl.Setup(w => w.DynamicTyreRadius).Returns(0.5.SI<Meter>());
 		container.Setup(c => c.WheelsInfo).Returns(whl.Object);

@@ -520,7 +520,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (GearboxInfo.GearboxType.AutomaticTransmission() && ATEcoRollReleaseLockupClutch && dBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
 				// for AT transmissions consider engine drag losses during eco-roll events
 				forces -= dBus.EngineInfo.EngineDragPower(dBus.EngineInfo.EngineSpeed) / dBus.VehicleInfo.VehicleSpeed;
-				forces += (GearboxInfo.GearboxLoss() + dBus.AxlegearsInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
+				forces += (GearboxInfo.GearboxLoss() + dBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
 			}
 			var accelerationWithinLimits = (-forces / dBus.VehicleInfo.TotalMass).IsBetween(
 				Driver.DriverData.EcoRoll.AccelerationLowerLimit, Driver.DriverData.EcoRoll.AccelerationUpperLimit);
