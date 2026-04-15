@@ -135,7 +135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			{
 				// create a dummy powertrain for pre-processing and estimations
 				var testPowertrain =
-					container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, data.JobType);
+					container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, data.JobType, nameof(PCCTorqueSplitter));
 				
 				container.AddPreprocessor(new PCCSegmentPreprocessor(testPowertrain, PCCSegments,
 					data?.DriverData.PCC));

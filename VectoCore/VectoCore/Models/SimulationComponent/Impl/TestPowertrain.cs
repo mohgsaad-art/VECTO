@@ -34,7 +34,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public ITestpowertrainGensetChargerAdapter Charger { get; }
         public IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; } = new List<IElectricMotor>();
         public IList<ITestpowertrainElectricMotor> ElectricMotors { get; } = new List<ITestpowertrainElectricMotor>();
-		
+
+        public ITorqueSplitter TorqueSplitter { get; }
+
+        public IElectricPowerJunctionBox JunctionBox { get; }
+
         public IList<ITorqueConverter> TorqueConverters { get; }
         public IDCDCConverter DCDCConverter { get; }
         public IWHRCharger WHRCharger;
@@ -55,6 +59,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             Clutch = Container.ClutchesInfo.FirstOrDefault() as IClutch;
             CombustionEngine = Container.EngineInfo as ITestpowertrainCombustionEngine;
             EngineAux = CombustionEngine?.GetEngineAux;
+
+            TorqueSplitter = Container.TorqueSplitter;
+            JunctionBox = Container.JunctionBox as IElectricPowerJunctionBox;
             
             foreach (var motor in container.ElectricMotorsInfo) {
                 var em = motor as ITestpowertrainElectricMotor;

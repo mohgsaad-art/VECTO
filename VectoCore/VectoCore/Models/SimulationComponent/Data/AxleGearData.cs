@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -37,7 +38,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
-	public class AxleGearData : SimulationComponentData
+	public class AxleGearData : SimulationComponentData, IEquatable<AxleGearData>
 	{
 		[ValidateObject] public TransmissionData AxleGear;
 
@@ -45,7 +46,46 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[JsonIgnore]
 		public IAxleGearInputData InputData { get; internal set; }
-	}
+
+        public override bool Equals(object obj) => Equals(obj as AxleGearData);
+
+        public override int GetHashCode()
+        {
+            return (AxleGear, LineType).GetHashCode();
+        }
+
+        public bool Equals(AxleGearData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (AxleGear == other.AxleGear) && (LineType == other.LineType);
+        }
+
+        public static bool operator ==(AxleGearData axg1, AxleGearData axg2)
+        {
+            if (ReferenceEquals(axg1, axg2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(axg1, null) || ReferenceEquals(axg2, null))
+            {
+                return false;
+            }
+
+            return axg1.Equals(axg2);
+        }
+
+        public static bool operator !=(AxleGearData axg1, AxleGearData axg2) => !(axg1 == axg2);
+    }
 
 	
 }

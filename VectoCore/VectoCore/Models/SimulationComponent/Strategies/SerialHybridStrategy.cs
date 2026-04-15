@@ -218,7 +218,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			GenSetCharacteristics = new GenSetCharacteristics(minGensetPower);
 			runData.GenSet = new VectoRunData.GenSetData() { GenSetCharacteristics = GenSetCharacteristics };
 
-			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, true);
+			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, true, string.Empty);
 			
 			TestGenSet = container.SimplePowertrainBuilder.CreateTestGenset(container);
 

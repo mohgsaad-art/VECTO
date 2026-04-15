@@ -218,7 +218,7 @@ public class HybridStrategyCostCalculationTest
 		
 		
 		var ptBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
-		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>())).Returns(testPowertrain.Object);
+		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(testPowertrain.Object);
 
 		testPowertrain.Setup(tp => tp.Container.SimplePowertrains[It.IsAny<AxleNumber>()]).Returns(simplePowertrainContainer.Object);
 		

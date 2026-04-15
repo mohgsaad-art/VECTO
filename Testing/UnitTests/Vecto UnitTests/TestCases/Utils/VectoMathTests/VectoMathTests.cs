@@ -145,4 +145,23 @@ public class VectoMathTests
         Assert.AreEqual(0.431535, k, 1e-6);
 
     }
+
+    public static IEnumerable<object[]> PointComparerEqualsTestCases()
+    {
+        yield return new object[] { null, null, true };
+        yield return new object[] { new Point(0, 0, 0), null, false };
+        yield return new object[] { null, new Point(0, 0, 0), false };
+        yield return new object[] { new Point(0, 0, 0), new Point(0, 0, 0), true };
+        yield return new object[] { new Point(0, 0, 1), new Point(0, 0, 0), false };
+        yield return new object[] { new Point(0, 1, 0), new Point(0, 0, 0), false };
+        yield return new object[] { new Point(1, 0, 0), new Point(0, 0, 0), false };
+    }
+
+    [Test, TestCaseSource(nameof(PointComparerEqualsTestCases))]
+    public void Test_PointComparer_Equals(Point a, Point b, bool expected)
+    {
+        var result = (new PointComparer()).Equals(a, b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
 }

@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
@@ -39,10 +40,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		electrical
 	}
 
-
-
-
-	public class PTOData : SimulationComponentData
+	public class PTOData : SimulationComponentData, IEquatable<PTOData>
 	{
 		public string TransmissionType;
 		//Transmission powerdemand mechanical
@@ -51,8 +49,51 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		//Transmission powerdemand electrical
 		public Watt TransmissionPowerDemandElectrical;
 
-		public ILossMap LossMap;
+		public PTOLossMap LossMap;
 		public DrivingCycleData PTOCycle;
 		public PTOConsumerType ConsumerType = PTOConsumerType.mechanical;
-	}
+
+        public override bool Equals(object obj) => Equals(obj as PTOData);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(PTOData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (TransmissionType == other.TransmissionType) 
+                && (TransmissionPowerDemand == other.TransmissionPowerDemand)
+                && (TransmissionPowerDemandElectrical == other.TransmissionPowerDemandElectrical)
+                && (LossMap == other.LossMap)
+                && (ConsumerType == other.ConsumerType);
+        }
+
+        public static bool operator ==(PTOData pto1, PTOData pto2)
+        {
+            if (ReferenceEquals(pto1, pto2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(pto1, null) || ReferenceEquals(pto2, null))
+            {
+                return false;
+            }
+
+            return pto1.Equals(pto2);
+        }
+
+        public static bool operator !=(PTOData pto1, PTOData pto2) => !(pto1 == pto2);
+    }
 }

@@ -7,6 +7,62 @@ namespace TUGraz.Vecto_UnitTests.TestCases.Utils;
 
 public class DelaunayTests
 {
+	static DelaunayMap _map1 = new DelaunayMap("map");
+    static DelaunayMap _map2 = new DelaunayMap("map");
+    static DelaunayMap _map3 = new DelaunayMap("map");
+    static DelaunayMap _map4 = new DelaunayMap("map");
+    static DelaunayMap _map1Equal = new DelaunayMap("map");
+
+	static DelaunayTests()
+	{
+        _map1.AddPoint(0, 0, 0);
+        _map1Equal.AddPoint(0, 0, 0);
+        _map2.AddPoint(0, 0, 1);
+        _map3.AddPoint(0, 1, 0);
+        _map4.AddPoint(1, 0, 0);
+    }
+
+    public static IEnumerable<object[]> EqualityTestCases()
+	{
+		yield return new object[] { null, null, true};
+        yield return new object[] { _map1, null, false };
+        yield return new object[] { null, _map1, false };
+        yield return new object[] { _map1, _map1, true };
+        yield return new object[] { _map1, _map1Equal, true };
+        yield return new object[] { _map2, _map1, false };
+        yield return new object[] { _map3, _map1, false };
+        yield return new object[] { _map4, _map1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+	public void Test_DelaunayMap_OperatorEqual(DelaunayMap a, DelaunayMap b, bool expected)
+	{
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_DelaunayMap_OperatorNotEqual(DelaunayMap a, DelaunayMap b, bool notExpected)
+    {
+        var result = (a != b);
+        
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_DelaunayMap_Equals(DelaunayMap a, DelaunayMap b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase]
     public void Test_Simple_DelaunayMap()
     {

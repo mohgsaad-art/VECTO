@@ -357,7 +357,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					* x.FuelData.LowerHeatingValueVecto * StrategyParameters.MinICEOnTime).Value());
 
             // create testcontainer
-            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(DataBus, true);
+            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(DataBus, true, string.Empty);
             SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 			var shiftStrategyParameters = runData.GearshiftParametersSinglePwt;
 			if (shiftStrategyParameters == null) {

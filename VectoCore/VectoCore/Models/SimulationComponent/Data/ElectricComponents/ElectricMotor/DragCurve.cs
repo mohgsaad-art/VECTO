@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data {
-	public class DragCurve
+	public class DragCurve : IEquatable<DragCurve>
 	{
 		internal readonly List<DragLoadEntry> Entries;
 
@@ -13,7 +14,46 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data {
 			Entries = entries;
 		}
 
-		public NewtonMeter Lookup(PerSecond angularVelocity)
+		public override bool Equals(object obj) => Equals(obj as DragCurve);
+
+        public override int GetHashCode()
+        {
+            return Entries.GetHashCode();
+        }
+
+        public bool Equals(DragCurve other)
+		{
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+			return Entries.SequenceEqual(other.Entries, new DragLoadEntryComparer());
+        }
+
+        public static bool operator ==(DragCurve a, DragCurve b)
+		{
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
+                return false;
+            }
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(DragCurve a, DragCurve b) => !(a == b);
+
+        public NewtonMeter Lookup(PerSecond angularVelocity)
 		{
 			var idx = FindIndex(angularVelocity);
 			return VectoMath.Interpolate(
@@ -44,9 +84,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data {
 			public PerSecond MotorSpeed { get; set; }
 
 			public NewtonMeter DragTorque { get; set; }
-
-			
 		}
+
+		public class DragLoadEntryComparer : IEqualityComparer<DragLoadEntry>
+		{
+            public bool Equals(DragLoadEntry x, DragLoadEntry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return (x.MotorSpeed == y.MotorSpeed) && (x.DragTorque == y.DragTorque);
+            }
+
+            public int GetHashCode(DragLoadEntry obj)
+            {
+                return (obj is null) ? 0 : (obj.MotorSpeed, obj.DragTorque).GetHashCode();
+            }
+        }
 
 		public string[] SerializedEntries
 		{

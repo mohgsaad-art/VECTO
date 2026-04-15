@@ -512,7 +512,7 @@ public partial class HybridStrategyBase
 		//Builder
 		var simplePtBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
 		simplePtBuilder.Setup(s => s.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>())).Returns(testPowertrain.Object);
+			It.IsAny<bool>(), It.IsAny<string>())).Returns(testPowertrain.Object);
 			
 		return simplePtBuilder;
 	}

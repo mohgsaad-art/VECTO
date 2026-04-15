@@ -21,13 +21,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	    public class ElectricPowerJunctionBoxPort : IElectricPowerJunctionBoxPort
 	    {
 		    private readonly ElectricPowerJunctionBox _electricPowerJunctionBox;
-		    private readonly IPowertrainContainer _powertrainContainer;
 
-		    public ElectricPowerJunctionBoxPort(ElectricPowerJunctionBox electricPowerJunctionBox, IPowertrainContainer powertrainContainer)
+		    public ElectricPowerJunctionBoxPort(ElectricPowerJunctionBox electricPowerJunctionBox)
 		    {
-			    _powertrainContainer = powertrainContainer;
 			    _electricPowerJunctionBox = electricPowerJunctionBox;
 		    }
+
 		    public Watt ElectricAuxPower => throw new NotImplementedException();
 
 		    public Watt ChargePower => throw new NotImplementedException();
@@ -71,8 +70,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_powerDemands = new Dictionary<IElectricPowerJunctionBoxPort, Watt>();
 		}
 
-		public ITnOutPort CurrentTorqueSplitterNextComponent {  get; set; }
-
 		protected void AddPort(IElectricPowerJunctionBoxPort component)
 		{
 			if (!_powerDemands.ContainsKey(component))
@@ -93,16 +90,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, IElectricPowerJunctionBoxPort port, bool dryRun = false)
 		{
-			if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
+            _powerDemands[port] = powerDemand;
+
+            if ((absTime.Value() == 0) && (powerDemand.Value() == 0) && dryRun)
 			{
 				return _electricPower.Request(absTime, dt, powerDemand, dryRun);
 			}
-
-            if (_powerDemands[port] == null)
-			{
-				_powerDemands[port] = powerDemand;	
-			}
-
+            
 			return _powerDemands.Any(x => x.Value == null)
 				? new ElectricSystemNotReadyResponse(this)
 				: _electricPowerResponse = _electricPowerResponse ?? _electricPower.Request(absTime, dt, _powerDemands.Values.Sum(), dryRun);
@@ -134,9 +128,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_electricPower = powerSupply;
 		}
 
-		public IElectricSystem GetElectricPowerJunctionBoxPort(IPowertrainContainer powertrainContainer)
+		public IElectricSystem GetElectricPowerJunctionBoxPort()
 		{
-			var port = new ElectricPowerJunctionBoxPort(this,  powertrainContainer);
+			var port = new ElectricPowerJunctionBoxPort(this);
 			AddPort(port);
 			return port;
 		}

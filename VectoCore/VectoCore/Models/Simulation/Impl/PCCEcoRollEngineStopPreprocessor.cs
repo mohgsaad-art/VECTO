@@ -205,8 +205,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			} catch (VectoSearchAbortedException) {
 				return gradient;
 			}
-
-			return gradient;
+            
+            return gradient;
 		}
 
 		public MeterPerSecond SpeedStep { get; set; }

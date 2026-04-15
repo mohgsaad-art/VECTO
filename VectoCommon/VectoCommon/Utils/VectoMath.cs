@@ -600,6 +600,29 @@ namespace TUGraz.VectoCommon.Utils
 		#endregion
 	}
 
+	public class PointComparer : IEqualityComparer<Point>
+	{
+        public bool Equals(Point x, Point y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            return x.X.IsEqual(y.X) && x.Y.IsEqual(y.Y) && x.Z.IsEqual(y.Z);
+        }
+
+        public int GetHashCode(Point obj)
+        {
+            return (obj is null) ? 0 : (obj.X, obj.Y, obj.Z).GetHashCode();
+        }
+    }
+
 	[DebuggerDisplay("Plane({X}, {Y}, {Z}, {W})")]
 	public class Plane
 	{

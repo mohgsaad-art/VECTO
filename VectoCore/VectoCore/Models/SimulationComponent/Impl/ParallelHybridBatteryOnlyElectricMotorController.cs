@@ -42,7 +42,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			//var testContainer = container.SimplePowertrainBuilder.BuildSimpleHybridBatteryOnlyPowertrain(container.RunData);
 			//TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(testContainer, false);
-			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false);
+			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 		}
 

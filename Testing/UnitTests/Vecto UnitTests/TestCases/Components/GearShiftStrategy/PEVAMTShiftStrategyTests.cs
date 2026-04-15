@@ -555,10 +555,10 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			var testPt = GetTestPowertrain(ratios, container, out _);
 			var ptBuilder = new Mock<ISimplePowertrainBuilder>();
 			ptBuilder.Setup(c => c.CreateTestPowertrain(
-					It.IsAny<IVehicleContainer>(), It.IsAny<bool>()))
+					It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<string>()))
 				.Returns(testPt.Object);
 			ptBuilder.Setup(c => c.CreateTestPowertrain(
-					It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>()))
+					It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>(), It.IsAny<string>()))
 				.Returns(testPt.Object);
 			container.Setup(c => c.SimplePowertrainBuilder).Returns(ptBuilder.Object);
 

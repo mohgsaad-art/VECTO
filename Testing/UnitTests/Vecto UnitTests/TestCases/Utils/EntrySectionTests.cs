@@ -3,7 +3,7 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.Utils;
 
-public class EnumerableExtensionMethodsTests
+public class EntrySectionTests
 {
 	public class Entry
 	{

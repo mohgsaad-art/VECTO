@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		private void InitializeTestContainer(VectoRunData runData)
 		{
 			// fuel list here has no effect as this is the mod-container for the test-powertrain only
-			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false);
+			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN];
 			// initialize vehicle so that vehicleStopped of the testcontainer is false (required for test-runs)
 			TestPowertrain.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN).SetGear = new GearshiftPosition(2u, true);

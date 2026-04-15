@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
@@ -10,12 +11,38 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 {
 
-	public class EfficiencyMapNew : EfficiencyMap
+	public class EfficiencyMapNew : EfficiencyMap, IEquatable<EfficiencyMapNew>
 	{
 		
 		protected internal EfficiencyMapNew(DelaunayMap efficiencyMapMech2El) : base(efficiencyMapMech2El) { }
 
-		public override EfficiencyResult LookupElectricPower(PerSecond angularSpeed, NewtonMeter torque, bool allowExtrapolation = false)
+        public bool Equals(EfficiencyMapNew other) => base.Equals(other);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj) => Equals(obj as EfficiencyMapNew);
+
+        public static bool operator ==(EfficiencyMapNew map1, EfficiencyMapNew map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(EfficiencyMapNew map1, EfficiencyMapNew map2) => !(map1 == map2);
+
+        public override EfficiencyResult LookupElectricPower(PerSecond angularSpeed, NewtonMeter torque, bool allowExtrapolation = false)
 		{
 			var result = new EfficiencyResult();
 			result.Torque = torque;
@@ -52,7 +79,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 		}
     }
 
-	public class EfficiencyMap : LoggingObject
+	public class EfficiencyMap : LoggingObject, IEquatable<EfficiencyMap>
 	{
 		protected readonly DelaunayMap _efficiencyMapMech2El;
 		private PerSecond _maxSpeed;
@@ -62,8 +89,46 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 			_efficiencyMapMech2El = efficiencyMapMech2El;
 		}
 
+        public override bool Equals(object obj) => Equals(obj as EfficiencyMap);
 
-		public virtual EfficiencyResult LookupElectricPower(PerSecond angularSpeed, NewtonMeter torque, bool allowExtrapolation = false)
+        public override int GetHashCode()
+        {
+            return _efficiencyMapMech2El.GetHashCode();
+        }
+
+		public bool Equals(EfficiencyMap other)
+		{
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(other, null))
+			{
+				return false;
+			}
+
+			return (_efficiencyMapMech2El == other._efficiencyMapMech2El);
+		}
+
+        public static bool operator ==(EfficiencyMap map1, EfficiencyMap map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(EfficiencyMap map1, EfficiencyMap map2) => !(map1 == map2);
+
+        public virtual EfficiencyResult LookupElectricPower(PerSecond angularSpeed, NewtonMeter torque, bool allowExtrapolation = false)
 		{
 			var result = new EfficiencyResult();
 			result.Torque = torque;

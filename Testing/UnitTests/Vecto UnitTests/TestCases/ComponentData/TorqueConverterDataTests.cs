@@ -1,12 +1,95 @@
 ﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 
 public class TorqueConverterDataTests
 {
+    const double Epsilon = 1e-7;
+    static TorqueConverterEntry _entry1 = new TorqueConverterEntry() { SpeedRatio = 0, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 0 };
+    static TorqueConverterEntry _entry1Equal = new TorqueConverterEntry() { SpeedRatio = 0, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 0 };
+    static TorqueConverterEntry _entry2 = new TorqueConverterEntry() { SpeedRatio = 1, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 0 };
+    static TorqueConverterEntry _entry3 = new TorqueConverterEntry() { SpeedRatio = 0, Torque = 1.SI<NewtonMeter>(), TorqueRatio = 0 };
+    static TorqueConverterEntry _entry4 = new TorqueConverterEntry() { SpeedRatio = 0, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 1 };
+    static TorqueConverterEntry _entry1Close = new TorqueConverterEntry() { SpeedRatio = 0.001, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 0 };
+    static TorqueConverterEntry _entry1Epsilon = new TorqueConverterEntry() { SpeedRatio = Epsilon, Torque = 0.SI<NewtonMeter>(), TorqueRatio = 0 };
+
+    public static IEnumerable<object[]> TorqueConverterEntryComparerEqualsTestCases()
+    {
+        yield return new object[] { null, null, true };
+        yield return new object[] { _entry1, null, false };
+        yield return new object[] { null, _entry1, false };
+        yield return new object[] { _entry1, _entry1, true };
+        yield return new object[] { _entry1, _entry1Equal, true };
+        yield return new object[] { _entry1, _entry2, false };
+        yield return new object[] { _entry1, _entry3, false };
+        yield return new object[] { _entry1, _entry4, false };
+        yield return new object[] { _entry1, _entry1Close, false };
+        yield return new object[] { _entry1, _entry1Epsilon, true };
+    }
+
+    [Test, TestCaseSource(nameof(TorqueConverterEntryComparerEqualsTestCases))]
+    public void Test_TorqueConverterEntryComparer_Equals(TorqueConverterEntry a, TorqueConverterEntry b, bool expected)
+    {
+        var result = (new TorqueConverterEntryComparer()).Equals(a, b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    public static IEnumerable<object[]> EqualityTestCases()
+    {
+        var dc1 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 0.SI<PerSecond>(), 0.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc1Equal = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 0.SI<PerSecond>(), 0.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc2 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry2 }, 0.SI<PerSecond>(), 0.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc3 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 1.SI<PerSecond>(), 0.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc4 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 0.SI<PerSecond>(), 1.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc5 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 0.SI<PerSecond>(), 0.SI<PerSecond>(), 1.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>());
+        var dc6 = new TorqueConverterData(new List<TorqueConverterEntry>() { _entry1 }, 0.SI<PerSecond>(), 0.SI<PerSecond>(), 0.SI<MeterPerSquareSecond>(), 1.SI<MeterPerSquareSecond>());
+
+        yield return new object[] { null, null, true };
+        yield return new object[] { dc1, null, false };
+        yield return new object[] { null, dc1, false };
+        yield return new object[] { dc1, dc1, true };
+        yield return new object[] { dc1, dc1Equal, true };
+        yield return new object[] { dc2, dc1, false };
+        yield return new object[] { dc3, dc1, false };
+        yield return new object[] { dc4, dc1, false };
+        yield return new object[] { dc5, dc1, false };
+        yield return new object[] { dc6, dc1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TorqueConverterData_OperatorEqual(TorqueConverterData a, TorqueConverterData b, bool expected)
+    {
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TorqueConverterData_OperatorNotEqual(TorqueConverterData a, TorqueConverterData b, bool notExpected)
+    {
+        var result = (a != b);
+
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TorqueConverterData_Equals(TorqueConverterData a, TorqueConverterData b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase]
     public void TestTorqueConverterDataDeclarationMode()
     {

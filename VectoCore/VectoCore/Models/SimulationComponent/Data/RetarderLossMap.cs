@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TUGraz.VectoCommon.Utils;
@@ -38,7 +40,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	/// <summary>
 	/// LossMap for retarder.
 	/// </summary>
-	public class RetarderLossMap : SimulationComponentData, ILossMap
+	public class RetarderLossMap : SimulationComponentData, ILossMap, IEquatable<RetarderLossMap>
 	{
 		[ValidateObject] private readonly RetarderLossEntry[] _entries;
 		private PerSecond _minSpeed;
@@ -49,10 +51,49 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			_entries = entries;
 		}
 
-		/// <summary>
-		/// Gets the minimal defined speed of the retarder loss map.
-		/// </summary>
-		public PerSecond MinSpeed
+        public override bool Equals(object obj) => Equals(obj as RetarderLossMap);
+
+        public override int GetHashCode()
+        {
+            return _entries.GetHashCode();
+        }
+
+        public bool Equals(RetarderLossMap other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return _entries.SequenceEqual(other._entries, new RetarderLossEntryComparer());
+        }
+
+        public static bool operator ==(RetarderLossMap map1, RetarderLossMap map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(RetarderLossMap map1, RetarderLossMap map2) => !(map1 == map2);
+
+        /// <summary>
+        /// Gets the minimal defined speed of the retarder loss map.
+        /// </summary>
+        public PerSecond MinSpeed
 		{
 			get { return _minSpeed ?? (_minSpeed = _entries.Min(e => e.RetarderSpeed)); }
 		}
@@ -85,5 +126,28 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			[Required, SIRange(0, double.MaxValue)] public PerSecond RetarderSpeed;
 			[Required, SIRange(0, 500)] public NewtonMeter TorqueLoss;
 		}
-	}
+
+        public class RetarderLossEntryComparer : IEqualityComparer<RetarderLossEntry>
+        {
+            public bool Equals(RetarderLossEntry x, RetarderLossEntry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return (x.RetarderSpeed == y.RetarderSpeed) && (x.TorqueLoss == y.TorqueLoss);
+            }
+
+            public int GetHashCode(RetarderLossEntry obj)
+            {
+                return (obj is null) ? 0 : (obj.RetarderSpeed, obj.TorqueLoss).GetHashCode();
+            }
+        }
+    }
 }

@@ -458,7 +458,7 @@ public class ATShiftStrategyOptimizedTests
 		
 		// gbx.Setup(g => g)
 		var testPt =
-			vehicleContainer.Object.SimplePowertrainBuilder.CreateTestPowertrain(vehicleContainer.Object, false);
+			vehicleContainer.Object.SimplePowertrainBuilder.CreateTestPowertrain(vehicleContainer.Object, false, null);
 		
 		var mockGb = Mock.Get(testPt.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
 		mockGb.Setup(g => g.Request(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
@@ -579,7 +579,7 @@ public class ATShiftStrategyOptimizedTests
 			out simplePt);
 
 		vehicleContainer.Setup(c => c.SimplePowertrainBuilder.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>())).Returns(testPowertrain.Object);
+			It.IsAny<bool>(), It.IsAny<string>())).Returns(testPowertrain.Object);
 
 		//VehicleInfo
 		vehicleContainer.Setup(c => c.VehicleInfo)

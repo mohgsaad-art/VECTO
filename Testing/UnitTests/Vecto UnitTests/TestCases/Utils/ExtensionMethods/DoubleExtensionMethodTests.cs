@@ -27,6 +27,23 @@ public class DoubleExtensionMethodTests
         Assert.AreEqual(600.SI(Unit.SI.Rounds.Per.Minute).Cast<PerSecond>().Value(), val2.Value());
     }
 
+    public static IEnumerable<object[]> DoubleComparerEqualsTestCases()
+    {
+        yield return new object[] { 0, 0, true };
+        yield return new object[] { 1, 0, false };
+        yield return new object[] { 1.001, 1, false };
+        yield return new object[] { Epsilon, 0, true };
+        yield return new object[] { -Epsilon, 0, true };
+    }
+
+    [Test, TestCaseSource(nameof(DoubleComparerEqualsTestCases))]
+    public void Test_DoubleComparer_Equals(double a, double b, bool expected)
+    {
+        var result = (new DoubleComparer()).Equals(a, b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase(0.0, 0.0, true),
     TestCase(0.0, Epsilon, true),
     TestCase(Epsilon, 0.0, true),
