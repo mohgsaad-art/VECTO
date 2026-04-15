@@ -247,8 +247,8 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	}
 
 	[DebuggerDisplay("ElectricSystemNotReady")]
-	internal class ResponseElectricSystemNotReady : AbstractResponse
-	{
+	internal class ResponseElectricSystemNotReady : ResponseDryRun
+    {
 		public ResponseElectricSystemNotReady(object source) : base(source) { }
 	}
 }
