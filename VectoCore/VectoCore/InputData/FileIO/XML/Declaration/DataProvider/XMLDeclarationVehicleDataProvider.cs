@@ -712,7 +712,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public bool? AirdragModifiedMultistep { get; }
 		public TankSystem? TankSystem { get; }
 
-		public bool HybridElectricHDV { get; }
+		public virtual bool HybridElectricHDV { get; }
 		public bool DualFuelVehicle { get; }
 		public virtual Watt MaxNetPower1 { get; }
 		public virtual string ExemptedTechnology { get; }
@@ -791,7 +791,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public new static readonly string QUALIFIED_XSD_TYPE =
 			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01(IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode xmlNode, string sourceFile) : base(busJobData, xmlNode, sourceFile) { }
+		public XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01(IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode xmlNode, string sourceFile) : 
+			base(busJobData, xmlNode, sourceFile) 
+		{}
 
 		public override VectoSimulationJobType VehicleType =>
 			Components.ElectricMachines.Entries.Any(em => em.ElectricMachine.IsIHPC())
@@ -800,6 +802,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public override string PowertrainPositionPrefix => "P";
 
+        public override bool HybridElectricHDV => true;
 	}
 
 	public class XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV11 : XMLDeclarationMultistage_HEV_Px_PrimaryVehicleBusDataProviderV01
@@ -832,7 +835,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public override VectoSimulationJobType VehicleType { get => VectoSimulationJobType.SerialHybridVehicle; }
 
 		public override string PowertrainPositionPrefix => "E";
-	}
+
+        public override bool HybridElectricHDV => true;
+    }
 
 	public class XMLDeclarationMultistage_HEV_Sx_PrimaryVehicleBusDataProviderV11 : XMLDeclarationMultistage_HEV_Sx_PrimaryVehicleBusDataProviderV01
 	{
@@ -864,7 +869,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public override VectoSimulationJobType VehicleType { get => VectoSimulationJobType.IEPC_S; }
 
 		public override string PowertrainPositionPrefix => "S";
-	}
+
+        public override bool HybridElectricHDV => true;
+    }
 
 	public class XMLDeclarationMultistage_HEV_IEPC_S_PrimaryVehicleBusDataProviderV11 : XMLDeclarationMultistage_HEV_IEPC_S_PrimaryVehicleBusDataProviderV01
 	{
@@ -970,6 +977,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public override bool OVC => GetBool("OVC");
 
         public override string PowertrainPositionPrefix => "F";
+
+        public override bool HybridElectricHDV => true;
     }
 
     public class XMLDeclarationMultistage_FCHV_IEPC_PrimaryVehicleBusDataProviderV11 : XMLDeclarationMultistage_Conventional_PrimaryVehicleBusDataProviderV01
@@ -988,7 +997,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public override bool OVC => GetBool("OVC");
 
         public override string PowertrainPositionPrefix => "F";
-	}
+
+        public override bool HybridElectricHDV => true;
+    }
 
 	// ---------------------------------------------------------------------------------------
 
@@ -1054,6 +1065,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public override VectoSimulationJobType VehicleType => VectoSimulationJobType.Multiple_FCHV;
 
         public override string PowertrainPositionPrefix => "F";
+
+        public override bool HybridElectricHDV => true;
     }
 
 	public class XMLDeclarationMultistage_Multiple_PEV_PrimaryVehicleBusDataProviderV11 : XMLDeclarationMultistage_Multiple_PrimaryVehicleBusDataProviderV01
@@ -1086,6 +1099,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public override VectoSimulationJobType VehicleType => VectoSimulationJobType.Multiple_SHEV;
 
         public override string PowertrainPositionPrefix => "S";
+
+        public override bool HybridElectricHDV => true;
     }
 
     // ---------------------------------------------------------------------------------------
