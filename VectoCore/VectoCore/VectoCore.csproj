@@ -131,6 +131,9 @@
 	<InternalsVisibleTo Include="VectoUnitTest" />
 	<InternalsVisibleTo Include="VectoIntegrationTest" />
 	<InternalsVisibleTo Include="VectoTrailer" />
+	<InternalsVisibleTo Include="VectoTrailerUnitTests" />
+	 <InternalsVisibleTo Include="VectoTrailerIntegrationTests" />
+	<InternalsVisibleTo Include="VectoTrailerTestLibrary" />
   </ItemGroup>
 
   <ItemGroup>
