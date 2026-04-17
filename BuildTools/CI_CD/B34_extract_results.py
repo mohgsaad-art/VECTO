@@ -12,8 +12,11 @@ Steps:
 
 import argparse
 import os
+import re
 import shutil
 from pathlib import Path
+
+_VERSION_RE = re.compile(r'^\d+\.\d+\.\d+(-\w+)?$')
 
 parser = argparse.ArgumentParser(
     description='Extract HTCondor result archives into XX_RESULTS in the current working directory.'
@@ -42,28 +45,30 @@ for filename in out_zips_in_cwd:
     shutil.move(filename, dest)
     print(f'Moved: {filename} -> {storage_dir}')
 
-# --- Step 2: Unpack each archive into XX_RESULTS ---
-zip_outfiles = [
-    os.path.join(storage_dir, f)
-    for f in os.listdir(storage_dir)
-    if f.endswith('out.zip')
-]
+# --- Step 2: Unpack each archive into XX_RESULTS/<version>/ ---
+# Walk all version subfolders under Z00_VECTO_OUTPUTS
+for version_entry in os.scandir(storage_dir):
+    if not version_entry.is_dir():
+        continue
+    version = version_entry.name
+    for filename in os.listdir(version_entry.path):
+        if not filename.endswith('_out.zip'):
+            continue
+        zip_outfile = os.path.join(version_entry.path, filename)
 
-for zip_outfile in zip_outfiles:
-    # Reconstruct the directory path from the flat filename:
-    # '__' separators become path separators, except for the known
-    # double-underscore prefixes GEN__DECL_mode and GEN__ENG_mode.
-    rel_path = os.path.basename(zip_outfile)
-    rel_path = rel_path.replace('_out.zip', '')
-    rel_path = rel_path.replace('__', os.sep)
-    rel_path = rel_path.replace('GEN' + os.sep + 'DECL_mode', 'GEN__DECL_mode')
-    rel_path = rel_path.replace('GEN' + os.sep + 'ENG_mode', 'GEN__ENG_mode')
+        # Reconstruct the directory path from the flat filename:
+        # '__' separators become path separators, except for the known
+        # double-underscore prefixes GEN__DECL_mode and GEN__ENG_mode.
+        rel_path = filename.replace('_out.zip', '')
+        rel_path = rel_path.replace('__', os.sep)
+        rel_path = rel_path.replace('GEN' + os.sep + 'DECL_mode', 'GEN__DECL_mode')
+        rel_path = rel_path.replace('GEN' + os.sep + 'ENG_mode', 'GEN__ENG_mode')
 
-    outpath = os.path.join(extract_dir, rel_path)
+        outpath = os.path.join(extract_dir, version, rel_path)
 
-    if not os.path.exists(outpath) or force_rerun:
-        print(f'Extracting: {outpath}')
-        Path(outpath).mkdir(parents=True, exist_ok=True)
-        shutil.unpack_archive(zip_outfile, outpath)
+        if not os.path.exists(outpath) or force_rerun:
+            print(f'Extracting: {outpath}')
+            Path(outpath).mkdir(parents=True, exist_ok=True)
+            shutil.unpack_archive(zip_outfile, outpath)
 
 print('Done.')

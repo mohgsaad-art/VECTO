@@ -14,7 +14,8 @@ before submitting them via B03.
 
 import argparse
 import os
-import subprocess
+
+from FUNCTIONS.REPORTS import get_vecto_version
 
 parser = argparse.ArgumentParser(
     description='Generate the HTCondor queue file (batch_arguments.txt) from the test pool.'
@@ -73,7 +74,8 @@ for input_dir in input_dirs:
 
 # Skip already-completed jobs (unless --force-rerun)
 if not force_rerun:
-    result_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS')
+    vecto_version = get_vecto_version(vecto_root)
+    result_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS', vecto_version)
     os.makedirs(result_dir, exist_ok=True)
     existing = set(os.listdir(result_dir))
     job_args = [a for a in job_args if a[2] + '_out.zip' not in existing]
