@@ -180,18 +180,14 @@ for root, dummy, files in os.walk(Path(file2run).parent):
             os.remove(os.path.join(root, f))
 
 # ---------------------------------------------------------------------------
-# Step 6 — Archive and move result into <scratch_dir>/<version>/
+# Step 6 — Archive and move result to cwd
 # ---------------------------------------------------------------------------
-
-version_dir = os.path.join(scratch_dir, vecto_version)
-Path(version_dir).mkdir(parents=True, exist_ok=True)
 
 arch_stem = Path(output_filename).stem
 arch_ext = Path(output_filename).suffixes[-1].lstrip('.') if Path(output_filename).suffixes else 'zip'
 
 print(f'Archiving results: {arch_stem}.{arch_ext} from {work_dir}')
 shutil.make_archive(arch_stem, arch_ext, root_dir=work_dir)
-shutil.move(f'{arch_stem}.{arch_ext}', version_dir)
+shutil.move(f'{arch_stem}.{arch_ext}', '.')
 
-print(f'Result placed in: {version_dir}')
 print('Done.')

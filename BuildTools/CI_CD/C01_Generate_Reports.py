@@ -61,7 +61,13 @@ if not os.path.exists(args.vecto_root):
     raise FileNotFoundError(f'VECTO path does not exist: {args.vecto_root}')
 
 vecto_root = args.vecto_root
-result_dir = os.path.join(os.getcwd(), 'XX_RESULTS')
+vecto_version = get_vecto_version(vecto_root)
+print(f'VECTO version   : {repr(vecto_version)}')
+result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', vecto_version)
+print(f'Result dir      : {result_dir}')
+print(f'Result dir exists: {os.path.exists(result_dir)}')
+if os.path.exists(os.path.join(os.getcwd(), 'XX_RESULTS')):
+    print(f'XX_RESULTS contents: {os.listdir(os.path.join(os.getcwd(), "XX_RESULTS"))}')
 
 _base = os.path.join(args.report_dir, 'Reports') if args.report_dir else get_default_report_dir()
 report_base_dir = os.path.join(_base, 'Interim_Reports') if args.interim_report else _base
@@ -76,7 +82,6 @@ os.makedirs(_reports_cache, exist_ok=True)
 
 date = datetime.datetime.now().strftime('%y%m%d')
 nnnn = get_next_report_number(_reports_cache)
-vecto_version = get_vecto_version(vecto_root)
 vecto_hash = get_vecto_hash(vecto_root)
 
 
@@ -301,7 +306,7 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
         'complete_step_ok': complete_step_ok_list,
         'cpu_time':         cpu_time,
     })
-    df_all['Test_Name'] = df_all['Test_Name'].str.replace(' ', '_')
+    df_all['Test_Name'] = df_all['Test_Name'].astype(str).str.replace(' ', '_')
 
     failed_names = [
         name for name, status in zip(res_name_list, success_list)

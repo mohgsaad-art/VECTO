@@ -12,14 +12,17 @@ Steps:
 
 import argparse
 import os
-import re
 import shutil
 from pathlib import Path
 
-_VERSION_RE = re.compile(r'^\d+\.\d+\.\d+(-\w+)?$')
+from FUNCTIONS.REPORTS import get_vecto_version
 
 parser = argparse.ArgumentParser(
     description='Extract HTCondor result archives into XX_RESULTS in the current working directory.'
+)
+parser.add_argument(
+    'vecto_root',
+    help='Path to the VECTO installation directory. Used to determine the version subfolder.',
 )
 parser.add_argument(
     '--force-rerun',
@@ -30,6 +33,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 force_rerun = args.force_rerun
+vecto_version = get_vecto_version(args.vecto_root)
 
 storage_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS')
 extract_dir = os.path.join(os.getcwd(), 'XX_RESULTS')
@@ -46,29 +50,24 @@ for filename in out_zips_in_cwd:
     print(f'Moved: {filename} -> {storage_dir}')
 
 # --- Step 2: Unpack each archive into XX_RESULTS/<version>/ ---
-# Walk all version subfolders under Z00_VECTO_OUTPUTS
-for version_entry in os.scandir(storage_dir):
-    if not version_entry.is_dir():
+for filename in os.listdir(version_storage):
+    if not filename.endswith('_out.zip'):
         continue
-    version = version_entry.name
-    for filename in os.listdir(version_entry.path):
-        if not filename.endswith('_out.zip'):
-            continue
-        zip_outfile = os.path.join(version_entry.path, filename)
+    zip_outfile = os.path.join(version_storage, filename)
 
-        # Reconstruct the directory path from the flat filename:
-        # '__' separators become path separators, except for the known
-        # double-underscore prefixes GEN__DECL_mode and GEN__ENG_mode.
-        rel_path = filename.replace('_out.zip', '')
-        rel_path = rel_path.replace('__', os.sep)
-        rel_path = rel_path.replace('GEN' + os.sep + 'DECL_mode', 'GEN__DECL_mode')
-        rel_path = rel_path.replace('GEN' + os.sep + 'ENG_mode', 'GEN__ENG_mode')
+    # Reconstruct the directory path from the flat filename:
+    # '__' separators become path separators, except for the known
+    # double-underscore prefixes GEN__DECL_mode and GEN__ENG_mode.
+    rel_path = filename.replace('_out.zip', '')
+    rel_path = rel_path.replace('__', os.sep)
+    rel_path = rel_path.replace('GEN' + os.sep + 'DECL_mode', 'GEN__DECL_mode')
+    rel_path = rel_path.replace('GEN' + os.sep + 'ENG_mode', 'GEN__ENG_mode')
 
-        outpath = os.path.join(extract_dir, version, rel_path)
+    outpath = os.path.join(extract_dir, vecto_version, rel_path)
 
-        if not os.path.exists(outpath) or force_rerun:
-            print(f'Extracting: {outpath}')
-            Path(outpath).mkdir(parents=True, exist_ok=True)
-            shutil.unpack_archive(zip_outfile, outpath)
+    if not os.path.exists(outpath) or force_rerun:
+        print(f'Extracting: {outpath}')
+        Path(outpath).mkdir(parents=True, exist_ok=True)
+        shutil.unpack_archive(zip_outfile, outpath)
 
 print('Done.')
