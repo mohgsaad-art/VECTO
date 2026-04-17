@@ -111,7 +111,7 @@ print(f'vecto_version: {vecto_version}')
 # Step 2 — Unpack input archive into a working directory
 # ---------------------------------------------------------------------------
 
-work_dir = os.path.join(scratch_dir, vecto_version, 'OUTPUTS', output_filename)
+work_dir = os.path.join(scratch_dir, 'OUTPUTS', vecto_version, output_filename)
 Path(work_dir).mkdir(parents=True, exist_ok=True)
 print(f'work_dir: {work_dir}')
 
