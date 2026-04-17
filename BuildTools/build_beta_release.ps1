@@ -147,7 +147,7 @@ if ($Publish) {
     $NugetReleaseVersion = $(Get-ChildItem -Path ./Nuget)[0].BaseName
     Get-ChildItem -Path "Nuget/$NugetReleaseVersion" | ForEach-Object {
         Write-Host "Pushing package: $($_.FullName)" -ForegroundColor Green
-        dotnet nuget push $_.FullName -s "local-registry"
+        dotnet nuget push $_.FullName -s "local-vecto-registry"
     }
 
     # Revert all changes made to the repo
