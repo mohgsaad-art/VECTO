@@ -148,6 +148,10 @@ def generate_delta_report(ref_report: str, current_report: str, output_path: str
     print(f'Output    : {output_path}')
 
     var_deltas = build_var_deltas(ref_report, current_report)
+    if not var_deltas:
+        print('No matching variable sheets found — skipping delta report.')
+        return None
+
     df_summary = build_delta_summary(var_deltas)
     write_delta_report(output_path, var_deltas, df_summary)
 
