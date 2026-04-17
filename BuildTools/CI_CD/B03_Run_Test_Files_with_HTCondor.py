@@ -36,6 +36,17 @@ parser.add_argument(
     default=None,
     help='HTCondor queue name used to identify this submission. Defaults to the basename of vecto_root.'
 )
+parser.add_argument(
+    '--ref-vecto-root',
+    default=None,
+    help='Path to the reference (previous official) VECTO installation directory. '
+         'When supplied, missing vehicles are also queued against this version for delta comparison.'
+)
+parser.add_argument(
+    '--reports-cache',
+    default=None,
+    help='Directory containing OR_*.xlsx report files used to detect missing vehicles for the reference version.'
+)
 args = parser.parse_args()
 
 if not os.path.exists(args.vecto_root):
@@ -56,7 +67,11 @@ def run(cmd):
 
 # --- Step 1: Generate the HTCondor queue file ---
 print('Generating queue file...')
-run(f'python B32_generate_JB_queuefile.py "{vecto_root}" "{test_pool_path}"')
+print(f'--- vecto ref root: "{args.ref_vecto_root}"')
+_ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root else ''
+_cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
+output32 = run(f'python B32_generate_JB_queuefile.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
+print(output32)
 
 # --- Step 2: Patch the submit template with the queue name ---
 print(f'Patching submit template -> {SUBMIT_GENERATED}')
