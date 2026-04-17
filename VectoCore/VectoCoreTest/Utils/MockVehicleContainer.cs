@@ -58,15 +58,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private Watt _axlegearLoss = 0.SI<Watt>();
 		private bool _clutchClosed = true;
 
-		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, AxleNumber axleNumber) => null;
-
-        public IAxlegearInfo AxlegearInfo(AxleNumber axleNumber) => this;
-
-		public IAngledriveInfo AngledriveInfo(AxleNumber axleNumber) => null;
-
-        public IRetarder Retarder(AxleNumber axleNumber) => null;
-
-        public IEngineInfo EngineInfo { get; set; }
+		public IEngineInfo EngineInfo { get; set; }
 
 		public IEngineControl EngineCtl => this;
 
@@ -103,23 +95,23 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IGearboxInfo GearboxInfo(AxleNumber axleNumber) => this;
 
-        public IClutchInfo GetClutchInfo(AxleNumber axleNumber) => this;
-
-		public IShiftStrategy Strategy => null;
+        public IShiftStrategy Strategy => null;
 
 		public event Action GearShiftTriggered;
 
-		public IGearboxControl GearboxCtl(AxleNumber axleNumber) => this;
-
 		public IList<IElectricMotorInfo> ElectricMotorsInfo => null;
-
-		public IGearboxInfo GetGearboxInfo(AxleNumber axleNumber) => this;
 
 		public IList<IGearboxInfo> GearboxesInfo => null;
 
 		public IList<IGearboxControl> GearboxesCtl => null;
 
 		public IList<IAngledriveInfo> AngledrivesInfo => null;
+
+		public IList<ITorqueConverterInfo> TorqueConvertersInfo => null;
+
+		public IList<ITorqueConverterControl> TorqueConvertersCtl => null;
+
+		public IList<IRetarder> RetardersInfo => null;
 
 		public IList<IClutchInfo> ClutchesInfo => null;
 
@@ -141,11 +133,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public ITorqueSplitter TorqueSplitter { get; }
 
-        public ITorqueConverterInfo TorqueConverterInfo(AxleNumber axleNumber) => null;
-
-		public ITorqueConverterControl TorqueConverterCtl(AxleNumber axleNumber) => null;
-
-		public IPowertrainInfo PowertrainInfo => this;
+        public IPowertrainInfo PowertrainInfo => this;
 
 		public IHybridControllerInfo HybridControllerInfo { get; }
 		public IHybridControllerCtl HybridControllerCtl { get; }

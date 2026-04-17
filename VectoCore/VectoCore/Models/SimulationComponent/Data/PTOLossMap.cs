@@ -29,7 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
@@ -37,7 +40,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	/// <summary>
 	/// LossMap for PTO Idle losses.
 	/// </summary>
-	public class PTOLossMap : SimulationComponentData, ILossMap
+	public class PTOLossMap : SimulationComponentData, ILossMap, IEquatable<PTOLossMap>
 	{
 		[ValidateObject] private readonly Entry[] _entries;
 
@@ -46,10 +49,49 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			_entries = entries;
 		}
 
-		/// <summary>
-		/// Calculates the pto torque loss.
-		/// </summary>
-		public NewtonMeter GetTorqueLoss(PerSecond angularVelocity)
+        public override bool Equals(object obj) => Equals(obj as PTOLossMap);
+
+        public override int GetHashCode()
+        {
+            return _entries.GetHashCode();
+        }
+
+        public bool Equals(PTOLossMap other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return _entries.SequenceEqual(other._entries, new PTOLossMapEntryComparer());
+        }
+
+        public static bool operator ==(PTOLossMap map1, PTOLossMap map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(PTOLossMap map1, PTOLossMap map2) => !(map1 == map2);
+
+        /// <summary>
+        /// Calculates the pto torque loss.
+        /// </summary>
+        public NewtonMeter GetTorqueLoss(PerSecond angularVelocity)
 		{
 			var s = _entries.GetSection(e => e.EngineSpeed < angularVelocity);
 			return VectoMath.Interpolate(s.Item1.EngineSpeed, s.Item2.EngineSpeed, s.Item1.PTOTorque, s.Item2.PTOTorque,
@@ -61,5 +103,28 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			[Required, SIRange(0, double.MaxValue)] public PerSecond EngineSpeed;
 			[Required, SIRange(0, 1000)] public NewtonMeter PTOTorque;
 		}
+
+        public class PTOLossMapEntryComparer : IEqualityComparer<Entry> 
+        {
+            public bool Equals(Entry x, Entry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return (x.EngineSpeed == y.EngineSpeed) && (x.PTOTorque == y.PTOTorque);
+            }
+
+            public int GetHashCode(Entry obj)
+            {
+                return (obj is null) ? 0 : (obj.EngineSpeed, obj.PTOTorque).GetHashCode();
+            }
+        }
 	}
 }

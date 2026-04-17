@@ -9,13 +9,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
     }
     public interface IElectricPowerJunctionBox : IUpdateable
     {
-        ITnOutPort CurrentTorqueSplitterNextComponent { get; set; }
-        
         void ClearResults();
 
         void Connect(IElectricSystem powerSupply);
 
-        IElectricSystem GetElectricPowerJunctionBoxPort(IPowertrainContainer powertrainContainer);
+        IElectricSystem GetElectricPowerJunctionBoxPort();
 
     }
 }

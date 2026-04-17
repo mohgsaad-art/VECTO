@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		public MTShiftStrategy(IVehicleContainer container, IPowertrainContainer powertrainContainer) : base(container, powertrainContainer)
 		{
 			// create testcontainer
-			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false);
+			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 			PreprocessorSpeed = ConfigureSpeedPreprocessor(container.RunData);
 			container.AddPreprocessor(PreprocessorSpeed);
@@ -422,9 +422,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
         private VelocitySpeedGearshiftPreprocessor ConfigureSpeedPreprocessor(VectoRunData runData)
 		{
-			if (TestPowertrain.Container.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN) is IMTGearbox)
+            if (TestPowertrain.Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxControl is IMTGearbox)
 			{
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetType().FullName);
+				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxControl.GetType().FullName);
 			}
 
 			var maxGradient = runData.Cycle.Entries.Max(x => Math.Abs(x.RoadGradientPercent.Value())) + 1;

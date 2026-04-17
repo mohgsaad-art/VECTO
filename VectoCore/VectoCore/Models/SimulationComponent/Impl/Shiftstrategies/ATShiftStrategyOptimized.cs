@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		private void InitializeTestContainer(VectoRunData runData)
 		{
 			// fuel list here has no effect as this is the mod-container for the test-powertrain only
-			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false);
+			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN];
 			// initialize vehicle so that vehicleStopped of the testcontainer is false (required for test-runs)
 			TestPowertrain.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN).SetGear = new GearshiftPosition(2u, true);
@@ -475,7 +475,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
+			var axleLoss = Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss();
 
 			return gbxOutSpeed * gbxOutTorque - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 		}
@@ -912,7 +912,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			var rollResistanceLoss = Container.VehicleInfo.RollingResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
 
 			var slopeLoss = Container.VehicleInfo.SlopeResistance(avgSlope) * Container.VehicleInfo.VehicleSpeed;
-			var axleLoss = Container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).AxlegearLoss();
+			var axleLoss = Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo.AxlegearLoss();
 
 			var tcLossesCurrentGear = tcInSpeed * tcInTorque - gbxOutSpeed * gbxOutTorque;
 

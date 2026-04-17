@@ -47,6 +47,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 		ITestpowertrainGensetChargerAdapter Charger { get; }
 		IRESSInfo BatterySystem { get; }
 
+        ITorqueSplitter TorqueSplitter { get; }
+
+        IElectricPowerJunctionBox JunctionBox { get; }
     }
 
     public interface ITestGenset

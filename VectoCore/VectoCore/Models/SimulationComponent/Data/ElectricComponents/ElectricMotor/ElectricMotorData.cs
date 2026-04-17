@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -8,9 +7,10 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Utils;
 
+
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
-	public class ElectricMotorData
+	public class ElectricMotorData : IEquatable<ElectricMotorData>
 	{
 		[SIRange(double.MinValue, double.MaxValue)]
 		public KilogramSquareMeter Inertia { get; internal set; }
@@ -39,13 +39,103 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			return EMDragCurve.Lookup(emSpeed);
 		}
 
-		// not read direcly from input but calculated in a pre-processing step
-		public OverloadData Overload { get; internal set; }
+        public override bool Equals(object obj) => Equals(obj as ElectricMotorData);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(ElectricMotorData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (Inertia == other.Inertia)
+				&& OverloadRecoveryFactor.IsEqual(other.OverloadRecoveryFactor)
+				&& RatioADC.IsEqual(other.RatioADC)
+				&& (TransmissionLossMap == other.TransmissionLossMap)
+				&& RatioPerGear.IsEqual(other.RatioPerGear, new DoubleComparer())
+				&& (EfficiencyData == other.EfficiencyData)
+				&& (EMDragCurve == other.EMDragCurve);
+        }
+
+        public static bool operator ==(ElectricMotorData em1, ElectricMotorData em2)
+        {
+            if (ReferenceEquals(em1, em2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(em1, null) || ReferenceEquals(em2, null))
+            {
+                return false;
+            }
+
+            return em1.Equals(em2);
+        }
+
+        public static bool operator !=(ElectricMotorData em1, ElectricMotorData em2) => !(em1 == em2);
+
+        // not read direcly from input but calculated in a pre-processing step
+        public OverloadData Overload { get; internal set; }
 	}
 
 	public class IEPCElectricMotorData : ElectricMotorData
 	{
 		protected internal Dictionary<uint, DragCurve> IEPCDragCurves { private get; set; }
+
+        public override bool Equals(object obj) => Equals(obj as IEPCElectricMotorData);
+
+        public bool Equals(IEPCElectricMotorData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (Inertia == other.Inertia)
+                && OverloadRecoveryFactor.IsEqual(other.OverloadRecoveryFactor)
+                && RatioADC.IsEqual(other.RatioADC)
+                && (TransmissionLossMap == other.TransmissionLossMap)
+                && RatioPerGear.IsEqual(other.RatioPerGear, new DoubleComparer())
+                && (EfficiencyData == other.EfficiencyData)
+                && IEPCDragCurves.SequenceEqual(other.IEPCDragCurves);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(IEPCElectricMotorData em1, IEPCElectricMotorData em2)
+        {
+            if (ReferenceEquals(em1, em2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(em1, null) || ReferenceEquals(em2, null))
+            {
+                return false;
+            }
+
+            return em1.Equals(em2);
+        }
+
+        public static bool operator !=(IEPCElectricMotorData em1, IEPCElectricMotorData em2) => !(em1 == em2);
 
         #region Overrides of ElectricMotorData
 
@@ -61,14 +151,52 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		#endregion
 	}
 
-	public class VoltageLevelData
+	public class VoltageLevelData : IEquatable<VoltageLevelData>
 	{
 		private PerSecond _maxSpeed;
 
 		public IList<ElectricMotorVoltageLevelData> VoltageLevels { get; internal set; }
 
+        public override bool Equals(object obj) => Equals(obj as VoltageLevelData);
 
-		public PerSecond MaxSpeed =>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(VoltageLevelData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+			return VoltageLevels.SequenceEqual(other.VoltageLevels, new ElectricMotorVoltageLevelDataComparer());
+        }
+
+        public static bool operator ==(VoltageLevelData vl1, VoltageLevelData vl2)
+        {
+            if (ReferenceEquals(vl1, vl2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(vl1, null) || ReferenceEquals(vl2, null))
+            {
+                return false;
+            }
+
+            return vl1.Equals(vl2);
+        }
+
+        public static bool operator !=(VoltageLevelData vl1, VoltageLevelData vl2) => !(vl1 == vl2);
+
+        public PerSecond MaxSpeed =>
 			_maxSpeed ?? (_maxSpeed = VoltageLevels
 				.Min(v => v.MaxSpeed));
 
@@ -244,7 +372,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		}
 	}
 
-	public class IEPCVoltageLevelData : ElectricMotorVoltageLevelData
+    public class ElectricMotorVoltageLevelDataComparer : IEqualityComparer<ElectricMotorVoltageLevelData>
+	{
+        public bool Equals(ElectricMotorVoltageLevelData x, ElectricMotorVoltageLevelData y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            return (x.Voltage == y.Voltage) && (x.FullLoadCurve == y.FullLoadCurve) && (x.EfficiencyMap == y.EfficiencyMap);
+        }
+
+        public int GetHashCode(ElectricMotorVoltageLevelData obj)
+        {
+            return (obj is null) ? 0 : (obj.Voltage, obj.FullLoadCurve, obj.EfficiencyMap).GetHashCode();
+        }
+    }
+
+    public class IEPCVoltageLevelData : ElectricMotorVoltageLevelData
 	{
 		[ValidateObject]
 		public Dictionary<uint, EfficiencyMap> EfficiencyMaps {  get; set; }

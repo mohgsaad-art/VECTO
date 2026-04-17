@@ -28,7 +28,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 		protected GearshiftPosition DesiredGearRoadsweeping;
 		protected ITestPowertrain TestPowertrain;
-		private readonly ITestPowertrainAxleContainer TestPowertrainAxleContainer;
 
 		protected IGearbox _gearbox;
 		private readonly ISimplePowertrainContainer SimplePowertrainContainer;
@@ -58,7 +57,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
             // create testcontainer
-            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false);
+            TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, false, string.Empty);
             SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
            
             fcMap = RunData.EngineData.Fuels;
@@ -83,7 +82,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			var runData = dataBus.RunData;
 			if (!(TestPowertrain.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN) is IAMTGearbox)) {
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetType().FullName);
+				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetType().FullName);
 			}
 
 			// register pre-processors

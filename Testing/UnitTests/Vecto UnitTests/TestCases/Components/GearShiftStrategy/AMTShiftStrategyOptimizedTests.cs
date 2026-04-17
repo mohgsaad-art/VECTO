@@ -272,9 +272,9 @@ TestCase(8, 4, 15000, 200, true),]
 		var container = GetMocks(ratios, out var runData, out var testPt);
 		
 		container.Setup(c => c.VehicleInfo.VehicleSpeed).Returns(0.KMPHtoMeterPerSecond());
-		var powertrainContainer = new PowertrainContainer(container.Object);
-		
-		var gbx = GetMockGearbox();
+		var powertrainContainer = container.Object.Powertrains.First().Value;
+
+        var gbx = GetMockGearbox();
 		Mock.Get(container.Object.EngineInfo).Setup(e => e.EngineSpeed).Returns(() => n.RPMtoRad());
 		Mock.Get(container.Object.EngineInfo).Setup(e => e.EngineN95hSpeed).Returns(2000.RPMtoRad());
 
@@ -405,12 +405,13 @@ TestCase(8, 4, 15000, 200, true),]
 		//TestPowertrain
 		ptBuilder.Setup(p => p.CreateTestPowertrain(
 				It.IsAny<IVehicleContainer>(),
-				It.IsAny<bool>()))
+				It.IsAny<bool>(), 
+				It.IsAny<string>()))
 			.Returns(testPowertrain.Object);
 
 		ptBuilder.Setup(p => p.CreateTestPowertrain(
 			It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>())).Throws(new NotImplementedException());
+			It.IsAny<bool>(), It.IsAny<VectoSimulationJobType>(), It.IsAny<string>())).Throws(new NotImplementedException());
 		
 		container.Setup(c => c.SimplePowertrainBuilder).Returns(ptBuilder.Object);
 		
@@ -515,17 +516,29 @@ TestCase(8, 4, 15000, 200, true),]
 		var wi = new Mock<IWheelsInfo>();
 		container.Setup(c => c.WheelsInfo).Returns(wi.Object);
 		wi.Setup(w => w.ReducedMassWheels).Returns(0.SI<Kilogram>());
-		var axli = new Mock<IAxlegearInfo>();
-		container.Setup(c => c.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(axli.Object);
-		axli.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
+
+        var powertrainContainers = new Dictionary<AxleNumber, IPowertrainContainer>();
+        container.Setup(c => c.AddPowertrainContainer(It.IsAny<IPowertrainContainer>())).Callback((
+            IPowertrainContainer ptContainer) =>
+        {
+            powertrainContainers.Add(ptContainer.AxleNumber, ptContainer);
+        });
+
+        var ptContainer = new Mock<IPowertrainContainer>();
+        var axli = new Mock<IAxlegearInfo>();
+        ptContainer.Setup(c => c.AxlegearInfo).Returns(axli.Object);
+        axli.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
+		ptContainer.Setup(c => c.AxleNumber).Returns(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+		powertrainContainers[AxleNumber.NOT_IN_AXLE_POWERTRAIN] = ptContainer.Object;
+        container.Setup(c => c.Powertrains).Returns(new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(powertrainContainers));
+
         return container;
     }
 
 	
 	private AMTShiftStrategyOptimized GetShiftStrategyAndGearbox(Mock<IVehicleContainer> vehicleContainer, out Mock<IGearbox> gbx)
 	{
-		var powertrainContainer = new PowertrainContainer(vehicleContainer.Object);
-		var shiftStrategy = new AMTShiftStrategyOptimized(vehicleContainer.Object, powertrainContainer);
+		var shiftStrategy = new AMTShiftStrategyOptimized(vehicleContainer.Object, vehicleContainer.Object.Powertrains.First().Value);
 
 		gbx = GetMockGearbox();
 		shiftStrategy.Gearbox = gbx.Object;
@@ -546,9 +559,7 @@ TestCase(8, 4, 15000, 200, true),]
 		simplePt.Setup(s => s.IsTestPowertrain).Returns(true);
 
 		var gbx = GetMockTestGearbox(runData.GearboxSinglePwt.Gears).WithDefaultAxleNumber();
-		simplePt.Setup(s => s.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		simplePt.Setup(s => s.GearboxesInfo).Returns(new [] {gbx.Object});
-		simplePt.Setup(s => s.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		simplePt.Setup(s => s.GearboxesCtl).Returns(new [] {gbx.Object});
 		// simplePt.Setup(s => s.GearboxOutPort).Returns(gbx.Object);
 		//Vehicle Info

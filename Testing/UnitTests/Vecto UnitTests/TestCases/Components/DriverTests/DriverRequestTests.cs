@@ -595,9 +595,7 @@ public class DriverRequestTests
         container.Setup(c => c.MileageCounter).Returns(milage.Object);
         container.Setup(c => c.PowertrainInfo).Returns(pt.Object);
         container.Setup(c => c.EngineCtl).Returns(iceCtl.Object);
-        container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gi.Object);
         container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gi.Object});
-        container.Setup(c => c.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(ci.Object);
         container.Setup(c => c.ClutchesInfo).Returns(new List<IClutchInfo>(){ci.Object});
         container.Setup(c => c.Brakes).Returns(br.Object);
         

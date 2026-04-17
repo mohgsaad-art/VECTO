@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -41,7 +42,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 {
-	public sealed class TransmissionLossMap : LoggingObject
+	public sealed class TransmissionLossMap : LoggingObject, IEquatable<TransmissionLossMap>
 	{
 		[ValidateObject] internal readonly IReadOnlyList<GearLossMapEntry> _entries;
 
@@ -55,7 +56,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		/// </summary>
 		private readonly DelaunayMap _invertedLossMap;
 
-		public string GearName { get; private set; }
+		private readonly bool _createInvertedMap;
+
+        public string GearName { get; private set; }
 
 		public double Ratio { get; }
 
@@ -65,13 +68,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			get { return _entries.Select(x => $"{x.InputSpeed.AsRPM} [rpm], {x.InputTorque}, {x.TorqueLoss}").ToArray(); }
 		}
 
-		public TransmissionLossMap(IReadOnlyList<GearLossMapEntry> entries, double gearRatio, string gearName, bool createInnvertedMap)
+		public TransmissionLossMap(IReadOnlyList<GearLossMapEntry> entries, double gearRatio, string gearName, bool createInvertedMap)
 		{
 			GearName = gearName;
 			Ratio = gearRatio;
 			_entries = entries;
+			_createInvertedMap = createInvertedMap;
 			_lossMap = new DelaunayMap("TransmissionLossMap " + GearName);
-			_invertedLossMap = createInnvertedMap ? new DelaunayMap("TransmissionLossMapInv. " + GearName) : null;
+			_invertedLossMap = _createInvertedMap ? new DelaunayMap("TransmissionLossMapInv. " + GearName) : null;
 			foreach (var entry in _entries) {
 				_lossMap.AddPoint(entry.InputSpeed.Value(), (entry.InputTorque - entry.TorqueLoss).Value(), entry.TorqueLoss.Value());
 				_invertedLossMap?.AddPoint(entry.InputSpeed.Value(), entry.InputTorque.Value(), entry.TorqueLoss.Value());
@@ -81,13 +85,55 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			_invertedLossMap?.Triangulate();
 		}
 
-		/// <summary>
-		///	Computes the torque loss (input side) given by the output gearbox speed and the output-torque.
-		/// </summary>
-		/// <param name="outAngularVelocity">Angular speed at output side.</param>
-		/// <param name="outTorque">Torque at output side (as requested by the previous componend towards the wheels).</param>
-		/// <returns>Torque loss as seen on input side (towards the engine).</returns>
-		public LossMapResult GetTorqueLoss(PerSecond outAngularVelocity, NewtonMeter outTorque)
+        public override bool Equals(object obj) => Equals(obj as TransmissionLossMap);
+
+        public override int GetHashCode()
+        {
+            return _entries.GetHashCode();
+        }
+
+        public bool Equals(TransmissionLossMap other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (_createInvertedMap == other._createInvertedMap)
+				&& (GearName == other.GearName)
+				&& Ratio.IsEqual(other.Ratio)
+				&& _entries.SequenceEqual(other._entries, new GearLossMapEntryComparer());
+        }
+
+        public static bool operator ==(TransmissionLossMap map1, TransmissionLossMap map2)
+        {
+            if (ReferenceEquals(map1, map2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(map1, null) || ReferenceEquals(map2, null))
+            {
+                return false;
+            }
+
+            return map1.Equals(map2);
+        }
+
+        public static bool operator !=(TransmissionLossMap map1, TransmissionLossMap map2) => !(map1 == map2);
+
+        /// <summary>
+        ///	Computes the torque loss (input side) given by the output gearbox speed and the output-torque.
+        /// </summary>
+        /// <param name="outAngularVelocity">Angular speed at output side.</param>
+        /// <param name="outTorque">Torque at output side (as requested by the previous componend towards the wheels).</param>
+        /// <returns>Torque loss as seen on input side (towards the engine).</returns>
+        public LossMapResult GetTorqueLoss(PerSecond outAngularVelocity, NewtonMeter outTorque)
 		{
 			var result = new LossMapResult();
 			var torqueLoss = _lossMap.Interpolate(outAngularVelocity.Value() * Ratio, outTorque.Value() / Ratio);
@@ -200,5 +246,28 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 				TorqueLoss = torqueLoss;
 			}
 		}
-	}
+
+        public class GearLossMapEntryComparer : IEqualityComparer<GearLossMapEntry>
+        {
+            public bool Equals(GearLossMapEntry x, GearLossMapEntry y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+				return (x.InputSpeed == y.InputSpeed) && (x.InputTorque == y.InputTorque) && (x.TorqueLoss == y.TorqueLoss);
+            }
+
+            public int GetHashCode(GearLossMapEntry obj)
+            {
+				return (obj is null) ? 0 : (obj.InputSpeed, obj.InputTorque, obj.TorqueLoss).GetHashCode();
+            }
+        }
+    }
 }

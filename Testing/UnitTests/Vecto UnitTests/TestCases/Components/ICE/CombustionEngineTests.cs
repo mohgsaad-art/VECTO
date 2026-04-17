@@ -141,10 +141,7 @@ public class CombustionEngineTests
 		var gbx = new Mock<IGearboxInfo>().WithDefaultAxleNumber();
 
 		gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(0));
-
-		container.Setup(c => c.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
-
 
 		return container.Object;
 	}

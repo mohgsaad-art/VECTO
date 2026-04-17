@@ -354,8 +354,6 @@ public partial class HybridStrategyBase
 
 		//ElectricMotorInfo
 		var emInfo = GetElectricMotorInfo(runData).Object;
-		vehicleContainer
-			.Setup(v => v.ElectricMotorInfo(runData.ElectricMachinesSinglePwt.Single().Item1, It.IsAny<AxleNumber>())).Returns((IElectricMotorInfo)emInfo);
 		vehicleContainer.Setup(v => v.ElectricMotorsInfo).Returns([emInfo]);
 		
 		SetBrakePower(vehicleContainer.Object, 0.SI<Watt>());
@@ -514,7 +512,7 @@ public partial class HybridStrategyBase
 		//Builder
 		var simplePtBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
 		simplePtBuilder.Setup(s => s.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),
-			It.IsAny<bool>())).Returns(testPowertrain.Object);
+			It.IsAny<bool>(), It.IsAny<string>())).Returns(testPowertrain.Object);
 			
 		return simplePtBuilder;
 	}

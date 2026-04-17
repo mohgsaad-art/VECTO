@@ -42,7 +42,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			//var testContainer = container.SimplePowertrainBuilder.BuildSimpleHybridBatteryOnlyPowertrain(container.RunData);
 			//TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(testContainer, false);
-			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false);
+			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, string.Empty);
 			SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 		}
 
@@ -152,7 +152,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			
-			var gear = DataBus.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN).Gear;
+			var gear = DataBus.GearboxesInfo.Single().Gear;
 			var emPos = ElectricMotorsOff.Keys.First();
 			var emCtl = TestPowertrain.ElectricMotors.First(x => x.Position == emPos).Control as ITestPowertrainElectricMotorControl;
 

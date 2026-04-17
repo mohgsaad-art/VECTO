@@ -43,7 +43,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
                 break;
             }
 
-			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, true);
+			TestPowertrain = PowertrainBuilder.CreateTestPowertrain(Container, true, string.Empty);
         }
 
 		public override IGearbox Gearbox {

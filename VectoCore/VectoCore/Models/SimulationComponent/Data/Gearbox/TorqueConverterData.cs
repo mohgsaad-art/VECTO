@@ -43,7 +43,7 @@ using TUGraz.VectoCommon.Utils;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 {
 	[CustomValidation(typeof(TorqueConverterData), "ValidateData")]
-	public class TorqueConverterData : SimulationComponentData
+	public class TorqueConverterData : SimulationComponentData, IEquatable<TorqueConverterData>
 	{
 		protected internal readonly TorqueConverterEntry[] TorqueConverterEntries;
 
@@ -79,16 +79,59 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			CCUpshiftMinAcceleration = ccUpshiftMinAcceleration;
 		}
 
-		/// <summary>
-		/// find an operating point for the torque converter
-		/// 
-		/// find the input speed and input torque for the given output torque and output speed. 
-		/// </summary>
-		/// <param name="torqueOut">torque provided at the TC output</param>
-		/// <param name="angularSpeedOut">angular speed at the TC output</param>
-		/// <param name="minSpeed"></param>
-		/// <returns></returns>
-		public IList<TorqueConverterOperatingPoint> FindOperatingPoint(NewtonMeter torqueOut, PerSecond angularSpeedOut,
+        public override bool Equals(object obj) => Equals(obj as TorqueConverterData);
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==(TorqueConverterData tq1, TorqueConverterData tq2)
+        {
+            if (ReferenceEquals(tq1, tq2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(tq1, null) || ReferenceEquals(tq2, null))
+            {
+                return false;
+            }
+
+            return tq1.Equals(tq2);
+        }
+
+        public static bool operator !=(TorqueConverterData tq1, TorqueConverterData tq2) => !(tq1 == tq2);
+
+        public bool Equals(TorqueConverterData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (CCUpshiftMinAcceleration == other.CCUpshiftMinAcceleration)
+                && (CLUpshiftMinAcceleration == other.CLUpshiftMinAcceleration)
+                && (TorqueConverterSpeedLimit == other.TorqueConverterSpeedLimit)
+                && (ReferenceSpeed == other.ReferenceSpeed)
+				&& TorqueConverterEntries.SequenceEqual(other.TorqueConverterEntries, new TorqueConverterEntryComparer());
+        }
+
+        /// <summary>
+        /// find an operating point for the torque converter
+        /// 
+        /// find the input speed and input torque for the given output torque and output speed. 
+        /// </summary>
+        /// <param name="torqueOut">torque provided at the TC output</param>
+        /// <param name="angularSpeedOut">angular speed at the TC output</param>
+        /// <param name="minSpeed"></param>
+        /// <returns></returns>
+        public IList<TorqueConverterOperatingPoint> FindOperatingPoint(NewtonMeter torqueOut, PerSecond angularSpeedOut,
 			PerSecond minSpeed)
 		{
 			var solutions = new List<double>();
@@ -366,4 +409,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		public NewtonMeter Torque;
 		public double TorqueRatio;
 	}
+
+	public class TorqueConverterEntryComparer : IEqualityComparer<TorqueConverterEntry>
+	{
+        public bool Equals(TorqueConverterEntry x, TorqueConverterEntry y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            return x.SpeedRatio.IsEqual(y.SpeedRatio) && (x.Torque == y.Torque) && x.TorqueRatio.IsEqual(y.TorqueRatio);
+        }
+
+        public int GetHashCode(TorqueConverterEntry obj)
+        {
+            return (obj is null) ? 0 : (obj.SpeedRatio, obj.Torque, obj.TorqueRatio).GetHashCode();
+        }
+    }
 }

@@ -7,14 +7,92 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
+using static TUGraz.VectoCore.Models.SimulationComponent.Data.DragCurve;
+using static TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox.TransmissionLossMap;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 
 public class ElectricMotorModelDataTests
 {
-	[TestCase(1),
+    static GearLossMapEntry _entry1 = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry2 = new GearLossMapEntry(1.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry3 = new GearLossMapEntry(0.SI<PerSecond>(), 1.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+
+    public static IEnumerable<object[]> EqualityTestCases()
+    {
+        var daa = new ElectricMachinesDataAdapter();
+        var dc1 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+        var dc1Equal = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+
+        var dc2 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc2.Inertia += 1.SI<KilogramSquareMeter>();
+
+        var dc3 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc3.OverloadRecoveryFactor += 1;
+
+        var dc4 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc4.RatioADC += 1;
+
+		var dc5 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc5.TransmissionLossMap = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true);
+
+        var dc6 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc6.RatioPerGear = new double[1] { 1.123 };
+
+        var dc7 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc7.EfficiencyData.VoltageLevels[0].Voltage += 1.SI<Volt>();
+
+        var dc8 = daa.CreateElectricMachines(GetElectricMachineDataV3(1), null, null).First().Item2;
+		dc8.EMDragCurve = new DragCurve(new List<DragLoadEntry>() { new DragLoadEntry() { MotorSpeed = 0.SI<PerSecond>(), DragTorque = 0.SI<NewtonMeter>() } });
+
+        yield return new object[] { null, null, true };
+        yield return new object[] { dc1, null, false };
+        yield return new object[] { null, dc1, false };
+        yield return new object[] { dc1, dc1, true };
+        yield return new object[] { dc1, dc1Equal, true };
+        yield return new object[] { dc2, dc1, false };
+        yield return new object[] { dc3, dc1, false };
+        yield return new object[] { dc4, dc1, false };
+        yield return new object[] { dc5, dc1, false };
+        yield return new object[] { dc6, dc1, false };
+        yield return new object[] { dc7, dc1, false };
+        yield return new object[] { dc8, dc1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorData_OperatorEqual(ElectricMotorData a, ElectricMotorData b, bool expected)
+    {
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorData_OperatorNotEqual(ElectricMotorData a, ElectricMotorData b, bool notExpected)
+    {
+        var result = (a != b);
+
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_ElectricMotorData_Equals(ElectricMotorData a, ElectricMotorData b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [TestCase(1),
 	TestCase(2),
 	]
 	public void ElectricMotorModelDataTest(int count)

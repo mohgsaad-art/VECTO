@@ -100,12 +100,12 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             var retVal = new Mock<ISimplePowertrainBuilder>();
             //var ptBuilder = new SimplePowertrainBuilder(_kernel.Get<IPowertrainComponentFactory>(), _kernel.Get<IShiftStrategyFactory>());
 			retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(),
-					It.IsAny<VectoSimulationJobType>()))
-				.Returns((IVehicleContainer container, bool createDriver, VectoSimulationJobType jobType) =>
-					_simplePowertrainBuilder.CreateTestPowertrain(container, createDriver, jobType));
-            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>()))
-                .Returns((IVehicleContainer container, bool createDriver) =>
-                    _simplePowertrainBuilder.CreateTestPowertrain(container, createDriver));
+					It.IsAny<VectoSimulationJobType>(), It.IsAny<string>()))
+				.Returns((IVehicleContainer container, bool createDriver, VectoSimulationJobType jobType, string torqueSplitter) =>
+					_simplePowertrainBuilder.CreateTestPowertrain(container, createDriver,jobType, torqueSplitter));
+            retVal.Setup(b => b.CreateTestPowertrain(It.IsAny<IVehicleContainer>(), It.IsAny<bool>(), It.IsAny<string>()))
+                .Returns((IVehicleContainer container, bool createDriver, string torqueSplitter) =>
+                    _simplePowertrainBuilder.CreateTestPowertrain(container, createDriver, torqueSplitter));
             return retVal.Object;
         }
 
@@ -226,8 +226,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         {
             var retVal = new Dictionary<TestPowertrainSource, ISimpleVehicleContainer> {
 				{ TestPowertrainSource.Driver , FindSimpleVehicleContainerInDriver(vehicleContainer.DriverInfo)},
-                {TestPowertrainSource.ShiftStrategySimplePowertrain, FindSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)))},
-                {TestPowertrainSource.ShiftStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)))},
+                {TestPowertrainSource.ShiftStrategySimplePowertrain, FindSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxInfo))},
+                {TestPowertrainSource.ShiftStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerInShiftStrategy(GetShiftStrategy(vehicleContainer.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxInfo))},
                 {TestPowertrainSource.HybridStrategyTestPowertrain, FindTestpowertrainSimpleVehicleContainerHybridStrategy(GetHybridStrategy(vehicleContainer.HybridControllerInfo))}
             };
             return retVal.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
@@ -321,9 +321,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (axlegear != null) {
-                    Assert.IsInstanceOf(axlegear, container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Axlegear");
+                    Assert.IsInstanceOf(axlegear, container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo, "Axlegear");
                 } else {
-                    Assert.IsNull(container.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Axlegear");
+                    Assert.IsNull(container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo, "Axlegear");
                 }
 
                 if (angledrive != null) {
@@ -339,26 +339,26 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (gearbox != null) {
-                    Assert.IsInstanceOf(gearbox, container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Gearbox");
-                    var strategy = GetShiftStrategy(container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
+                    Assert.IsInstanceOf(gearbox, container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxInfo, "Gearbox");
+                    var strategy = GetShiftStrategy(container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxInfo);
                     if (shiftStrategyT != null) {
                         Assert.IsInstanceOf(shiftStrategyT, strategy, "ShiftStrategy");
                     } else {
                         Assert.IsNull(strategy, "ShiftStrategy");
                     }
                 } else {
-                    Assert.IsNull(container.GetGearboxInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Gearbox");
+                    Assert.IsNull(container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxInfo, "Gearbox");
                 }
 
                 if (torqueConverter != null) {
-                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
+                    Assert.IsInstanceOf(torqueConverter, container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].TorqueConverterInfo);
                 } else {
-                    Assert.IsNull(container.TorqueConverterInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN));
+                    Assert.IsNull(container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].TorqueConverterInfo);
                 }
                 if (clutch != null) {
-                    Assert.IsInstanceOf(clutch, container.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Clutch");
+                    Assert.IsInstanceOf(clutch, container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].ClutchInfo, "Clutch");
                 } else {
-                    Assert.IsNull(container.GetClutchInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN), "Clutch");
+                    Assert.IsNull(container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].ClutchInfo, "Clutch");
                 }
 
                 if (engine != null) {
@@ -1420,17 +1420,17 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 CycleType.DistanceBased,
                 DummyEngineT,
                 new Dictionary<Type, Func<IVehicleContainer, Object>>() {
-                    { AxleGearT, (container) => container.AxlegearInfo(new AxleNumber(1)) },
-                    { RetarderT, (container) => container.Retarder(new AxleNumber(1)) },
-                    { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 1) },
-                    { DummyGearboxT, (container) => container.GetGearboxInfo(new AxleNumber(1)) },
-                    { ATClutchInfoT, (container) => container.GetClutchInfo(new AxleNumber(1)) }
+                    { AxleGearT, (container) => container.Powertrains[new AxleNumber(1)].AxlegearInfo },
+                    { RetarderT, (container) => container.Powertrains[new AxleNumber(1)].Retarder },
+                    { ElectricMotorT, (container) => container.Powertrains[new AxleNumber(1)].ElectricMotorInfo(PowertrainPosition.BatteryElectricE3) },
+                    { DummyGearboxT, (container) => container.Powertrains[new AxleNumber(1)].GearboxInfo },
+                    { ATClutchInfoT, (container) => container.Powertrains[new AxleNumber(1)].ClutchInfo }
                 },
                 PowertrainPosition.BatteryElectricE3,
                 new Dictionary<Type, Func<IVehicleContainer, Object>>() {
-                    { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 2) },
-                    { DummyGearboxT, (container) => container.GetGearboxInfo(new AxleNumber(2)) },
-                    { ATClutchInfoT, (container) => container.GetClutchInfo(new AxleNumber(2)) }
+                    { ElectricMotorT, (container) => container.Powertrains[new AxleNumber(2)].ElectricMotorInfo(PowertrainPosition.BatteryElectricE4) },
+                    { DummyGearboxT, (container) => container.Powertrains[new AxleNumber(2)].GearboxInfo },
+                    { ATClutchInfoT, (container) => container.Powertrains[new AxleNumber(2)].ClutchInfo }
                 },
                 PowertrainPosition.BatteryElectricE4
             },

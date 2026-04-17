@@ -9,93 +9,128 @@ using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TorqueSplitter : StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, ITorqueSplitter
     {
 		protected IList<ITnOutPort> _nextComponents = new List<ITnOutPort>();
-		public int NumberOfComponents => _nextComponents.Count;
-		private IElectricPowerJunctionBox _junctionBox;
+        private IElectricPowerJunctionBox _junctionBox;
+        private List<double> _torqueRatio;
 
-		public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : 
-			base(container)
+        public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : base(container)
 		{
 			_junctionBox = junctionBox;
-		}
 
-		public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
-			bool dryRun)
+            TorqueRatio = new List<double>() { 0.5, 0.5 };
+        }
+
+        public List<double> TorqueRatio { 
+            get { return _torqueRatio; }
+            set { _torqueRatio = value; System.Diagnostics.Debug.Assert(_torqueRatio.Sum().IsEqual(1)); } 
+        }
+
+        public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
-			CurrentState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
+            var axlePowertrainResponses = PerformRequest(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
-			Dictionary<ITnOutPort, IResponse> nextCompResponses = new Dictionary<ITnOutPort, IResponse>();
+            return CreateResponse(axlePowertrainResponses);
+        }
 
-			_junctionBox.ClearResults();
-			
-			foreach (var nextComponent in _nextComponents)
-			{
-				_junctionBox.CurrentTorqueSplitterNextComponent = nextComponent;
-				var response = nextComponent.Request(absTime, dt, outTorque / NumberOfComponents, outAngularVelocity, dryRun);
-				nextCompResponses[nextComponent] = response;
-			}
+		public List<IResponse> PerformRequest(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		{
+            CurrentState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 
-			while (nextCompResponses.Values.Count(x => x is ResponseElectricSystemNotReady) > 0)
-			{
-				nextCompResponses
-					.Where(x => x.Value is ResponseElectricSystemNotReady)
-					.ToList().ForEach(t => {
-						_junctionBox.CurrentTorqueSplitterNextComponent = t.Key;
-						var response = t.Key.Request(absTime, dt, outTorque / NumberOfComponents, outAngularVelocity, dryRun);
-						nextCompResponses[t.Key] = response;
-				});
-			}
+            var torqueRatio = ConfigureTorqueRatio(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
-			var responses = nextCompResponses.Values.ToList();
+            System.Diagnostics.Debug.Assert(torqueRatio.Values.Sum().IsEqual(1));
 
-			var first = responses.First();
+            var axlePowertrainResponses = MakeRequests(absTime, dt, outTorque, outAngularVelocity, dryRun, torqueRatio);
 
-			if ((first is ResponseSuccess) || (first is ResponseOverload) || (first is ResponseUnderload)) 
-			{
-				first.ElectricMotor.AngularVelocity = responses.Average(x => x.ElectricMotor.AngularVelocity?.Value() ?? 0).SI<PerSecond>();
-				first.ElectricMotor.AvgDrivetrainSpeed = responses.Average(x => x.ElectricMotor.AvgDrivetrainSpeed?.Value() ?? 0).SI<PerSecond>();
+			return axlePowertrainResponses.Values.ToList();
+        }
 
-				first.ElectricMotor.TorqueRequest = responses.Sum(x => x.ElectricMotor.TorqueRequest?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.TorqueRequestEmMap = responses.Sum(x => x.ElectricMotor.TorqueRequestEmMap?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.TotalTorqueDemand = responses.Sum(x => x.ElectricMotor.TotalTorqueDemand?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.MaxDriveTorque = responses.Sum(x => x.ElectricMotor.MaxDriveTorque?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.MaxDriveTorqueEM = responses.Sum(x => x.ElectricMotor.MaxDriveTorqueEM?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.InertiaTorque = responses.Sum(x => x.ElectricMotor.InertiaTorque?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.MaxRecuperationTorque = responses.Sum(x => x.ElectricMotor.MaxRecuperationTorque?.Value() ?? 0).SI<NewtonMeter>();
-				first.ElectricMotor.MaxRecuperationTorqueEM = responses.Sum(x => x.ElectricMotor.MaxRecuperationTorqueEM?.Value() ?? 0).SI<NewtonMeter>();
+		private Dictionary<ITnOutPort, IResponse> MakeRequests(
+			Second absTime, 
+			Second dt, 
+			NewtonMeter outTorque, 
+			PerSecond outAngularVelocity, 
+			bool dryRun, 
+			Dictionary<ITnOutPort, double> torqueRatio)
+		{
+            _junctionBox.ClearResults();
 
-				first.ElectricMotor.ElectricMotorPowerMech = responses.Sum(x => x.ElectricMotor.ElectricMotorPowerMech?.Value() ?? 0).SI<Watt>();
-				first.ElectricMotor.InertiaPowerDemand = responses.Sum(x => x.ElectricMotor.InertiaPowerDemand?.Value() ?? 0).SI<Watt>();
-				first.ElectricMotor.PowerRequest = responses.Sum(x => x.ElectricMotor.PowerRequest?.Value() ?? 0).SI<Watt>();
+            Dictionary<ITnOutPort, IResponse> axlePowertrainResponses = new Dictionary<ITnOutPort, IResponse>();
 
-				if (first.Gearbox != null)
-				{
-					first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
+            foreach (var nextComponent in _nextComponents)
+            {
+                var response = nextComponent.Request(absTime, dt, outTorque * torqueRatio[nextComponent], outAngularVelocity, dryRun);
+                axlePowertrainResponses[nextComponent] = response;
+            }
+
+            while (axlePowertrainResponses.Values.Count(x => x is ResponseElectricSystemNotReady) > 0)
+            {
+                axlePowertrainResponses
+                    .Where(x => x.Value is ResponseElectricSystemNotReady)
+                    .ToList()
+					.ForEach(t =>
+                    {
+                        var response = t.Key.Request(absTime, dt, outTorque * torqueRatio[t.Key], outAngularVelocity, dryRun);
+                        axlePowertrainResponses[t.Key] = response;
+                    });
+            }
+
+			return axlePowertrainResponses;
+        }
+
+        private IResponse CreateResponse(List<IResponse> responses)
+		{
+            var first = responses.First();
+
+            if ((first is ResponseSuccess) || (first is ResponseOverload) || (first is ResponseUnderload) || (first is ResponseDryRun))
+            {
+                first.ElectricMotor.AngularVelocity = responses.Average(x => x.ElectricMotor.AngularVelocity?.Value() ?? 0).SI<PerSecond>();
+                first.ElectricMotor.AvgDrivetrainSpeed = responses.Average(x => x.ElectricMotor.AvgDrivetrainSpeed?.Value() ?? 0).SI<PerSecond>();
+
+                first.ElectricMotor.TorqueRequest = responses.Sum(x => x.ElectricMotor.TorqueRequest?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.TorqueRequestEmMap = responses.Sum(x => x.ElectricMotor.TorqueRequestEmMap?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.TotalTorqueDemand = responses.Sum(x => x.ElectricMotor.TotalTorqueDemand?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.MaxDriveTorque = responses.Sum(x => x.ElectricMotor.MaxDriveTorque?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.MaxDriveTorqueEM = responses.Sum(x => x.ElectricMotor.MaxDriveTorqueEM?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.InertiaTorque = responses.Sum(x => x.ElectricMotor.InertiaTorque?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.MaxRecuperationTorque = responses.Sum(x => x.ElectricMotor.MaxRecuperationTorque?.Value() ?? 0).SI<NewtonMeter>();
+                first.ElectricMotor.MaxRecuperationTorqueEM = responses.Sum(x => x.ElectricMotor.MaxRecuperationTorqueEM?.Value() ?? 0).SI<NewtonMeter>();
+
+                first.ElectricMotor.ElectricMotorPowerMech = responses.Sum(x => x.ElectricMotor.ElectricMotorPowerMech?.Value() ?? 0).SI<Watt>();
+                first.ElectricMotor.InertiaPowerDemand = responses.Sum(x => x.ElectricMotor.InertiaPowerDemand?.Value() ?? 0).SI<Watt>();
+                first.ElectricMotor.PowerRequest = responses.Sum(x => x.ElectricMotor.PowerRequest?.Value() ?? 0).SI<Watt>();
+
+                if (first.Gearbox != null)
+                {
+                    first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox?.PowerRequest != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
                 }
             }
 
-			return first;
-		}
+            return first;
+        }
+
+        protected virtual Dictionary<ITnOutPort, double> ConfigureTorqueRatio(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		{
+            return _nextComponents.Select((x, i) => new { item = x, index = i }).ToDictionary(x => x.item, x => TorqueRatio[x.index]);
+        }
 
 		public virtual IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			PreviousState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 
-			var responses = new List<IResponse>();
-			foreach (var nextComponent in _nextComponents)
-			{
-				var splitOutTorque = outTorque / NumberOfComponents;
-				var response = nextComponent.Initialize(splitOutTorque, outAngularVelocity);
-				responses.Add(response);
-			}
+            IResponse response = null;
 
-			return responses.First();
+            for (var i = 0; i < _nextComponents.Count(); i++)
+            {
+                response = _nextComponents[i].Initialize(outTorque * TorqueRatio[i], outAngularVelocity);
+            }
+
+            return response;
 		}
 
 		public virtual void Connect(ITnOutPort other)

@@ -1,15 +1,88 @@
 ﻿using Moq;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
+using static TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox.TransmissionLossMap;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 
 public class AxlegearDataTests
 {
-	[TestCase("Test1", 520, 20.320, "A", 279698.4, 9401.44062)]
+    static GearLossMapEntry _entry1 = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry2 = new GearLossMapEntry(1.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry3 = new GearLossMapEntry(0.SI<PerSecond>(), 1.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry4 = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 1.SI<NewtonMeter>());
+
+    public static IEnumerable<object[]> EqualityTestCases()
+    {
+        var dc1 = new AxleGearData()
+        {
+            LineType = AxleLineType.SinglePortalAxle,
+            AxleGear = new TransmissionData() { Ratio = 0, LossMap = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true) }
+        };
+
+        var dc1Equal = new AxleGearData()
+        {
+            LineType = AxleLineType.SinglePortalAxle,
+            AxleGear = new TransmissionData() { Ratio = 0, LossMap = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true) }
+        };
+
+        var dc2 = new AxleGearData()
+        {
+            LineType = AxleLineType.SingleReductionTandemAxle,
+            AxleGear = new TransmissionData() { Ratio = 1, LossMap = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true) }
+        };
+
+        var dc3 = new AxleGearData()
+        {
+            LineType = AxleLineType.SinglePortalAxle,
+            AxleGear = new TransmissionData() { Ratio = 0, LossMap = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry4, _entry2, _entry3 }, 1, "1", true) }
+        };
+
+        yield return new object[] { null, null, true };
+        yield return new object[] { dc1, null, false };
+        yield return new object[] { null, dc1, false };
+        yield return new object[] { dc1, dc1, true };
+        yield return new object[] { dc1, dc1Equal, true };
+        yield return new object[] { dc2, dc1, false };
+        yield return new object[] { dc3, dc1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_AxleGearData_OperatorEqual(AxleGearData a, AxleGearData b, bool expected)
+    {
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_AxleGearData_OperatorNotEqual(AxleGearData a, AxleGearData b, bool notExpected)
+    {
+        var result = (a != b);
+
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_AxleGearData_Equals(AxleGearData a, AxleGearData b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [TestCase("Test1", 520, 20.320, "A", 279698.4, 9401.44062)]
 	[TestCase("Test2", 520, 0.5858335, "A", 17173.5, 409.773677587509)]
 	[TestCase("Test3", 520, 0.3996113, "A", 292.5253, 118.282541632652)]
 	[TestCase("Test4", 520, 5.327739, "A", 57431.12, 2222.78785705566)]

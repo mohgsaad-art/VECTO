@@ -4,13 +4,97 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
+using static TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox.TransmissionLossMap;
 
 namespace TUGraz.Vecto.UnitTests.TestCases.ComponentData;
 
 public class TransmissionLossMapDataTests
 {
+    const double Epsilon = 1e-7;
+    static GearLossMapEntry _entry1 = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry1Equal = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry2 = new GearLossMapEntry(1.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry3 = new GearLossMapEntry(0.SI<PerSecond>(), 1.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry4 = new GearLossMapEntry(0.SI<PerSecond>(), 0.SI<NewtonMeter>(), 1.SI<NewtonMeter>());
+    static GearLossMapEntry _entry1Close = new GearLossMapEntry(0.001.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+    static GearLossMapEntry _entry1Epsilon = new GearLossMapEntry(Epsilon.SI<PerSecond>(), 0.SI<NewtonMeter>(), 0.SI<NewtonMeter>());
+
+    public static IEnumerable<object[]> GearLossMapEntryComparerEqualsTestCases()
+    {
+        yield return new object[] { null, null, true };
+        yield return new object[] { _entry1, null, false };
+        yield return new object[] { null, _entry1, false };
+        yield return new object[] { _entry1, _entry1, true };
+        yield return new object[] { _entry1, _entry1Equal, true };
+        yield return new object[] { _entry1, _entry2, false };
+        yield return new object[] { _entry1, _entry3, false };
+        yield return new object[] { _entry1, _entry4, false };
+        yield return new object[] { _entry1, _entry1Close, false };
+        yield return new object[] { _entry1, _entry1Epsilon, true };
+    }
+
+    [Test, TestCaseSource(nameof(GearLossMapEntryComparerEqualsTestCases))]
+    public void Test_GearLossMapEntryComparer_Equals(GearLossMapEntry a, GearLossMapEntry b, bool expected)
+    {
+        var result = (new GearLossMapEntryComparer()).Equals(a, b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    public static IEnumerable<object[]> EqualityTestCases()
+    {
+        var dc1 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true);
+        var dc1Equal = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", true);
+        var dc2 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry4, _entry2, _entry3 }, 1, "1", true);
+        var dc4 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry1, _entry2, _entry3 }, 1, "1", true);
+        var dc5 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 2, "1", true);
+        var dc6 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "2", true);
+        var dc7 = new TransmissionLossMap(new List<GearLossMapEntry>() { _entry1, _entry2, _entry3 }, 1, "1", false);
+
+        yield return new object[] { null, null, true };
+        yield return new object[] { dc1, null, false };
+        yield return new object[] { null, dc1, false };
+        yield return new object[] { dc1, dc1, true };
+        yield return new object[] { dc1, dc1Equal, true };
+        yield return new object[] { dc2, dc1, false };
+        yield return new object[] { dc4, dc1, false };
+        yield return new object[] { dc5, dc1, false };
+        yield return new object[] { dc6, dc1, false };
+        yield return new object[] { dc7, dc1, false };
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TransmissionLossMap_OperatorEqual(TransmissionLossMap a, TransmissionLossMap b, bool expected)
+    {
+        var result = (a == b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TransmissionLossMap_OperatorNotEqual(TransmissionLossMap a, TransmissionLossMap b, bool notExpected)
+    {
+        var result = (a != b);
+
+        Assert.That(result, Is.EqualTo(!notExpected));
+    }
+
+    [Test, TestCaseSource(nameof(EqualityTestCases))]
+    public void Test_TransmissionLossMap_Equals(TransmissionLossMap a, TransmissionLossMap b, bool expected)
+    {
+        if ((a is null) || (b is null))
+        {
+            return;
+        }
+
+        var result = a.Equals(b);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
     [TestCase]
     public void TestLossMap_IN_10_CONST_Interpolation_Extrapolation()
     {

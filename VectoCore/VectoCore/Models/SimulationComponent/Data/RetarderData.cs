@@ -29,12 +29,13 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
-	public class RetarderData : SimulationComponentData
+	public class RetarderData : SimulationComponentData, IEquatable<RetarderData>
 	{
 		[ValidateObject]
 		public RetarderLossMap LossMap { get; internal set; }
@@ -43,5 +44,44 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[SIRange(double.Epsilon, double.MaxValue)]
 		public double Ratio { get; internal set; }
-	}
+
+        public override bool Equals(object obj) => Equals(obj as RetarderData);
+
+        public override int GetHashCode()
+        {
+            return (LossMap, Type, Ratio).GetHashCode();
+        }
+
+        public bool Equals(RetarderData other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            return (LossMap == other.LossMap) && (Type == other.Type) && Ratio.IsEqual(other.Ratio);
+        }
+
+        public static bool operator ==(RetarderData rd1, RetarderData rd2)
+        {
+            if (ReferenceEquals(rd1, rd2))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(rd1, null) || ReferenceEquals(rd2, null))
+            {
+                return false;
+            }
+
+            return rd1.Equals(rd2);
+        }
+
+        public static bool operator !=(RetarderData rd1, RetarderData rd2) => !(rd1 == rd2);
+    }
 }

@@ -33,7 +33,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		retVal.Setup(c => c.PowertrainInfo).Returns(pi.Object);
 		retVal.Setup(c => c.MileageCounter).Returns(mc.Object);
 		retVal.Setup(c => c.VehicleInfo).Returns(vi.Object);
-		retVal.Setup(c => c.GetGearboxInfo(It.IsAny<AxleNumber>())).Returns(gi.Object);
+		retVal.Setup(c => c.GearboxesInfo).Returns([gi.Object]);
 		retVal.Setup(c => c.ModalData).Returns(modData);
 		retVal.Setup(c => c.RunData).Returns(runData);
 		retVal.SetupProperty(c => c.RunStatus);
@@ -95,7 +95,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
+	public ITorqueSplitter CreateTorqueSplitter(string type, IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
 	{
 		throw new NotImplementedException();
 	}
@@ -368,7 +368,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public ISimplePowertrainContainer CreateSimplePowertrainContainer(ISimpleVehicleContainer simpleVehicleContainer,
-		AxleNumber axleNumber)
+		AxleNumber axleNumber, bool useSimpleTorqueSplitter = false)
 	{
 		throw new NotImplementedException();
 	}

@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Moq;
 using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.TestCases.Utils.ExtensionMethods;
 using TUGraz.VectoCommon.InputData;
@@ -181,8 +183,7 @@ public class MTShiftStrategyTests
 		out Mock<IGearbox> gearbox)
 	{
 		gearbox = GetMockGearbox();
-		var powertrainContainer = new PowertrainContainer(container.Object);
-		var shiftStrategy = new MTShiftStrategy(container.Object, powertrainContainer) {
+		var shiftStrategy = new MTShiftStrategy(container.Object, container.Object.Powertrains.First().Value) {
 			Gearbox = gearbox.Object
 		};
 		
@@ -207,7 +208,7 @@ public class MTShiftStrategyTests
 		
 		ptBuilder = new Mock<ISimplePowertrainBuilder>(MockBehavior.Strict);
 		
-		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),It.IsAny<bool>()))
+		ptBuilder.Setup(p => p.CreateTestPowertrain(It.IsAny<IVehicleContainer>(),It.IsAny<bool>(), It.IsAny<string>()))
 			.Returns(testPt.Object);
 		
 
@@ -449,9 +450,20 @@ public class MTShiftStrategyTests
 		vehicleContainer.Setup(c => c.WheelsInfo.ReducedMassWheels).Returns(0.SI<Kilogram>());
 
         //AxlegearInfo
-        var axleGearInfo = new Mock<IAxlegearInfo>();
-		vehicleContainer.Setup(c => c.AxlegearInfo(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(axleGearInfo.Object);
-		axleGearInfo.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
+        var powertrainContainers = new Dictionary<AxleNumber, IPowertrainContainer>();
+        vehicleContainer.Setup(c => c.AddPowertrainContainer(It.IsAny<IPowertrainContainer>())).Callback((
+            IPowertrainContainer ptContainer) =>
+        {
+            powertrainContainers.Add(ptContainer.AxleNumber, ptContainer);
+        });
+
+        var ptContainer = new Mock<IPowertrainContainer>();
+        var axli = new Mock<IAxlegearInfo>();
+        ptContainer.Setup(c => c.AxlegearInfo).Returns(axli.Object);
+        axli.Setup(a => a.AxlegearLoss()).Returns(0.SI<Watt>());
+        ptContainer.Setup(c => c.AxleNumber).Returns(AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+        powertrainContainers[AxleNumber.NOT_IN_AXLE_POWERTRAIN] = ptContainer.Object;
+        vehicleContainer.Setup(c => c.Powertrains).Returns(new ReadOnlyDictionary<AxleNumber, IPowertrainContainer>(powertrainContainers));
 
         //Powertrain Info
         vehicleContainer.Setup(c => c.PowertrainInfo).Returns(GetPowertrainInfo().Object);
@@ -528,7 +540,7 @@ public class MTShiftStrategyTests
 		simplePt.Setup(s => s.PowertrainInfo).Returns(GetPowertrainInfo().Object);
 
 		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears);
-		simplePt.Setup(s => s.GearboxCtl(AxleNumber.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
+		simplePt.Setup(s => s.GearboxesCtl).Returns([testGearbox.Object]);
 
 
 		//Vehicle Info

@@ -140,12 +140,18 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public ResponseBatteryEmpty(object source, IElectricSystemResponse electricSupplyResponse) : base(source) { }
 	}
 
+	public interface IOverUnderResponse
+	{
+        Watt Delta { get; set; }
+    }
+
+
 	/// <summary>
 	/// Response when the request resulted in an engine or gearbox overload. 
 	/// </summary>
 	[DebuggerDisplay("Overload({Delta,nq})")]
-	public class ResponseOverload : AbstractResponse
-	{
+	public class ResponseOverload : AbstractResponse, IOverUnderResponse
+    {
 		public Watt Delta
 		{
 			get;
@@ -158,7 +164,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	/// Response when the request resulted in an engine under-load. 
 	/// </summary>
 	[DebuggerDisplay("Underload({Delta,nq})")]
-	public class ResponseUnderload : AbstractResponse
+	public class ResponseUnderload : AbstractResponse, IOverUnderResponse
 	{
 		public Watt Delta { get; set; }
 		public ResponseUnderload(object source) : base(source) { }
