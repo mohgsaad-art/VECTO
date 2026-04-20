@@ -144,7 +144,7 @@ def find_result_dirs(result_dir: str) -> list[str]:
     Walk result_dir and return the list of leaf directories that contain
     runnable test cases (.xml input files or .vecto files).
 
-    Directories that contain a .vecto file are 'bus complete step' cases —
+    Directories that contain a .vecto file are 'bus complete step' cases -
     they are included directly (via the .vecto file) rather than via their
     child .xml files.
     """
@@ -250,7 +250,7 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
         else:
             rslt_mfr = None
 
-        # Bus complete-step check (tracked independently — does not modify vsum_ok)
+        # Bus complete-step check (tracked independently - does not modify vsum_ok)
         complete_step_ok = True
         if res_dir in dirs_with_vecto:
             vecto_file = next(
@@ -611,7 +611,7 @@ def main() -> None:
         generate_delta_report(ref_report, output_path)
         append_delta_to_report(ref_report, output_path)
     else:
-        print('No reference report found — skipping delta report.')
+        print('No reference report found - skipping delta report.')
 
     if failed_names:
         sys.exit(len(failed_names))

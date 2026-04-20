@@ -26,7 +26,7 @@ from FUNCTIONS.REPORTS import (
 from FUNCTIONS.VECTO import get_vecto_git_root
 
 # ---------------------------------------------------------------------------
-# Report filename regex — matches OR_{Version}_{Date}_{NNNN}_{Hash}.xlsx
+# Report filename regex - matches OR_{Version}_{Date}_{NNNN}_{Hash}.xlsx
 # ---------------------------------------------------------------------------
 _REPORT_RE = re.compile(r'^OR_(.+)_\d{6}_(\d{4})_[0-9a-f]+\.xlsx$')
 
@@ -38,14 +38,14 @@ _REPORT_RE = re.compile(r'^OR_(.+)_\d{6}_(\d{4})_[0-9a-f]+\.xlsx$')
 def get_vehicle_ids_from_pool(test_pool_path: str) -> set[str]:
     """Return the set of vehicle IDs present in the test pool.
 
-    Walks <test_pool_path>/A01_INPUT_FILES for input.zip files and derives
-    each vehicle's unique ID using the same logic as B32 lines 67-71:
+    Walks <test_pool_path> for input.zip files and derives each vehicle's
+    unique ID using the same logic as B32:
         rel   = os.path.normpath(os.path.relpath(input_dir, input_root))
         id    = rel.replace(os.sep, '__')
     """
-    input_root = os.path.join(test_pool_path, 'A01_INPUT_FILES')
+    input_root = test_pool_path
     if not os.path.isdir(input_root):
-        raise FileNotFoundError(f'A01_INPUT_FILES not found under: {test_pool_path}')
+        raise FileNotFoundError(f'test_pool_path not found: {test_pool_path}')
 
     ids = set()
     for root, _dirs, files in os.walk(input_root):
@@ -128,10 +128,9 @@ def compute_missing_vehicles(pool_ids: set[str], report_ids: set[str]) -> list[s
 
 
 def resolve_input_dirs(missing_ids: list[str], test_pool_path: str) -> list[str]:
-    """Convert vehicle IDs back to absolute input_dir paths under A01_INPUT_FILES."""
-    input_root = os.path.join(test_pool_path, 'A01_INPUT_FILES')
+    """Convert vehicle IDs back to absolute input_dir paths under test_pool_path."""
     return [
-        os.path.join(input_root, vid.replace('__', os.sep))
+        os.path.join(test_pool_path, vid.replace('__', os.sep))
         for vid in missing_ids
     ]
 
@@ -157,7 +156,7 @@ def write_output(
     if input_dirs:
         print(f'Written to      : {output_path}')
     else:
-        print('No missing vehicles — output file is empty.')
+        print('No missing vehicles - output file is empty.')
 
 
 # ---------------------------------------------------------------------------
@@ -174,7 +173,7 @@ def main() -> None:
     )
     parser.add_argument(
         'test_pool_path',
-        help='Root directory of the test pool. Input files must be under <test_pool_path>/A01_INPUT_FILES.',
+        help='Root directory of the test pool. Input files are expected directly under <test_pool_path>/<vehicle>/input.zip.',
     )
     parser.add_argument(
         '--reports-cache',

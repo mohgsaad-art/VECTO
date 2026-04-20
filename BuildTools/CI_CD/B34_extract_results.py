@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-B34 — Extract HTCondor result archives into XX_RESULTS.
+B34 - Extract HTCondor result archives into XX_RESULTS.
 
 Steps:
   1. Move all *_out.zip files from the current working directory into

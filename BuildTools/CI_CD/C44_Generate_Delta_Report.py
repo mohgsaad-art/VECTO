@@ -51,12 +51,12 @@ def load_var_series(report_path: str, var: str) -> pd.Series | None:
     try:
         df = pd.read_excel(report_path, sheet_name=sheet)
     except Exception:
-        print(f'  Sheet "{sheet}" not found in {os.path.basename(report_path)} — skipping.')
+        print(f'  Sheet "{sheet}" not found in {os.path.basename(report_path)} - skipping.')
         return None
 
     col = next((c for c in df.columns if var in c), None)
     if col is None:
-        print(f'  Column matching "{var}" not found in sheet "{sheet}" — skipping.')
+        print(f'  Column matching "{var}" not found in sheet "{sheet}" - skipping.')
         return None
 
     if 'case' in df.columns:
@@ -149,7 +149,7 @@ def generate_delta_report(ref_report: str, current_report: str, output_path: str
 
     var_deltas = build_var_deltas(ref_report, current_report)
     if not var_deltas:
-        print('No matching variable sheets found — skipping delta report.')
+        print('No matching variable sheets found - skipping delta report.')
         return None
 
     df_summary = build_delta_summary(var_deltas)
@@ -172,7 +172,7 @@ def append_delta_to_report(ref_report: str, current_report: str) -> None:
     df_summary = build_delta_summary(var_deltas)
 
     if not var_deltas:
-        print('No delta data — nothing appended.')
+        print('No delta data - nothing appended.')
         return
 
     # Append delta sheets to the existing C01 report

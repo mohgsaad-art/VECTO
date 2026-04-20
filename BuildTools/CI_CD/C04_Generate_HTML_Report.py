@@ -73,7 +73,7 @@ def bool_cell(value) -> str:
 
 def delta_cell(value) -> str:
     if pd.isna(value) or value == '':
-        return '<td style="text-align:center;color:#aaa">—</td>'
+        return '<td style="text-align:center;color:#aaa">-</td>'
     if str(value).startswith('WARNING'):
         return (
             f'<td><span style="padding:2px 8px;border-radius:4px;font-size:11px;'

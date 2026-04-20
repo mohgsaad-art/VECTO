@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""B03 — Submit VECTO test cases to HTCondor and wait for completion.
+"""B03 - Submit VECTO test cases to HTCondor and wait for completion.
 
 Steps:
   1. Generate the HTCondor queue file from the test pool (calls B32).
@@ -29,7 +29,7 @@ parser.add_argument(
 )
 parser.add_argument(
     'test_pool_path',
-    help='Root directory of the test pool. Input files are expected under <test_pool_path>/A01_INPUT_FILES.'
+    help='Root directory of the test pool. Input files are expected directly under <test_pool_path>/<vehicle>/input.zip.'
 )
 parser.add_argument(
     '--queue-name',
@@ -99,7 +99,7 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
         print(queue_status)
 
         if QUEUE_NAME not in queue_status:
-            print('Queue is empty — all jobs finished.')
+            print('Queue is empty - all jobs finished.')
             break
 
         t_next_check = time.time() + POLL_INTERVAL_SECONDS

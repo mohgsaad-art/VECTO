@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-B32 — Generate the HTCondor queue file (batch_arguments.txt).
+B32 - Generate the HTCondor queue file (batch_arguments.txt).
 
 For each combination of VECTO version and input directory found under
 test_pool_path/A01_INPUT_FILES, writes one line to batch_arguments.txt in the
@@ -83,7 +83,7 @@ force_rerun = args.force_rerun
 ref_vecto_root = args.ref_vecto_root
 
 # Collect input directories
-input_root = os.path.join(test_pool_path, 'A01_INPUT_FILES')
+input_root = test_pool_path
 
 file_list_TORUN = [
     os.path.join(root, file)
@@ -126,7 +126,7 @@ if args.ref_vecto_root:
 
     ref_report = em.find_latest_report(reports_cache, args.ref_vecto_root)
     if ref_report is None:
-        print(f'No OR report found in {reports_cache} for reference version — treating all pool vehicles as missing.')
+        print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
         ref_report_ids = set()
     else:
         print(f'Reference OR report: {ref_report}')

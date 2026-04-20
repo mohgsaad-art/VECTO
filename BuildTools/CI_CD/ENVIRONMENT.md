@@ -32,17 +32,32 @@ All scripts must be run from the `CI_CD` directory so that the `FUNCTIONS` packa
 cd BuildTools/CI_CD
 ```
 
-### A01 — Generate generic test files
+### A01 — Update Article 10 test pool from GitLab
 ```bash
-python A01_Generate_Files_to_run_from_Generic.py <root_path>
+python A01_Update_Pool.py <pool_root>
+    [--gitlab-url <url>] [--project-path <path>] [--token <token>] [--credentials <path>]
+    [--ssl-verify <ca_bundle_or_false>]
 ```
-- `root_path`: directory containing `01_INPUTS_GENERIC`. Output goes to `<root_path>/02_TO_RUN_GENERIC`.
+- `pool_root`: root of the local pool directory (contains `A00_RAW` and `A01_EXTRACT` subdirs).
+- `--gitlab-url`: GitLab instance URL (default: `https://code.europa.eu`).
+- `--project-path`: GitLab project path (default: `vecto/vecto`).
+- `--token`: GitLab private token. Falls back to `credentials.GITLAB_TOKEN` if not supplied.
+- `--credentials`: path to a `credentials.py` file. Defaults to `credentials.py` resolved from `sys.path`.
+- `--ssl-verify`: SSL verification — path to a CA bundle file, or `false` to disable (use `false` for servers with self-signed certificates). Defaults to system CA verification.
+- Connects to GitLab, downloads new issue attachments since the last run, extracts archives, and saves a `status.json` timestamp to `<pool_root>`.
 
-### A02 — Generate issue test files
+### A02 — Generate HTCondor-ready zipped inputs from generic and issue vehicle files
 ```bash
-python A02_Generate_Files_to_run_from_Issues.py <root_path>
+python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <output_dir> [--force-repackage]
 ```
-- `root_path`: directory containing `11_INPUTS_ISSUE`. Output goes to `<root_path>/12_TO_RUN_ISSUES/ISSUE`.
+- `generic_input_dir`: directory containing generic `.vecto` and `.xml` vehicle input files (e.g. `01_INPUTS_GENERIC`).
+- `issues_input_dir`: root of the Article 10 test pool (contains `A00_RAW` and `A01_EXTRACT` subdirs).
+- `output_dir`: output root. Zips are written to `<output_dir>/To_Run/<vehicle>/input.zip`. Pass `<output_dir>/To_Run` as `test_pool_path` to B03/B32.
+- `--force-repackage`: re-zip even if `<vehicle>/input.zip` already exists.
+- Generic vehicles are placed under `<output_dir>/To_Run/<mode>/<powertrain>/<vehicle>/`.
+- Issue vehicles are placed under `<output_dir>/To_Run/articles/<vehicle>/`.
+- No intermediate folders are created: all vehicles are collected in memory and written directly as `input.zip` files.
+- Produces a `Vehicles_found_<timestamp>.xlsx` diagnostic report in the current working directory (only the most recent is kept).
 
 ### B01 — Prepare XX_RESULTS run directory
 ```bash
@@ -76,7 +91,7 @@ python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
 python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-cache <path>] [--output <path>]
 ```
 - `vecto_root`: path to the VECTO installation directory (used to resolve git tags when searching for the latest OR report).
-- `test_pool_path`: root directory of the test pool. Input files must be under `<test_pool_path>/A01_INPUT_FILES`.
+- `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
 - `--reports-cache`: directory containing `OR_*.xlsx` report files. Defaults to the standard CI Reports directory (`D:/CI/Reports` or `C:/CI/Reports`).
 - `--output`: output file path for missing vehicle input directories (default: `./missing_vehicles.txt`).
 - Compares vehicles in the test pool against the latest OR report and writes the input directory path of each missing vehicle (one per line) to the output file.
@@ -88,7 +103,7 @@ python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-c
 python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>]
 ```
 - `vecto_root`: path to the VECTO installation directory (passed through to B32 and B33).
-- `test_pool_path`: root directory of the test pool (input files expected under `<test_pool_path>/A01_INPUT_FILES`).
+- `test_pool_path`: root directory of the test pool (input files expected directly under `<test_pool_path>/<vehicle>/input.zip`).
 - `--queue-name`: HTCondor queue name used to track this submission (default: basename of `vecto_root`).
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, missing vehicles are also queued against this version for delta comparison (Case 1 backward-compatibility).
 - `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B32.
@@ -102,7 +117,7 @@ python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queu
 python B32_generate_JB_queuefile.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
 ```
 - `vecto_root`: path to the VECTO installation directory.
-- `test_pool_path`: root directory of the test pool. Input files are expected under `<test_pool_path>/A01_INPUT_FILES`.
+- `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
 - `--force-rerun`: include jobs whose output archive already exists in `Z00_VECTO_OUTPUTS` (default: skip completed jobs).
 - `--no-hev`: exclude HEV vehicles from the job list.
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, vehicles missing from the reference version's OR report are appended as additional jobs using the reference executable. This enables Case 1 backward-compatibility delta comparison via C44.

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-B33 — Run a single VECTO simulation inside an HTCondor worker node.
+B33 - Run a single VECTO simulation inside an HTCondor worker node.
 
 This script is the HTCondor equivalent of B02's run_individual_file. Each
 worker node:
@@ -89,7 +89,7 @@ def run_individual_file(vectofile_fpath, vecto_cmd_path, vecto_cmd_option, log=T
 
 
 # ---------------------------------------------------------------------------
-# Step 1 — Resolve VECTO executable directory
+# Step 1 - Resolve VECTO executable directory
 # ---------------------------------------------------------------------------
 
 scratch_dir = os.environ.get('_CONDOR_SCRATCH_DIR', '.')
@@ -108,7 +108,7 @@ vecto_version = get_vecto_version(vecto_dir)
 print(f'vecto_version: {vecto_version}')
 
 # ---------------------------------------------------------------------------
-# Step 2 — Unpack input archive into a working directory
+# Step 2 - Unpack input archive into a working directory
 # ---------------------------------------------------------------------------
 
 work_dir = os.path.join(scratch_dir, 'OUTPUTS', vecto_version, output_filename)
@@ -118,7 +118,7 @@ print(f'work_dir: {work_dir}')
 shutil.unpack_archive(input_archive, work_dir)
 
 # ---------------------------------------------------------------------------
-# Step 3 — Locate the VECTO executable
+# Step 3 - Locate the VECTO executable
 # ---------------------------------------------------------------------------
 
 vecto_cmds = [
@@ -135,7 +135,7 @@ if not vecto_cmds:
 vecto_cmd = vecto_cmds[0]
 
 # ---------------------------------------------------------------------------
-# Step 4 — Locate the runnable input file
+# Step 4 - Locate the runnable input file
 # ---------------------------------------------------------------------------
 
 file_list_RUNABLE = [
@@ -158,7 +158,7 @@ if not file_list_TORUN:
 file2run = file_list_TORUN[0]
 
 # ---------------------------------------------------------------------------
-# Step 5 — Run VECTO
+# Step 5 - Run VECTO
 # ---------------------------------------------------------------------------
 
 vecto_cmd_option = '-nv -t'
@@ -180,7 +180,7 @@ for root, dummy, files in os.walk(Path(file2run).parent):
             os.remove(os.path.join(root, f))
 
 # ---------------------------------------------------------------------------
-# Step 6 — Archive and move result to cwd
+# Step 6 - Archive and move result to cwd
 # ---------------------------------------------------------------------------
 
 arch_stem = Path(output_filename).stem
