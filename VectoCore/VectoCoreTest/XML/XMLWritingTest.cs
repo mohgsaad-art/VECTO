@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			@"TestData/XML/XMLWriter/DeclarationJob/Class5_Tractor_4x2/Class5_Tractor_DECL-FULL.vecto";
 
 		protected IXMLInputDataReader xmlInputReader;
-		private IKernel _kernel;
+		//private IKernel _kernel;
 
 
 		// [OneTimeSetUp]

@@ -257,7 +257,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     found = false;
                 }
