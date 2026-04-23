@@ -47,6 +47,13 @@ parser.add_argument(
     default=None,
     help='Directory containing OR_*.xlsx report files used to detect missing vehicles for the reference version.'
 )
+parser.add_argument(
+    '--limit',
+    type=int,
+    default=10,
+    metavar='N',
+    help='Limit the number of jobs submitted to HTCondor to the first N entries in the queue file.'
+)
 args = parser.parse_args()
 
 if not os.path.exists(args.vecto_root):
@@ -72,6 +79,15 @@ _ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root e
 _cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
 output32 = run(f'python B32_generate_JB_queuefile.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
 print(output32)
+
+# --- Step 1b: Truncate queue file if --limit is set ---
+if args.limit is not None:
+    with open('batch_arguments.txt') as f:
+        lines = f.readlines()
+    truncated = lines[:args.limit]
+    with open('batch_arguments.txt', 'w') as f:
+        f.writelines(truncated)
+    print(f'Queue truncated to {len(truncated)} job(s) (--limit {args.limit}, total was {len(lines)}).')
 
 # --- Step 2: Patch the submit template with the queue name ---
 print(f'Patching submit template -> {SUBMIT_GENERATED}')
