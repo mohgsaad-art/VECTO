@@ -1387,7 +1387,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var retVal = ComponentFactory.CreateAxleGear(container, powertrainContainer, axlePt.AxleGearData);
 			retVal
-				.AddComponent(GetRetarder(RetarderType.AxlegearInputRetarder, axlePt.Retarder, container,powertrainContainer ))
+				.AddComponent(GetRetarder(RetarderType.AxlegearInputRetarder, axlePt.Retarder, container, powertrainContainer))
 				.AddComponent(em);
 
 			ComponentFactory.CreateDummyGearboxInfo(false, container, powertrainContainer, gear: null);
