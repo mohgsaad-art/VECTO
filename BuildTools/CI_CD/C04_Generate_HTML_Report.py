@@ -62,7 +62,7 @@ _CRITERIA_COLS = ['vsum_ok', 'log_ok', 'rslt_mfr_ok', 'complete_step_ok']
 _CRITERIA_LABELS = {
     'vsum_ok':          'VSUM',
     'log_ok':           'Log 100%',
-    'rslt_mfr_ok':      'MFR',
+    'rslt_mfr_ok':      'MRF',
     'complete_step_ok': 'Complete step',
 }
 
@@ -174,7 +174,7 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(1)">Status &#8597;</th>
       <th onclick="sortTable(2)">VSUM &#8597;</th>
       <th onclick="sortTable(3)">Log 100% &#8597;</th>
-      <th onclick="sortTable(4)">MFR &#8597;</th>
+      <th onclick="sortTable(4)">MRF &#8597;</th>
       <th onclick="sortTable(5)">Complete step &#8597;</th>
       {'<th onclick="sortTable(6)">Delta Diff &#8597;</th>' if _has_delta else ''}
     </tr>

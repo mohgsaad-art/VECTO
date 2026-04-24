@@ -48,8 +48,9 @@ from FUNCTIONS.utils_pool import ISSUE_DESC_FILENAME, timed
 # ---------------------------------------------------------------------------
 
 _EXCLUDE_SUBSTRINGS = ['_invalid', 'P39_40']
-_MODE_DECL = 'DeclarationMode'
-_MODE_ENG = 'EngineeringMode'
+_MODE_DECL = 'GenericDeclaration'
+_MODE_ENG = 'GenericEngineering'
+_MODE_ART10 = 'Declaration'
 _MODE_UNKNOWN = 'UNKNOWN'
 
 # ---------------------------------------------------------------------------
@@ -356,7 +357,7 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
     # Group by dirname → collect files
     groups: dict[str, list[tuple[str, bytes]]] = {}
     for _, row in df_to_run.iterrows():
-        dirname = str(Path('articles') / row['REF_save_dirname'])
+        dirname = str(Path(_MODE_ART10) / row['REF_save_dirname'])
         filename = row['REF_vehicle_type'] + '.xml'
         content = Path(row['REF_local_path']).read_bytes()
         groups.setdefault(dirname, []).append((filename, content))

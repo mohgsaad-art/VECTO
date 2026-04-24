@@ -41,13 +41,16 @@ extract_dir = os.path.join(os.getcwd(), 'XX_RESULTS')
 Path(storage_dir).mkdir(parents=True, exist_ok=True)
 Path(extract_dir).mkdir(parents=True, exist_ok=True)
 
-# --- Step 1: Move *_out.zip files from cwd into Z00_VECTO_OUTPUTS ---
-out_zips_in_cwd = [f for f in os.listdir('.') if f.endswith('out.zip')]
+# --- Step 1: Move *_out.zip files from cwd into Z00_VECTO_OUTPUTS/<version>/ ---
+version_storage = os.path.join(storage_dir, vecto_version)
+Path(version_storage).mkdir(parents=True, exist_ok=True)
 
-for filename in out_zips_in_cwd:
-    dest = os.path.join(storage_dir, filename)
+for filename in os.listdir('.'):
+    if not filename.endswith('_out.zip'):
+        continue
+    dest = os.path.join(version_storage, filename)
     shutil.move(filename, dest)
-    print(f'Moved: {filename} -> {storage_dir}')
+    print(f'Moved: {filename} -> {version_storage}')
 
 # --- Step 2: Unpack each archive into XX_RESULTS/<version>/ ---
 for filename in os.listdir(version_storage):
@@ -56,12 +59,9 @@ for filename in os.listdir(version_storage):
     zip_outfile = os.path.join(version_storage, filename)
 
     # Reconstruct the directory path from the flat filename:
-    # '__' separators become path separators, except for the known
-    # double-underscore prefixes GEN__DECL_mode and GEN__ENG_mode.
+    # '__' separators become path separators.
     rel_path = filename.replace('_out.zip', '')
     rel_path = rel_path.replace('__', os.sep)
-    rel_path = rel_path.replace('GEN' + os.sep + 'DECL_mode', 'GEN__DECL_mode')
-    rel_path = rel_path.replace('GEN' + os.sep + 'ENG_mode', 'GEN__ENG_mode')
 
     outpath = os.path.join(extract_dir, vecto_version, rel_path)
 
