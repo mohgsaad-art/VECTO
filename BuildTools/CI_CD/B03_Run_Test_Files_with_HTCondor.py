@@ -14,7 +14,7 @@ import subprocess
 import time
 import os
 
-SUBMIT_TEMPLATE = 'B31_htc_submit_run_VECTO_AD.sh'
+SUBMIT_TEMPLATE = 'B31_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
 POLL_INTERVAL_SECONDS = 30
@@ -77,7 +77,7 @@ print('Generating queue file...')
 print(f'--- vecto ref root: "{args.ref_vecto_root}"')
 _ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root else ''
 _cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
-output32 = run(f'python B32_generate_JB_queuefile.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
+output32 = run(f'python B32_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
 print(output32)
 
 # --- Step 1b: Truncate queue file if --limit is set ---

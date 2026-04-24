@@ -114,7 +114,7 @@ python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queu
 
 ### B32 — Generate HTCondor queue file
 ```bash
-python B32_generate_JB_queuefile.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
+python B32_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
 ```
 - `vecto_root`: path to the VECTO installation directory.
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.

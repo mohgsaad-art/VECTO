@@ -162,7 +162,7 @@ file2run = file_list_TORUN[0]
 # ---------------------------------------------------------------------------
 
 vecto_cmd_option = '-nv -t'
-if 'ENG_mode' in file2run or 'ENGmode' in file2run:
+if 'ENG_mode' in file2run or 'ENGmode' in file2run or 'GenericEngineering' in file2run:
     vecto_cmd_option += ' -eng'
 
 print(f'Running: {file2run}')
