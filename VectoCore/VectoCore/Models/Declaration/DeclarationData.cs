@@ -1813,7 +1813,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static MissionType GetSelectedMissionHeavyLorry(VehicleClass vc)
 			{
-				return vc.IsOneOf(VehicleClass.Class1, VehicleClass.Class2, VehicleClass.Class3)
+				return vc.IsOneOf(VehicleClass.Class1, VehicleClass.Class2, VehicleClass.Class3, VehicleClass.Class1s)
 					? MissionType.RegionalDelivery
 					: MissionType.LongHaul;
 			}
