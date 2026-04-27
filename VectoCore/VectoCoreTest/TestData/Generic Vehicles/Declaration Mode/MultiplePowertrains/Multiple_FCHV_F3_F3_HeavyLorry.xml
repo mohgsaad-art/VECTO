@@ -79,7 +79,7 @@
 								<Entry powerOutput="50.00" fuelConsumption="2887.50" />
 								<Entry powerOutput="65.00" fuelConsumption="4069.70" />
 								<Entry powerOutput="85.00" fuelConsumption="5672.00" />
-								<Entry powerOutput="120.00" fuelConsumption="7150.00" />
+								<Entry powerOutput="250.00" fuelConsumption="13750.00" />
 							</FuelCellPowerOutputConsumptionMap>
 						</v2.6:Data>
 						<v2.6:Signature>
@@ -94,7 +94,7 @@
 						</v2.6:Signature>
 					</FuelCell>
 					<MinPower>10000</MinPower>
-					<MaxPower>120000</MaxPower>
+					<MaxPower>250000</MaxPower>
 				</FuelCellModule>
 			</FuelCellSystem>
 			<ElectricEnergyStorage>
@@ -2125,7 +2125,7 @@
 							<CertificationNumber>CertNbr 1234987</CertificationNumber>
 							<Date>2022-01-01T00:00:00Z</Date>
 							<AppVersion>ADC PreProcessing 1.0</AppVersion>
-							<Ratio>6.000</Ratio>
+							<Ratio>6.360</Ratio>
 							<CertificationMethod>Option 2</CertificationMethod>
 							<TorqueLossMap>
 								<Entry inputSpeed='0.00' inputTorque='-50000.00' torqueLoss='1500.00'/>
@@ -4183,7 +4183,7 @@
 							<CertificationNumber>CertNbr 1234987</CertificationNumber>
 							<Date>2022-01-01T00:00:00Z</Date>
 							<AppVersion>ADC PreProcessing 1.0</AppVersion>
-							<Ratio>6.000</Ratio>
+							<Ratio>6.360</Ratio>
 							<CertificationMethod>Option 2</CertificationMethod>
 							<TorqueLossMap>
 								<Entry inputSpeed='0.00' inputTorque='-50000.00' torqueLoss='1500.00'/>

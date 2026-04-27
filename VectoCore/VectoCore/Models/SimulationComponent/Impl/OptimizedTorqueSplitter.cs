@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
@@ -31,15 +32,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 //new List<double>() { 0.6, 0.4 },
                 new List<double>() { 0.5, 0.5 }
             };
+
+            System.Diagnostics.Debug.Assert(_torqueRatioCombinations.All(x => x.Sum().IsEqual(1)));
         }
 
         protected override Dictionary<ITnOutPort, double> ConfigureTorqueRatio(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
             var bestTorqueRatio = (_torqueRatioCombinations.Count() == 1)
                 ? _torqueRatioCombinations.First()
-                : SelectBestTorqueRatio(PerformRequestOnTestPowertrainForEachTorqueRatioCombination(absTime, dt, outTorque, outAngularVelocity, dryRun));
+                : DataBus.DriverInfo.DrivingAction.IsOneOf(DrivingAction.Coast, DrivingAction.Roll)
+                    ? GetTorqueRatio(CalculateCoastingTorqueForFirstAxlePowertrain(_testPowertrain, absTime, dt, outTorque, outAngularVelocity), outTorque)
+                    : SelectBestTorqueRatio(PerformRequestOnTestPowertrainForEachTorqueRatioCombination(absTime, dt, outTorque, outAngularVelocity, dryRun), dryRun);
 
             return _nextComponents.Select((x, i) => new { item = x, index = i }).ToDictionary(x => x.item, x => bestTorqueRatio[x.index]);
+        }
+
+        private List<double> GetTorqueRatio(NewtonMeter torqueAxlePt1, NewtonMeter totalTorque)
+        {
+            return new List<double>() { torqueAxlePt1 / totalTorque, 1 - (torqueAxlePt1 / totalTorque) };
         }
 
         private List<Tuple<List<IResponse>, List<double>>> PerformRequestOnTestPowertrainForEachTorqueRatioCombination(
@@ -53,7 +63,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
             foreach (var torqueRatio in _torqueRatioCombinations)
             {
-                UpdateTestPowertrain(torqueRatio);
+                UpdateTestPowertrain(_testPowertrain, torqueRatio, DataBus.DriverInfo.DrivingAction.IsOneOf(DrivingAction.Coast, DrivingAction.Roll));
 
                 var powertrainResponses = _testPowertrain.TorqueSplitter.PerformRequest(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
@@ -63,22 +73,29 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             return responses;
         }
 
-        private void UpdateTestPowertrain(List<double> torqueRatio)
+        private List<double> SelectBestTorqueRatio(List<Tuple<List<IResponse>, List<double>>> ratioCombinationResponses, bool dryRun)
         {
-            _testPowertrain.JunctionBox.ClearResults();
+            var acceptableResponses = ratioCombinationResponses.Where(x => !x.Item1.Any(r => r is ResponseElectricSystemNotReady));
+           
+            if (acceptableResponses.Count() == 0)
+            {
+                return dryRun 
+                    ? ratioCombinationResponses
+                        .OrderBy(x => VectoMath.Abs(x.Item1.Sum(r => (r as ResponseElectricSystemNotReady).ElectricMotor.ElectricMotorPowerMech)))
+                        .First().Item2
+                    : throw new VectoException($"OptimizedTorqueSplitter: no acceptable torque ratios found");
+            }
+            
+            if (acceptableResponses.Count() == 1)
+            {
+                return acceptableResponses.First().Item2;
+            }
 
-            _testPowertrain.UpdateComponents();
-
-            _testPowertrain.TorqueSplitter.TorqueRatio = torqueRatio;
-        }
-
-        private List<double> SelectBestTorqueRatio(List<Tuple<List<IResponse>, List<double>>> ratioCombinationResponses)
-        {
             List<double> bestRatioCombination = null;
 
-            if (ratioCombinationResponses.Any(x => x.Item1.All(r => (r is ResponseSuccess) || (r is ResponseDryRun))))
+            if (acceptableResponses.Any(x => x.Item1.All(r => (r is ResponseSuccess) || (r is ResponseDryRun))))
             {
-                var successes = ratioCombinationResponses.Where(x => x.Item1.All(r => (r is ResponseSuccess) || (r is ResponseDryRun)));
+                var successes = acceptableResponses.Where(x => x.Item1.All(r => (r is ResponseSuccess) || (r is ResponseDryRun)));
 
                 var sortedCombinations = (DataBus.DriverInfo.DrivingAction == DrivingAction.Brake)
                     ? successes.OrderByDescending(x => VectoMath.Abs(x.Item1.First().ElectricSystem.ConsumerPower))
@@ -88,14 +105,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
             else
             {
-                bestRatioCombination = ratioCombinationResponses
+                bestRatioCombination = acceptableResponses
                     .Where(x => x.Item1.Any(r => r is IOverUnderResponse))
                     .OrderBy(x => VectoMath.Abs(x.Item1.Where(r => r is IOverUnderResponse).Sum(r => (r as IOverUnderResponse).Delta)))
-                    .First()
-                    .Item2;
+                    .FirstOrDefault()
+                    ?.Item2;
             }
 
-            return bestRatioCombination ?? ratioCombinationResponses.First().Item2;
+            return bestRatioCombination ?? acceptableResponses.First().Item2;
         }
 
         protected override bool DoUpdateFrom(object other)

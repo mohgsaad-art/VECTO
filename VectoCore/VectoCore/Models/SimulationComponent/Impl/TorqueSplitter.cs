@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -21,11 +23,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : base(container)
 		{
 			_junctionBox = junctionBox;
-
             TorqueRatio = new List<double>() { 0.5, 0.5 };
         }
 
-        public List<double> TorqueRatio { 
+        public List<double> TorqueRatio 
+        { 
             get { return _torqueRatio; }
             set { _torqueRatio = value; System.Diagnostics.Debug.Assert(_torqueRatio.Sum().IsEqual(1)); } 
         }
@@ -68,19 +70,68 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 axlePowertrainResponses[nextComponent] = response;
             }
 
-            while (axlePowertrainResponses.Values.Count(x => x is ResponseElectricSystemNotReady) > 0)
+            if (axlePowertrainResponses[_nextComponents.Last()] is ResponseElectricSystemNotReady)
+            {
+                return dryRun ? axlePowertrainResponses : throw new VectoException($"TorqueSplitter request got ResponseElectricSystemNotReady");
+            }
+
+            while (axlePowertrainResponses.Values.Any(x => x is ResponseElectricSystemNotReady))
             {
                 axlePowertrainResponses
                     .Where(x => x.Value is ResponseElectricSystemNotReady)
                     .ToList()
 					.ForEach(t =>
                     {
-                        var response = t.Key.Request(absTime, dt, outTorque * torqueRatio[t.Key], outAngularVelocity, dryRun);
-                        axlePowertrainResponses[t.Key] = response;
+                        axlePowertrainResponses[t.Key] = t.Key.Request(absTime, dt, outTorque * torqueRatio[t.Key], outAngularVelocity, dryRun);
                     });
             }
 
 			return axlePowertrainResponses;
+        }
+
+        protected void UpdateTestPowertrain(ITestPowertrain testPowertrain, List<double> torqueRatio, bool emOff)
+        {
+            testPowertrain.JunctionBox.ClearResults();
+
+            testPowertrain.UpdateComponents();
+
+            foreach (var em in testPowertrain.ElectricMotors)
+            {
+                (em.Control as ITestPowertrainElectricMotorControl).EmOff = emOff;
+            }
+
+            testPowertrain.TorqueSplitter.TorqueRatio = torqueRatio;
+        }
+
+        protected NewtonMeter CalculateCoastingTorqueForFirstAxlePowertrain(ITestPowertrain testPowertrain, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
+        {
+            UpdateTestPowertrain(testPowertrain, new List<double>() { 1, 0 }, true);
+
+            var torqueInFirstAxlePowertrain = outTorque * 0.5;
+            var initialResponse = testPowertrain.TorqueSplitter.PerformRequest(absTime, dt, torqueInFirstAxlePowertrain, outAngularVelocity, false).First();
+            var delta = initialResponse.Gearbox?.PowerRequest ?? initialResponse.ElectricMotor?.TotalTorqueDemand * initialResponse.ElectricMotor?.AvgDrivetrainSpeed;
+
+            try
+            {
+                torqueInFirstAxlePowertrain = SearchAlgorithm.Search(
+                    torqueInFirstAxlePowertrain, delta, 0.1.SI<NewtonMeter>(),
+                    getYValue: response =>
+                    {
+                        var r = (ResponseDryRun)response;
+                        return r.ElectricMotor?.TotalTorqueDemand * r.ElectricMotor?.AvgDrivetrainSpeed;
+                    },
+                    evaluateFunction: torque => testPowertrain.TorqueSplitter.PerformRequest(absTime, dt, torque, outAngularVelocity, true).First(),
+                    criterion: response =>
+                    {
+                        var r = (ResponseDryRun)response;
+                        return (r.ElectricMotor?.TotalTorqueDemand * r.ElectricMotor?.AvgDrivetrainSpeed).Value();
+                    },
+                    searcher: this
+                );
+            }
+            catch (VectoSearchAbortedException) { }
+
+            return torqueInFirstAxlePowertrain;
         }
 
         private IResponse CreateResponse(List<IResponse> responses)
@@ -105,9 +156,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 first.ElectricMotor.InertiaPowerDemand = responses.Sum(x => x.ElectricMotor.InertiaPowerDemand?.Value() ?? 0).SI<Watt>();
                 first.ElectricMotor.PowerRequest = responses.Sum(x => x.ElectricMotor.PowerRequest?.Value() ?? 0).SI<Watt>();
 
+                if (responses.All(r => r is IOverUnderResponse))
+                {
+                    (first as IOverUnderResponse).Delta = responses.Sum(r => (r as IOverUnderResponse).Delta);
+                }
+
                 if (first.Gearbox != null)
                 {
                     first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox?.PowerRequest != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
+                }
+
+                if (responses.All(r => r is ResponseDryRun))
+                {
+                    var dryRunResponses = responses.Select(r => r as ResponseDryRun);
+
+                    (first as ResponseDryRun).DeltaDragLoad = dryRunResponses.Where(r => r.DeltaDragLoad != null).Sum(r => r.DeltaDragLoad);
+                    (first as ResponseDryRun).DeltaFullLoad = dryRunResponses.Where(r => r.DeltaFullLoad != null).Sum(r => r.DeltaFullLoad);
+                    (first as ResponseDryRun).DeltaFullLoadTorque = dryRunResponses.Where(r => r.DeltaFullLoadTorque != null).Sum(r => r.DeltaFullLoadTorque);
+                    (first as ResponseDryRun).DeltaDragLoadTorque = dryRunResponses.Where(r => r.DeltaDragLoadTorque != null).Sum(r => r.DeltaDragLoadTorque);
                 }
             }
 

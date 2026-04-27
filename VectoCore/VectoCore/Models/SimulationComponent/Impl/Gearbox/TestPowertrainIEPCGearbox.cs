@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -29,7 +30,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 		protected TestPowertrainIEPCGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy,
 			IIEPCGearboxFactory gbxFactory, bool dummy)
 		{
-			_impl = gbxFactory.CreateIEPCGearbox(container.RunData.GearboxSinglePwt.Gears.Count == 1, container, strategy) as ITestPowertrainTransmission;
+            _impl = gbxFactory.CreateIEPCGearbox(
+				container.RunData.GetGearboxData().First(x => x.Item1 == powertrainContainer.AxleNumber).Item2.Gears.Count == 1, 
+				container, 
+				strategy) as ITestPowertrainTransmission;
+			
 			if (_impl == null) {
 				throw new VectoException("Invalid implementation provided for Testpowertrain!");
 			}

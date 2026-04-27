@@ -125,6 +125,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 
-		protected override bool DoUpdateFrom(object other) => false;
+		protected override bool DoUpdateFrom(object other)
+		{
+            if (other is Retarder rt)
+            {
+                PreviousState = rt.PreviousState.Clone();
+                return true;
+            }
+
+            return false;
+        }
 	}
 }

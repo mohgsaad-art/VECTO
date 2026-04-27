@@ -4402,7 +4402,7 @@
 							<CertificationNumber>CertNbr 1234987</CertificationNumber>
 							<Date>2022-01-01T00:00:00Z</Date>
 							<AppVersion>ADC PreProcessing 1.0</AppVersion>
-							<Ratio>12.000</Ratio>
+							<Ratio>15.720</Ratio>
 							<CertificationMethod>Option 2</CertificationMethod>
 							<TorqueLossMap>
 								<Entry inputSpeed='0.00' inputTorque='-50000.00' torqueLoss='1500.00'/>

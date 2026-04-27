@@ -364,16 +364,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (electricSupplyResponse is ElectricSystemNotReadyResponse)
 			{
 				return new ResponseElectricSystemNotReady(this)
-				{
-					ElectricMotor = {
+                {
+                    ElectricMotor = {
 						MaxDriveTorque = maxDriveTorqueDt,
 						MaxRecuperationTorque = maxRecuperationTorqueDt,
 						AngularVelocity = avgDtSpeed,
 						AvgDrivetrainSpeed = avgDtSpeed,
 						PowerRequest = outTorque * avgDtSpeed,
-						DeRatingActive = DeRatingActive
-					}
-				};
+						DeRatingActive = DeRatingActive,
+						ElectricMotorPowerMech = -(emTorqueDt * avgDtSpeed), //TODO: Change name of property because it's a delta.
+					},
+                    DeltaFullLoad = -(emTorqueDt * avgDtSpeed),
+                    DeltaDragLoad = -(emTorqueDt * avgDtSpeed),
+                };
 			}
 
 			if (!dryRun && electricSupplyResponse is ElectricSystemOverloadResponse &&
