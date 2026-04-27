@@ -10,6 +10,7 @@ All three report types share the same OR report number so they form a coherent b
 
 import argparse
 import datetime
+import glob
 import json
 import os
 import re
@@ -55,6 +56,25 @@ parser.add_argument(
     default=None,
     help='Reports cache directory to determine the next report number.',
 )
+parser.add_argument(
+    '--mr-reports-cache',
+    default=None,
+    help='Directory for MR OR reports. Defaults to <reports-cache>/MR.',
+)
+parser.add_argument(
+    '--ref-vecto-root',
+    default=None,
+    help='Path to REF_VECTO_ROOT. When supplied together with --is-mr-run, '
+         'the MR vecto executable is taken from <ref-vecto-root>/MR.',
+)
+parser.add_argument(
+    '--is-mr-run',
+    action='store_true',
+    default=False,
+    help='When set, also generates the MR OR report (from <ref-vecto-root>/MR results) '
+         'before generating the current report, so the Intermediate Delta is included '
+         'in the same pipeline run.',
+)
 args = parser.parse_args()
 
 if not os.path.exists(args.vecto_root):
@@ -72,6 +92,7 @@ if os.path.exists(os.path.join(os.getcwd(), 'XX_RESULTS')):
 _base = os.path.join(args.report_dir, 'Reports') if args.report_dir else get_default_report_dir()
 report_base_dir = os.path.join(_base, 'Interim_Reports') if args.interim_report else _base
 _reports_cache = args.reports_cache if args.reports_cache else report_base_dir
+_mr_reports_cache = args.mr_reports_cache if args.mr_reports_cache else os.path.join(_reports_cache, 'MR')
 
 os.makedirs(report_base_dir, exist_ok=True)
 os.makedirs(_reports_cache, exist_ok=True)
@@ -81,7 +102,7 @@ os.makedirs(_reports_cache, exist_ok=True)
 # ---------------------------------------------------------------------------
 
 date = datetime.datetime.now().strftime('%y%m%d')
-nnnn = get_next_report_number(_reports_cache)
+nnnn = get_next_report_number(report_base_dir)
 vecto_hash = get_vecto_hash(vecto_root)
 
 
@@ -89,6 +110,18 @@ def report_path() -> str:
     """Return the full output path for the combined report file."""
     filename = f'OR_{vecto_version}_{date}_{nnnn}_{vecto_hash}.xlsx'
     return os.path.join(report_base_dir, filename)
+
+
+def get_latest_mr_report(mr_reports_dir: str) -> str | None:
+    """Return the single OR report in the MR reports directory, or None if absent."""
+    if not os.path.isdir(mr_reports_dir):
+        return None
+    candidates = [
+        os.path.join(mr_reports_dir, f)
+        for f in os.listdir(mr_reports_dir)
+        if re.match(r'^OR_.+\.xlsx$', f)
+    ]
+    return candidates[0] if candidates else None
 
 
 def get_latest_release_report(reports_dir: str) -> str | None:
@@ -584,15 +617,14 @@ def write_crf_report(writer: pd.ExcelWriter, df_all: pd.DataFrame) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
-def main() -> None:
+def write_report(result_dir: str, output_path: str) -> list[str]:
+    """Build and write a single OR report. Returns the list of failed test names."""
     print('--- Building report data ---')
     df_summary, failed_names = build_summary_dataframe(result_dir)
     df_vsum = build_vsum_dataframe(result_dir)
     df_crf  = build_crf_dataframe(result_dir)
 
-    output_path = report_path()
     print(f'--- Writing report: {output_path} ---')
-
     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
         write_summary_report(writer, df_summary, failed_names)
         if df_vsum is not None and not df_vsum.empty:
@@ -605,6 +637,52 @@ def main() -> None:
             print('No CRF data found, skipping CRF sheets.')
 
     print(f'Written: {output_path}')
+    return failed_names
+
+
+def refresh_mr_report() -> None:
+    """Generate a fresh MR OR report, replacing any existing one in _mr_reports_cache.
+
+    Only called when --is-mr-run is set. Requires --ref-vecto-root so the MR
+    vecto executable can be found at <ref-vecto-root>/MR.
+    """
+    if not args.ref_vecto_root:
+        print('--ref-vecto-root not supplied - cannot generate MR report.')
+        return
+
+    mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
+    if not os.path.isdir(mr_vecto_root):
+        print(f'MR vecto root not found at {mr_vecto_root} - skipping MR report.')
+        return
+
+    mr_version = get_vecto_version(mr_vecto_root)
+    mr_result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', mr_version)
+    if not os.path.isdir(mr_result_dir):
+        print(f'MR result dir not found at {mr_result_dir} - skipping MR report.')
+        return
+
+    os.makedirs(_mr_reports_cache, exist_ok=True)
+    for _old in glob.glob(os.path.join(_mr_reports_cache, 'OR_*.xlsx')):
+        os.remove(_old)
+        print(f'Removed old MR report: {_old}')
+
+    mr_hash = get_vecto_hash(mr_vecto_root)
+    mr_nnnn = get_next_report_number(_mr_reports_cache)
+    mr_output_path = os.path.join(_mr_reports_cache, f'OR_{mr_version}_{date}_{mr_nnnn}_{mr_hash}.xlsx')
+
+    write_report(mr_result_dir, mr_output_path)
+    print(f'MR report written: {mr_output_path}')
+
+
+def main() -> None:
+    # When --is-mr-run is set, regenerate the MR OR report first so the
+    # Intermediate Delta reflects the latest MR build in this same pipeline run.
+    if args.is_mr_run:
+        print('--- Generating MR OR report ---')
+        refresh_mr_report()
+
+    output_path = report_path()
+    failed_names = write_report(result_dir, output_path)
 
     ref_report = get_latest_release_report(_reports_cache)
     if ref_report and ref_report != output_path:
@@ -612,6 +690,14 @@ def main() -> None:
         append_delta_to_report(ref_report, output_path)
     else:
         print('No reference report found - skipping delta report.')
+
+    # Intermediate Delta: always compare against whatever MR report is available.
+    mr_report = get_latest_mr_report(_mr_reports_cache)
+    if mr_report and mr_report != output_path:
+        generate_delta_report(mr_report, output_path)
+        append_delta_to_report(mr_report, output_path, sheet_suffix='_MR')
+    else:
+        print('No MR report found - skipping Intermediate Delta.')
 
     if failed_names:
         sys.exit(len(failed_names))

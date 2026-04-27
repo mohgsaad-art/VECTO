@@ -81,8 +81,10 @@ def delta_cell(value) -> str:
         )
     return '<td style="text-align:center;color:#28a745;font-size:15px">&#10003;</td>'
 
-_has_delta = 'Delta Status' in df.columns
-n_delta_warn = df['Delta Status'].str.startswith('WARNING').sum() if _has_delta else 0
+_has_delta    = 'Delta Status'    in df.columns
+_has_delta_mr = 'Delta Status_MR' in df.columns
+n_delta_warn    = df['Delta Status'].str.startswith('WARNING').sum()    if _has_delta    else 0
+n_delta_mr_warn = df['Delta Status_MR'].str.startswith('WARNING').sum() if _has_delta_mr else 0
 
 # build table rows
 rows_html = ''
@@ -94,15 +96,21 @@ for test_name, row in df.iterrows():
         bool_cell(row[col]) if col in row.index else '<td></td>'
         for col in _CRITERIA_COLS
     )
-    delta_col = delta_cell(row.get('Delta Status', float('nan'))) if _has_delta else ''
-    _delta_val = row.get('Delta Status', '') if _has_delta else ''
-    _warn_icon = ' <span style="color:#856404" title="Delta warning">&#9888;</span>' if isinstance(_delta_val, str) and _delta_val.startswith('WARNING') else ''
+    delta_col    = delta_cell(row.get('Delta Status',    float('nan'))) if _has_delta    else ''
+    delta_mr_col = delta_cell(row.get('Delta Status_MR', float('nan'))) if _has_delta_mr else ''
+    _delta_val    = row.get('Delta Status',    '') if _has_delta    else ''
+    _delta_mr_val = row.get('Delta Status_MR', '') if _has_delta_mr else ''
+    _warn_icon = ''
+    if (isinstance(_delta_val, str) and _delta_val.startswith('WARNING')) or \
+       (isinstance(_delta_mr_val, str) and _delta_mr_val.startswith('WARNING')):
+        _warn_icon = ' <span style="color:#856404" title="Delta warning">&#9888;</span>'
     rows_html += (
         f'<tr style="background:{bg}">'
         f'<td>{test_name}{_warn_icon}</td>'
         f'<td><span style="padding:2px 8px;border-radius:4px;font-size:11px;{badge}">{status}</span></td>'
         f'{criteria_cells}'
         f'{delta_col}'
+        f'{delta_mr_col}'
         f'</tr>\n'
     )
 
@@ -162,6 +170,7 @@ html = f"""<!DOCTYPE html>
   <div class="card card-ok"><span class="num">{n_ok}</span>Passed</div>
   <div class="card card-error"><span class="num">{n_error}</span>Failed</div>
   {'<div class="card card-warn"><span class="num">' + str(n_delta_warn) + '</span>Warnings</div>' if _has_delta else ''}
+  {'<div class="card card-warn"><span class="num">' + str(n_delta_mr_warn) + '</span>Inter Warnings</div>' if _has_delta_mr else ''}
   <div class="card card-skip"><span class="num">{n_not_run}</span>Not run</div>
 </div>
 
@@ -176,7 +185,8 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(3)">Log 100% &#8597;</th>
       <th onclick="sortTable(4)">MRF &#8597;</th>
       <th onclick="sortTable(5)">Complete step &#8597;</th>
-      {'<th onclick="sortTable(6)">Delta Diff &#8597;</th>' if _has_delta else ''}
+      {'<th onclick="sortTable(6)">Delta &#8597;</th>' if _has_delta else ''}
+      {'<th onclick="sortTable(' + str(7 if _has_delta else 6) + ')">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
     </tr>
   </thead>
   <tbody>

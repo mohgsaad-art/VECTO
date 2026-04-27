@@ -158,13 +158,16 @@ def generate_delta_report(ref_report: str, current_report: str, output_path: str
     return output_path
 
 
-def append_delta_to_report(ref_report: str, current_report: str) -> None:
+def append_delta_to_report(ref_report: str, current_report: str, sheet_suffix: str = '') -> None:
     """Compute delta between two OR reports and append the results to current_report.
 
     Appends to current_report:
-      - 'Delta Summary' sheet with CO2/FC/EC delta_pct columns and a 'status' column
-      - One 'Δ<var>' sheet per variable with reference, current, delta_abs, delta_pct
-    Also adds a 'status' column to the existing 'Success' sheet in current_report.
+      - 'Delta Summary<sheet_suffix>' sheet with CO2/FC/EC delta_pct columns and a 'status' column
+      - One 'Δ<var><sheet_suffix>' sheet per variable with reference, current, delta_abs, delta_pct
+    Also adds a 'Delta Status<sheet_suffix>' column to the existing 'Success' sheet.
+
+    sheet_suffix distinguishes multiple delta sets in the same report (e.g. '' for the
+    reference delta, '_MR' for the Intermediate Delta).
     """
     import openpyxl
 
@@ -178,11 +181,11 @@ def append_delta_to_report(ref_report: str, current_report: str) -> None:
     # Append delta sheets to the existing C01 report
     with pd.ExcelWriter(current_report, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         if not df_summary.empty:
-            df_summary.to_excel(writer, sheet_name='Delta Summary')
+            df_summary.to_excel(writer, sheet_name='Delta Summary' + sheet_suffix)
         for var, df in var_deltas.items():
-            df.to_excel(writer, sheet_name='Δ' + make_sheet_name(var))
+            df.to_excel(writer, sheet_name='Δ' + make_sheet_name(var) + sheet_suffix)
 
-    # Patch the Success sheet: add 'status' column from Delta Summary
+    # Patch the Success sheet: add 'Delta Status<sheet_suffix>' column from Delta Summary
     if not df_summary.empty and 'status' in df_summary.columns:
         wb = openpyxl.load_workbook(current_report)
         ws = wb['Success']
@@ -193,7 +196,7 @@ def append_delta_to_report(ref_report: str, current_report: str) -> None:
         # Find the next empty column in the header row
         header_row = next(ws.iter_rows(min_row=1, max_row=1))
         next_col = len(header_row) + 1
-        ws.cell(row=1, column=next_col, value='Delta Status')
+        ws.cell(row=1, column=next_col, value='Delta Status' + sheet_suffix)
 
         # Match rows by test name (column 1 = index)
         for row in ws.iter_rows(min_row=2):

@@ -124,4 +124,12 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
 print('Extracting result files...')
 run('python B34_extract_results.py')
 
+if args.ref_vecto_root:
+    mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
+    if os.path.isdir(mr_vecto_root):
+        print('Extracting MR result files...')
+        output = run(f'python B34_extract_results.py "{mr_vecto_root}"')
+        print("--- B34 MR output")
+        print(output)
+
 print('Done.')

@@ -130,41 +130,65 @@ if not force_rerun:
 if args.no_hev:
     job_args = [a for a in job_args if 'HEV' not in a[2]]
 
-# --- Reference version: append jobs for missing vehicles ---
-ref_job_args = []
-if args.ref_vecto_root:
-    print('--- vecto ref root, extracting missing vehicles for reference jobs')
-    em = _load_extract_missing()
-
-    reports_cache = args.reports_cache or get_default_report_dir()
-    missing_ids = get_missing_ids(em, test_pool_path, args.ref_vecto_root, reports_cache)
+def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input_root, force_rerun, no_hev):
+    """Return job-arg tuples for vehicles missing from the given vecto_root's latest OR report."""
+    missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache)
     missing_dirs = em.resolve_input_dirs(missing_ids, test_pool_path)
 
-    print(f'Missing from reference report: {len(missing_ids)} vehicle(s)')
+    version = get_vecto_version(vecto_root)
+    result_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS', version)
+    os.makedirs(result_dir, exist_ok=True)
+    existing = set(os.listdir(result_dir))
 
-    ref_version = get_vecto_version(args.ref_vecto_root)
-    ref_result_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS', ref_version)
-    os.makedirs(ref_result_dir, exist_ok=True)
-    ref_existing = set(os.listdir(ref_result_dir))
-
+    job_list = []
     for input_dir in missing_dirs:
         rel = os.path.normpath(os.path.relpath(input_dir, input_root))
         output_filename = rel.replace(os.sep, '__')
-        if not force_rerun and output_filename + '_out.zip' in ref_existing:
+        if not force_rerun and output_filename + '_out.zip' in existing:
             continue
-        ref_job_args.append((args.ref_vecto_root, input_dir, output_filename))
+        job_list.append((vecto_root, input_dir, output_filename))
 
-    if args.no_hev:
-        ref_job_args = [a for a in ref_job_args if 'HEV' not in a[2]]
+    if no_hev:
+        job_list = [a for a in job_list if 'HEV' not in a[2]]
 
+    return job_list, len(missing_ids)
+
+
+# --- Reference version: append jobs for missing vehicles ---
+ref_job_args = []
+mr_job_args = []
+if args.ref_vecto_root:
+    em = _load_extract_missing()
+    reports_cache = args.reports_cache or get_default_report_dir()
+
+    print('--- ref-vecto-root supplied, extracting missing vehicles for reference jobs')
+    ref_job_args, ref_missing_count = _build_missing_job_args(
+        em, args.ref_vecto_root, test_pool_path,
+        reports_cache, input_root, force_rerun, args.no_hev,
+    )
+    print(f'Missing from reference report: {ref_missing_count} vehicle(s)')
     print(f'Reference version jobs queued: {len(ref_job_args)}')
 
+    # --- MR version: same logic, cache at <ref-vecto-root>/MR ---
+    mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
+    if os.path.isdir(mr_vecto_root):
+        print('--- MR vecto root found, extracting missing vehicles for MR jobs')
+        mr_reports_cache = os.path.join(reports_cache, 'MR')
+        mr_job_args, mr_missing_count = _build_missing_job_args(
+            em, mr_vecto_root, test_pool_path,
+            mr_reports_cache, input_root, force_rerun, args.no_hev,
+        )
+        print(f'Missing from MR report: {mr_missing_count} vehicle(s)')
+        print(f'MR version jobs queued: {len(mr_job_args)}')
+    else:
+        print(f'No MR vecto root found at {mr_vecto_root} - skipping MR jobs')
+
 # Write queue file
-all_jobs = job_args + ref_job_args
+all_jobs = job_args + ref_job_args + mr_job_args
 queue_file = 'batch_arguments.txt'
 with open(queue_file, 'w') as f:
     for arg in all_jobs:
         f.write(f'{arg[0]} {arg[1]} {arg[2]}\n')
 
 print(f'Queue file written: {queue_file}')
-print(f'Total jobs queued: {len(all_jobs)} ({len(job_args)} current + {len(ref_job_args)} reference)')
+print(f'Total jobs queued: {len(all_jobs)} ({len(job_args)} current + {len(ref_job_args)} reference + {len(mr_job_args)} MR)')
