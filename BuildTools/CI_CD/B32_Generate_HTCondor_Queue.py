@@ -33,6 +33,21 @@ def _load_extract_missing():
     return mod
 
 
+def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache):
+    """Return the set of vehicle IDs present in the pool but absent from the latest reference OR report."""
+    pool_ids = em.get_vehicle_ids_from_pool(test_pool_path)
+
+    ref_report = em.find_latest_report(reports_cache, ref_vecto_root)
+    if ref_report is None:
+        print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
+        ref_report_ids = set()
+    else:
+        print(f'Reference OR report: {ref_report}')
+        ref_report_ids = em.get_vehicle_ids_from_report(ref_report)
+
+    return em.compute_missing_vehicles(pool_ids, ref_report_ids)
+
+
 parser = argparse.ArgumentParser(
     description='Generate the HTCondor queue file (batch_arguments.txt) from the test pool.'
 )
@@ -122,17 +137,7 @@ if args.ref_vecto_root:
     em = _load_extract_missing()
 
     reports_cache = args.reports_cache or get_default_report_dir()
-    pool_ids = em.get_vehicle_ids_from_pool(test_pool_path)
-
-    ref_report = em.find_latest_report(reports_cache, args.ref_vecto_root)
-    if ref_report is None:
-        print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
-        ref_report_ids = set()
-    else:
-        print(f'Reference OR report: {ref_report}')
-        ref_report_ids = em.get_vehicle_ids_from_report(ref_report)
-
-    missing_ids = em.compute_missing_vehicles(pool_ids, ref_report_ids)
+    missing_ids = get_missing_ids(em, test_pool_path, args.ref_vecto_root, reports_cache)
     missing_dirs = em.resolve_input_dirs(missing_ids, test_pool_path)
 
     print(f'Missing from reference report: {len(missing_ids)} vehicle(s)')
