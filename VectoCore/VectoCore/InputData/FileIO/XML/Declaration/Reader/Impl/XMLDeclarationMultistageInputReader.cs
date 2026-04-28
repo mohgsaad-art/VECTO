@@ -1270,7 +1270,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected override IList<string> GetInvalidEntriesTemplate(VectoSimulationJobType jobType)
 		{
 			return _invalidEntries.Concat(_consolidateElectricConsumerData?.GetInvalidEntries(jobType) 
-					?? new List<string>() { XMLNames.BusAux_ElectricSystem })
+					?? new List<string>() { $"Auxiliaries:{XMLNames.BusAux_ElectricSystem}" })
 				.Concat(_consolidatedHVACBusAuxiliariesData?.GetInvalidEntries(jobType) ?? new List<string>()).ToList();
 		}
 
@@ -1308,20 +1308,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			return default;
 		}
 
-		protected override bool IsInputDataCompleteTemplate(VectoSimulationJobType jobType, bool fullCheck)
+        private string GetPropertyInfo(string property) => $"Auxiliaries:ElectricSystem:LEDLights:{property}";
+
+        protected override bool IsInputDataCompleteTemplate(VectoSimulationJobType jobType, bool fullCheck)
 		{
 			if (fullCheck) {
-				return InputComplete(InteriorLightsLED, nameof(InteriorLightsLED))
-						& InputComplete(DayrunninglightsLED, nameof(DayrunninglightsLED))
-						& InputComplete(PositionlightsLED, nameof(PositionlightsLED))
-						& InputComplete(HeadlightsLED, nameof(HeadlightsLED))
-						& InputComplete(BrakelightsLED, nameof(BrakelightsLED));
+				return InputComplete(InteriorLightsLED, GetPropertyInfo(nameof(InteriorLightsLED)))
+						& InputComplete(DayrunninglightsLED, GetPropertyInfo(nameof(DayrunninglightsLED)))
+						& InputComplete(PositionlightsLED, GetPropertyInfo(nameof(PositionlightsLED)))
+						& InputComplete(HeadlightsLED, GetPropertyInfo(nameof(HeadlightsLED)))
+						& InputComplete(BrakelightsLED, GetPropertyInfo(nameof(BrakelightsLED)));
 			}
-			return InputComplete(InteriorLightsLED, nameof(InteriorLightsLED))
-				&& InputComplete(DayrunninglightsLED, nameof(DayrunninglightsLED))
-				&& InputComplete(PositionlightsLED, nameof(PositionlightsLED))
-				&& InputComplete(HeadlightsLED, nameof(HeadlightsLED))
-				&& InputComplete(BrakelightsLED, nameof(BrakelightsLED));
+			return InputComplete(InteriorLightsLED, GetPropertyInfo(nameof(InteriorLightsLED)))
+				&& InputComplete(DayrunninglightsLED, GetPropertyInfo(nameof(DayrunninglightsLED)))
+				&& InputComplete(PositionlightsLED, GetPropertyInfo(nameof(PositionlightsLED)))
+				&& InputComplete(HeadlightsLED, GetPropertyInfo(nameof(HeadlightsLED)))
+				&& InputComplete(BrakelightsLED, GetPropertyInfo(nameof(BrakelightsLED)));
 		}
 
 		public override string GetInvalidEntry()
@@ -1391,53 +1393,53 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			return SystemConfiguration != null && SystemConfiguration != BusHVACSystemConfiguration.Unknown;
 		}
 		
-		private bool RequiredParametersForJobType(VectoSimulationJobType jobType)
-		{
-			switch (jobType) {
-				case VectoSimulationJobType.ConventionalVehicle:
-					return true;
-				case VectoSimulationJobType.ParallelHybridVehicle:
-				case VectoSimulationJobType.SerialHybridVehicle:
-				case VectoSimulationJobType.BatteryElectricVehicle:
-				case VectoSimulationJobType.IEPC_S:
-				case VectoSimulationJobType.IEPC_E:
-				case VectoSimulationJobType.IHPC:
-				case VectoSimulationJobType.FCHV:
-				case VectoSimulationJobType.FCHV_IEPC:
-				case VectoSimulationJobType.Multiple_FCHV:
-				case VectoSimulationJobType.Multiple_PEV:
-				case VectoSimulationJobType.Multiple_SHEV:
-					return WaterElectricHeater != null && AirElectricHeater != null && OtherHeatingTechnology != null;
-				default:
-					return false;
-			}
-		}
-		
-		protected override bool IsInputDataCompleteTemplate(VectoSimulationJobType jobType, bool fullCheck)
+		private bool ShouldCheckForProperty(VectoSimulationJobType jobType)
+        {
+			return jobType.IsOneOf(
+                VectoSimulationJobType.ParallelHybridVehicle,
+                VectoSimulationJobType.SerialHybridVehicle,
+                VectoSimulationJobType.BatteryElectricVehicle,
+                VectoSimulationJobType.IEPC_S,
+                VectoSimulationJobType.IEPC_E,
+                VectoSimulationJobType.IHPC,
+                VectoSimulationJobType.FCHV,
+                VectoSimulationJobType.FCHV_IEPC,
+                VectoSimulationJobType.Multiple_FCHV,
+                VectoSimulationJobType.Multiple_PEV,
+                VectoSimulationJobType.Multiple_SHEV);
+        }
+
+		private string GetPropertyInfo(string property) => $"Auxiliaries:HVAC:{property}";
+
+        protected override bool IsInputDataCompleteTemplate(VectoSimulationJobType jobType, bool fullCheck)
 		{
 			if (fullCheck) {
-				return MethodComplete(IsCorrectSystemConfiguration(), nameof(IsCorrectSystemConfiguration))
-						& InputComplete(HeatPumpTypeCoolingDriverCompartment, nameof(HeatPumpTypeCoolingDriverCompartment))
-						& InputComplete(HeatPumpTypeHeatingDriverCompartment, nameof(HeatPumpTypeHeatingDriverCompartment))
-						& InputComplete(HeatPumpTypeCoolingPassengerCompartment, nameof(HeatPumpTypeCoolingPassengerCompartment))
-						& InputComplete(HeatPumpTypeHeatingPassengerCompartment, nameof(HeatPumpTypeHeatingPassengerCompartment))
-						& InputComplete(AuxHeaterPower, nameof(AuxHeaterPower))
-						& InputComplete(DoubleGlazing, nameof(DoubleGlazing))
-						& InputComplete(AdjustableAuxiliaryHeater, nameof(AdjustableAuxiliaryHeater))
-						& InputComplete(SeparateAirDistributionDucts, nameof(SeparateAirDistributionDucts))
-						& MethodComplete(RequiredParametersForJobType(jobType), "Electric Heater");
+				return MethodComplete(IsCorrectSystemConfiguration(), GetPropertyInfo(nameof(SystemConfiguration)))
+						& InputComplete(HeatPumpTypeCoolingDriverCompartment, GetPropertyInfo(nameof(HeatPumpTypeCoolingDriverCompartment)))
+						& InputComplete(HeatPumpTypeHeatingDriverCompartment, GetPropertyInfo(nameof(HeatPumpTypeHeatingDriverCompartment)))
+						& InputComplete(HeatPumpTypeCoolingPassengerCompartment, GetPropertyInfo(nameof(HeatPumpTypeCoolingPassengerCompartment)))
+						& InputComplete(HeatPumpTypeHeatingPassengerCompartment, GetPropertyInfo(nameof(HeatPumpTypeHeatingPassengerCompartment)))
+						& InputComplete(AuxHeaterPower, GetPropertyInfo(nameof(AuxHeaterPower)))
+						& InputComplete(DoubleGlazing, GetPropertyInfo(nameof(DoubleGlazing)))
+						& InputComplete(AdjustableAuxiliaryHeater, GetPropertyInfo(nameof(AdjustableAuxiliaryHeater)))
+						& InputComplete(SeparateAirDistributionDucts, GetPropertyInfo(nameof(SeparateAirDistributionDucts)))
+						& MethodComplete(!ShouldCheckForProperty(jobType) || (WaterElectricHeater != null), GetPropertyInfo(nameof(WaterElectricHeater)))
+                        & MethodComplete(!ShouldCheckForProperty(jobType) || (AirElectricHeater != null), GetPropertyInfo(nameof(AirElectricHeater)))
+                        & MethodComplete(!ShouldCheckForProperty(jobType) || (OtherHeatingTechnology != null), GetPropertyInfo(nameof(OtherHeatingTechnology)));
 			}
-			return MethodComplete(IsCorrectSystemConfiguration(), nameof(IsCorrectSystemConfiguration))
-					&& InputComplete(HeatPumpTypeCoolingDriverCompartment, nameof(HeatPumpTypeCoolingDriverCompartment))
-					&& InputComplete(HeatPumpTypeHeatingDriverCompartment, nameof(HeatPumpTypeHeatingDriverCompartment))
-					&& InputComplete(HeatPumpTypeCoolingPassengerCompartment, nameof(HeatPumpTypeCoolingPassengerCompartment))
-					&& InputComplete(HeatPumpTypeHeatingPassengerCompartment, nameof(HeatPumpTypeHeatingPassengerCompartment))
-					&& InputComplete(AuxHeaterPower, nameof(AuxHeaterPower))
-					&& InputComplete(DoubleGlazing, nameof(DoubleGlazing))
-					&& InputComplete(AdjustableAuxiliaryHeater, nameof(AdjustableAuxiliaryHeater))
-					&& InputComplete(SeparateAirDistributionDucts, nameof(SeparateAirDistributionDucts))
-					&& MethodComplete(RequiredParametersForJobType(jobType), "Electric Heater");
-		}
+			return MethodComplete(IsCorrectSystemConfiguration(), GetPropertyInfo(nameof(SystemConfiguration)))
+					&& InputComplete(HeatPumpTypeCoolingDriverCompartment, GetPropertyInfo(nameof(HeatPumpTypeCoolingDriverCompartment)))
+					&& InputComplete(HeatPumpTypeHeatingDriverCompartment, GetPropertyInfo(nameof(HeatPumpTypeHeatingDriverCompartment)))
+					&& InputComplete(HeatPumpTypeCoolingPassengerCompartment, GetPropertyInfo(nameof(HeatPumpTypeCoolingPassengerCompartment)))
+					&& InputComplete(HeatPumpTypeHeatingPassengerCompartment, GetPropertyInfo(nameof(HeatPumpTypeHeatingPassengerCompartment)))
+					&& InputComplete(AuxHeaterPower, GetPropertyInfo(nameof(AuxHeaterPower)))
+					&& InputComplete(DoubleGlazing, GetPropertyInfo(nameof(DoubleGlazing)))
+					&& InputComplete(AdjustableAuxiliaryHeater, GetPropertyInfo(nameof(AdjustableAuxiliaryHeater)))
+					&& InputComplete(SeparateAirDistributionDucts, GetPropertyInfo(nameof(SeparateAirDistributionDucts)))
+                    && MethodComplete(!ShouldCheckForProperty(jobType) || (WaterElectricHeater != null), GetPropertyInfo(nameof(WaterElectricHeater)))
+                    && MethodComplete(!ShouldCheckForProperty(jobType) || (AirElectricHeater != null), GetPropertyInfo(nameof(AirElectricHeater)))
+                    && MethodComplete(!ShouldCheckForProperty(jobType) || (OtherHeatingTechnology != null), GetPropertyInfo(nameof(OtherHeatingTechnology)));
+        }
 
 		public override string GetInvalidEntry()
 		{
