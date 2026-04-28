@@ -119,7 +119,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					StartSpeed = gearParams.Select(x => x.StartSpeed).Distinct().Single();
 					StartAcceleration = gearParams.Select(x => x.StartAcceleration).Distinct().Single();
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					throw new VectoException(
 						"Different Start and StartAcceleration not supported for multiple powertrains");
