@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			var warning1Hz = false;
 			if (!_simulate) {
 				if (MissingInputEntries.Count > 0) {
-					throw new VectoException(MissingInputEntries.Select(x => $"<{x}> is bad or missing.").Join("\n"));
+					throw new VectoException("Completed vehicle input: \n" + MissingInputEntries.Select(x => $"{x} is bad or missing. ").Join("\n"));
 				}
 				yield break;
 			}
