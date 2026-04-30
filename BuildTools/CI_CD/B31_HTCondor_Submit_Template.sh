@@ -4,7 +4,7 @@ universe = local
 executable = D:\Apps\Python\WPy64-312101\python\python.exe
 
 ## transfer_input_files = run_single_vecto_file.py, D:\Apps\Python\alixgui\test_case_VECTOCI_HTCONDOR\A00_VECTO\$(vecto), D:\Apps\Python\alixgui\test_case_VECTOCI_HTCONDOR\$(input_dir)\input.zip
-arguments = B33_run_single_vecto_file.py $(vecto) $(input_dir)\input.zip $(output_file_name)_out.zip
+arguments = B33_Run_Single_Vecto_File.py $(vecto) $(input_dir)\input.zip $(output_file_name)_out.zip
 
 ##should_transfer_files = YES
 ##when_to_transfer_output = ON_EXIT

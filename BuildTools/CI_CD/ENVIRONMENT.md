@@ -85,6 +85,8 @@ python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
 - Reads the most recent `OR*.xlsx` from the `Reports` folder — i.e. the combined report produced by C01.
 - Produces a self-contained `HTML_REPORT_{Date}_{CommitHash}.html` — open directly in any browser, no server needed.
 - Features: colour-coded pass/fail rows, summary counts, live search filter, sortable columns.
+- Displays a `Delta` column when the OR report contains a `Delta Status` column (reference delta), and a `Trans Delta` column when it contains a `Delta Status_MR` column (Intermediate/MR delta).
+- Summary cards show warning counts for each delta type when present.
 
 ### 00 — Extract missing vehicles
 ```bash
@@ -100,17 +102,18 @@ python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-c
 
 ### B03 — Submit test cases to HTCondor
 ```bash
-python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>]
+python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>] [--limit N]
 ```
 - `vecto_root`: path to the VECTO installation directory (passed through to B32 and B33).
 - `test_pool_path`: root directory of the test pool (input files expected directly under `<test_pool_path>/<vehicle>/input.zip`).
 - `--queue-name`: HTCondor queue name used to track this submission (default: basename of `vecto_root`).
-- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, missing vehicles are also queued against this version for delta comparison (Case 1 backward-compatibility).
+- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, missing vehicles are also queued against this version for delta comparison (Case 1 backward-compatibility). Also used to derive the MR VECTO root (`<ref-vecto-root>/MR`).
 - `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B32.
+- `--limit N`: truncate the queue to the first N jobs after generation (useful for testing).
 - Requires HTCondor (`condor_submit`, `condor_q`) to be available on the system.
 - Internally calls B32 to generate the queue file, then submits via `condor_submit`.
 - Polls `condor_q` every 30 s until the queue is empty (timeout: 10 h).
-- Extracts result archives via B34 once all jobs finish.
+- Extracts result archives via B34 once all jobs finish. If `<ref-vecto-root>/MR` exists, also extracts MR result archives.
 
 ### B32 — Generate HTCondor queue file
 ```bash
@@ -120,9 +123,9 @@ python B32_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
 - `--force-rerun`: include jobs whose output archive already exists in `Z00_VECTO_OUTPUTS` (default: skip completed jobs).
 - `--no-hev`: exclude HEV vehicles from the job list.
-- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, vehicles missing from the reference version's OR report are appended as additional jobs using the reference executable. This enables Case 1 backward-compatibility delta comparison via C44.
-- `--reports-cache`: directory containing `OR_*.xlsx` report files used to detect missing vehicles for the reference version. Defaults to the standard CI Reports directory.
-- Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first; reference-version jobs for missing vehicles follow.
+- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, two extra job groups are appended: (1) vehicles missing from the reference OR report, run against the reference executable; (2) vehicles missing from the MR OR report (`<reports-cache>/MR`), run against the MR executable (`<ref-vecto-root>/MR`). This enables both the reference delta (C44) and the Intermediate (MR) delta.
+- `--reports-cache`: directory containing `OR_*.xlsx` report files used to detect missing vehicles for the reference version. Defaults to the standard CI Reports directory. MR reports are read from `<reports-cache>/MR`.
+- Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first, then reference-version jobs, then MR-version jobs.
 - HTCondor equivalent of B01: prepares the job list before submission.
 
 ### B33 — Run a single VECTO job on an HTCondor worker
@@ -137,7 +140,7 @@ python B33_run_single_vecto_file.py <vecto_root> <input_archive> <output_filenam
 
 ### B34 — Extract HTCondor result archives
 ```bash
-python B34_extract_results.py <vecto_root> [--force-rerun]
+python B34_Unzip_Results.py <vecto_root> [--force-rerun]
 ```
 - `vecto_root`: path to the VECTO installation directory. Used to determine the version subfolder (`XX_RESULTS/<version>/`, `Z00_VECTO_OUTPUTS/<version>/`).
 - `--force-rerun`: overwrite already-extracted result directories (default: skip existing).
@@ -147,12 +150,15 @@ python B34_extract_results.py <vecto_root> [--force-rerun]
 
 ### C01 — Generate all reports
 ```bash
-python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-report] [--reports-cache <path>]
+python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-report] [--reports-cache <path>] [--mr-reports-cache <path>] [--ref-vecto-root <path>] [--is-mr-run]
 ```
 - `vecto_root`: path to the VECTO installation directory (used to retrieve version and commit hash for the report name).
 - `--report-dir`: directory inside which a `Reports` folder will be created (default: `D:/CI/Reports` if `D:/` exists, otherwise `C:/CI/Reports`).
 - `--interim-report`: write reports to an `Interim_Reports` subfolder of the report directory.
 - `--reports-cache`: directory used to determine the next report number (NNNN) and to receive a copy of the generated report. Created automatically if it does not exist. Defaults to the same directory as the report output.
+- `--mr-reports-cache`: directory where the single MR OR report is stored. Defaults to `<reports-cache>/MR`.
+- `--ref-vecto-root`: path to `REF_VECTO_ROOT`. Required when `--is-mr-run` is set; the MR VECTO executable is taken from `<ref-vecto-root>/MR`.
+- `--is-mr-run`: when set, generates (or refreshes) the MR OR report from `XX_RESULTS/<mr_version>/` before generating the current report. The old MR OR report in `<mr-reports-cache>` is deleted first (single-report invariant). After this flag's logic runs, the Intermediate Delta is produced regardless.
 - Reads test cases from `XX_RESULTS` in the current working directory.
 - Report naming convention: `OR_{Version}_{Date}_{NNNN}_{Hash}[_suffix].xlsx` (e.g. `OR_5.1.1_260408_0001_a1b2c3d.xlsx`). NNNN is one higher than the highest number already present in the cache directory, ensuring no collision on re-runs.
 - Output: a single combined `.xlsx` containing:
@@ -160,6 +166,9 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
   - `CO2__g_km_`, `FC-Final__g_km_`, `EC_el_final__kWh_km_`, … — VSUM detail sheets
   - `CRF_CO2__g_km_`, `CRF_FuelConsumption__g_km_`, `CRF_FuelConsumption__MJ_km_` — MRF/CRF fuel consumption sheets
   - `stats_of_non-zero_variations` — VSUM deviation statistics
+  - `Delta Summary`, `Δ<var>` — reference delta sheets (when a release OR report is available in `--reports-cache`)
+  - `Delta Summary_MR`, `Δ<var>_MR` — Intermediate (MR) delta sheets (when an MR OR report is available in `--mr-reports-cache`)
+- The `Success` sheet gains a `Delta Status` column (reference delta) and/or a `Delta Status_MR` column (Intermediate Delta) when the respective delta data is present.
 - Exits with a non-zero return code equal to the number of failed vehicles if any errors are detected.
 
 ### C44 — Generate delta report between two OR reports
@@ -171,5 +180,7 @@ python C44_Generate_Delta_Report.py <ref_report> <current_report> [--output <pat
 - `--output`: output `.xlsx` path. Defaults to `DELTA_REPORT_{Date}_{Hash}.xlsx` in `CI_CD/Reports`.
 - Computes per-test-case absolute and percentage deltas for CO2, FC-Final, and EC_el_final.
 - Produces a `Delta Summary` sheet (with `OK`/`WARNING` status per test case, threshold: 0.03%) and one detail sheet per variable.
-- Also callable as a library: `append_delta_to_report(ref, current)` appends delta sheets directly to an existing OR report and patches the `Success` sheet with a `Delta Status` column.
+- Also callable as a library:
+  - `append_delta_to_report(ref, current, sheet_suffix='')` — appends delta sheets directly to an existing OR report and patches the `Success` sheet with a `Delta Status<sheet_suffix>` column. Use `sheet_suffix='_MR'` to write the Intermediate Delta alongside the reference delta in the same workbook without overwriting existing sheets.
+  - `generate_delta_report(ref, current, output_path=None)` — writes a standalone delta `.xlsx`.
 - Returns `None` (and skips writing) if no matching variable sheets are found in both reports.

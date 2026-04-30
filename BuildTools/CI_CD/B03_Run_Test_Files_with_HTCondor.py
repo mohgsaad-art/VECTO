@@ -122,14 +122,12 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
 
 # --- Step 5: Extract result files ---
 print('Extracting result files...')
-run('python B34_extract_results.py')
+run(f'python B34_Unzip_Results.py "{vecto_root}"')
 
 if args.ref_vecto_root:
     mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
     if os.path.isdir(mr_vecto_root):
         print('Extracting MR result files...')
-        output = run(f'python B34_extract_results.py "{mr_vecto_root}"')
-        print("--- B34 MR output")
-        print(output)
+        output = run(f'python B34_Unzip_Results.py "{mr_vecto_root}"')
 
 print('Done.')
