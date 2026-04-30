@@ -232,3 +232,5 @@ Documentation/VehiclesReleaseComparisonDeclarationMode/**/*.vsum
 /.idea/.idea.hm_vecto-dev.dir/.idea
 /Documentation/User Manual/pics/FuelCell/Workshop_VECTO_DEV_19_TUG_final.pdf - Verknüpfung.lnk
 Documentation/User Manual/mermaid-filter.err
+**/XX_RESULTS*/
+**/Reports*/
