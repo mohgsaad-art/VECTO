@@ -505,6 +505,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
                 { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV) , GbxClass_Distance_PEV},
 				{ Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.FCHV_IEPC) , GbxClass_Distance_EIEPC},
                 { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_PEV) , GbxClass_Distance_EIEPC },
+                { Tuple.Create(CycleType.DistanceBased, VectoSimulationJobType.Multiple_FCHV) , GbxClass_Distance_EIEPC },
 
                 { Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ConventionalVehicle) , GbxClass_MeasuredSpd_Conv},
 				{ Tuple.Create(CycleType.MeasuredSpeed, VectoSimulationJobType.ParallelHybridVehicle) , GbxClass_MeasuredSpd_PHEV},
