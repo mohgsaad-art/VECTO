@@ -169,6 +169,8 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
   - `Delta Summary`, `Δ<var>` — reference delta sheets (when a release OR report is available in `--reports-cache`)
   - `Delta Summary_MR`, `Δ<var>_MR` — Intermediate (MR) delta sheets (when an MR OR report is available in `--mr-reports-cache`)
 - The `Success` sheet gains a `Delta Status` column (reference delta) and/or a `Delta Status_MR` column (Intermediate Delta) when the respective delta data is present.
+- On every run, output files of failed vehicles (any `Success` containing `'error'`) are copied to `D:\CI\FailedReports\<run_label>\<vehicle>\` (or `C:\CI\FailedReports` when `D:\` is not present). `<run_label>` matches the OR filename stem (`<Version>_<Date>_<NNNN>_<Hash>`), grouping all failures from one run together.
+- Run subdirectories in `FailedReports` older than 10 days are automatically purged on each run.
 - Exits with a non-zero return code equal to the number of failed vehicles if any errors are detected.
 
 ### C44 — Generate delta report between two OR reports

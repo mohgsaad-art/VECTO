@@ -94,6 +94,9 @@ report_base_dir = os.path.join(_base, 'Interim_Reports') if args.interim_report 
 _reports_cache = args.reports_cache if args.reports_cache else report_base_dir
 _mr_reports_cache = args.mr_reports_cache if args.mr_reports_cache else os.path.join(_reports_cache, 'MR')
 
+_failed_reports_drive = 'D:\\' if os.path.exists('D:\\') else 'C:\\'
+_failed_reports_dir = os.path.join(_failed_reports_drive, 'CI', 'FailedReports')
+
 os.makedirs(report_base_dir, exist_ok=True)
 os.makedirs(_reports_cache, exist_ok=True)
 
@@ -674,6 +677,35 @@ def refresh_mr_report() -> None:
     print(f'MR report written: {mr_output_path}')
 
 
+def purge_old_failed_reports(failed_reports_dir: str, max_age_days: int = 10) -> None:
+    if not os.path.isdir(failed_reports_dir):
+        return
+    cutoff = datetime.datetime.now() - datetime.timedelta(days=max_age_days)
+    for entry in os.scandir(failed_reports_dir):
+        if entry.is_dir():
+            mtime = datetime.datetime.fromtimestamp(entry.stat().st_mtime)
+            if mtime < cutoff:
+                shutil.rmtree(entry.path)
+                print(f'  Purged old failed reports: {entry.name}')
+
+
+def copy_failed_outputs(failed_names: list[str], src_result_dir: str, dest_dir: str) -> None:
+    if not failed_names:
+        return
+    os.makedirs(dest_dir, exist_ok=True)
+    for name in failed_names:
+        rel_path = name.replace('__', os.sep)
+        src = os.path.join(src_result_dir, rel_path)
+        dst = os.path.join(dest_dir, name)
+        if os.path.isdir(src):
+            if os.path.exists(dst):
+                shutil.rmtree(dst)
+            shutil.copytree(src, dst)
+            print(f'  Copied failed outputs: {name}')
+        else:
+            print(f'  WARNING: result dir not found for failed vehicle: {src}')
+
+
 def main() -> None:
     # When --is-mr-run is set, regenerate the MR OR report first so the
     # Intermediate Delta reflects the latest MR build in this same pipeline run.
@@ -683,6 +715,13 @@ def main() -> None:
 
     output_path = report_path()
     failed_names = write_report(result_dir, output_path)
+
+    purge_old_failed_reports(_failed_reports_dir)
+    if failed_names:
+        run_label = f'{vecto_version}_{date}_{nnnn}_{vecto_hash}'
+        dest = os.path.join(_failed_reports_dir, run_label)
+        print(f'Copying {len(failed_names)} failed vehicle(s) to: {dest}')
+        copy_failed_outputs(failed_names, result_dir, dest)
 
     ref_report = get_latest_release_report(_reports_cache)
     if ref_report and ref_report != output_path:
