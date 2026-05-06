@@ -9,7 +9,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <PublishTrimmed>false</PublishTrimmed>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	<CheckEolTargetFramework>false</CheckEolTargetFramework>
     <Configurations>Debug;Release;MockupDebug</Configurations>

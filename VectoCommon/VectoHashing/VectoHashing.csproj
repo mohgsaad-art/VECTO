@@ -6,7 +6,7 @@
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoHashing</RootNamespace>
     <AssemblyName>VectoHashing</AssemblyName>
-    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0;net10.0;net10.0-windows</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
@@ -29,6 +29,12 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <PackageReference Include="System.Security.Cryptography.Xml">
       <Version>9.0.15</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0' Or '$(TargetFramework)' == 'net10.0-windows'">
+    <PackageReference Include="System.Security.Cryptography.Xml">
+      <Version>9.0.9</Version>
     </PackageReference>
   </ItemGroup>
 

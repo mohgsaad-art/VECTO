@@ -6,7 +6,7 @@ namespace TUGraz.VECTO
 	{
 		static void Main(string[] args)
 		{
-			var startHelper = new StarterHelper(true,StarterHelper.NET48, StarterHelper.NET60, StarterHelper.NET80);
+			var startHelper = new StarterHelper(true,StarterHelper.NET48, StarterHelper.NET60, StarterHelper.NET80, StarterHelper.NET100);
 			startHelper.Start(args);
 		}
 	}

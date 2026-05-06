@@ -4,7 +4,7 @@
     <RootNamespace>HashingTool</RootNamespace>
     <AssemblyName>HashingTool</AssemblyName>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
 
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <ApplicationIcon>HashingIcon.ico</ApplicationIcon>

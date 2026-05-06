@@ -4,7 +4,7 @@
     <RootNamespace>VectoConsole</RootNamespace>
     <AssemblyName>vectocmd</AssemblyName>
     <ApplicationIcon>VECTO.ico</ApplicationIcon>
-    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0;net10.0</TargetFrameworks>
 
     <Configurations>Debug;Release;MockupDebug</Configurations>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>

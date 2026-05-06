@@ -14,11 +14,12 @@ namespace VECTOStart
 		public const string NET48 = "net48";
 		public const string NET60 = "net60";
 		public const string NET80 = "net80";
+		public const string NET100 = "net100";
 		/// <summary>
 		/// Supported .NET versions of the StartHelper
 		/// </summary>
 		private readonly HashSet<string> _supportedVersions = new HashSet<string>() {
-			NET48,NET60,NET80
+			NET48,NET60,NET80,NET100
 		};
 
 		/// <summary>
@@ -103,6 +104,11 @@ namespace VECTOStart
 
 		private string GetNetVersion(bool desktop)
 		{
+			if (_targetVersions.Contains(NET100)
+					&& SupportsNet100(desktop)) {
+				return NET100;
+			}
+
 			if (_targetVersions.Contains(NET80)
 					&& SupportsNet80(desktop)) {
 				return NET80;
@@ -115,6 +121,21 @@ namespace VECTOStart
 
 			//Should be installed by default on windows 10 and 11 machines
 			return NET48;
+		}
+
+		private bool SupportsNet100(bool desktop)
+		{
+			try {
+				var output = GetDotnetRuntimes();
+				return output.Contains(desktop
+					? "Microsoft.WindowsDesktop.App 10"
+					: "Microsoft.NETCore.App 10");
+			} catch (Exception e) {
+				Console.WriteLine(e);
+				File.AppendAllText("LOG.txt", $"{DateTime.Now} {e.Message}\n");
+			}
+
+			return false;
 		}
 
 		private bool SupportsNet80(bool desktop)
