@@ -538,7 +538,6 @@ public partial class HybridStrategyBase
 		GearshiftPosition currentGear = null; 
 		GearshiftPosition nextGear = null;
 		bool? disengaged = null;
-		bool? disengageGearbox = null;
 		// ----
 		
 		gbx.SetupSet(g => g.SetGear = It.IsAny<GearshiftPosition>())

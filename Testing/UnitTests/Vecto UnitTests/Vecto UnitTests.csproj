@@ -6,7 +6,7 @@
     <RootNamespace>TUGraz.Vecto.UnitTests</RootNamespace>
 	<AssemblyName>VectoUnitTest</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
