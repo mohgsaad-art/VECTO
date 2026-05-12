@@ -57,7 +57,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		{
 			var xmlTyre = tyre as IXMLTyreDeclarationInputData;
 			if (xmlTyre == null) {
-				throw new VectoException("Tyre input data must be in XML format");
+				throw new VectoException("Tyre input data must be in XML format", ErrorCodes.INPUT_NOT_XML);
 			}
 
 			var retVal = XElement.Load(xmlTyre.GetXmlNode.CreateNavigator().ReadSubtree());

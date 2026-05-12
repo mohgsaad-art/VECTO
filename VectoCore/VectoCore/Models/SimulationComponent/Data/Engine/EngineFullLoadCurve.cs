@@ -222,8 +222,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 					return index;
 				}
 			}
-			throw new VectoException("angular velocity {0} exceeds full load curve: min: {1}  max: {2}", angularVelocity,
-				FullLoadEntries.First().EngineSpeed, FullLoadEntries.Last().EngineSpeed);
+			throw new VectoException($"angular velocity {angularVelocity} exceeds full load curve: min: {FullLoadEntries.First().EngineSpeed}  max: {FullLoadEntries.Last().EngineSpeed}",
+				ErrorCodes.ICE_ANGULAR_VELOCITY_EXCEEDS_FULL_LOAD_CURVE);
 		}
 
 		/// <summary>
@@ -246,10 +246,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 					return _n80hSpeed;
 				}
 				_n80hSpeed = FindEngineSpeedForPower(0.8 * MaxPower).Last();
-				if (_n80hSpeed <= RatedSpeed) {
-					throw new VectoException(
-						"failed to compute N80h speed - must be higher than rated speed. rated speed: {0}, n80h speed: {1}", RatedSpeed,
-						_n80hSpeed);
+				if (_n80hSpeed <= RatedSpeed) 
+				{
+					throw new VectoException($"failed to compute N80h speed - must be higher than rated speed. rated speed: {RatedSpeed}, n80h speed: {_n80hSpeed}",
+						ErrorCodes.ICE_FAILED_TO_COMPUTE_N80H);
 				}
 				return _n80hSpeed;
 			}
@@ -264,8 +264,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				_n95hSpeed = FindEngineSpeedForPower(0.95 * MaxPower).Last();
 				if (_n95hSpeed <= RatedSpeed) {
 					throw new VectoException(
-						"failed to compute N95h speed - must be higher than rated speed. rated speed: {0}, n95h speed: {1}", RatedSpeed,
-						_n95hSpeed);
+						$"failed to compute N95h speed - must be higher than rated speed. rated speed: {RatedSpeed}, n95h speed: {_n95hSpeed}",
+						ErrorCodes.ICE_FAILED_TO_COMPUTE_N95H);
 				}
 				return _n95hSpeed;
 			}
@@ -288,7 +288,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 			var retVal = FindEngineSpeedForPower(0.99 * MaxPower).Last();
 			if (retVal <= RatedSpeed) {
 				throw new VectoException(
-					"failed to compute n_P99H - must be higher than rated speed. rated speed: {0}, n_tq99h: {1}", RatedSpeed, retVal);
+					$"failed to compute n_P99H - must be higher than rated speed. rated speed: {RatedSpeed}, n_tq99h: {retVal}",
+					ErrorCodes.ICE_FAILED_TO_COMPUTE_NP99H);
 			}
 			return retVal;
 		}
@@ -298,7 +299,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 			var retVal = FindEngineSpeedForPower(0.98 * MaxPower).Last();
 			if (retVal <= RatedSpeed) {
 				throw new VectoException(
-					"failed to compute n_P99H - must be higher than rated speed. rated speed: {0}, n_tq99h: {1}", RatedSpeed, retVal);
+					$"failed to compute n_P98H - must be higher than rated speed. rated speed: {RatedSpeed}, n_tq98h: {retVal}",
+					ErrorCodes.ICE_FAILED_TO_COMPUTE_NP98H);
 			}
 			return retVal;
 		}

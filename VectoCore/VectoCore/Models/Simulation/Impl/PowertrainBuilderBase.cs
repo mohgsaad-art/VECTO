@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
-				throw new VectoException("BusAux data set but no BusAux component found!");
+				throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 			}
 
 			var auxCfg = data.BusAuxiliaries;
@@ -330,7 +330,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		protected void VerifyCycleType(VectoRunData data, CycleType cycleType)
 		{
 			if (data.Cycle.CycleType != cycleType) {
-				throw new VectoException($"CycleType must be {cycleType}.");
+				throw new VectoException($"CycleType must be {cycleType}.", ErrorCodes.VEHICLE_INVALID_CYCLE);
 			}
 		}
 
@@ -352,7 +352,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				if (data.DriverData.PTODriveMinSpeed == null) 
 				{
-					throw new VectoSimulationException("PTO activity 'road sweeping' requested, but no min. engine speed or gear provided");
+					throw new VectoSimulationException(
+						"PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
 				}
 
                 RoadSweeperAuxiliary rdSwpAux = new RoadSweeperAuxiliary(container);
@@ -363,7 +364,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if ((data.ExecutionMode == ExecutionMode.Engineering) && data.Cycle.Entries.Any(x => x.PTOActive == PTOActivity.PTOActivityWhileDrive)) 
 			{
 				if (ptoCycleWhileDrive == null) {
-					throw new VectoException("PTO activation while drive requested in cycle but no PTO cycle provided");
+					throw new VectoException("PTO activation while drive requested in cycle but no PTO cycle provided", ErrorCodes.VEHICLE_MISSING_PTO_CYCLE);
 				}
 
                 PTODriveAuxiliary ptoDrive = new PTODriveAuxiliary(container, ptoCycleWhileDrive);
@@ -441,17 +442,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		protected IElectricSystem ConnectREESS(VectoRunData data, IVehicleContainer container)
 		{
 			if (data.BatteryData != null && data.SuperCapData != null) {
-				throw new VectoException("Powertrain requires either Battery OR SuperCapacitor, but both are defined.");
+				throw new VectoException("Powertrain requires either Battery OR SuperCapacitor, but both are defined.", ErrorCodes.REESS_MULTIPLE_TYPES);
 			}
 
 			if (data.BatteryData is null && data.SuperCapData is null) {
-				throw new VectoException("Powertrain requires either Battery OR SuperCapacitor, but none are defined.");
+				throw new VectoException("Powertrain requires either Battery OR SuperCapacitor, but none are defined.", ErrorCodes.REESS_MISSING);
 			}
 
 			var es = ComponentFactory.CreateElectricSystem(container, data.BatteryData);
 			if (data.BatteryData != null) {
 				if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC)) {
-					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
+					throw new VectoException("Battery: Initial SoC has to be higher than min SoC", ErrorCodes.REESS_INITIAL_SOC_OUT_OF_BOUNDS);
 				}
 
 				var battery = ComponentFactory.CreateREESS(REESSType.Battery, container, data.BatteryData);
@@ -461,7 +462,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.SuperCapData != null) {
 				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage) {
-					throw new VectoException("SuperCap: Initial SoC has to be higher than min SoC");
+					throw new VectoException("SuperCap: Initial SoC has to be higher than min SoC", ErrorCodes.REESS_INITIAL_SOC_OUT_OF_BOUNDS);
 				}
 
 				var superCap = ComponentFactory.CreateREESS(REESSType.SuperCap, container, data.SuperCapData);
@@ -559,7 +560,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				if (data.DriverData.PTODriveMinSpeed == null) 
 				{
-					throw new VectoSimulationException("PTO activity 'road sweeping' requested, but no min. engine speed or gear provided");
+					throw new VectoSimulationException(
+						"PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
 				}
 
 				rdSwpAux = new RoadSweeperAuxiliary(container);
@@ -576,7 +578,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				if (ptoCycleWhileDrive == null) 
 				{
-					throw new VectoException("PTO activation while drive requested in cycle but no PTO cycle provided");
+					throw new VectoException("PTO activation while drive requested in cycle but no PTO cycle provided", ErrorCodes.VEHICLE_MISSING_PTO_CYCLE);
 				}
 
 				ptoDrive = new PTODriveAuxiliary(container, ptoCycleWhileDrive);

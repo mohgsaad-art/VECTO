@@ -118,8 +118,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					avgAngularSpeed.AsRPM, _lossMap.MinSpeed.AsRPM, _lossMap.MaxSpeed.AsRPM, _ratio);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
 					throw new VectoException(
-						"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: n:{0} (min:{1}, max:{2}), ratio:{3}",
-						avgAngularSpeed.AsRPM, _lossMap.MinSpeed.AsRPM, _lossMap.MaxSpeed.AsRPM, _ratio);
+						$"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: " +
+						$"n:{avgAngularSpeed.AsRPM} (min:{_lossMap.MinSpeed.AsRPM}, max:{_lossMap.MaxSpeed.AsRPM}), ratio:{_ratio}",
+						ErrorCodes.RETARDER_LOSS_MAP_EXTRAPOLATED);
 				}
 			}
 			base.DoCommitSimulationStep(time, simulationInterval);

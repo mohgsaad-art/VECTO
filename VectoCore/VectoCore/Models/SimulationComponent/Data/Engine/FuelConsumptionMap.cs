@@ -71,8 +71,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				return result;
 			}
 
-			throw new VectoException("FuelConsumptionMap: Interpolation failed. torque: {0}, n: {1}", torque.Value(),
-				angularVelocity.AsRPM);
+			throw new VectoException($"FuelConsumptionMap: Interpolation failed. torque: {torque.Value()}, n: {angularVelocity.AsRPM}", ErrorCodes.ICE_FUEL_CONSUMPTION_MAP_INTERPOLATION_FAILED);
 		}
 
 		[JsonIgnore]

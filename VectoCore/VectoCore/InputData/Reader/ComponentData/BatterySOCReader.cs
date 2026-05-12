@@ -20,11 +20,11 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData {
 		{
 			if (data.Columns.Count != 2)
 			{
-				throw new VectoException("SOC-Map data must contain exactly two columns: {0}, {1}", Fields.StateOfCharge, Fields.BatteryVoltage);
+				throw new VectoException($"SOC-Map data must contain exactly two columns: {Fields.StateOfCharge}, {Fields.BatteryVoltage}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 			if (data.Rows.Count < 2)
 			{
-				throw new VectoException("SoC-Map data must contain at least 2 entries!");
+				throw new VectoException("SoC-Map data must contain at least 2 entries!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 			if (!data.Columns.Contains(Fields.StateOfCharge) || !data.Columns.Contains(Fields.BatteryVoltage))
 			{

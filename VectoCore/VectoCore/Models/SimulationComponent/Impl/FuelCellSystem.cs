@@ -22,7 +22,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public TestpowertrainFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData) : base(container, modelData, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("Component shall not be used in real powertrain!");
+				throw new Exception("Component shall not be used in real powertrain!");
 			}
         }
 
@@ -54,7 +54,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException("Component shall not be used in testpowertrain!");
+				throw new Exception("Component shall not be used in testpowertrain!");
 			}
         }
 

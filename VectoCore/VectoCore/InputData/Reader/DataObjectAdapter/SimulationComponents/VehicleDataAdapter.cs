@@ -132,9 +132,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
 			if (axles.Count < mission.AxleWeightDistribution.Length)
 			{
-				throw new VectoException(
-					"Vehicle does not contain sufficient axles. {0} axles defined, {1} axles required",
-					axles.Count, mission.AxleWeightDistribution.Length);
+				throw new VectoException($"Vehicle does not contain sufficient axles. {axles.Count} axles defined, {mission.AxleWeightDistribution.Length} axles required", 
+					ErrorCodes.VEHICLE_INSUFFICIENT_AXLES);
 			}
 
 			var axleData = new List<Axle>();
@@ -421,16 +420,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			if (completedVehicle.NumberPassengerSeatsLowerDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsLowerDeck input parameter is required");
+				throw new VectoException("NumberOfPassengerSeatsLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 			if (completedVehicle.NumberPassengerSeatsUpperDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsUpperDeck input parameter is required");
+				throw new VectoException("NumberOfPassengerSeatsUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 			if (completedVehicle.NumberPassengersStandingLowerDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingLowerDeck input parameter is required");
+				throw new VectoException("NumberOfPassengersStandingLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 			if (completedVehicle.NumberPassengersStandingUpperDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingUpperDeck input parameter is required");
+				throw new VectoException("NumberOfPassengersStandingUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 			var passengers = DeclarationData.GetNumberOfPassengers(
 				mission, completedVehicle.Length, completedVehicle.Width,
@@ -457,8 +456,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			vehicleData.VehicleCode = completedVehicle.VehicleCode;
 			if (vehicleData.TotalVehicleMass.IsGreater(vehicleData.GrossVehicleMass)) {
-				throw new VectoException("Total Vehicle Mass exceeds Gross Vehicle Mass for completed bus specific ({0}/{1})",
-					vehicleData.TotalVehicleMass, vehicleData.GrossVehicleMass);
+				throw new VectoException($"Total Vehicle Mass exceeds Gross Vehicle Mass for completed bus specific ({vehicleData.TotalVehicleMass}/{vehicleData.GrossVehicleMass})",
+					ErrorCodes.VEHICLE_TOTAL_MASS_EXCEEDS_GROSS_VEHICLE_MASS);
 			}
 			return vehicleData;
 		}
@@ -515,7 +514,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			//var refLoad = passengerCount * mission.MissionType.GetAveragePassengerMass();
 			if (loading.Key != LoadingType.ReferenceLoad && loading.Key != LoadingType.LowLoading)
 			{
-				throw new VectoException("Unhandled loading type: {0}", loading.Key);
+				throw new VectoException($"Unhandled loading type: {loading.Key}", ErrorCodes.VEHICLE_INVALID_LOADING_TYPE);
 			}
 
 			var passengerCountCalc = loading.Key == LoadingType.ReferenceLoad

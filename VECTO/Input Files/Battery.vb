@@ -243,7 +243,7 @@ Public Class Battery
     Public ReadOnly Property InternalResistanceCurve As TableData Implements IBatteryPackDeclarationInputData.InternalResistanceCurve
         Get
             If Not File.Exists(_riCurvePath.FullPath) Then _
-                Throw New VectoException("Ri Curve is missing or invalid")
+                Throw New VectoException("Ri Curve is missing or invalid", ErrorCodes.REESS_RI_CURVE_MISSING)
             Return VectoCSVFile.Read(_riCurvePath.FullPath)
         End Get
     End Property
@@ -251,7 +251,7 @@ Public Class Battery
     Public ReadOnly Property VoltageCurve As TableData Implements IBatteryPackDeclarationInputData.VoltageCurve
         Get
             If Not File.Exists(_socCurvePath.FullPath) Then _
-                Throw New VectoException("SoC Curve is missing or invalid")
+                Throw New VectoException("SoC Curve is missing or invalid", ErrorCodes.REESS_SOC_CURVE_MISSING)
             Return VectoCSVFile.Read(_socCurvePath.FullPath)
         End Get
     End Property
@@ -260,7 +260,7 @@ Public Class Battery
     Public ReadOnly Property MaxCurrentMap As TableData Implements IBatteryPackDeclarationInputData.MaxCurrentMap
         Get
             If Not File.Exists(_maxCurrentPath.FullPath) Then _
-                Throw New VectoException("Max Current Map is missing or invalid")
+                Throw New VectoException("Max Current Map is missing or invalid", ErrorCodes.REESS_MAX_CURRENT_MAP_MISSING)
             Return VectoCSVFile.Read(_maxCurrentPath.FullPath)
         End Get
     End Property

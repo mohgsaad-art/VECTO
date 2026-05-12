@@ -474,9 +474,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var operatingPoint = SelectOperatingPoint(operatingPointList);
 			if (operatingPoint.InAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed)) {
-				throw new VectoException(
-					"TorqueConverter: Invalid operating point, inAngularVelocity would be below engine's idle speed: {0}",
-					operatingPoint.InAngularVelocity);
+				throw new VectoException($"TorqueConverter: Invalid operating point, inAngularVelocity would be below engine's idle speed: {operatingPoint.InAngularVelocity}", 
+					ErrorCodes.TORQUECONVERTER_INVALID_OPERATING_POINT);
 			}
 
 			if (operatingPoint.InAngularVelocity.IsEqual(DataBus.EngineInfo.EngineIdleSpeed, 1.RPMtoRad())) {

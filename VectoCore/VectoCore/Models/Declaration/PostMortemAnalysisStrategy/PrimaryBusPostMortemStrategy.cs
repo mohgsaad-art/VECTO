@@ -24,8 +24,8 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 		{
             if (container.RunData.JobType.IsFCHV() 
 				&& container.RunData.Mission.MissionType.IsOneOf(MissionType.Coach, MissionType.Interurban) 
-				&& exception.Data.Contains(ErrorCode.ERROR_CODE)
-				&& exception.Data[ErrorCode.ERROR_CODE].ToString() == ErrorCode.FUELCELL_POWERMAP_GENERATION_FAILED)
+				&& exception.Data.Contains(nameof(ErrorCode))
+				&& (exception.Data[nameof(ErrorCode)] as ErrorCode) == ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED)
             {
                 return false;
             }
@@ -82,7 +82,8 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 					testContainer = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, string.Empty);
 					break;
 				default:
-					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecture} to calculate gradability");
+					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecture} to calculate gradability", 
+						ErrorCodes.DECLARATIONDATA_INVALID_VEHICLE);
 			}
 
 			testContainer.UpdateComponents();
@@ -125,7 +126,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 					evaluateFunction: grad => vehicle.Request(absTime, simulationInterval, acceleration, grad, true),
 					criterion: response => GetDelta(response as ResponseDryRun, architecture).Value(),
 					searcher: this);
-			} catch (VectoSearchAbortedException) {
+			} catch (VectoException ex) when (ex.GetErrorCode() == ErrorCodes.SEARCH_ABORTED) {
 				return double.MaxValue.SI<Radian>();
 			}
 
@@ -149,7 +150,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 				case VectoSimulationJobType.IEPC_E:
 					return (response.ElectricMotor.TorqueRequest + response.ElectricMotor.MaxDriveTorque) * response.ElectricMotor.AvgDrivetrainSpeed;
 				default:
-					throw new VectoException($"unhandled powertrain architecture {vehicleArchitecutre} to calculate gradability");
+					throw new VectoException($"unhandled powertrain architecture {vehicleArchitecutre} to calculate gradability", ErrorCodes.DECLARATIONDATA_INVALID_VEHICLE);
 			}
         }
 

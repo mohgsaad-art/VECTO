@@ -44,15 +44,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 				if ((stdFriction != null) && (axle.WheelEndFriction > stdFriction)) {
 					throw new VectoException(
-						$"WheelEndFriction ({axle.WheelEndFriction}) is greater than the vehicle's standard friction ({stdFriction}).");
+						$"WheelEndFriction ({axle.WheelEndFriction}) is greater than the vehicle's standard friction ({stdFriction}).", ErrorCodes.WHEELEND_FRICTION_EXCEEDS_STANDARD);
 				}
 
 				if (axle.WheelEndFriction < 0) {
-					throw new VectoException($"WheelEndFriction ({axle.WheelEndFriction}) is negative.");
+					throw new VectoException($"WheelEndFriction ({axle.WheelEndFriction}) is negative.", ErrorCodes.WHEELEND_FRICTION_NEGATIVE);
 				}
 
 				if ((axle.WheelEndFriction != null) && (axle.AxleType == AxleType.VehicleDriven)) {
-					throw new VectoException("VehicleDriven axle cannot have WheelEndFriction");
+					throw new VectoException("VehicleDriven axle cannot have WheelEndFriction", ErrorCodes.WHEELEND_INVALID_AXLE_TYPE);
 				}
 			}
 

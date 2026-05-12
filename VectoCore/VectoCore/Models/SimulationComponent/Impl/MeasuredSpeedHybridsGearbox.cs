@@ -1,4 +1,4 @@
-﻿using TUGraz.VectoCommon.Exceptions;
+﻿using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -18,7 +18,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			: base(container, powertrainContainer, strategy, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("This class shall not be used in a real powertrain!");
+				throw new Exception("This class shall not be used in a real powertrain!");
 			}
         }
 
@@ -53,8 +53,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			: this(container, powertrainContainer, strategy, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+				throw new Exception("This class shall not be used in a testpowertrain - use the dedicated class instead!");
 			}
         }
 

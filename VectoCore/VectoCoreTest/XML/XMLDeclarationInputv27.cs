@@ -189,13 +189,13 @@ namespace TUGraz.VectoCore.Tests.XML
 
             if (xmlDoc.DocumentElement == null)
             {
-                throw new VectoException("empty xml document!");
+                throw new Exception("empty xml document!");
             }
 
             var documentType = XMLHelper.GetDocumentTypeFromRootElement(xmlDoc.DocumentElement.LocalName);
             if (documentType == null)
             {
-                throw new VectoException("unknown xml file! {0}", xmlDoc.DocumentElement.LocalName);
+                throw new Exception($"unknown xml file! {xmlDoc.DocumentElement.LocalName}");
             }
 
             var isValid = new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(documentType.Value);

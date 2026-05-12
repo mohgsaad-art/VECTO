@@ -50,7 +50,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 			var supercap = reess.REESSPack as ISuperCapDeclarationInputData;
 			if (supercap == null) {
-				throw new VectoException("Electric energy storage of type 'Capacitor' requires capacitor component");
+				throw new VectoException("Electric energy storage of type 'Capacitor' requires capacitor component", ErrorCodes.REESS_SUPERCAP_MISSING);
 			}
 
 			return new XElement(_vif + XMLNames.ElectricEnergyStorage_Capacitor,
@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 				return null;
 			var battery = reess.REESSPack as IBatteryPackDeclarationInputData;
 			if (battery == null) {
-				throw new VectoException("Electric energy storage of type 'Battery' requires battery component");
+				throw new VectoException("Electric energy storage of type 'Battery' requires battery component", ErrorCodes.REESS_BATTERY_MISSING);
 			}
 
 

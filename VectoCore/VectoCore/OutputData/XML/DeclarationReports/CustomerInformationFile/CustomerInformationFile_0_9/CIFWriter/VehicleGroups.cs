@@ -288,7 +288,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var multistep = inputData as IMultistepBusInputDataProvider;
 			if (multistep == null) {
-				throw new VectoException("Completed Bus CIF requires bus input data");
+				throw new VectoException("Completed Bus CIF requires bus input data", ErrorCodes.INPUT_NON_MULTISTEP);
 			}
 
 			var result = new List<XElement>();
@@ -323,7 +323,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var multistep = inputData as IMultistepBusInputDataProvider;
 			if (multistep == null) {
-				throw new VectoException("Completed Bus CIF requires bus input data");
+				throw new VectoException("Completed Bus CIF requires bus input data", ErrorCodes.INPUT_NON_MULTISTEP);
 			}
 			var result = new List<XElement>();
 			var ovCc = multistep.JobInputData.PrimaryVehicle.Vehicle.OVC;
@@ -352,7 +352,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
             var multistep = inputData as IMultistepBusInputDataProvider;
             if (multistep == null)
             {
-                throw new VectoException("Completed Bus CIF requires bus input data");
+                throw new VectoException("Completed Bus CIF requires bus input data", ErrorCodes.INPUT_NON_MULTISTEP);
             }
 
             var result = new List<XElement>();

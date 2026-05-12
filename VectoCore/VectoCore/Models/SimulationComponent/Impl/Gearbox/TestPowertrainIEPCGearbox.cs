@@ -23,7 +23,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			IIEPCGearboxFactory gbxFactory) : this(container, powertrainContainer, strategy, gbxFactory, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("This class shall not be used in a real powertrain!");
+				throw new Exception("This class shall not be used in a real powertrain!");
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 				strategy) as ITestPowertrainTransmission;
 			
 			if (_impl == null) {
-				throw new VectoException("Invalid implementation provided for Testpowertrain!");
+				throw new Exception("Invalid implementation provided for Testpowertrain!");
 			}
 		}
 

@@ -81,7 +81,9 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
                     var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = dt * v + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
-						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "1");
+						throw new VectoSimulationException(
+							$"1Hz-Filter: simulation distance must not be negative. ds: {ds}  1", 
+							ErrorCodes.ONEHERZFILTER_NEGATIVE_DISTANCE);
 					}
 					absTime += dt;
 					v += dt * a;
@@ -120,7 +122,9 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = v * dt + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
-						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "2");
+						throw new VectoSimulationException(
+							$"1Hz-Filter: simulation distance must not be negative. ds: {ds}  2", 
+							ErrorCodes.ONEHERZFILTER_NEGATIVE_DISTANCE);
 					}
 					absTime += dt;
 					v += a * dt;
@@ -149,7 +153,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = v * dt + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
-						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "3");
+						throw new VectoSimulationException($"1Hz-Filter: simulation distance must not be negative. ds: {ds}  3", ErrorCodes.ONEHERZFILTER_NEGATIVE_DISTANCE);
 					}
 					absTime += dt;
 					v += a * dt;
@@ -181,7 +185,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					a = 0.SI<MeterPerSquareSecond>();
 				}
 				if (ds.IsSmaller(0)) {
-					throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "4");
+					throw new VectoSimulationException($"1Hz-Filter: simulation distance must not be negative. ds: {ds}  4", ErrorCodes.ONEHERZFILTER_NEGATIVE_DISTANCE);
 				}
 				v += a * dt;
 				distance += ds;

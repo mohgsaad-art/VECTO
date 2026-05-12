@@ -112,18 +112,17 @@ namespace TUGraz.VectoCore.Utils
 			try {
 				return StringExtensionMethods.ToDouble(row.Field<string>(column));
 			} catch (IndexOutOfRangeException e) {
-				throw new VectoException($"Field {column} was not found in DataRow.", e);
+				throw new VectoException($"Field {column} was not found in DataRow.", ErrorCodes.SYSTEM_INDEX_OUT_OF_RANGE, e);
 			} catch (NullReferenceException e) {
-				throw new VectoException($"Field {column} must not be null.", e);
+				throw new VectoException($"Field {column} must not be null.", ErrorCodes.SYSTEM_NULL_REFERENCE, e);
 			} catch (FormatException e) {
-				throw new VectoException($"Field {column} is not in a valid number format: {row.Field<string>(column)}", e);
+				throw new VectoException($"Field {column} is not in a valid number format: {row.Field<string>(column)}", ErrorCodes.SYSTEM_FORMAT, e);
 			} catch (OverflowException e) {
-				throw new VectoException($"Field {column} has a value too high or too low: {row.Field<string>(column)}", e);
+				throw new VectoException($"Field {column} has a value too high or too low: {row.Field<string>(column)}", ErrorCodes.SYSTEM_OVERFLOW, e);
 			} catch (ArgumentNullException e) {
-				throw new VectoException($"Field {column} contains null which cannot be converted to a number.",
-					e);
+				throw new VectoException($"Field {column} contains null which cannot be converted to a number.", ErrorCodes.SYSTEM_ARGUMENT_NULL, e);
 			} catch (Exception e) {
-				throw new VectoException($"Field {column}: {e.Message}", e);
+				throw new VectoException($"Field {column}: {e.Message}", e.GetErrorCode(), e);
 			}
 		}
 

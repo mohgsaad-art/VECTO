@@ -32,54 +32,15 @@
 using System;
 using System.Runtime.Serialization;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Exceptions
 {
 	[Serializable]
 	public class VectoSimulationException : VectoException
 	{
-		public VectoSimulationException(string msg) : base(msg) {}
-		public VectoSimulationException(string msg, Exception inner) : base(msg, inner) {}
+		public VectoSimulationException(string message, ErrorCode errorCode) : base(message, errorCode) {}
 
-		//[StringFormatMethod("message")]
-		public VectoSimulationException(string message, params object[] args) : base(message, args) {}
-
-		//[StringFormatMethod("message")]
-		public VectoSimulationException(string message, Exception inner, params object[] args) : base(message, inner, args) {}
-	}
-
-	[Serializable]
-	public class VectoEngineSpeedTooLowException : VectoSimulationException
-	{
-		public VectoEngineSpeedTooLowException(string msg) : base(msg) {}
-		public VectoEngineSpeedTooLowException(string msg, Exception inner) : base(msg, inner) {}
-		public VectoEngineSpeedTooLowException(string message, params object[] args) : base(message, args) {}
-
-		public VectoEngineSpeedTooLowException(string message, Exception inner, params object[] args)
-			: base(message, inner, args) {}
-	}
-
-	[Serializable]
-	public class UnexpectedResponseException : VectoSimulationException
-	{
-		public readonly IResponse Response;
-
-		public UnexpectedResponseException(string message, IResponse resp)
-			: base(message + Environment.NewLine + "{0}", resp)
-		{
-			Response = resp;
-		}
-	}
-
-	[Serializable]
-	public class VectoSearchFailedException : VectoException
-	{
-		public VectoSearchFailedException(string message, params object[] args) : base(message, args) {}
-	}
-
-	[Serializable]
-	public class VectoSearchAbortedException : VectoException
-	{
-		public VectoSearchAbortedException(string message, params object[] args) : base(message, args) { }
+		public VectoSimulationException(string message, ErrorCode errorCode, Exception inner) : base(message, errorCode, inner) {}
 	}
 }

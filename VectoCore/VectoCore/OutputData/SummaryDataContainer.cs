@@ -1054,8 +1054,7 @@ namespace TUGraz.VectoCore.OutputData
 						var myRows = rows.ToList();
 						var bestResult = DeclarationData.GetSumDataFinalResultEntryIndex(myRows);
 						if (bestResult < 0 || bestResult >= myRows.Count) {
-							throw new VectoException(
-								$"Invalid index for best result entry. got {bestResult}, max. {myRows.Count}");
+							throw new IndexOutOfRangeException($"Invalid index for best result entry. got {bestResult}, max. {myRows.Count}");
 						}
 
 						return myRows[bestResult];
@@ -1072,7 +1071,7 @@ namespace TUGraz.VectoCore.OutputData
 					var newRow = Table.Rows.Add(row.ItemArray);
 					if (jobNbrs.Length < 2) {
 						throw new VectoException(
-							"error writing sum data - expected at least two parts in JobNumber field");
+							"error writing sum data - expected at least two parts in JobNumber field", ErrorCodes.SUMMARY_INVALID_JOB_NUMBER);
 					}
 
 					newRow[SumDataFields.JOB] =

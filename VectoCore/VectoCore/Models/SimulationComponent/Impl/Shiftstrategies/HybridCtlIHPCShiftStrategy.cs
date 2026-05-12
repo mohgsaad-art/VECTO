@@ -54,7 +54,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					_gearbox = gbx;
 					return;
 				}
-				throw new VectoException("This shift strategy can't handle gearbox of type {0}, expected {1}", value.GetType().Name, nameof(APTNGearbox));
+				throw new VectoException($"This shift strategy can't handle gearbox of type {value.GetType().Name}, expected {nameof(APTNGearbox)}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 		}
 

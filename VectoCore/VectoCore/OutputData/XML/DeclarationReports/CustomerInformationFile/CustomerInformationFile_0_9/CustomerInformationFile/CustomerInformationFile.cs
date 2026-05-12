@@ -5,6 +5,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
@@ -302,7 +303,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 			var inputData = modelData.InputData as IMultistepBusInputDataProvider;
 			if (inputData == null) {
-				throw new VectoException("CompletedBus CustomerInformationFile requires MultistepBusInputData");
+				throw new VectoException("CompletedBus CustomerInformationFile requires MultistepBusInputData", ErrorCodes.INPUT_NON_MULTISTEP);
 			}
 			Input = inputData.JobInputData.PrimaryVehicle.Vehicle;
 			Results = _resultFactory.GetCIFResultsWriter(modelData.InputData, modelData.VehicleData.VehicleCategory.GetVehicleType(),

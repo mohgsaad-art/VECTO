@@ -40,7 +40,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override CubicMeter CargoVolume {
 			get {
 				if (VehicleCategory == VehicleCategory.Van && !ElementExists(XMLNames.Vehicle_CargoVolume)) {
-					throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!");
+					throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!", ErrorCodes.XML_MISSING_NODE);
 				}
 				return ElementExists(XMLNames.Vehicle_CargoVolume) ? GetDouble(XMLNames.Vehicle_CargoVolume).SI<CubicMeter>()
 					: null;

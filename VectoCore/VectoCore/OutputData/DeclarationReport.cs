@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -285,7 +286,7 @@ namespace TUGraz.VectoCore.OutputData
 								var bestResult = DeclarationData.GetDeclarationReportFinalResultEntryIndex(simResults, group.simulationType);
 								if (bestResult < 0 || bestResult >= simResults.Count)
 								{
-									throw new VectoException($"Invalid index for best result entry. got {bestResult}, max. {simResults.Count}");
+									throw new IndexOutOfRangeException($"Invalid index for best result entry. got {bestResult}, max. {simResults.Count}");
 								}
 
 								return simResults[bestResult];

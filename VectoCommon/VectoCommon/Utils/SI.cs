@@ -1702,11 +1702,11 @@ namespace TUGraz.VectoCommon.Utils
 			UnitFactor = unitFactor;
 
 			if (double.IsNaN(Val)) {
-				throw new VectoException("NaN [{0}] is not allowed for SI-Values in Vecto.", GetUnitString());
+				throw new VectoException($"NaN [{GetUnitString()}] is not allowed for SI-Values in Vecto.", ErrorCodes.SI_NAN_NOT_ALLOWED);
 			}
 
 			if (double.IsInfinity(Val)) {
-				throw new VectoException("Infinity [{0}] is not allowed for SI-Values in Vecto.", GetUnitString());
+				throw new VectoException($"Infinity [{GetUnitString()}] is not allowed for SI-Values in Vecto.", ErrorCodes.SI_INFINITY_NOT_ALLOWED);
 			}
 		}
 
@@ -1743,7 +1743,7 @@ namespace TUGraz.VectoCommon.Utils
 			var zero = SIBase<T>.Create(0);
 			var casted = SIBase<T>.Create(si.Val / zero.UnitFactor);
 			if (!si.HasEqualUnit(casted)) {
-				throw new VectoException("SI Unit Conversion failed: From {0} to {1}", si, casted);
+				throw new VectoException($"SI Unit Conversion failed: From {si} to {casted}", ErrorCodes.SI_UNIT_CONVERSION_FAILED);
 			}
 			return casted;
 		}
@@ -1804,7 +1804,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator +(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '+' can only operate on SI Objects with the same unit. Got: {0} + {1}", si1, si2);
+				throw new VectoException($"Operator '+' can only operate on SI Objects with the same unit. Got: {si1} + {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 
 
@@ -1815,7 +1815,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator -(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '-' can only operate on SI Objects with the same unit. Got: {0} - {1}", si1, si2);
+				throw new VectoException($"Operator '-' can only operate on SI Objects with the same unit. Got: {si1} - {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			return new SI(si1.Val - si2.Val, si1);
 		}
@@ -1855,8 +1855,7 @@ namespace TUGraz.VectoCommon.Utils
 					throw new DivideByZeroException();
 				}
 			} catch (DivideByZeroException ex) {
-				throw new VectoException(
-					$"Can not compute division by zero ([{si1.UnitString}] / 0[{si2.UnitString}])", ex);
+				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0[{si2.UnitString}])", ErrorCodes.SI_DIVIDE_BY_ZERO, ex);
 			}
 
 			var unitArray = SIUtils.CombineUnits(si1._units, SIUtils.MultiplyUnits(si2._units, -1));
@@ -1868,7 +1867,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator /(SI si1, double d)
 		{
 			if (d.IsEqual(0)) {
-				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0)", new DivideByZeroException());
+				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0)", ErrorCodes.SI_DIVIDE_BY_ZERO, new DivideByZeroException());
 			}
 
 			return new SI(si1.Val / d, si1);
@@ -1878,8 +1877,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator /(double d, SI si1)
 		{
 			if (si1.IsEqual(0)) {
-				throw new VectoException($"Can not compute division by zero (x / 0[{si1.UnitString}])",
-					new DivideByZeroException());
+				throw new VectoException($"Can not compute division by zero (x / 0[{si1.UnitString}])", ErrorCodes.SI_DIVIDE_BY_ZERO, new DivideByZeroException());
 			}
 
 			return new SI(d / si1.AsBasicUnit, si1._units.Select(u => -u).ToArray());
@@ -1889,7 +1887,8 @@ namespace TUGraz.VectoCommon.Utils
 		public static bool operator <(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '<' can only operate on SI Objects with the same unit. Got: {0} < {1}", si1, si2);
+				throw new VectoException(
+					$"Operator '<' can only operate on SI Objects with the same unit. Got: {si1} < {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			return si1.AsBasicUnit < si2.AsBasicUnit;
 		}
@@ -1904,7 +1903,8 @@ namespace TUGraz.VectoCommon.Utils
 		public static bool operator >(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '>' can only operate on SI Objects with the same unit. Got: {0} > {1}", si1, si2);
+				throw new VectoException(
+					$"Operator '>' can only operate on SI Objects with the same unit. Got: {si1} > {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			return si1.AsBasicUnit > si2.AsBasicUnit;
 		}
@@ -1931,8 +1931,8 @@ namespace TUGraz.VectoCommon.Utils
 		public static bool operator <=(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '<=' can only operate on SI Objects with the same unit. Got: {0} <= {1}", si1,
-					si2);
+				throw new VectoException(
+					$"Operator '<=' can only operate on SI Objects with the same unit. Got: {si1} <= {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			return si1.AsBasicUnit <= si2.AsBasicUnit;
 		}
@@ -1947,8 +1947,8 @@ namespace TUGraz.VectoCommon.Utils
 		public static bool operator >=(SI si1, SI si2)
 		{
 			if (!si1.HasEqualUnit(si2)) {
-				throw new VectoException("Operator '>=' can only operate on SI Objects with the same unit. Got: {0} >= {1}", si1,
-					si2);
+				throw new VectoException(
+					$"Operator '>=' can only operate on SI Objects with the same unit. Got: {si1} >= {si2}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			return si1.AsBasicUnit >= si2.AsBasicUnit;
 		}
@@ -2096,10 +2096,10 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsSmaller(SI si, SI tolerance = null)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			if (tolerance != null && !HasEqualUnit(tolerance)) {
-				throw new VectoException("tolerance has to be the same unit. Got: {0} <=> {1}", this, tolerance);
+				throw new VectoException($"tolerance has to be the same unit. Got: {this} <=> {tolerance}", ErrorCodes.SI_TOLERANCE_HAS_DIFFERENT_UNIT);
 			}
 
 			return AsBasicUnit.IsSmaller(si.AsBasicUnit, tolerance == null ? DoubleExtensionMethods.Tolerance : tolerance.Value());
@@ -2114,7 +2114,7 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsSmaller(SI si, double tolerance)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 
 			return Val.IsSmaller(si.Val, tolerance);
@@ -2130,10 +2130,10 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsSmallerOrEqual(SI si, SI tolerance = null)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			if (tolerance != null && !HasEqualUnit(tolerance)) {
-				throw new VectoException("tolerance has to be the same unit. Got: {0} <=> {1}", this, tolerance);
+				throw new VectoException($"tolerance has to be the same unit. Got: {this} <=> {tolerance}", ErrorCodes.SI_TOLERANCE_HAS_DIFFERENT_UNIT);
 			}
 
 			return AsBasicUnit.IsSmallerOrEqual(si.AsBasicUnit, tolerance == null ? DoubleExtensionMethods.Tolerance : tolerance.Value());
@@ -2148,10 +2148,10 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsGreater(SI si, SI tolerance = null)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			if (tolerance != null && !HasEqualUnit(tolerance)) {
-				throw new VectoException("tolerance has to be the same unit. Got: {0} <=> {1}", this, tolerance);
+				throw new VectoException($"tolerance has to be the same unit. Got: {this} <=> {tolerance}", ErrorCodes.SI_TOLERANCE_HAS_DIFFERENT_UNIT);
 			}
 
 			return AsBasicUnit.IsGreater(si.AsBasicUnit, tolerance == null ? DoubleExtensionMethods.Tolerance : tolerance.Value());
@@ -2167,7 +2167,7 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsGreater(SI si, double tolerance)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 
 			return Val.IsGreater(si.Val, tolerance);
@@ -2183,10 +2183,10 @@ namespace TUGraz.VectoCommon.Utils
 		public bool IsGreaterOrEqual(SI si, SI tolerance = null)
 		{
 			if (!HasEqualUnit(si)) {
-				throw new VectoException("compared value has to be the same unit. Got: {0} <=> {1}", this, si);
+				throw new VectoException($"compared value has to be the same unit. Got: {this} <=> {si}", ErrorCodes.SI_OPERANDS_HAVE_DIFFERENT_UNITS);
 			}
 			if (tolerance != null && !HasEqualUnit(tolerance)) {
-				throw new VectoException("tolerance has to be the same unit. Got: {0} <=> {1}", this, tolerance);
+				throw new VectoException($"tolerance has to be the same unit. Got: {this} <=> {tolerance}", ErrorCodes.SI_TOLERANCE_HAS_DIFFERENT_UNIT);
 			}
 
 			return AsBasicUnit.IsGreaterOrEqual(si.AsBasicUnit, tolerance == null ? DoubleExtensionMethods.Tolerance : tolerance.Value());

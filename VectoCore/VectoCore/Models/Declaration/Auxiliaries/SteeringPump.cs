@@ -66,13 +66,13 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 			var numberMech = 0;
 			var numberEl = 0;
 			if (!technologies.Any()) {
-				throw new VectoException("No technology specified for steering pump");
+				throw new VectoException("No technology specified for steering pump", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 			foreach (var technology in technologies) {
 
 				if (!_techLookup.GetTechnologies().Contains(technology))
 				{
-					throw new VectoException($"Steering pump technology '{technology}' not found");
+					throw new VectoException($"Steering pump technology '{technology}' not found", ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 				}
 				axleCount++;
 

@@ -68,12 +68,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 		private void ParseDataFromFld(DataTable data)
 		{
 			if (data.Columns.Count < 3) {
-				throw new VectoException("FullLoadCurve/PT1 Data File must consist of at least 4 columns.");
+				throw new VectoException("FullLoadCurve/PT1 Data File must consist of at least 4 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			if (data.Rows.Count < 2) {
 				throw new VectoException(
-					"FullLoadCurve/PT1 must consist of at least two lines with numeric values (below file header)");
+					"FullLoadCurve/PT1 must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			if (data.Columns.Contains(Fields.EngineSpeed) && data.Columns.Contains(Fields.PT1)) {

@@ -84,8 +84,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			var p = Entries.GetSection(c => c.Velocity < x);
 
 			if (!x.IsBetween(p.Item1.Velocity, p.Item2.Velocity)) {
-                throw new VectoException("CrossWindCorrection Extrapolation: v = {0} (max = {1})", x.ConvertToKiloMeterPerHour(),
-                    p.Item2.Velocity.ConvertToKiloMeterPerHour());
+                throw new VectoException($"CrossWindCorrection Extrapolation: v = {x.ConvertToKiloMeterPerHour()} (max = {p.Item2.Velocity.ConvertToKiloMeterPerHour()})",
+					ErrorCodes.AIRDRAG_CROSSWIND_CORRECTION_EXTRAPOLATION);
 			}
 
 			return VectoMath.Interpolate(p.Item1.Velocity, p.Item2.Velocity,

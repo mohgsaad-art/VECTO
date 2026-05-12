@@ -567,7 +567,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var vehicle = InputDataProvider.JobInputData.Vehicle;
 			var engine = vehicle.Components.EngineInputData;
 			if (engine == null) {
-				throw new VectoException("Combustion Engine is required for IEPC-S vehicle configurations");
+				throw new VectoException("Combustion Engine is required for IEPC-S vehicle configurations", ErrorCodes.VEHICLE_MISSING_ICE);
 			}
 			var engineModes = engine.EngineModes;
 
@@ -802,7 +802,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						DataAdapter.CreateBusAuxiliariesData(vehicle.Components.AuxiliaryInputData, vehicleData, jobType);
 					if (powertrainPosition == PowertrainPosition.HybridP2 && retVal.GearboxSinglePwt.Type.AutomaticTransmission()) {
 						throw new VectoException(
-							"Powertrain Architecture 'hybrid electric vehicle, P2' with AT transmission not supported");
+							"Powertrain Architecture 'hybrid electric vehicle, P2' with AT transmission not supported", ErrorCodes.VEHICLE_INVALID_GEARBOX);
 					}
 					retVal.HybridStrategyParameters = jobType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.IHPC)
 						? DataAdapter.CreateHybridStrategyParameters(InputDataProvider.JobInputData, engineData, retVal.GearboxSinglePwt)

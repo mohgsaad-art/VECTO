@@ -44,12 +44,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Auxiliaries
 		{
 			if (condAuxData.ID != Constants.Auxiliaries.IDs.Cond)
 			{
-				throw new VectoException($"Invalid {nameof(condAuxData)}: ID must be {Constants.Auxiliaries.IDs.Cond}");
+				throw new VectoException($"Invalid {nameof(condAuxData)}: ID must be {Constants.Auxiliaries.IDs.Cond}", ErrorCodes.AUXILIARIES_INVALID_ID);
 			}
 
 			if (condAuxData.PowerDemandElectric == null)
 			{
-				throw new VectoException($"No electric power demand set for {condAuxData.ID}");
+				throw new VectoException($"No electric power demand set for {condAuxData.ID}", ErrorCodes.AUXILIARIES_MISSING_POWER_DEMAND);
 			}
 
 			_electricPowerDemand = condAuxData.PowerDemandElectric;

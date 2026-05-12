@@ -43,6 +43,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCommon.Exceptions;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -67,7 +68,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 			}
 		}
 
-		[DebuggerHidden]
+        /// <summary>
+        /// Assert an expected Exception.
+        /// </summary>
+        [DebuggerHidden]
+        public static void Exception(this Action func, ErrorCode expectedErrorCode)
+        {
+            try
+            {
+                func();
+                Assert.Fail("Expected VectoException, but no exception occured.");
+            }
+            catch (VectoException ex)
+            {
+				Assert.AreEqual(expectedErrorCode, ex.GetErrorCode());
+            }
+        }
+
+        [DebuggerHidden]
 		public static void AreRelativeEqual(SI expected, SI actual,
 			double toleranceFactor = DoubleExtensionMethods.ToleranceFactor, string message = null)
 		{

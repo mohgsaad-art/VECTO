@@ -32,6 +32,7 @@
 using System;
 using System.Runtime.Serialization;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Exceptions
 {
@@ -41,75 +42,28 @@ namespace TUGraz.VectoCommon.Exceptions
 	[Serializable]
 	public class VectoException : Exception
 	{
-		public VectoException(string message) : base(message)
-		{
-			LogManager.Flush();
-		}
+		public VectoException(string message, ErrorCode errorCode) : base(message)
+        {
+			Data[nameof(ErrorCode)] = errorCode;
 
-		public VectoException(string message, Exception innerException) : base(message, innerException)
-		{
-			LogManager.Flush();
-		}
+            LogManager.Flush();
+        }
 
-		public VectoException(string message, params object[] args)
-			: base(string.Format(message, args))
-		{
-			LogManager.Flush();
-		}
+        public VectoException(string message, ErrorCode errorCode, Exception innerException) : base(message, innerException)
+        {
+            Data[nameof(ErrorCode)] = errorCode;
 
-		public VectoException(string message, Exception inner, params object[] args)
-			: base(string.Format(message, args), inner)
-		{
-			LogManager.Flush();
-		}
-	}
+            LogManager.Flush();
+        }
 
-    [Serializable]
-    public class VectoXMLException : VectoException
-	{
-		public VectoXMLException(string message) : base(message) { }
-		public VectoXMLException(string message, Exception innerException) : base(message, innerException) { }
-		public VectoXMLException(string message, params object[] args) : base(message, args) { }
-		public VectoXMLException(string message, Exception inner, params object[] args) : base(message, inner, args) { }
-	}
+		public ErrorCode Code => (ErrorCode)Data[nameof(ErrorCode)];
+    }
 
-	/// <summary>
-	/// Exception when an Input/Output related error occured.
-	/// </summary>
-	[Serializable]
-	public abstract class FileIOException : VectoException
-	{
-		protected FileIOException(string message) : base(message) {}
-		protected FileIOException(string message, Exception inner) : base(message, inner) {}
-	}
-
-	/// <summary>
-	/// Exception when the file format is invalid or a file was not found.
-	/// </summary>
-	[Serializable]
-	public class InvalidFileFormatException : FileIOException
-	{
-		public InvalidFileFormatException(string message) : base(message) {}
-		public InvalidFileFormatException(string message, params object[] args) : base(string.Format(message, args)) {}
-	}
-
-	/// <summary>
-	/// Exception which gets thrown when the version of a file is not supported.
-	/// </summary>
-	[Serializable]
-	public class UnsupportedFileVersionException : FileIOException
-	{
-		public UnsupportedFileVersionException(string message) : base(message) {}
-		public UnsupportedFileVersionException(string message, Exception inner) : base(message, inner) {}
-	}
-
-	/// <summary>
-	/// Exception which gets thrown when an error occurred during read of a vecto csv-file.
-	/// </summary>
-	[Serializable]
-	public class CSVReadException : FileIOException
-	{
-		public CSVReadException(string message) : base(message) {}
-		public CSVReadException(string message, Exception inner) : base(message, inner) {}
-	}
+    public static class ExceptionExtensions
+    {
+        public static ErrorCode GetErrorCode(this Exception ex)
+        {
+            return (ex is VectoException vectoException) ? vectoException.Code : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
+        }
+    }
 }

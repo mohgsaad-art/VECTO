@@ -228,8 +228,8 @@ namespace TUGraz.VectoCommon.Utils
 		{
 			if (lowerBound.CompareTo(upperBound) > 0) {
 				throw new VectoException(
-					"VectoMath.LimitTo: lowerBound must not be greater than upperBound. lowerBound: {0}, upperBound: {1}", lowerBound,
-					upperBound);
+					$"VectoMath.LimitTo: lowerBound must not be greater than upperBound. lowerBound: {lowerBound}, upperBound: {upperBound}", 
+					ErrorCodes.MATH_LOWER_BOUND_GREATER_THAN_UPPER_BOUND);
 			}
 
 			if (value.CompareTo(upperBound) > 0) {
@@ -249,8 +249,8 @@ namespace TUGraz.VectoCommon.Utils
 		{
 			if (lowerBound.CompareTo(upperBound) > 0) {
 				throw new VectoException(
-					"VectoMath.LimitTo: lowerBound must not be greater than upperBound. lowerBound: {0}, upperBound: {1}", lowerBound,
-					upperBound);
+					$"VectoMath.LimitTo: lowerBound must not be greater than upperBound. lowerBound: {lowerBound}, upperBound: {upperBound}", 
+					ErrorCodes.MATH_LOWER_BOUND_GREATER_THAN_UPPER_BOUND);
 			}
 
 			if (value.CompareTo(upperBound) > 0 || value.CompareTo(lowerBound) < 0) {
@@ -315,7 +315,7 @@ namespace TUGraz.VectoCommon.Utils
 			Meter distance, Meter ds)
 		{
 			if (!(ds > 0)) {
-				throw new VectoSimulationException("ds has to be greater than 0! ds: {0}", ds);
+				throw new VectoSimulationException($"ds has to be greater than 0! ds: {ds}", ErrorCodes.MATH_DISTANCE_NOT_POSITIVE);
 			}
 
 			var retVal = new OperatingPoint() { Acceleration = acceleration, SimulationDistance = ds };
@@ -327,8 +327,8 @@ namespace TUGraz.VectoCommon.Utils
 				//Log.Error("{2}: vehicle speed is {0}, acceleration is {1}", currentSpeed.Value(), acceleration.Value(),
 				//	distance);
 				throw new VectoSimulationException(
-					"vehicle speed has to be > 0 if acceleration = 0!  v: {0}, a: {1}, distance: {2}", currentSpeed.Value(),
-					acceleration.Value(), distance);
+					$"vehicle speed has to be > 0 if acceleration = 0!  v: {currentSpeed.Value()}, a: {acceleration.Value()}, distance: {distance}", 
+					ErrorCodes.MATH_SPEED_NOT_POSITIVE_WHEN_ACCELERATING);
 			}
 
 			// we need to accelerate / decelerate. solve quadratic equation...
@@ -350,8 +350,8 @@ namespace TUGraz.VectoCommon.Utils
 					//Log.Error(
 					//	"Could not find solution for computing required time interval to drive distance ds: {0}. currentSpeed: {1}, acceleration: {2}, stopDistance: {3}, distance: {4}",
 					//	ds, currentSpeed, acceleration, stopDistance,distance);
-					throw new VectoSimulationException("Could not find solution for time-interval!  ds: {0}, stopDistance: {1}", ds,
-						stopDistance);
+					throw new VectoSimulationException($"Could not find solution for time-interval!  ds: {ds}, stopDistance: {stopDistance}", 
+						ErrorCodes.MATH_NO_SOLUTION_FOR_TIME_INTERVAL);
 				}
 
 				//LoggingObject.Logger<>().Info(
@@ -658,7 +658,7 @@ namespace TUGraz.VectoCommon.Utils
 		public Triangle(Point p1, Point p2, Point p3)
 		{
 			if (p1.X.IsEqual(p2.X) && p2.X.IsEqual(p3.X) || p1.Y.IsEqual(p2.Y) && p2.Y.IsEqual(p3.Y)) {
-				throw new VectoException("triangle is not extrapolatable by a plane.");
+				throw new VectoException("triangle is not extrapolatable by a plane.", ErrorCodes.MATH_TRIANGLE_NOT_EXTRAPOLATABLE_BY_PLANE);
 			}
 			(P1, P2, P3) = (p1, p2, p3);
 		}

@@ -86,7 +86,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             }
             else
             {
-                throw new VectoException($"Invalid architecture ({ArchitectureID}) for HEV Completed Bus");
+                throw new VectoException($"Invalid architecture ({ArchitectureID}) for HEV Completed Bus", ErrorCodes.XML_BAD_DATA);
             }
         }
     }
@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             }
             else
             {
-                throw new VectoException($"Invalid architecture ({ArchitectureID}) for PEV Completed Bus");
+                throw new VectoException($"Invalid architecture ({ArchitectureID}) for PEV Completed Bus", ErrorCodes.XML_BAD_DATA);
             }
         }
     }

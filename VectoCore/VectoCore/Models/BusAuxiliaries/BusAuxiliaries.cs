@@ -165,7 +165,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries
 		public virtual HeaterDemandResult AuxHeaterDemandCalculation(Second cycleTime, Joule engineWasteHeatTotal, Joule electricMotorWasteHeatTotal)
 		{
 			if (auxConfig == null) {
-				throw new VectoException("Auxiliary configuration missing!");
+				throw new VectoException("Auxiliary configuration missing!", ErrorCodes.AUXILIARIES_MISSING_CONFIGURATION);
 			}
 
 			if (auxConfig.SSMInputsHeating is ISSMEngineeringInputs ssmEngineeringInputs) {

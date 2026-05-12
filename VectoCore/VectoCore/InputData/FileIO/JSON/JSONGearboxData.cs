@@ -134,7 +134,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!");
+					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				return gears[0].GetEx<double>(JsonKeys.Gearbox_Gear_Ratio);
 			}
@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!");
+					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				var lossMap = gears[0][JsonKeys.Gearbox_Gear_LossMapFile];
 				if (lossMap != null) {
@@ -171,7 +171,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!");
+					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				return gears[0].GetEx<double>(JsonKeys.Gearbox_Gear_Efficiency);
 			}
@@ -259,7 +259,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 			if (!((ratio.IsEqual(1) && efficiency.IsEqual(1)) || (!ratio.IsEqual(1) && ratio.IsEqual(nextRatio)))) {
 				throw new VectoException(
-					"TorqueConverter gear either has to have a ratio of 1 and efficiency of 1, or the ratios of the torque converter gear and the locked gear have to be the same");
+					"TorqueConverter gear either has to have a ratio of 1 and efficiency of 1, or the ratios of the torque converter gear and the locked gear have to be the same",
+					ErrorCodes.TORQUECONVERTER_GEAR_INVALID_DATA);
 			}
 			return new TransmissionInputData {
 				Gear = gearNr,

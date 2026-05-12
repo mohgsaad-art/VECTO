@@ -105,7 +105,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				(EngineIdleSpeed * Constants.SimulationSettings.VTPIdleSpeedDetectionFactor);
 
 			if (!CombustionEngineOn && !RunData.VehicleData.ADAS.EngineStopStart) {
-				throw new VectoException($"Vehicle does not feature EngineStopStart, but engine is off in step: {absTime}");
+				throw new VectoException($"Vehicle does not feature EngineStopStart, but engine is off in step: {absTime}", ErrorCodes.ADAS_MISSING_STOPSTART);
 			}
 
 			return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);

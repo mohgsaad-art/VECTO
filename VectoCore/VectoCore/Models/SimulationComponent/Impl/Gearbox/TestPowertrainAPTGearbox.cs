@@ -16,7 +16,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("This class shall not be used in a real powertrain!");
+				throw new Exception("This class shall not be used in a real powertrain!");
 			}
 		}
 

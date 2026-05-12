@@ -1,4 +1,4 @@
-﻿using TUGraz.VectoCommon.Exceptions;
+﻿using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -15,7 +15,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			container, powertrainContainer, strategy, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("This class shall not be used in a real powertrain!");
+				throw new Exception("This class shall not be used in a real powertrain!");
 			}
 		}
 

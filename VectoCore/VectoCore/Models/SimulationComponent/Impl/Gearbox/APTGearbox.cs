@@ -86,8 +86,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             : this(container, powertrainContainer, strategy, false)
         {
             if (container.IsTestPowertrain) {
-                throw new VectoException(
-                    "This class shall not be used in a testpowertrain - use the dedicated class instead!");
+                throw new Exception("This class shall not be used in a testpowertrain - use the dedicated class instead!");
             }
         }
 
@@ -198,7 +197,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
             if (!Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
                 throw new VectoSimulationException(
-                    "Torque converter requested by strategy for gear without torque converter!");
+                    "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
             }
             var response = Gear.TorqueConverterLocked.Value
                 ? NextComponent.Initialize(inTorque, inAngularVelocity)
@@ -236,7 +235,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             } else {
                 if (!ModelData.Gears[gear.Gear].HasTorqueConverter) {
                     throw new VectoSimulationException(
-                        "Torque converter requested by strategy for gear without torque converter!");
+                        "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
                 }
                 response = TorqueConverter.Initialize(inTorque, inAngularVelocity);
             }
@@ -247,7 +246,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
                 case ResponseOverload _:
                     break;
                 default:
-                    throw new UnexpectedResponseException("AT-Gearbox.Initialize", response);
+                    throw new VectoSimulationException($"AT-Gearbox.Initialize.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
             }
 
             return new ResponseDryRun(this) {
@@ -341,7 +340,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
         {
             if (!Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
                 throw new VectoSimulationException(
-                    "Torque converter requested by strategy for gear without torque converter!");
+                    "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
             }
 
             var effectiveRatio = ModelData.Gears[Gear.Gear].Ratio;
@@ -587,9 +586,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
                     ModelData.Gears[Gear.Gear].Ratio);
                 if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
                     throw new VectoException(
-                        "Gear {0} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n:{1}, torque:{2}, ratio:{3}",
-                        Gear, CurrentState.InAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.InTorque,
-                        ModelData.Gears[Gear.Gear].Ratio);
+                        $"Gear {Gear} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: " +
+                        $"n:{CurrentState.InAngularVelocity.ConvertToRoundsPerMinute()}, torque:{CurrentState.InTorque}, ratio:{ModelData.Gears[Gear.Gear].Ratio}",
+                        ErrorCodes.GEARBOX_LOSS_MAP_EXTRAPOLATED);
                 }
             }
             RequestAfterGearshift = false;

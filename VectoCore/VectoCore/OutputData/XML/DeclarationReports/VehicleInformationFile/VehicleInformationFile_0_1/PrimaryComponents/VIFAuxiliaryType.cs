@@ -130,7 +130,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 				case ConsumerTechnology.Mechanically:
 					return "mechanically";
 				default:
-					throw new VectoException("Unknown AirsuspensionControl!");
+					throw new VectoException("Unknown AirsuspensionControl!", ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 			}
 		}
 

@@ -37,11 +37,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public void RunPreprocessing()
 		{
 			if (TestPowertrain.Container?.VehicleInfo == null) {
-				throw new VectoException("no vehicle found...");
+				throw new VectoException("no vehicle found...", ErrorCodes.PREPROCESSING_MISSING_DATA);
 			}
 
 			if (TestPowertrain.Vehicle == null) {
-				throw new VectoException("Vehicle not applicable for PCC Preprocessor");
+				throw new VectoException("Vehicle not applicable for PCC Preprocessor", ErrorCodes.PREPROCESSING_MISSING_DATA);
 			}
 			
 			if (!TestPowertrain.Container.VehicleArchitecture.IsMultiplePowertrains())
@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         RunPreprocessingNoGearbox();
                         break;
                     default:
-                        throw new VectoException("no valid gearbox found...");
+                        throw new VectoException("no valid gearbox found...", ErrorCodes.PREPROCESSING_MISSING_DATA);
                 }
             }
 			else
@@ -202,7 +202,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					},
 					searcher: this
 				);
-			} catch (VectoSearchAbortedException) {
+			} catch (VectoException ex) when (ex.GetErrorCode() == ErrorCodes.SEARCH_ABORTED) {
 				return gradient;
 			}
             

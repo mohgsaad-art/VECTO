@@ -231,7 +231,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				
 				if (EMs.Count(x => (x.Position == c23.Position) && (component.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN)) > 0)
 				{
-					throw new VectoException($"There is already an electric machine at position {c23.Position}");
+					throw new VectoException($"There is already an electric machine at position {c23.Position}", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 				}
 
 				EMs.Add(c23);
@@ -289,7 +289,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			} else {
 				var realComponents = (realContainer as IVehicleContainer)?.Components;
 				if (realComponents == null) {
-					throw new VectoException("RealContainer has to implement IVehicleContainer interface!");
+					throw new Exception("RealContainer has to implement IVehicleContainer interface!");
 				}
 				foreach (var (_, c) in _components) {
 #if DEBUG

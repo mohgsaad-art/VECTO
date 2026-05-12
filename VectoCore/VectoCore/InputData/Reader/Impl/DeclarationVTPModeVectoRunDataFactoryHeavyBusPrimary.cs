@@ -230,7 +230,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
             var vtpCycle = JobInputData.Cycles.FirstOrDefault();
             if (vtpCycle == null)
             {
-                throw new VectoException("no VTP-Cycle provided!");
+                throw new VectoException("no VTP-Cycle provided!", ErrorCodes.VTP_CYCLE_NOT_FOUND);
             }
 
             var drivingCycle = DrivingCycleDataReader.ReadFromDataTable(vtpCycle.CycleData, vtpCycle.Name, false);

@@ -21,8 +21,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			: this(container, powertrainContainer, strategy, gbxFactory, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+				throw new Exception("This class shall not be used in a testpowertrain - use the dedicated class instead!");
 			}
         }
 

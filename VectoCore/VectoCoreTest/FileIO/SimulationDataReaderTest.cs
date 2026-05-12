@@ -33,7 +33,7 @@ using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using Ninject;
-using TUGraz.VectoCommon.Exceptions;
+using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(DeclarationJob);
 			var declarationProvider = dataProvider as IDeclarationInputDataProvider;
 			if (declarationProvider == null) {
-				throw new VectoException("Failed to cas to Engineering InputDataProvider");
+				throw new Exception("Failed to cast to Engineering InputDataProvider");
 			}
 
 			var dataAdapter = new DeclarationDataAdapterHeavyLorry.Conventional();

@@ -102,7 +102,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (hvacConfiguration.IsOneOf(BusHVACSystemConfiguration.Configuration0, BusHVACSystemConfiguration.Unknown)) {
 				throw new VectoException(
-					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step");
+					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
 			}
 
 			var correctionLengthDrivetrainVolume = DeclarationData.BusAuxiliaries.CorrectionLengthDrivetrainVolume(
@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (hvacConfiguration.IsOneOf(BusHVACSystemConfiguration.Configuration0, BusHVACSystemConfiguration.Unknown))
 			{
 				throw new VectoException(
-					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step");
+					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
 			}
 
 			var correctionLengthDrivetrainVolume = DeclarationData.BusAuxiliaries.CorrectionLengthDrivetrainVolume(
@@ -223,46 +223,45 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var busAux = completedVehicle.Components.BusAuxiliaries.HVACAux;
 
             if (hvacConfiguration == null || hvacConfiguration.Value == BusHVACSystemConfiguration.Configuration0) {
-				throw new VectoException("HVAC Configuration has to be set for completed stage!");
+				throw new VectoException("HVAC Configuration has to be set for completed stage!", ErrorCodes.AUXILIARIES_MISSING_HVAC_CONFIGURATION);
 			}
 
 			if (mission.BusParameter.SeparateAirDistributionDuctsHVACCfg.Contains(hvacConfiguration.Value) &&
 				(busAux.SeparateAirDistributionDucts == null || !busAux.SeparateAirDistributionDucts.Value)) {
 				throw new VectoException(
-					"Input parameter 'separate air distribution ducts' has to be set to 'true' for vehicle group '{0}' and HVAC configuration '{1}'",
-					mission.BusParameter.BusGroup.GetClassNumber(), hvacConfiguration.GetName());
+					$"Input parameter 'separate air distribution ducts' has to be set to 'true' for vehicle group '{mission.BusParameter.BusGroup.GetClassNumber()}' and HVAC configuration '{hvacConfiguration.GetName()}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			if (completedVehicle.NumberPassengerSeatsLowerDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsLowerDeck input parameter is required");
+				throw new VectoException("NumberOfPassengerSeatsLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 
 			if (completedVehicle.NumberPassengerSeatsUpperDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsUpperDeck input parameter is required");
+				throw new VectoException("NumberOfPassengerSeatsUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 
 			if (completedVehicle.NumberPassengersStandingLowerDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingLowerDeck input parameter is required");
+				throw new VectoException("NumberOfPassengersStandingLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 
 			if (completedVehicle.NumberPassengersStandingUpperDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingUpperDeck input parameter is required");
+				throw new VectoException("NumberOfPassengersStandingUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
 			}
 
 			if (busAux.HeatPumpTypeCoolingDriverCompartment == null) {
-				throw new VectoException("HeatPumpTypeDriverCompartment Cooling input parameter is required");
+				throw new VectoException("HeatPumpTypeDriverCompartment Cooling input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 
 			if (busAux.HeatPumpTypeHeatingDriverCompartment == null) {
-				throw new VectoException("HeatPumpTypeDriverCompartment Heating input parameter is required");
+				throw new VectoException("HeatPumpTypeDriverCompartment Heating input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 
 			if (busAux.HeatPumpTypeCoolingPassengerCompartment == null) {
-				throw new VectoException("HeatPumpTypePassengerCompartment Cooling input parameter is required");
+				throw new VectoException("HeatPumpTypePassengerCompartment Cooling input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 
 			if (busAux.HeatPumpTypeHeatingPassengerCompartment == null) {
-				throw new VectoException("HeatPumpTypePassengerCompartment Heating input parameter is required");
+				throw new VectoException("HeatPumpTypePassengerCompartment Heating input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 
 			var hvacConfigCooling = DeclarationData.BusAuxiliaries.GetHVACConfig(hvacConfiguration.Value,
@@ -272,18 +271,18 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (hvacConfigHeating != hvacConfiguration && hvacConfigCooling != hvacConfiguration) {
 				throw new VectoException(
-					$"The HVAC System Configuration must be either matched for the case heating or cooling input: {hvacConfiguration.GetName()},  h:{hvacConfigHeating.GetName()}/c:{hvacConfigCooling.GetName()}");
+					$"The HVAC System Configuration must be either matched for the case heating or cooling input: {hvacConfiguration.GetName()},  h:{hvacConfigHeating.GetName()}/c:{hvacConfigCooling.GetName()}", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
 			}
 
 			var xEVBus = primaryVehicle.ArchitectureID.IsHybridVehicle() || primaryVehicle.ArchitectureID.IsBatteryElectricVehicle();
 			if (xEVBus && busAux.WaterElectricHeater == null) {
-				throw new VectoException("WaterElectricHeater input parameter is required for xEV vehicles");
+				throw new VectoException("WaterElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 			if (xEVBus && busAux.AirElectricHeater == null) {
-				throw new VectoException("AirElectricHeater input parameter is required for xEV vehicles");
+				throw new VectoException("AirElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 			if (xEVBus && busAux.OtherHeatingTechnology == null) {
-				throw new VectoException("OtherElectricHeater input parameter is required for xEV vehicles");
+				throw new VectoException("OtherElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
 			}
 
 			if (primaryVehicle.ArchitectureID.IsBatteryElectricVehicle() ||
@@ -302,7 +301,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				}
 
 				if (errors.Count > 0) {
-					throw new VectoException(errors.Join(Environment.NewLine));
+					throw new VectoException(errors.Join(Environment.NewLine), ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 				}
 			}
         }
@@ -525,9 +524,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			switch (retVal.AlternatorType)
 			{
 				case AlternatorType.Smart when primaryBusAuxiliaries.ElectricSupply.Alternators.Count == 0:
-					throw new VectoException("at least one alternator is required when specifying smart electrics!");
+					throw new VectoException("at least one alternator is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 				case AlternatorType.Smart when primaryBusAuxiliaries.ElectricSupply.ElectricStorage.Count == 0:
-					throw new VectoException("at least one electric storage (battery or capacitor) is required when specifying smart electrics!");
+					throw new VectoException("at least one electric storage (battery or capacitor) is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			retVal.MaxAlternatorPower = CalculateMaxAlternatorPower(primaryBusAuxiliaries);

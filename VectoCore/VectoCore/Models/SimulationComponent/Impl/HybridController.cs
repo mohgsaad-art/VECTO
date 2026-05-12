@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public virtual void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData)
 		{
 			if (_electricMotorCtl.ContainsKey(pos)) {
-				throw new VectoException("Electric motor already registered as position {0}", pos);
+				throw new VectoException($"Electric motor already registered as position {pos}", ErrorCodes.HYBRIDCONTROLLER_ELECTRICMOTOR_ALREADY_REGISTERED);
 			}
 
 			_electricMotorCtl[pos] = new HybridCtlElectricMotorController(this, motorData);
@@ -109,7 +109,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			IResponse retVal;
 			do {
 				if (retryCount > 10) {
-					throw new VectoException("HybridStrategy: retry count exceeded! {0}", DebugData);
+					throw new VectoException($"HybridStrategy: retry count exceeded! {DebugData}", ErrorCodes.HYBRIDCONTROLLER_RETRY_COUNT_EXCEEDED);
 				}
 				var gearbox = DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber);
 				var engaged = gearbox.GearEngaged(absTime);

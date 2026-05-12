@@ -258,7 +258,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 				case Constants.FileExtensions.VectoJobFile:
 					return LoadJsonFile(fileName);
 				default: 
-					throw new VectoException($"{extension} not supported!");
+					throw new VectoException($"{extension} not supported!", ErrorCodes.INPUT_UNSUPPORTED_TYPE);
 			}
 			
 		}
@@ -280,7 +280,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 			if (!documentType.IsOneOf(XmlDocumentType.MultistepOutputData, XmlDocumentType.DeclarationJobData))
 			{
 				return Task.FromException<IDocumentViewModel>(
-					new VectoXMLException($"{documentType.ToString()} not supported"));
+					new VectoException($"{documentType.ToString()} not supported", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE));
 			}
 
             var inputDataProvider = _inputDataReader.CreateDeclaration(fileName);

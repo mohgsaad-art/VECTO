@@ -94,7 +94,7 @@ namespace TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies
 
 					break;
 				default:
-					throw new VectoException($"Iteration {iteration} not implemented");
+					throw new VectoException($"Iteration {iteration} not implemented", ErrorCodes.DECLARATIONDATA_INVALID_ITERATION);
 			}
 		}
 

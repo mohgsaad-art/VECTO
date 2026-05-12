@@ -2158,7 +2158,7 @@ Lb1:
                     End Select
             End Select
 
-            If input Is Nothing Then Throw New VectoException("No InputDataProvider for file {0} found!", f)
+            If input Is Nothing Then Throw New Exception($"No InputDataProvider for file {f} found!")
 
             XMLExportJobDialog.Initialize(input)
             XMLExportJobDialog.ShowDialog()

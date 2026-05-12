@@ -179,8 +179,8 @@ namespace TUGraz.VectoCore.Utils
 				// n...point count (pointCount +3 points on the supertriangle)
 				// k...points on convex hull (exactly 3 --> supertriangle)
 				if (triangles.Count != 2 * (pointCount + 3) - 2 - 3) {
-					throw new VectoException(
-						"{0} Delaunay-Triangulation invariant violated! Triangle count and point count doesn't fit together.", _mapName);
+					throw new VectoException($"{_mapName} Delaunay-Triangulation invariant violated! Triangle count and point count doesn't fit together.",
+						ErrorCodes.DELAUNAY_TRIANGLE_POINT_MISMATCH);
 				}
 			}
 
@@ -202,8 +202,8 @@ namespace TUGraz.VectoCore.Utils
 				Log.Error("{0}: Input Point appears twice: x: {1}, y: {2}", duplicate.Key.X, duplicate.Key.Y);
 			}
 			if (duplicates.Any()) {
-				throw new VectoException("{0}: Input Data for Delaunay map contains duplicates! \n{1}", _mapName,
-					duplicates.Select(pt => $"{pt.Key.X} / {pt.Key.Y}").Join("\n"));
+				throw new VectoException($"{_mapName}: Input Data for Delaunay map contains duplicates! \n{string.Join("\n", duplicates.Select(pt => $"{pt.Key.X} / {pt.Key.Y}"))}",
+					ErrorCodes.DELAUNAY_DUPLICATE_POINTS);
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace TUGraz.VectoCore.Utils
 		public double Interpolate(double x, double y)
 		{
 			if (_triangles == null) {
-				throw new VectoException("Interpolation not possible. Call DelaunayMap.Triangulate first.");
+				throw new VectoException("Interpolation not possible. Call DelaunayMap.Triangulate first.", ErrorCodes.DELAUNAY_CANNOT_INTERPOLATE);
 			}
 
 			x = (x - _minX) / (_maxX - _minX);

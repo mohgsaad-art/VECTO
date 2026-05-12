@@ -552,13 +552,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			VerifyCycleType(data, CycleType.DistanceBased);
 
 			if (data.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.GEN)) {
-				throw new VectoException("ParallelHybrid does not support GEN set.");
+				throw new VectoException("ParallelHybrid does not support GEN set.", ErrorCodes.VEHICLE_CANNOT_SUPPORT_GENSET);
 			}
 			if (data.ElectricMachinesSinglePwt.Count != 1) {
-				throw new VectoException("ParallelHybrid needs exactly one electric motor.");
+				throw new VectoException("ParallelHybrid needs exactly one electric motor.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 			if (data.ElectricMachinesSinglePwt.Any(e => e.Item1 == PowertrainPosition.HybridP0)) {
-				throw new VectoException("P0 Hybrids are modeled as SmartAlternator in the BusAuxiliary model.");
+				throw new VectoException("P0 Hybrids are modeled as SmartAlternator in the BusAuxiliary model.", ErrorCodes.VEHICLE_UNSUPPORTED_HYBRID_P0);
 			}
 
 			if (data.BatteryOnlyHybridMode && data.OVCMode == OvcHevMode.ChargeDepleting) {
@@ -572,7 +572,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						return BuildFullPowertrainParallelHybridBatteryOnlyMode(data, modData, sumWriter);
 					default:
 						throw new VectoException(
-							"Unsupported powertrain configuration for Parallel hybrid in battery only mode");
+							"Unsupported powertrain configuration for Parallel hybrid in battery only mode", ErrorCodes.VEHICLE_INVALID_ELECTRICMOTOR_POSITION);
 				}
 			}
 
@@ -595,7 +595,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var gearbox = GetGearbox(container, powertrainContainer, strategy: ctl.ShiftStrategy);
 			if (!(gearbox is IHybridControlledGearbox gbx)) {
-				throw new VectoException($"Gearbox can not be used for parallel hybrid: ${gearbox?.GetType()}");
+				throw new VectoException($"Gearbox can not be used for parallel hybrid: ${gearbox?.GetType()}", ErrorCodes.VEHICLE_INVALID_GEARBOX);
 			}
 			var numShiftableGearboxes = gearbox.NumGears > 1 ? 1 : 0;
 
@@ -658,7 +658,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						es.Connect(dcdc);
 					}
 				} else {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 			}
 						
@@ -725,7 +725,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						es.Connect(dcdc);
 					}
 				} else {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 			}
 
@@ -802,7 +802,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						es.Connect(dcdc);
 					}
 				} else {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 			}
 			AddElectricAuxiliaries(data, container, powertrainContainer, es, cycle, dcdc);
@@ -896,10 +896,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			VerifyCycleType(data, CycleType.DistanceBased);
 			
 			if (data.ElectricMachinesSinglePwt.Count(x => x.Item1 == PowertrainPosition.GEN) != 1) {
-				throw new VectoException("SerialHybrid needs exactly one GEN set.");
+				throw new VectoException("SerialHybrid needs exactly one GEN set.", ErrorCodes.VEHICLE_GENSET_MISMATCH);
 			}
 			if (data.ElectricMachinesSinglePwt.Count(x => x.Item1 != PowertrainPosition.GEN) != 1) {
-				throw new VectoException("SerialHybrid needs exactly one electric motor.");
+				throw new VectoException("SerialHybrid needs exactly one electric motor.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 
 			var container = ComponentFactory.CreateVehicleContainer(data, modData, sumWriter);
@@ -996,7 +996,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				data.DCDCData.DCDCEfficiency);
 			if (data.BusAuxiliaries != null) {
 				if (!data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-					throw new VectoException("BusAux must be supplied from REESS!");
+					throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 				}
 				if (container.BusAux is BusAuxiliariesAdapter busAux) {
 					var auxCfg = data.BusAuxiliaries;
@@ -1010,7 +1010,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						es.Connect(dcdc);
 					}
 				} else {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 			}
 
@@ -1462,10 +1462,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			VerifyCycleType(data, CycleType.DistanceBased);
 
 			if (data.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.GEN)) {
-				throw new VectoException("Battery electric vehicle does not support GEN set.");
+				throw new VectoException("Battery electric vehicle does not support GEN set.", ErrorCodes.VEHICLE_CANNOT_SUPPORT_GENSET);
 			}
 			if (data.ElectricMachinesSinglePwt.Count != 1) {
-				throw new VectoException("Battery electric vehicle needs exactly one electric motor.");
+				throw new VectoException("Battery electric vehicle needs exactly one electric motor.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 			
 			var container = ComponentFactory.CreateVehicleContainer(data, modData, sumWriter);
@@ -1542,7 +1542,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var dcdc = ComponentFactory.CreateDCDCConverter(container, data.DCDCData.DCDCEfficiency);
 			if (data.BusAuxiliaries != null) {
 				if (!data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-					throw new VectoException("BusAux must be supplied from REESS!");
+					throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 				}
 
 				var auxCfg = data.BusAuxiliaries;
@@ -1804,7 +1804,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			
 			if (!data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-				throw new VectoException("BusAux must be supplied from REESS!");
+				throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 			}
 
 			var busAux = ComponentFactory.CreateBusAuxiliariesAdapter(container, powertrainContainer, data.BusAuxiliaries, null);
@@ -1827,7 +1827,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (!auxCfg.ElectricalUserInputsConfig.ConnectESToREESS)
 			{
-				throw new VectoException("BusAux must be supplied from REESS!");
+				throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 			}
 
 			var electricStorage = (auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart)
@@ -1941,17 +1941,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private void ValidateBatteryElectric(VectoRunData data)
 		{
 			if (data.ElectricMachinesSinglePwt.Count > 1) {
-				throw new VectoException("Electric motors on multiple positions not supported");
+				throw new VectoException("Electric motors on multiple positions not supported", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 
 			if (data.BatteryData != null && data.SuperCapData != null) {
-				throw new VectoException("Only one REESS is supported.");
+				throw new VectoException("Only one REESS is supported.", ErrorCodes.REESS_MULTIPLE_TYPES);
 			}
 
 			var position = data.ElectricMachinesSinglePwt.First().Item1;
 
 			if (position == PowertrainPosition.HybridPositionNotSet) {
-				throw new VectoException("invalid powertrain position");
+				throw new VectoException("invalid powertrain position", ErrorCodes.VEHICLE_INVALID_ELECTRICMOTOR_POSITION);
 			}
 
 			if (position == PowertrainPosition.HybridP0 ||
@@ -1960,7 +1960,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				position == PowertrainPosition.HybridP3 ||
 				position == PowertrainPosition.HybridP4) {
 
-				throw new VectoException("BatteryElectric Vehicle does not support parallel powertrain configurations");
+				throw new VectoException("BatteryElectric Vehicle does not support parallel powertrain configurations", ErrorCodes.VEHICLE_INVALID_ELECTRICMOTOR_POSITION);
 			}
 		}
 
@@ -1985,10 +1985,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			VerifyCycleType(data, CycleType.DistanceBased);
 
 			if (data.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.GEN)) {
-				throw new VectoException("IEPC vehicle does not support GEN set.");
+				throw new VectoException("IEPC vehicle does not support GEN set.", ErrorCodes.VEHICLE_CANNOT_SUPPORT_GENSET);
 			}
 			if (data.ElectricMachinesSinglePwt.Count != 1) {
-				throw new VectoException("IEPC vehicle needs exactly one electric motor.");
+				throw new VectoException("IEPC vehicle needs exactly one electric motor.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 
 			var container = ComponentFactory.CreateVehicleContainer(data, modData, sumWriter);
@@ -2034,7 +2034,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var dcdc = ComponentFactory.CreateDCDCConverter(container, data.DCDCData.DCDCEfficiency);
 			if (data.BusAuxiliaries != null) {
 				if (!data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-					throw new VectoException("BusAux must be supplied from REESS!");
+					throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 				}
 
 				var auxCfg = data.BusAuxiliaries;
@@ -2073,10 +2073,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			VerifyCycleType(data, CycleType.DistanceBased);
 			
 			if (data.ElectricMachinesSinglePwt.Count(x => x.Item1 == PowertrainPosition.GEN) != 1) {
-				throw new VectoException("IEPC vehicle needs exactly one GEN set.");
+				throw new VectoException("IEPC vehicle needs exactly one GEN set.", ErrorCodes.VEHICLE_GENSET_MISMATCH);
 			}
 			if (data.ElectricMachinesSinglePwt.Count(x => x.Item1 != PowertrainPosition.GEN) != 1) {
-				throw new VectoException("IEPC vehicle needs exactly one electric motor.");
+				throw new VectoException("IEPC vehicle needs exactly one electric motor.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
 			}
 
 			var container = ComponentFactory.CreateVehicleContainer(data, modData, sumWriter);
@@ -2133,7 +2133,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (data.BusAuxiliaries != null) {
 				if (container.BusAux is BusAuxiliariesAdapter busAux) {
 					if (!data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-						throw new VectoException("BusAux must be supplied from REESS!");
+						throw new VectoException("BusAux must be supplied from REESS!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_DISCONNECTED_FROM_REESS);
 					}
 
 					var auxCfg = data.BusAuxiliaries;
@@ -2371,7 +2371,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		#region Implementation of IGearboxInfo
 
-		public IShiftStrategy Strategy => throw new VectoException("No Gearbox available.");
+		public IShiftStrategy Strategy => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
 		public GearboxType GearboxType => GearboxType.NoGearbox;
 
@@ -2379,34 +2379,34 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public bool TCLocked => true;
 
-		public MeterPerSecond StartSpeed => throw new VectoException("No Gearbox available. StartSpeed unknown.");
+		public MeterPerSecond StartSpeed => throw new VectoException("No Gearbox available. StartSpeed unknown.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
-		public MeterPerSquareSecond StartAcceleration => throw new VectoException("No Gearbox available. StartAcceleration unknown.");
+		public MeterPerSquareSecond StartAcceleration => throw new VectoException("No Gearbox available. StartAcceleration unknown.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
 		public Watt GearboxLoss()
 		{
-			throw new VectoException("No Gearbox available.");
+			throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 		}
 
-		public Second LastShift => throw new VectoException("No Gearbox available.");
+		public Second LastShift => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
-		public Second LastUpshift => throw new VectoException("No Gearbox available.");
+		public Second LastUpshift => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
-		public Second LastDownshift => throw new VectoException("No Gearbox available.");
+		public Second LastDownshift => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
 		public GearData GetGearData(uint gear)
 		{
-			throw new VectoException("No Gearbox available.");
+			throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 		}
 
-		public GearshiftPosition NextGear => throw new VectoException("No Gearbox available.");
+		public GearshiftPosition NextGear => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
 		public Second TractionInterruption => throw new NotImplementedException();
 
 		public uint NumGears => throw new NotImplementedException();
 		public bool Disengaged { get; }
 
-		public bool DisengageGearbox => throw new VectoException("No Gearbox available.");
+		public bool DisengageGearbox => throw new VectoException("No Gearbox available.", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 
 		public bool GearEngaged(Second absTime)
 		{

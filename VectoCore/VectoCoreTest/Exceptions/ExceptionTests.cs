@@ -30,8 +30,9 @@
 */
 
 using System;
-using TUGraz.VectoCommon.Exceptions;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 // ReSharper disable ObjectCreationAsStatement
 
@@ -44,19 +45,9 @@ namespace TUGraz.VectoCore.Tests.Exceptions
 		[TestCase]
 		public void Test_VectoExceptions()
 		{
-			new CSVReadException("Test");
-			new CSVReadException("Test", new Exception("Inner"));
-			new InvalidFileFormatException("Test");
-			new CSVReadException("Test", new Exception("Inner"));
-			new UnsupportedFileVersionException("Test");
-			new UnsupportedFileVersionException("Test", new Exception("Inner"));
-			new InvalidFileFormatException("Test");
-			new InvalidFileFormatException("Test", new Exception("Inner"));
-			new VectoException("Test");
-			new VectoException("Test", new Exception("Inner"));
-
-			new VectoSimulationException("Test");
-			new VectoSimulationException("Test", new Exception("Inner"));
+			new VectoException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, new Exception("Inner"));
+			new VectoSimulationException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE);
+			new VectoSimulationException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, new Exception("Inner"));
 		}
 	}
 }

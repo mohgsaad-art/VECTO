@@ -33,7 +33,7 @@ using System.IO;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
-using TUGraz.VectoCommon.Exceptions;
+using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
@@ -86,7 +86,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(inputFile);
 			var engineeringProvider = dataProvider as IEngineeringInputDataProvider;
 			if (engineeringProvider == null) {
-				throw new VectoException("Failed to cast to Engineering InputDataProvider");
+				throw new Exception("Failed to cast to Engineering InputDataProvider");
 			}
 			
             var reader = new EngineeringModeVectoRunDataFactory(engineeringProvider, DataAdapter);
@@ -112,7 +112,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(inputFile);
 			var provider = dataProvider as IDeclarationInputDataProvider;
 			if (provider == null) {
-				throw new VectoException("Failed to cast to Declaration InputDataProvider");
+				throw new Exception("Failed to cast to Declaration InputDataProvider");
 			}
 			var kernel = new StandardKernel(new VectoNinjectModule());
 			var reader = kernel.Get<IVectoRunDataFactoryFactory>()
@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				Assert.IsInstanceOf<ISimulationOutPort>(powerTrain.Cycle);
 				Assert.IsInstanceOf<Vehicle>(powerTrain.VehicleInfo);
 			} else {
-				AssertHelper.Exception<VectoException>(() => { reader.NextRun().ToList(); });
+				AssertHelper.Exception<Exception>(() => { reader.NextRun().ToList(); });
 			}
 		}
 
@@ -145,7 +145,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var engineeringProvider = dataProvider as IEngineeringInputDataProvider;
 			if (engineeringProvider == null)
 			{
-				throw new VectoException("Failed to cast to Engineering InputDataProvider");
+				throw new Exception("Failed to cast to Engineering InputDataProvider");
 			}
 			var reader = new EngineeringModeVectoRunDataFactory(engineeringProvider, DataAdapter);
 			var runData = reader.NextRun().First();

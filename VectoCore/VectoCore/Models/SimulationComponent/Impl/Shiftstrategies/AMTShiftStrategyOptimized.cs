@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			//accCurve = runData.DriverData.AccelerationCurve;
 			vehicleMass = RunData.VehicleData.TotalVehicleMass;
 			if (GearshiftParams == null) {
-				throw new VectoException("Parameters for shift strategy missing!");
+				throw new VectoException("Parameters for shift strategy missing!", ErrorCodes.SHIFTSTRATEGY_MISSING_PARAMETERS);
 			}
 
 			SetupVelocityDropPreprocessor(container);
@@ -82,7 +82,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			var runData = dataBus.RunData;
 			if (!(TestPowertrain.GetGearbox(AxleNumber.NOT_IN_AXLE_POWERTRAIN) is IAMTGearbox)) {
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetType().FullName);
+				throw new VectoException($"Unknown gearboxtype: {TestPowertrain.Container.GearboxesCtl.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN).GetType().FullName}",
+					ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 
 			// register pre-processors
@@ -106,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					_gearbox = value;
 					return;
 				}
-				throw new VectoException("This shift strategy can't handle gearbox of type {0}, expected {1}", value.GetType().Name, nameof(IAMTGearbox));
+				throw new VectoException($"This shift strategy can't handle gearbox of type {value.GetType().Name}, expected {nameof(IAMTGearbox)}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
             }
 		}
 

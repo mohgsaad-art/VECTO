@@ -247,7 +247,7 @@ namespace TUGraz.VectoCore.Utils
 			var prefix = "";
 			if (fuelData.FuelType == FuelType.NGPI || fuelData.FuelType == FuelType.NGCI) {
 				if (fuelData.TankSystem == null) {
-					throw new VectoException("No TankSystem specified!");
+					throw new VectoException("No TankSystem specified!", ErrorCodes.FUEL_MISSING_TANKSYSTEM);
 				}
 
 				prefix = fuelData.TankSystem.Value == TankSystem.Liquefied ? "L" : "C";
@@ -317,16 +317,16 @@ namespace TUGraz.VectoCore.Utils
 			if (resourceNode != null) {
 				filename = resourceNode.Attributes?.GetNamedItem(XMLNames.ExtResource_File_Attr).InnerText;
 				if (filename == null) {
-					throw new VectoException("{0} No filename provided!", xmlElement);
+					throw new VectoException($"{xmlElement} No filename provided!", ErrorCodes.XML_MISSING_ATTRIBUTE);
 				}
 
 				if (basePath == null) {
-					throw new VectoException("cannot read referenced file - job passed as stream!");
+					throw new VectoException("cannot read referenced file - job passed as stream!", ErrorCodes.FILE_FAILED_TO_READ);
 				}
 
 				var fullFilename = Path.Combine(basePath, filename);
 				if (!File.Exists(fullFilename)) {
-					throw new VectoException("{1} file not found: {0}", filename, xmlElement);
+					throw new FileNotFoundException($"{xmlElement} file not found: {filename}");
 				}
 
 				return VectoCSVFile.Read(fullFilename);

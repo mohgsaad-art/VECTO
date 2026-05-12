@@ -73,13 +73,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 							return isLowEntry == lowEntry;
 						}).ToList();
 				} else {
-					throw new VectoException("Multiple segments found! {0}", rows.Count);
+					throw new VectoException($"Multiple segments found! {rows.Count}", ErrorCodes.SYSTEM_NO_EXACT_MATCH);
 				}
 			}
 			
 			var row = rows.First();
 			if(!row.ParseBoolean("isvalid"))
-				throw new VectoException("Only invalid vehicles found!");
+				throw new VectoException("Only invalid vehicles found!", ErrorCodes.DECLARATIONDATA_INVALID_VEHICLE);
 			
 			var segment = new Segment {
 				Found =  true,

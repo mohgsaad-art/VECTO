@@ -77,7 +77,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             {
                 throw new VectoException(
                     $"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, " +
-                    $"DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+                    $"DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}", 
+					ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
             }
 
             var numGearsPowermap = iepcInput.VoltageLevels.Where(x => x.PowerMap != null).Select(x => Tuple.Create(x.VoltageLevel, x.PowerMap.Count)).ToArray();
@@ -88,13 +89,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             {
                 throw new VectoException(
                     $"Number of gears for voltage levels does not match! PowerMaps" +
-                    $": {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+                    $": {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}", ErrorCodes.IEPC_GEARS_MISMATCH);
             }
 
             if (numGearsDrag > 1 && numGearsDrag != gearCount)
             {
                 throw new VectoException(
-                    $"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+                    $"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}", ErrorCodes.IEPC_GEARS_MISMATCH);
             }
 
             return;
@@ -166,7 +167,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			{
 				return TransmissionLossMapReader.Create(gear.Efficiency, gear.Ratio, $"Gear {i + 1}");
 			}
-			throw new InvalidFileFormatException("Gear {0} LossMap missing.", i + 1);
+			throw new VectoException($"Gear {i + 1} LossMap missing.", ErrorCodes.FILE_INVALID_FORMAT);
 		}
 
 		internal TransmissionLossMap ReadAxleLossMap(IAxleGearInputData data, bool useEfficiencyFallback)
@@ -180,13 +181,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			{
 				if (data.LossMap == null)
 				{
-					throw new InvalidFileFormatException("LossMap for Axlegear is missing.");
+					throw new VectoException("LossMap for Axlegear is missing.", ErrorCodes.FILE_INVALID_FORMAT);
 				}
 				axleLossMap = TransmissionLossMapReader.Create(data.LossMap, data.Ratio, "Axlegear", true);
 			}
 			if (axleLossMap == null)
 			{
-				throw new InvalidFileFormatException("LossMap for Axlegear is missing.");
+				throw new VectoException("LossMap for Axlegear is missing.", ErrorCodes.FILE_INVALID_FORMAT);
 			}
 			return axleLossMap;
 		}
@@ -218,7 +219,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (maxTorqueCurve.MaxSpeed.IsSmaller(fullLoadCurve.MaxSpeed))
 			{
-				throw new VectoException("EM Torque limitation has to cover the whole speed range");
+				throw new VectoException("EM Torque limitation has to cover the whole speed range", ErrorCodes.ELECTRICMOTOR_BAD_TORQUE_LIMITATION);
 			}
 
 			var motorSpeeds = fullLoadCurve.FullLoadEntries.Select(x => x.MotorSpeed)

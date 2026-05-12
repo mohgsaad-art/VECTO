@@ -95,8 +95,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor {
 					return index;
 				}
 			}
-			throw new VectoException("angular velocity {0} exceeds full-load curve. min: {1} max: {2}", angularVelocity, FullLoadEntries.First().MotorSpeed, FullLoadEntries.Last().MotorSpeed);
-
+			throw new VectoException($"angular velocity {angularVelocity} exceeds full-load curve. min: {FullLoadEntries.First().MotorSpeed} max: {FullLoadEntries.Last().MotorSpeed}", 
+				ErrorCodes.ELECTRICMOTOR_INVALID_ANGULAR_VELOCITY);
 		}
 
 		public NewtonMeter MaxDriveTorque

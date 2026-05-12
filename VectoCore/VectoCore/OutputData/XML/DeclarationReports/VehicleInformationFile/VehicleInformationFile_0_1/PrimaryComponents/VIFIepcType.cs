@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 			var xmlIepc = iepc as AbstractCommonComponentType;
 			if (xmlIepc == null) {
-				throw new VectoException("IEPC requires input to be in XML format");
+				throw new VectoException("IEPC requires input to be in XML format", ErrorCodes.INPUT_NOT_XML);
 			}
 
 			var certificationMethod = xmlIepc.XMLSource

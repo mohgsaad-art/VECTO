@@ -48,8 +48,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				return result;
 			}
 
-			throw new VectoException("WHR Map: Interpolation failed. torque: {0}, n: {1}", torque.Value(),
-									engineSpeed.AsRPM);
+			throw new VectoException($"WHR Map: Interpolation failed. torque: {torque.Value()}, n: {engineSpeed.AsRPM}", ErrorCodes.ICE_WHR_MAP_INTERPOLATION_FAILED);
 		}
 	}
 

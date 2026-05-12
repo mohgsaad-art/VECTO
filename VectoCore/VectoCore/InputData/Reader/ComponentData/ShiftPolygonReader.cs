@@ -49,18 +49,18 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data);
 			} catch (Exception ex) {
-				throw new VectoException("ERROR while reading ShiftPolygon: " + ex.Message, ex);
+				throw new VectoException($"ERROR while reading ShiftPolygon: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, ex);
 			}
 		}
 
 		public static ShiftPolygon Create(DataTable data)
 		{
 			if (data.Columns.Count != 3) {
-				throw new VectoException("ShiftPolygon Data File must contain exactly 3 columns.");
+				throw new VectoException("ShiftPolygon Data File must contain exactly 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("ShiftPolygon must have at least two entries");
+				throw new VectoException("ShiftPolygon must have at least two entries.", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			List<ShiftPolygon.ShiftPolygonEntry> entriesDown, entriesUp;

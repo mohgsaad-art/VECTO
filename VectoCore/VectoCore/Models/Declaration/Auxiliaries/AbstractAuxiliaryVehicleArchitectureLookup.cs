@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
@@ -53,11 +54,12 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 		public bool IsApplicable(VectoSimulationJobType simType, string technology)
 		{
 			if (!GetTechnologies().Contains(technology)) {
-				throw new VectoException($"Auxiliary Lookup Error: Unknown technology: '{technology}' valid technologies are '{string.Join(",", GetTechnologies())}'");
+				throw new VectoException($"Auxiliary Lookup Error: Unknown technology: '{technology}' valid technologies are '{string.Join(",", GetTechnologies())}'",
+					ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 			}
 
 			if (!ArchitectureNameMapping.ContainsKey(simType)) {
-				throw new VectoException($"No Architecture mapping for {simType.ToString()}");
+				throw new VectoException($"No Architecture mapping for {simType.ToString()}", ErrorCodes.AUXILIARIES_UNEXPECTED_VEHICLE_TYPE);
 			}
 
 			var arch = ArchitectureNameMapping[simType];

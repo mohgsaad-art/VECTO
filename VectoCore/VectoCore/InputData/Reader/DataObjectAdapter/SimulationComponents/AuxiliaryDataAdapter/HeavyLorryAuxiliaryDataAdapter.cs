@@ -48,7 +48,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					"In Declaration Mode exactly {0} Auxiliaries must be defined for {2} vehicles: {1}",
 					AuxiliaryTypes.Count, string.Join(", ", AuxiliaryTypes.Select(aux => aux.ToString())), errorStringVehicleType);
 				Log.Error(error);
-				throw new VectoException(error);
+				throw new VectoException(error, ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			var alternatorEfficiency = DeclarationData.AlternatorEfficiency;
@@ -60,7 +60,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 				if (auxData == null)
 				{
-					throw new VectoException("Auxiliary {0} not found.", auxType);
+					throw new VectoException($"Auxiliary {auxType} not found.", ErrorCodes.AUXILIARIES_MISSING_TYPE);
 				}
 
 				var aux = new VectoRunData.AuxData
@@ -144,7 +144,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (!DeclarationData.PneumaticSystem.IsApplicable(jobType,
 					auxData.Technology.FirstOrDefault())) {
 				throw new VectoException(
-					$"Pneumatic system technology'{auxData.Technology.FirstOrDefault()}' is not applicable for '{jobType}'");
+					$"Pneumatic system technology'{auxData.Technology.FirstOrDefault()}' is not applicable for '{jobType}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			aux.PowerDemandMech = DeclarationData.PneumaticSystem.Lookup(mission, auxData.Technology.FirstOrDefault())
@@ -207,12 +207,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (!DeclarationData.SteeringPump.IsApplicable(auxData.Technology, jobType)) {
 				throw new VectoException(
-					$"At least one steering pump technology of '{string.Join(",", auxData.Technology)}' is not applicable for '{jobType}'");
+					$"At least one steering pump technology of '{string.Join(",", auxData.Technology)}' is not applicable for '{jobType}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			if (numSteeredAxles.HasValue && auxData.Technology.Count != numSteeredAxles.Value) {
 				throw new VectoException(
-					$"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})");
+					$"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			var powerDemand = DeclarationData.SteeringPump.Lookup(mission, hdvClass, auxData.Technology);
@@ -270,7 +270,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (!DeclarationData.Fan.IsApplicable(hdvClass, jobType, auxData.Technology.FirstOrDefault())) {
 				throw new VectoException(
-					$"Fan technology '{auxData.Technology.FirstOrDefault()}' is not applicable for '{jobType}'");
+					$"Fan technology '{auxData.Technology.FirstOrDefault()}' is not applicable for '{jobType}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
 			}
 
 			aux.PowerDemandMech = DeclarationData.Fan.LookupPowerDemand(hdvClass, mission, auxData.Technology.FirstOrDefault());

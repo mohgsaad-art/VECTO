@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				return DrivingCycleDataReader.ReadFromStream(cycle, CycleType.DistanceBased, "", false);
 			}
 
-			throw new VectoException($"Cycle data for mission type {missionType} not found!");
+			throw new Exception($"Cycle data for mission type {missionType} not found!");
 		}
 	}
 

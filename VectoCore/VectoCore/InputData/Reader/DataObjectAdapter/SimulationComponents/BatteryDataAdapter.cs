@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				
 				if (maxSoc <= minSoc)
 				{
-					throw new VectoException($"Battery: min SoC ({minSoc}) must be less than max SoC ({maxSoc}).");
+					throw new VectoException($"Battery: min SoC ({minSoc}) must be less than max SoC ({maxSoc}).", ErrorCodes.REESS_MINSOC_NOT_LESS_THAN_MAXSOC);
                 }
 			
 				var batteryData = new BatteryData() {
@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				if (!entry.REESSPack.DataSource.SourceType.IsOneOf(DataSourceType.JSONFile, DataSourceType.XMLFile,
 						DataSourceType.XMLEmbedded)) {
 					throw new VectoException(
-						$"Expected Datasource type to be JSONFile, XMLFile or XMLEmbedded but was {entry.REESSPack.DataSource.SourceType}");
+						$"Expected Datasource type to be JSONFile, XMLFile or XMLEmbedded but was {entry.REESSPack.DataSource.SourceType}", ErrorCodes.REESS_INVALID_DATASOURCE_TYPE);
 				};
 #endif
 

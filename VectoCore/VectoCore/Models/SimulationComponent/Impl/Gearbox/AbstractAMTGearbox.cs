@@ -1,4 +1,5 @@
-﻿using TUGraz.VectoCommon.Exceptions;
+﻿using System;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -64,8 +65,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 		public AbstractAMTGearbox(IVehicleContainer container, IPowertrainContainer powertrainContainer, IShiftStrategy strategy) : this(container, powertrainContainer, strategy, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+				throw new Exception("This class shall not be used in a testpowertrain - use the dedicated class instead!");
 			}
 		}
 
@@ -463,9 +463,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 						ModelData.Gears[Gear.Gear].Ratio);
 					if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
 						throw new VectoException(
-							"Gear {0} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n:{1}, torque:{2}, ratio:{3}",
-							Gear, CurrentState.InAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.InTorque,
-							ModelData.Gears[Gear.Gear].Ratio);
+							$"Gear {Gear} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: " +
+							$"n:{CurrentState.InAngularVelocity.ConvertToRoundsPerMinute()}, torque:{CurrentState.InTorque}, ratio:{ModelData.Gears[Gear.Gear].Ratio}",
+							ErrorCodes.GEARBOX_LOSS_MAP_EXTRAPOLATED);
 					}
 				}
 			}

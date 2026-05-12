@@ -37,6 +37,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML.Common;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
@@ -86,7 +87,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					return ptoTech;
 				}
 
-				throw new VectoException("PTO Technology {0} invalid!", ptoTech);
+				throw new VectoException($"PTO Technology {ptoTech} invalid!", ErrorCodes.XML_BAD_DATA);
 			}
 		}
 

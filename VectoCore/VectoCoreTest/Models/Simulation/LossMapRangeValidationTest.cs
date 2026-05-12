@@ -337,7 +337,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
             var jobContainer = new JobContainer(null);
 
-			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));
+			AssertHelper.Exception(() => jobContainer.AddRuns(runsFactory), ErrorCodes.FILE_INVALID_FORMAT);
 		}
 
 		/// <summary>
@@ -350,7 +350,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
 			var jobContainer = new JobContainer(null);
 
-			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));
+			AssertHelper.Exception(() => jobContainer.AddRuns(runsFactory), ErrorCodes.FILE_INVALID_FORMAT);
 		}
 	}
 }

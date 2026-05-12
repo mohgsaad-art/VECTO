@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				if (throwExceptionOnFailure)
 				{
                     Log.Fatal(errorMessage);
-                    throw new VectoException(errorMessage, e);
+                    throw new VectoException(errorMessage, ErrorCodes.SYSTEM_INVALID_OPERATION, e);
                 }
 			}
 
@@ -290,7 +290,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var trailerWeightShares = row.Field<string>("traileraxles" + GetMissionSuffix(missionType)).Split('/');
 				if (trailerList.Length != trailerWeightShares.Length) {
 					throw new VectoException(
-						"Error in segmentation table: number of trailers and list of weight shares does not match!");
+						"Error in segmentation table: number of trailers and list of weight shares does not match!", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 
 				trailers.AddRange(
@@ -300,7 +300,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					var trailerColumn = missionType == MissionType.Construction ? "trailerconstruction" : "trailer";
 					var trailerValue = row.Field<string>(trailerColumn);
 					if (string.IsNullOrWhiteSpace(trailerValue)) {
-						throw new VectoException("Error in segmentation table: trailer weight share is defined but not trailer type!");
+						throw new VectoException("Error in segmentation table: trailer weight share is defined but not trailer type!", ErrorCodes.DATATABLE_INVALID_DATA);
 					}
 
 					trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType), true));

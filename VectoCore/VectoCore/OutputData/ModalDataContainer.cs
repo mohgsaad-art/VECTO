@@ -994,7 +994,7 @@ namespace TUGraz.VectoCore.OutputData
 			try {
 				return Data.FuelColumns[fuelData][mrf].ColumnName;
 			} catch (KeyNotFoundException e) {
-				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}", e);
+				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 			}
 		}
 
@@ -1009,14 +1009,14 @@ namespace TUGraz.VectoCore.OutputData
 				try {
 					return CurrentRow[Data.FuelColumns[fuel][key]];
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 				}
 			}
 			set {
 				try {
 					CurrentRow[Data.FuelColumns[fuel][key]] = value;
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 				}
 			}
 		}
@@ -1050,7 +1050,7 @@ namespace TUGraz.VectoCore.OutputData
 		{
 			get {
 				if (!ModalResults.BatterySignals.Contains(key)) {
-					throw new VectoException("ModalResult with index is only supported for REESS fields");
+					throw new VectoException("ModalResult with index is only supported for REESS fields", ErrorCodes.MODALDATA_UNSUPPORTED_INDEX);
 				}
 
 				return idx.HasValue ? CurrentRow[$"{key.GetCaption()}_{idx.Value}"] : CurrentRow[key.GetName()];
@@ -1060,13 +1060,13 @@ namespace TUGraz.VectoCore.OutputData
 					CurrentRow[key.GetName()] = value;
 				} else {
 					if (!ModalResults.BatterySignals.Contains(key)) {
-						throw new VectoException("ModalResult with index is only supported for REESS fields");
+						throw new VectoException("ModalResult with index is only supported for REESS fields", ErrorCodes.MODALDATA_UNSUPPORTED_INDEX);
 					}
 
 					var entry = Data.BatteryColumns.GetVECTOValueOrDefault(idx.Value, null);
 					var col = entry?.GetVECTOValueOrDefault(key, null);
 					if (col == null) {
-						throw new VectoException($"Column {key.GetName()} with index {idx} not found");
+						throw new VectoException($"Column {key.GetName()} with index {idx} not found", ErrorCodes.MODALDATA_COLUMN_NOT_FOUND);
 					}
 
 					CurrentRow[col] = value;

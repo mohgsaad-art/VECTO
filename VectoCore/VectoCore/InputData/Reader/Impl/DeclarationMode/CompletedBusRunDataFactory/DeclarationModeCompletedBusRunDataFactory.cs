@@ -179,23 +179,24 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					simulationRunData.Mission.BusParameter.BusGroup, simulationRunData.Mission.MissionType, fuelMode,
 					simulationRunData.VehicleData.Loading, ovcHevMode);
 
-				if (primaryResult == null) {
+				var group = simulationRunData.Mission.BusParameter.BusGroup;
+				var mission = simulationRunData.Mission.MissionType;
+				var payload = simulationRunData.VehicleData.Loading;
+
+                if (primaryResult == null) {
 					throw new VectoException(
-						"Failed to find results in PrimaryVehicleReport for vehicle group: {0},  mission: {1}, fuel mode: '{2}', payload: {3}. Make sure PIF and completed vehicle data match!",
-						simulationRunData.Mission.BusParameter.BusGroup, simulationRunData.Mission.MissionType, fuelMode,
-						simulationRunData.VehicleData.Loading);
+						$"Failed to find results in PrimaryVehicleReport for vehicle group: {group},  mission: {mission}, fuel mode: '{fuelMode}', payload: {payload}. " +
+						"Make sure PIF and completed vehicle data match!", ErrorCodes.VECTORUNDATAFACTORY_NO_RESULTS_IN_PRIMARY_VEHICLE_REPORT);
 				}
 				if (primaryResult.ResultStatus == ResultStatus.PrimaryRunIgnored) {
 					throw new VectoException(
-						"The vehicle group of the complete(d) vehicle falls into a primary vehicle sub-group for which no result could be calculated due to the criterion of insufficient powertrain power.   mission: {1}, fuel mode: '{2}', payload: {3}.",
-						simulationRunData.Mission.BusParameter.BusGroup, simulationRunData.Mission.MissionType, fuelMode,
-						simulationRunData.VehicleData.Loading);
+						$"The vehicle group of the complete(d) vehicle falls into a primary vehicle sub-group for which no result could be calculated due to the criterion " +
+						"of insufficient powertrain power.   mission: {mission}, fuel mode: '{fuelMode}', payload: {payload}.", ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_IGNORED);
 				}
 				if (primaryResult.ResultStatus != ResultStatus.Success) {
 					throw new VectoException(
-						"Simulation results in PrimaryVehicleReport for vehicle group: {0},  mission: {1}, fuel mode: '{2}', payload: {3} not finished successfully.",
-						simulationRunData.Mission.BusParameter.BusGroup, simulationRunData.Mission.MissionType, fuelMode,
-						simulationRunData.VehicleData.Loading);
+						$"Simulation results in PrimaryVehicleReport for vehicle group: {group},  mission: {mission}, fuel mode: '{fuelMode}', payload: {payload} not finished successfully.",
+                        ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_FAILED);
 				}
 
 				return primaryResult;
@@ -206,12 +207,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				var segment = DeclarationData.CompletedBusSegments.Lookup(
 					PrimaryVehicle.AxleConfiguration.NumAxles(), CompletedVehicle.VehicleCode, CompletedVehicle.RegisteredClass, CompletedVehicle.NumberPassengerSeatsLowerDeck,
 					CompletedVehicle.Height, CompletedVehicle.LowEntry);
-				if (!segment.Found) {
+				
+				if (!segment.Found) 
+				{
 					throw new VectoException(
-						"no segment found for vehicle configruation: vehicle category: {0}, axle configuration: {1}, articulated: {2}, vehicle code: {3}, registered class: {4}, passengersLowerDeck: {5}, height: {6}, lowEntry: {7}. completed",
-						CompletedVehicle.VehicleCategory, PrimaryVehicle.AxleConfiguration,
-						CompletedVehicle.Articulated, CompletedVehicle.VehicleCode, CompletedVehicle.RegisteredClass.GetLabel(), CompletedVehicle.NumberPassengerSeatsLowerDeck,
-						CompletedVehicle.Height, CompletedVehicle.LowEntry);
+						$"no segment found for vehicle configruation: vehicle category: {CompletedVehicle.VehicleCategory}, axle configuration: {PrimaryVehicle.AxleConfiguration}, " +
+						$"articulated: {CompletedVehicle.Articulated}, vehicle code: {CompletedVehicle.VehicleCode}, registered class: {CompletedVehicle.RegisteredClass.GetLabel()}, " +
+						$"passengersLowerDeck: {CompletedVehicle.NumberPassengerSeatsLowerDeck}, height: {CompletedVehicle.Height}, lowEntry: {CompletedVehicle.LowEntry}. completed",
+						ErrorCodes.VECTORUNDATAFACTORY_SEGMENT_NOT_FOUND);
 				}
 
 				return segment;
@@ -390,20 +393,20 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, Segment primarySegment, int? modeIdx,
 				OvcHevMode ovcHevMode)
 			{
-				throw new VectoException("Dummy implementation");
-			}
+                throw new NotImplementedException();
+            }
 
 			protected override VectoRunData CreateVectoRunDataSpecific(Mission mission,
 				KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, int? modeIdx,
 				OvcHevMode ovcMode = OvcHevMode.NotApplicable)
 			{
-				throw new VectoException("Dummy implementation");
-			}
+                throw new NotImplementedException();
+            }
 
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
-				throw new VectoException("Dummy implementation");
-			}
+                throw new NotImplementedException();
+            }
 
 			#endregion
 
@@ -1133,7 +1136,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 var req = PrimaryVehicle.ArchitectureID != ArchitectureID.F4;
                 if (req && PrimaryVehicle.Components.AxleGearInputData == null)
                 {
-                    throw new VectoException("Axlegear required");
+                    throw new VectoException("Axlegear required", ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
                 }
                 return req;
             }
@@ -1243,7 +1246,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				if (axleGearRequired && vehicle.Components.AxleGearInputData == null)
                 {
                     throw new VectoException(
-                        $"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+                        $"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}", 
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
                 }
 
                 return axleGearRequired || vehicle.Components.AxleGearInputData != null;
@@ -1390,7 +1394,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 			{
 				var req = PrimaryVehicle.ArchitectureID != ArchitectureID.E4;
 				if (req && PrimaryVehicle.Components.AxleGearInputData == null) {
-					throw new VectoException("Axlegear required");
+					throw new VectoException("Axlegear required", ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 				return req;
 			}
@@ -1490,7 +1494,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				if (axleGearRequired && vehicle.Components.AxleGearInputData == null)
 				{
 					throw new VectoException(
-						$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+						$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}", 
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 
 				//var numGearsPowermap =

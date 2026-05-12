@@ -42,8 +42,8 @@ Public Class IHPCInputData
         _inertia = inertia.ToDouble().SI(Of KilogramSquareMeter)
         Dim tmp as SubPath = new SubPath()
         tmp.Init(GetPath(_filePath), dragCurveFilePath)
-        If Not File.Exists(tmp.FullPath) Then 
-            Throw New VectoException("Drag Curve is missing or invalid")
+        If Not File.Exists(tmp.FullPath) Then
+            Throw New VectoException("Drag Curve is missing or invalid", ErrorCodes.IHPC_DRAG_CURVE_MISSING)
         Else
             _dragCurve = VectoCSVFile.Read(tmp.FullPath)
         End If
@@ -65,8 +65,8 @@ Public Class IHPCInputData
         level.OverloadTestSpeed = overloadTorqueSpeed.ToDouble().RPMtoRad()
         Dim tmp as SubPath = new SubPath()
         tmp.Init(GetPath(_filePath), fullLoadCurve)
-        If Not File.Exists(tmp.FullPath) Then 
-            Throw New VectoException("Full-Load Curve is missing or invalid")
+        If Not File.Exists(tmp.FullPath) Then
+            Throw New VectoException("Full-Load Curve is missing or invalid", ErrorCodes.IHPC_FULL_LOAD_CURVE_MISSING)
         Else
             level.FullLoadCurve = New List(Of IElectricMotorLoadCurve) From {New ElectricMotorLoadCurve With {.LoadCurve = VectoCSVFile.Read(tmp.FullPath), .Gear = 0}}
         End If
@@ -85,7 +85,7 @@ Public Class IHPCInputData
             Dim tmp as SubPath = new SubPath()
             tmp.Init(GetPath(_filePath), entry.SubItems(1).Text)
             If Not File.Exists(tmp.FullPath) Then
-                Throw New VectoException("Power Map is missing or invalid")
+                Throw New VectoException("Power Map is missing or invalid", ErrorCodes.IHPC_POWER_MAP_MISSING)
             Else 
                 currentEntry.PowerMap = VectoCSVFile.Read(tmp.FullPath)
             End If

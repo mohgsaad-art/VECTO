@@ -3,6 +3,7 @@ using NLog.Fluent;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.Interfaces;
 using TUGraz.VectoCore.Models.GenericModelData;
@@ -45,7 +46,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 								angledriveData.Angledrive.LossMap = TransmissionLossMapReader.Create(data.Efficiency,
 									data.Ratio, "Angledrive");
 							} else {
-								throw new VectoException("Angledrive: LossMap not found.", ex);
+								throw new VectoException("Angledrive: LossMap not found.", ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND, ex);
 							}
 						}
 
@@ -54,7 +55,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 						throw new ArgumentOutOfRangeException(nameof(data), "Unknown Angledrive Type.");
 				}
 			} catch (Exception e) {
-				throw new VectoException("Error while reading Angledrive data: {0}", e.Message, e);
+				throw new VectoException($"Error while reading Angledrive data: {e.Message}", e.GetErrorCode(), e);
 			}
 		}
 

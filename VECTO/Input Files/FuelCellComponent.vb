@@ -67,7 +67,7 @@ Public Class FuelCellComponent
     Public ReadOnly Property MassFlowMap As TableData Implements IFuelCellComponentEngineeringInputData.MassFlowMap
         Get
             If Not File.Exists(MassFlowMapFile) Then _
-                Throw New VectoException("Mass flow map file is missing or invalid")
+                Throw New VectoException("Mass flow map file is missing or invalid", ErrorCodes.FUELCELL_MASS_FLOW_MAP_MISSING)
             Return VectoCSVFile.Read(MassFlowMapFile)
         End Get
     End Property

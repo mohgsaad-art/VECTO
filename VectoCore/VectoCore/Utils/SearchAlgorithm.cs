@@ -151,7 +151,7 @@ namespace TUGraz.VectoCore.Utils
 						LogManager.EnableLogging();
 						log.Debug("LineSearch aborted due to abortCriterion: {0}", result);
 						LogManager.DisableLogging();
-						throw new VectoSearchAbortedException("LineSearch");
+						throw new VectoException("LineSearch", ErrorCodes.SEARCH_ABORTED);
 					}
 					y = getYValue(result);
 					var criterionResult = criterion(result);
@@ -181,7 +181,7 @@ namespace TUGraz.VectoCore.Utils
 			log.Error("Exceeded max iterations when searching for operating point!");
 #endif
 			WriteSearch(debug, "LineSearch.csv");
-			throw new VectoSearchFailedException("Failed to find operating point! points: {0}", debug.LocalData.Select(d => d.b).Join());
+			throw new VectoException($"Failed to find operating point! points: {debug.LocalData.Select(d => d.b).Join()}", ErrorCodes.SEARCH_FAILED);
 		}
 
 		[Conditional("VECTOTRACE")]
@@ -241,7 +241,7 @@ namespace TUGraz.VectoCore.Utils
 					LogManager.EnableLogging();
 					log.Debug("InterpolateSearch aborted due to abortCriterion: {0}", result);
 					LogManager.DisableLogging();
-					throw new VectoSearchAbortedException("InterpolateLinearSearch");
+					throw new VectoException("InterpolateLinearSearch", ErrorCodes.SEARCH_ABORTED);
 				}
 				if (criterion(result).IsEqual(0, Constants.SimulationSettings.InterpolateSearchTolerance)) {
 					LogManager.EnableLogging();
@@ -272,7 +272,7 @@ namespace TUGraz.VectoCore.Utils
 						log.Debug("InterpolateSearch could not get more exact. Aborting after {0} function calls.", count);
 						LogManager.DisableLogging();
 						AppendDebug(debug);
-						throw new VectoSearchAbortedException("InterpolateLinearSearch: y-Value constant");
+						throw new VectoException("InterpolateLinearSearch: y-Value constant", ErrorCodes.SEARCH_ABORTED);
 					}
 
 					result = evaluateFunction(x2.SI<T>());
@@ -282,7 +282,7 @@ namespace TUGraz.VectoCore.Utils
 						LogManager.EnableLogging();
 						log.Debug("InterpolateSearch aborted due to abortCriterion: {0}", result);
 						LogManager.DisableLogging();
-						throw new VectoSearchAbortedException("InterpolateLinearSearch: AbortCriterion true");
+						throw new VectoException("InterpolateLinearSearch: AbortCriterion true", ErrorCodes.SEARCH_ABORTED);
 					}
 					if (criterion(result).IsEqual(0, Constants.SimulationSettings.InterpolateSearchTolerance)) {
 						debug.Add($"[SA.IS-5-{iterationCount}] - success",
@@ -305,7 +305,7 @@ namespace TUGraz.VectoCore.Utils
 			log.Error("InterpolateSearch exceeded max iterations when searching for operating point!");
 #endif
 			WriteSearch(debug, "InterpolateSearch.csv");
-			throw new VectoSearchFailedException("Failed to find operating point! points: {0}", debug.LocalData.Select(d => d.b).Join());
+			throw new VectoException($"Failed to find operating point! points: {debug.LocalData.Select(d => d.b).Join()}", ErrorCodes.SEARCH_FAILED);
 		}
 
 		[Conditional("VECTOTRACE")]
@@ -424,7 +424,7 @@ namespace TUGraz.VectoCore.Utils
 
 
 
-			throw new VectoException("Binary search failed");
+			throw new VectoException("Binary search failed", ErrorCodes.SEARCH_FAILED);
 		}
 
 		public static void BinarySearch<T>(T xStart, T xEnd, Func<T, object> evaluateFunction,
@@ -451,7 +451,7 @@ namespace TUGraz.VectoCore.Utils
 				}
 			}
 
-			throw new VectoSearchFailedException("Binary Search did not find a solution after {0} iterations", maxIterations);
+			throw new VectoException($"Binary Search did not find a solution after {maxIterations} iterations", ErrorCodes.SEARCH_FAILED);
 		}
 	}
 }

@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public virtual bool UpdateFrom(object other)
         {
             if (!DataBus.IsTestPowertrain) {
-                throw new VectoException("Only components in a testpowertrain are allowed to be updated!");
+                throw new Exception("Only components in a testpowertrain are allowed to be updated!");
             }
 
             return DoUpdateFrom(other);

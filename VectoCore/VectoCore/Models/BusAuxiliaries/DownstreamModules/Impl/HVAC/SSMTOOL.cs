@@ -15,7 +15,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
 		public SimpleSSMTool(ISSMInputs ssmInput)
 		{
 			if (!(ssmInput is ISSMEngineeringInputs)) {
-				throw new VectoException("SSM Inputs are not in engineering mode!");
+				throw new VectoException("SSM Inputs are not in engineering mode!", ErrorCodes.AUXILIARIES_INPUT_WRONG_MODE);
 			}
 
 			_ssmInput = ssmInput as ISSMEngineeringInputs;
@@ -44,7 +44,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
 		{
 			SSMInputs = ssmInput as ISSMDeclarationInputs;
 			if (SSMInputs == null) {
-				throw new VectoException("SSM Inputs are not in declaration mode!");
+				throw new VectoException("SSM Inputs are not in declaration mode!", ErrorCodes.AUXILIARIES_INPUT_WRONG_MODE);
 			}
 
 			TechList = SSMInputs.Technologies;

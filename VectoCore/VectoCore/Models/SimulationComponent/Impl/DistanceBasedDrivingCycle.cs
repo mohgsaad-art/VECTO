@@ -87,11 +87,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CycleIntervalIterator.Reset();
 			
 			InitState(vehicleContainer);
-			if (!(Initialize() is ResponseSuccess)) {
-				throw new VectoException("Initialization failed");
+			
+			if (!(Initialize() is ResponseSuccess)) 
+			{
+				throw new VectoException("Initialization failed", ErrorCodes.VECTORUN_INITIALIZATION_FAILED);
 			}
-
-			;
 		}
 
 		#endregion
@@ -122,7 +122,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				catch (Exception)
 				{
 					throw new VectoException(
-						"Different Start and StartAcceleration not supported for multiple powertrains");
+						"Different Start and StartAcceleration not supported for multiple powertrains", ErrorCodes.CYCLE_INVALID_START_SPEED_AND_ACCELERATION);
 				}
 			}
 			else
@@ -150,7 +150,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var retVal = NextComponent.Initialize(StartSpeed,
 					Left.RoadGradient, StartAcceleration);
 				if (!(retVal is ResponseSuccess)) {
-					throw new UnexpectedResponseException("DistanceBasedDrivingCycle.Initialize: Couldn't find start gear.", retVal);
+					throw new VectoSimulationException($"DistanceBasedDrivingCycle.Initialize: Couldn't find start gear.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 			}
 
@@ -246,7 +246,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (!Left.VehicleTargetSpeed.IsEqual(0)) {
 					Log.Warn("Stopping Time requested in cycle but target-velocity not zero. distance: {0}, target speed: {1}",
 						Left.StoppingTime, Left.VehicleTargetSpeed);
-					throw new VectoSimulationException("Stopping Time only allowed when target speed is zero!");
+					throw new VectoSimulationException("Stopping Time only allowed when target speed is zero!", ErrorCodes.CYCLE_STOPPING_TIME_NOT_ALLOWED_WITH_POSITIVE_SPEED);
 				}
 				var dt = GetStopTimeInterval();
 				if (dt == null) {
@@ -387,7 +387,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (CurrentState.Response != null && !(CurrentState.Response is ResponseSuccess)) {
-				throw new VectoSimulationException("Previous request did not succeed!");
+				throw new VectoSimulationException("Previous request did not succeed!", ErrorCodes.VECTORUN_PREVIOUS_REQUEST_FAILED);
 			}
 
 			PreviousState = CurrentState;

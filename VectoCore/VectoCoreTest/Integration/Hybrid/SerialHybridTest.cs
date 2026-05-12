@@ -711,7 +711,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			switch (pos) {
 				case PowertrainPosition.HybridPositionNotSet:
-					throw new VectoException("invalid powertrain position");
+					throw new Exception("invalid powertrain position");
 				case PowertrainPosition.BatteryElectricE2:
 					var gearbox = gearboxType.AutomaticTransmission()
 						? (IHybridControlledGearbox)new APTGearbox(container, powertrainContainer, ctl.ShiftStrategy)
@@ -755,7 +755,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				case PowertrainPosition.HybridP3:
 				case PowertrainPosition.HybridP4:
 				
-					throw new VectoException("testcase does not support parallel powertrain configurations");
+					throw new Exception("testcase does not support parallel powertrain configurations");
 				default:
 					throw new ArgumentOutOfRangeException(nameof(pos), pos, null);
 			}

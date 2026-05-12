@@ -136,8 +136,8 @@ Public Class BusAuxEngineeringParams
                 Return Nothing
             End If
             If Not file.Exists(CompressorMap.FullPath) Then
-             Throw new VectoException("Compressor Map is missing or invalid")               
-        End If
+                Throw New VectoException("Compressor Map is missing or invalid", ErrorCodes.AUXILIARIES_COMPRESSOR_MAP_MISSING)
+            End If
         Return VectoCSVFile.Read(CompressorMap.FullPath)
     End Get
     End Property

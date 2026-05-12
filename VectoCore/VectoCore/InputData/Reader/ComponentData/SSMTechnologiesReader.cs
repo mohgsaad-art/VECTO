@@ -33,9 +33,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static List<SSMTechnology> Create(DataTable data, string fileName)
 		{
 			if (!HeaderIsValid(data.Columns)) {
-				throw new VectoException("invalid header for techlist file. Expected: {0}, Got: {1}",
-					headerCols.Join(),
-					data.Columns.Cast<DataColumn>().Join());
+				throw new VectoException($"invalid header for techlist file. Expected: {headerCols.Join()}, Got: {data.Columns.Cast<DataColumn>().Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			var retVal = new List<SSMTechnology>();

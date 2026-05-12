@@ -2,6 +2,7 @@
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
@@ -39,11 +40,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         case VectoSimulationJobType.Multiple_SHEV:
                         case VectoSimulationJobType.Multiple_FCHV:
                             throw new VectoException(
-                                "Gearboxes for vehicles with multiple powertrains should me simulated as APT-N");      
+                                "Gearboxes for vehicles with multiple powertrains should me simulated as APT-N", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_VEHICLE);
                         default:
 							throw new VectoException(
-                                "no default gearshift strategy available for gearbox type {0} and job type {1}",
-                                gearboxType, jobType);
+                                $"no default gearshift strategy available for gearbox type {gearboxType} and job type {jobType}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_VEHICLE);
                     }
                 case GearboxType.MT:
                     return MTShiftStrategy.Name;
@@ -63,9 +63,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						case VectoSimulationJobType.FCHV_IEPC:
 							return FCHVAPTNShiftStrategy.Name;
                         default:
-                            throw new VectoException(
-                                "no default gearshift strategy available for gearbox type {0} and job type {1}",
-                                gearboxType, jobType);
+                            throw new VectoException($"no default gearshift strategy available for gearbox type {gearboxType} and job type {jobType}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_VEHICLE);
                     }
                 case GearboxType.APTN:
                     switch (jobType) {

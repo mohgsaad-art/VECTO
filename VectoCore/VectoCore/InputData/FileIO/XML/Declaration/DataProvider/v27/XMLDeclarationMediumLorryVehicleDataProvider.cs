@@ -18,7 +18,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if ((VehicleCategory == VehicleCategory.Van) && !ElementExists(XMLNames.Vehicle_CargoVolume))
             {
-                throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!");
+                throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!", ErrorCodes.XML_MISSING_NODE);
             }
         }
 
@@ -55,7 +55,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC && BatteryOnlyMode)
             {
-                throw new VectoException("For PHEV vehicles, BatteryOnlyMode should be false if OVC is false.");
+                throw new VectoException("For PHEV vehicles, BatteryOnlyMode should be false if OVC is false.", ErrorCodes.XML_BAD_DATA);
             }
         }
 
@@ -118,12 +118,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC)
             {
-                throw new VectoException("OVC must be set to true for PEVs.");
+                throw new VectoException("OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
             }
 
             if (!BatteryOnlyMode)
             {
-                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.");
+                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
             }
         }
 

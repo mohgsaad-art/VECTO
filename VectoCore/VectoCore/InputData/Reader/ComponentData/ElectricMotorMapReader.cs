@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var entries = (from DataRow row in data.Rows select CreateEntry(row)).ToList();
 			var duplicates = entries.GroupBy(x => Tuple.Create(x.MotorSpeed, x.Torque)).Where(g => g.Count() > 1).Select(x => x.Key).ToArray();
 			if (duplicates.Length > 0) {
-				throw new VectoException("Duplicate entries in EM power map: {0}", duplicates.Select(x => $"{x.Item1.AsRPM} rpm / {x.Item2}").Join());
+				throw new VectoException($"Duplicate entries in EM power map: {duplicates.Select(x => $"{x.Item1.AsRPM} rpm / {x.Item2}").Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
 			}
 
 			var highEff = entries.Where(x => !x.Torque.IsEqual(0) && !x.MotorSpeed.IsEqual(0))
@@ -48,10 +48,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						: x.PowerElectrical / (x.MotorSpeed * x.Torque))).Where(x => x.Item2.IsGreater(1)).ToArray();
 			if (highEff.Any(x => x.Item2.IsGreater(2))) {
 				if (mode == ExecutionMode.Declaration) {
-					throw new VectoException("Electric power map contains entries with efficiencies > 2! {1} entries: {0}",
-						highEff.Select(x =>
-							$"{x.Item1.MotorSpeed.AsRPM} rpm {x.Item1.Torque} => {x.Item1.PowerElectrical}").Join(),
-						highEff.Length);
+					throw new VectoException($"Electric power map contains entries with efficiencies > 2! {highEff.Length} entries: " +
+						$"{highEff.Select(x => $"{x.Item1.MotorSpeed.AsRPM} rpm {x.Item1.Torque} => {x.Item1.PowerElectrical}").Join()}", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 
 				LogManager.GetLogger(typeof(ElectricMotorMapReader).FullName).Debug(
@@ -83,7 +81,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						0,
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
 				}
 			}
 
@@ -94,7 +92,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						entry.MotorSpeed.Value(),
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
 				}
 			}
 
@@ -116,7 +114,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 			if (speeds.Count <= 2) {
 				throw new VectoException(
-						"Failed to generate electric power map - at least three speed entries > 0 are required!");
+						"Failed to generate electric power map - at least three speed entries > 0 are required!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 			var lowerSpeed = speeds.First().RPMtoRad() / 2.0;
 			var upperSpeed = speeds.First().RPMtoRad() + (speeds[1] - speeds.First()).RPMtoRad() / 2.0;
@@ -126,7 +124,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			// entries at 0 rpm grid point
 			var torquesZeroRpm = entries.Where(x => x.MotorSpeed.IsEqual(0)).OrderBy(x => x.Torque).ToList();
 			if (torquesZeroRpm.Count == 0) {
-				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!");
+				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			var entriesZero = new List<EfficiencyMap.Entry>();
@@ -138,7 +136,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var negTorque = torquesMinRpm.Where(x => x.Torque <= 0).OrderBy(x => x.Torque).ToList();
 				if (negTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electric power map - at least two negative entries are required");
+						"Failed to generate electric power map - at least two negative entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(negTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),
@@ -158,7 +156,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var posTorque = torquesMinRpm.Where(x => x.Torque >= 0).OrderBy(x => x.Torque).Reverse().ToList();
 				if (posTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electrip power map - at least two positive entries are required");
+						"Failed to generate electrip power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(posTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),

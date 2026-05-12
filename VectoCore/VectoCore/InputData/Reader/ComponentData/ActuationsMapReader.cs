@@ -30,15 +30,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static IActuationsMap Create(DataTable data, string source)
 		{
 			if (!HeaderIsValid(data.Columns)) {
-				throw new VectoException("Invalid header for pneumatic actuations. expected: {0}, got: {1}",
-					Header.Join(), data.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Join());
+				throw new VectoException($"Invalid header for pneumatic actuations. expected: {Header.Join()}, got: {data.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Join()}",
+					ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			var retVal = new Dictionary<MissionType, IActuations>();
 			foreach (DataRow row in data.Rows) {
 				var key = row.Field<string>(Fields.CycleName).ParseEnum<MissionType>();
 				if (retVal.ContainsKey(key)) {
-					throw new VectoException("Duplicate entries in actuations map! {0} / {1}", key.GetLabel());
+					throw new VectoException($"Duplicate entries in actuations map! {key.GetLabel()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
 				}
 
 				var entry = new Actuations {

@@ -76,22 +76,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			
 			if (AxleNumber == int.MinValue)
 			{
-				throw new VectoException($"{JsonKeys.Vehicle_AxlePowertrain_AxleNumber} not defined in {JsonKeys.Vehicle_AxlePowertrains}");
+				throw new VectoException($"{JsonKeys.Vehicle_AxlePowertrain_AxleNumber} not defined in {JsonKeys.Vehicle_AxlePowertrains}", ErrorCodes.JSON_UNDEFINED_AXLENUMBER);
 			}
 
 			if (Architecture == ArchitectureID.UNKNOWN)
 			{
-				throw new VectoException($"Architecture bad or missing in {JsonKeys.Vehicle_AxlePowertrains}");
+				throw new VectoException($"Architecture bad or missing in {JsonKeys.Vehicle_AxlePowertrains}", ErrorCodes.JSON_INVALID_ARCHITECTURE);
 			}
 
 			if (Architecture.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
 			{
-                throw new VectoException($"Architecture {Architecture} is not supported yet!");
+                throw new VectoException($"Architecture {Architecture} is not supported yet!", ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE);
             }
 
 			if (Architecture.IsIEPC() && (IEPCEngineeringInputData.Gears.Count > 1))
 			{
-                throw new VectoException($"Architecture {Architecture} with multiple gears is not supported yet!");
+                throw new VectoException($"Architecture {Architecture} with multiple gears is not supported yet!", ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE);
             }
 		}
 
@@ -143,7 +143,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read TCU file '{tcuFile}': {e.Message}", e);
+				throw new VectoException($"JobFile: Failed to read TCU file '{tcuFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read Gearbox file '{gearboxFile}': {e.Message}", e);
+				throw new VectoException($"JobFile: Failed to read Gearbox file '{gearboxFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read IEPC file '{iepcFile}': {e.Message}", e);
+				throw new VectoException($"JobFile: Failed to read IEPC file '{iepcFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
 			}
 		}
 
@@ -298,13 +298,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				catch (Exception e)
 				{
 					Log.Warn("Failed to read file {0} {1}", Path.Combine(_basePath, filename), tableType);
-					throw new VectoException("Failed to read file for {0}: {1}", e, tableType, filename);
+					throw new VectoException($"Failed to read file for {tableType}: {filename}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
 				}
 			}
 
 			if (required)
 			{
-				throw new VectoException("Invalid filename for {0}: {1}", tableType, filename);
+				throw new VectoException($"Invalid filename for {tableType}: {filename}", ErrorCodes.DATATABLE_INVALID_FILENAME);
 			}
 
 			return null;
@@ -409,7 +409,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if ((EPTOCycleDuringStop != null) && (PTOCycleDuringStop != null))
 			{
 				throw new VectoException(
-					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed");
+					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED);
 			}
 		}
 
@@ -676,7 +676,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			if((epto != null && pto != null)) {
 				throw new VectoException(
-					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed");
+					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED);
 			}
 		}
 

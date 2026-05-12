@@ -549,10 +549,10 @@ public class BusAuxHeatingPostProcessingTests
         m.Setup(x => x.GetValues<NormLiter>(ModalResultField.Nl_busAux_PS_generated)).Returns(new[] { 2470.5180.SI<NormLiter>() });
         m.Setup(x => x.AuxHeaterDemandCalc).Returns(busAux.AuxHeaterDemandCalculation);
 
-        if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle,
-                VectoSimulationJobType.EngineOnlySimulation)
-            && !runData.ElectricMachinesSinglePwt.Any()) {
-            throw new VectoException("hybrid vehicle requires electric machine");
+        if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle, VectoSimulationJobType.EngineOnlySimulation)
+            && !runData.ElectricMachinesSinglePwt.Any()) 
+        {
+            throw new VectoException("hybrid vehicle requires electric machine", ErrorCodes.VEHICLE_HYBRID_NO_ELECTRIC_MOTOR);
         }
 
         if (runData.ElectricMachinesSinglePwt.Any(x => x.Item1 != PowertrainPosition.GEN)) {

@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container, modelData, airdrag, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException("This class shall not be used in a real powertrain!");
+				throw new Exception("This class shall not be used in a real powertrain!");
             }
 		}
 	}
@@ -68,8 +68,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			modelData, airdrag, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"This class shall not be used in a testpowertrain - use the dedicated class instead!");
+				throw new Exception("This class shall not be used in a testpowertrain - use the dedicated class instead!");
             }
 		}
 
@@ -111,15 +110,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					VectoSimulationJobType.Multiple_SHEV) 
 				&& DataBus.PowertrainInfo.HasCombustionEngine) 
 			{
-				if (DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN) == null || 
-					DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo == null) 
-				{	
-					throw new VectoException("Powertrain with combustion engine requires gearbox and axlegear!");
-				}
+				var gearbox = DataBus.GearboxesInfo.FirstOrDefault(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+				var axlegear = DataBus.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].AxlegearInfo;
 
-				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber.NOT_IN_AXLE_POWERTRAIN);
+                if (gearbox == null)
+                {
+                    throw new VectoException("Powertrain with combustion engine requires gearbox!", ErrorCodes.VEHICLE_MISSING_GEARBOX);
+                }
 
-				var maxDrivetrainSpeed = VectoMath.Min(
+				if (axlegear == null)
+				{
+                    throw new VectoException("Powertrain with combustion engine requires axlegear!", ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
+                }
+
+                var maxDrivetrainSpeed = VectoMath.Min(
 					DataBus.EngineInfo.EngineN95hSpeed, 
 					gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
 

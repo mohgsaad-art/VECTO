@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.Utils
 				}
 			} catch (Exception e) {
 				LogManager.GetLogger(typeof(VectoCSVFile).FullName).Error(e);
-				throw new VectoException("Error reading file {0}: {1}", fileName, e.Message);
+				throw new VectoException($"Error reading file {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.Utils
 
 			var hdrFields = p.ReadFields();
 			if (hdrFields == null) {
-				throw new CSVReadException("CSV Read Error: File was empty.");
+				throw new VectoException("CSV Read Error: File was empty.", ErrorCodes.DATATABLE_EMPTY_FILE);
 			}
 			var colsWithoutComment = hdrFields
 				.Select(l => l.Contains(Comment) ? l.Substring(0, l.IndexOf(Comment, StringComparison.Ordinal)) : l)
@@ -153,17 +153,17 @@ namespace TUGraz.VectoCore.Utils
 				}
 				firstLineIsData = false;
 				if (table.Columns.Count != cells.Length && !ignoreEmptyColumns) {
-					throw new CSVReadException(
+					throw new VectoException(
 						$"Line {lineNumber}: The number of values is not correct. " +
-						$"Expected {table.Columns.Count} Columns, Got {cells.Length} Columns");
+						$"Expected {table.Columns.Count} Columns, Got {cells.Length} Columns", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 				}
 
 				try {
 					// ReSharper disable once CoVariantArrayConversion
 					table.Rows.Add(cells);
 				} catch (InvalidCastException e) {
-					throw new CSVReadException(
-						$"Line {lineNumber}: The data format of a value is not correct. {e.Message}", e);
+					throw new VectoException(
+						$"Line {lineNumber}: The data format of a value is not correct. {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA, e);
 				}
 				lineNumber++;
 			}

@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OVC) {
 					if (vehicle.Components.ElectricStorage.ElectricStorageElements.Any(e =>
 							e.REESSPack.StorageType == REESSType.SuperCap)) {
-						throw new VectoException("Super caps are not allowed for OVC-HEVs or PEVs");
+						throw new VectoException("Super caps are not allowed for OVC-HEVs or PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
 					}
 				}
 
@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
 				if (hasSuperCap && hasBattery) {
 					//Already handled by XML Schema
-					throw new VectoException("Super caps AND batteries are not supported");
+					throw new VectoException("Super caps AND batteries are not supported", ErrorCodes.REESS_MULTIPLE_TYPES);
 				}
 			}
 
@@ -142,8 +142,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				}
 				if (!vehicle.LegislativeClass.IsOneOf(LegislativeClass.M3,
 						LegislativeClass.N2, LegislativeClass.N3)) {
-					throw new VectoException("Unsupported Legislative class '{0}'",
-						InputDataProvider.JobInputData.Vehicle.LegislativeClass.ToString());
+					throw new VectoException($"Unsupported Legislative class '{InputDataProvider.JobInputData.Vehicle.LegislativeClass}'", 
+						ErrorCodes.VEHICLE_UNSUPPORTED_LEGISLATIVE_CLASS);
 				}
 
 				var tmp = DeclarationData.GetTruckSegment(vehicle);
@@ -224,7 +224,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
 				var engineModes = engine.EngineModes;
 				if (!modeIdx.HasValue) {
-					throw new VectoException("Engine mode has to be specified for conventional vehicle");
+					throw new VectoException("Engine mode has to be specified for conventional vehicle", ErrorCodes.VECTORUNDATAFACTORY_UNSPECIFIED_ENGINE_MODE);
 				}
 				var engineMode = engineModes[modeIdx.Value];
 
@@ -367,7 +367,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
                 if (!legislativeClass.IsOneOf(LegislativeClass.M3, LegislativeClass.N2, LegislativeClass.N3))
                 {
-                    throw new VectoException($"Unsupported Legislative class '{legislativeClass}'");
+                    throw new VectoException($"Unsupported Legislative class '{legislativeClass}'", ErrorCodes.VEHICLE_UNSUPPORTED_LEGISLATIVE_CLASS);
                 }
 
                 var truckSegment = DeclarationData.GetTruckSegment(InputDataProvider.JobInputData.Vehicle, GetSegmentAsBatteryElectric);
@@ -706,10 +706,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
 			protected override void Initialize()
 			{
-				if (!InputDataProvider.JobInputData.Vehicle.LegislativeClass.IsOneOf(LegislativeClass.M3,
-						LegislativeClass.N2, LegislativeClass.N3)) {
-					throw new VectoException("Unsupported Legislative class '{0}'",
-						InputDataProvider.JobInputData.Vehicle.LegislativeClass.ToString());
+				if (!InputDataProvider.JobInputData.Vehicle.LegislativeClass.IsOneOf(LegislativeClass.M3, LegislativeClass.N2, LegislativeClass.N3)) 
+				{
+					throw new VectoException($"Unsupported Legislative class '{InputDataProvider.JobInputData.Vehicle.LegislativeClass}'", 
+						ErrorCodes.VEHICLE_UNSUPPORTED_LEGISLATIVE_CLASS);
 				}
 				var tmp = DeclarationData.GetTruckSegment(InputDataProvider.JobInputData.Vehicle, true);
 				_segment = tmp.Segment;
@@ -788,7 +788,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				if (axleGearRequired && vehicle.Components.AxleGearInputData == null)
 				{
 					throw new VectoException(
-						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}", 
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 
 				var numGearsPowermap =
@@ -799,13 +800,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				if (numGearsPowermap.Any(x => x.Item2 != gearCount))
 				{
 					throw new VectoException(
-						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}", 
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				if (numGearsDrag > 1 && numGearsDrag != gearCount)
 				{
 					throw new VectoException(
-						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}", 
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				return axleGearRequired || vehicle.Components.AxleGearInputData != null;

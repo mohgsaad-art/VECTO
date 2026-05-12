@@ -40,7 +40,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (initialSoC.IsSmaller(ModelData.MinSOC) || initialSoC.IsGreater(ModelData.MaxSOC))
 			{
-				throw new VectoException("SoC must be between {0} and {1} but was {2}", ModelData.MinSOC, ModelData.MaxSOC, initialSoC);
+				throw new VectoException($"SoC must be between {ModelData.MinSOC} and {ModelData.MaxSOC} but was {initialSoC}", ErrorCodes.REESS_INITIAL_SOC_OUT_OF_BOUNDS);
 			}
 			PreviousState.StateOfCharge = initialSoC;
 		}

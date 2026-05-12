@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
 				var gearboxInfo = DataBus.GearboxesInfo.FirstOrDefault() as IAPTNGearbox 
-					?? throw new VectoException("AT Gearbox Required!");
+					?? throw new VectoException("AT Gearbox Required!", ErrorCodes.HYBRIDSTRATEGY_UNSUPPORTED_GEARBOX);
 				var currentGear = DataBus.VehicleInfo.VehicleStopped ? gearboxInfo.NextGear : gearboxInfo.Gear;
 				TestPowertrain.Gearboxes.First().SetDisengaged = gearboxInfo.Disengaged;
 				TestPowertrain.Gearboxes.First().SetDisengageGearbox = (gearboxInfo as IGearboxInfo).DisengageGearbox;
@@ -113,7 +113,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
 				var g = DataBus.GearboxesInfo.FirstOrDefault();
 				if (!(g is IAMTGearbox || g is IPEVGearbox || g is IIEPCGearbox)) {
-					throw new VectoException("AMT Gearbox Required!");
+					throw new VectoException("AMT Gearbox Required!", ErrorCodes.HYBRIDSTRATEGY_UNSUPPORTED_GEARBOX);
 				}
 				TestPowertrain.Gearboxes.First().SetDisengaged = g.Disengaged;
 				TestPowertrain.Gearboxes.First().SetDisengageGearbox = g.DisengageGearbox;
@@ -201,11 +201,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DataBus = container;
 			ModelData = runData;
 			if (ModelData.ElectricMachinesSinglePwt.Select(x => x.Item1).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
-				throw new VectoException("More than one electric motors are currently not supported");
+				throw new VectoException("More than one electric motors are currently not supported", ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED);
 			}
 			StrategyParameters = ModelData.HybridStrategyParameters;
 			if (StrategyParameters == null) {
-				throw new VectoException("Model parameters for hybrid strategy required!");
+				throw new VectoException("Model parameters for hybrid strategy required!", ErrorCodes.HYBRIDSTRATEGY_MISSING_PARAMETERS);
 			}
 
 			//ElectricMotorsOff = ModelData.ElectricMachinesData
@@ -758,7 +758,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					searcher: this, forceLineSearch: true);
             }
 			if (!iceSpeed.IsBetween(DataBus.EngineInfo.EngineIdleSpeed, DataBus.EngineInfo.EngineN95hSpeed)) {
-				throw new VectoException("failed to find ICE speed for GenSet");
+				throw new VectoException("failed to find ICE speed for GenSet", ErrorCodes.HYBRIDSTRATEGY_GENSET_ICE_SPEED_NOT_FOUND);
 			}
 			emTqDt = tmpEmTqDt;
 			TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;

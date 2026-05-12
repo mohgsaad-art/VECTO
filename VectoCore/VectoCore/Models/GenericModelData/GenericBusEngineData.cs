@@ -47,8 +47,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			if (modeIdx >= primaryVehicle.Components.EngineInputData.EngineModes.Count) {
 				throw new VectoException(
-					"requested engine mode {0}, only {1} modes in engine of primary vehicle available!", modeIdx,
-					primaryVehicle.Components.EngineInputData.EngineModes.Count);
+					$"requested engine mode {modeIdx}, only {primaryVehicle.Components.EngineInputData.EngineModes.Count} modes in engine of primary vehicle available!", 
+					ErrorCodes.DECLARATIONDATA_INVALID_ICE_MODE);
 			}
 			var engineData = primaryVehicle.Components.EngineInputData;
 			var gearbox = primaryVehicle.Components.GearboxInputData;

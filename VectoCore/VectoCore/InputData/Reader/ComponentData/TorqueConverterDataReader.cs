@@ -61,14 +61,14 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			double ratio, MeterPerSquareSecond lcMinAcceleration, MeterPerSquareSecond ccMinAcceleration)
 		{
 			if (data == null) {
-				throw new VectoException("TorqueConverter Characteristics data is missing.");
+				throw new VectoException("TorqueConverter Characteristics data is missing.", ErrorCodes.DATATABLE_INVALID_DATA);
 			}
 
 			if (data.Columns.Count != 3) {
-				throw new VectoException("TorqueConverter Characteristics data must consist of 3 columns");
+				throw new VectoException("TorqueConverter Characteristics data must consist of 3 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 			if (data.Rows.Count < 2) {
-				throw new VectoException("TorqueConverter Characteristics data must contain at least 2 lines with numeric values");
+				throw new VectoException("TorqueConverter Characteristics data must contain at least 2 lines with numeric values", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			IEnumerable<TorqueConverterEntry> characteristicTorque;

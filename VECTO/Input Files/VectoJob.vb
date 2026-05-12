@@ -706,7 +706,7 @@ Public Class VectoJob
                         Dim cycleDataRes As Stream = RessourceHelper.ReadStream(resourceName)
                         cycleData = VectoCSVFile.ReadStream(cycleDataRes, source:=resourceName)
                     Catch ex As Exception
-                        Throw New VectoException("Driving Cycle could not be read: " + cycleFile.OriginalPath)
+                        Throw New VectoException("Driving Cycle could not be read: " + cycleFile.OriginalPath, ErrorCodes.CYCLE_FAILED_TO_READ_FILE)
                     End Try
                 End If
                 retVal(i) = New CycleInputData With {

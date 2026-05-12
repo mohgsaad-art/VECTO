@@ -92,7 +92,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
         public override IFuelConsumptionCorrection FuelConsumptionCorrection(IFuelProperties fuel)
         {
             if (!FuelCorrection.ContainsKey(fuel.FuelType)) {
-                throw new VectoException("Invalid fuel {0}", fuel);
+                throw new VectoException($"Invalid fuel {fuel}", ErrorCodes.MODALDATA_INVALID_FUEL);
             }
 
             return FuelCorrection[fuel.FuelType];
@@ -161,7 +161,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 		public override IFuelConsumptionCorrection FuelConsumptionCorrection(IFuelProperties fuel)
 		{
 			if (!FuelCorrection.ContainsKey(fuel.FuelType)) {
-				throw new VectoException("Invalid fuel {0}", fuel);
+				throw new VectoException($"Invalid fuel {fuel}", ErrorCodes.MODALDATA_INVALID_FUEL);
 			}
 
 			return FuelCorrection[fuel.FuelType];
@@ -183,7 +183,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 		{
 			if (fuel.FuelType != FuelType.H2FC)
 			{
-				throw new VectoException("Invalid fuel {0}", fuel);
+				throw new VectoException($"Invalid fuel {fuel}", ErrorCodes.MODALDATA_INVALID_FUEL);
 			}
 
 			return FuelCorrection.ContainsKey(fuel.FuelType) ? FuelCorrection[fuel.FuelType] : null;

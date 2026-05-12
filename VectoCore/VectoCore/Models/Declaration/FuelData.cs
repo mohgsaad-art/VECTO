@@ -62,14 +62,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			var entries = _data.FindAll(x => x.FuelType == fuelType);
 			if (entries.Count == 0) {
-				throw new VectoException(ErrorMessage, fuelType.ToString(), tankSystem?.ToString() ?? "<no tank system specified>");
+				throw new VectoException(string.Format(ErrorMessage, fuelType.ToString(), tankSystem?.ToString() ?? "<no tank system specified>"), 
+					ErrorCodes.DECLARATIONDATA_FUEL_NOT_FOUND);
 			}
 
 			if (entries.Count > 1) {
 				entries = entries.FindAll(x => x.TankSystem == tankSystem);
 			}
 			if (entries.Count == 0) {
-				throw new VectoException(ErrorMessage, fuelType.ToString(), tankSystem?.ToString() ?? "<no tank system specified>");
+				throw new VectoException(string.Format(ErrorMessage, fuelType.ToString(), tankSystem?.ToString() ?? "<no tank system specified>"), 
+					ErrorCodes.DECLARATIONDATA_FUEL_NOT_FOUND);
 			}
 
 			return entries.First();

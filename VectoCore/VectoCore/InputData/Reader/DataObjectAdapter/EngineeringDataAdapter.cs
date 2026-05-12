@@ -219,7 +219,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (axleGearRequired && axlegearInput == null)
 			{
 				throw new VectoException(
-					$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+					$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}",
+					ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 			}
 
 			var numGearsPowermap =
@@ -230,13 +231,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (numGearsPowermap.Any(x => x.Item2 != gearCount))
 			{
 				throw new VectoException(
-					$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+					$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}",
+					ErrorCodes.IEPC_GEARS_MISMATCH);
 			}
 
 			if (numGearsDrag > 1 && numGearsDrag != gearCount)
 			{
 				throw new VectoException(
-					$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+					$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}",
+					ErrorCodes.IEPC_GEARS_MISMATCH);
 			}
 
 			return axleGearRequired;
@@ -388,7 +391,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (data.InMotionCharging.Enabled) {
 				if (data.InMotionCharging.ShareIMCAvailabilityTotalMission < 0 || data.InMotionCharging.ShareIMCAvailabilityTotalMission > 1) {
 					throw new VectoException(
-						"Share of In-motion charging infrastructure availability has to be between 0% and 100%");
+						"Share of In-motion charging infrastructure availability has to be between 0% and 100%",
+						ErrorCodes.IMC_INVALID_AVAILABILITY);
 				}
                 deltaCdxAIMC = data.InMotionCharging.DeltaCdxA *
 								data.InMotionCharging.ShareIMCAvailabilityTotalMission;
@@ -588,7 +592,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (adas != null && adas.EcoRoll != EcoRollType.None && retVal.Type.AutomaticTransmission() && !adas.ATEcoRollReleaseLockupClutch.HasValue)
 			{
-				throw new VectoException("Parameter ATEcoRollReleaseLockupClutch required for AT gearbox");
+				throw new VectoException("Parameter ATEcoRollReleaseLockupClutch required for AT gearbox", ErrorCodes.ADAS_ECOROLL_RELEASE_LOCKUP_CLUTCH_REQUIRED);
 			}
 
 			if (vehicle.VehicleType.IsOneOf(
@@ -611,7 +615,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			{
 				if (gearbox.Gears.Count > 0)
 				{
-					throw new VectoSimulationException("No gears are allowed for IEPC gearbox.");
+					throw new VectoSimulationException("No gears are allowed for IEPC gearbox.", ErrorCodes.GEARBOX_IEPC_NO_GEARS_ALLOWED);
 				}
 
 				retVal.Inertia = 0.SI<KilogramSquareMeter>();
@@ -621,7 +625,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (gearbox.Gears.Count < 2)
 			{
-				throw new VectoSimulationException("At least two Gear-Entries must be defined in Gearbox!");
+				throw new VectoSimulationException("At least two Gear-Entries must be defined in Gearbox!", ErrorCodes.GEARBOX_NOT_ENOUGH_GEARS_DEFINED);
 			}
 
 			var gearsInput = GearboxDataAdapterBase.FilterDisabledGears(vehicle.TorqueLimits, gearbox);
@@ -818,7 +822,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesEngineeringInputData auxInputData) {
 			if (auxInputData.Auxiliaries is null)
-				throw new VectoException("Missing Power Demands for ICE Off Driving, ICE Off Standstill, and Base Demand");
+				throw new VectoException("Missing Power Demands for ICE Off Driving, ICE Off Standstill, and Base Demand", ErrorCodes.AUXILIARIES_MISSING_POWER_DEMAND);
 
 			var pwrICEOn = auxInputData.Auxiliaries.ConstantPowerDemand;
 			var pwrICEOffDriving = auxInputData.Auxiliaries.PowerDemandICEOffDriving;
@@ -850,7 +854,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			if (driver.Lookahead == null) {
-				throw new VectoSimulationException("Error: Lookahead Data is missing.");
+				throw new VectoSimulationException("Error: Lookahead Data is missing.", ErrorCodes.DRIVER_LOOKAHEAD_DATA_MISSING);
 			}
 
 			var lookAheadData = new DriverData.LACData {
@@ -1282,15 +1286,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		public FuelCellSystemData CreateFuelCellSystemData(IFuelCellSystemEngineeringInputData fuelCellSystemInputData)
 		{
 			if (fuelCellSystemInputData.FuelCellStrings.Count > 2) {
-				throw new VectoException("Number of fuel cell strings must be <= 2");
+				throw new VectoException("Number of fuel cell strings must be <= 2", ErrorCodes.FUELCELL_SYSTEM_INVALID_STRING_COUNT);
 			}
 
 			if (fuelCellSystemInputData.FuelCellStrings.Aggregate(0, (a, fcs) => a + fcs.Count) < 1) {
-				throw new VectoException("At least one fuel cell has to be provided");
+				throw new VectoException("At least one fuel cell has to be provided", ErrorCodes.FUELCELL_STRING_INSUFFICIENT_CELLS);
 			}
 
 			if (fuelCellSystemInputData.FuelCellStrings.Any(fcs => fcs.Count > 3)) {
-				throw new VectoException("Number of fuel cells per string must be <= 3");
+				throw new VectoException("Number of fuel cells per string must be <= 3", ErrorCodes.FUELCELL_STRING_INSUFFICIENT_CELLS);
 			}
 			
 			var fuelCellSystemData = new FuelCellSystemData();
@@ -1327,7 +1331,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (fuelCellData.MinElectricPower.IsSmaller(fuelCellData.MassFlowMap.MinPowerMap) ||
 				fuelCellData.MaxElectricPower.IsGreater(fuelCellData.MassFlowMap.MaxPowerMap)) {
-				throw new VectoException("Fuel cell limits exceed mass flow map");
+				throw new VectoException("Fuel cell limits exceed mass flow map", ErrorCodes.FUELCELL_LIMITS_EXCEED_MASS_FLOW_MAP);
 			}
 
 			return fuelCellData;
@@ -1471,7 +1475,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			if (electricMachines.Entries.Select(x => x.Position).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
-				throw new VectoException("multiple electric propulsion motors are not supported at the moment");
+				throw new VectoException("multiple electric propulsion motors are not supported at the moment", ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED);
 			}
 
 			return electricMachines.Entries
@@ -1530,12 +1534,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		private ElectricMotorVoltageLevelData CreateIHPCVoltageLevelData(int count, IElectricMotorVoltageLevel entry, ElectricMotorFullLoadCurve fullLoadCurveCombined, GearList gearList)
 		{
 			if (gearList == null) {
-				throw new VectoException("no gears provided for IHPC EM");
+				throw new VectoException("no gears provided for IHPC EM", ErrorCodes.ELECTRICMOTOR_IHPC_NO_GEARS_PROVIDED);
 			}
 
 			if (gearList.Count() != entry.PowerMap.Count) {
 				throw new VectoException(
-					$"number of gears in transmission does not match gears in electric motor (IHPC) - {gearList.Count()}/{entry.PowerMap.Count}");
+					$"number of gears in transmission does not match gears in electric motor (IHPC) - {gearList.Count()}/{entry.PowerMap.Count}", ErrorCodes.ELECTRICMOTOR_IHPC_GEARS_MISMATCH);
 			}
 			var effMap = new Dictionary<uint, EfficiencyMap>();
 			foreach (var gear in gearList) {
@@ -2004,7 +2008,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			catch (Exception e)
 			{
-				throw new VectoException("Error while Reading Retarder Data: {0}", e.Message);
+				throw new VectoException($"Error while Reading Retarder Data: {e.Message}", ErrorCodes.RETARDER_BAD_DATA);
 			}
 		}
 
@@ -2095,7 +2099,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							}
 							else
 							{
-								throw new VectoException("Angledrive: LossMap not found.", ex);
+								throw new VectoException("Angledrive: LossMap not found.", ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND, ex);
 							}
 						}
 						return angledriveData;
@@ -2105,7 +2109,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			catch (Exception e)
 			{
-				throw new VectoException("Error while reading Angledrive data: {0}", e.Message, e);
+                throw new VectoException($"Error while reading Angledrive data: {e.Message}", e.GetErrorCode(), e);
 			}
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
@@ -26,7 +27,7 @@ namespace TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies
 		public PreRunOptions GetPreRunOptions(int iteration)
 		{
 			if (_preRunOptions == null || _preRunOptions.Length < iteration + 1) {
-				throw new VectoException($"Not {nameof(PreRunOptions)} defined for iteration {iteration}");
+				throw new VectoException($"No {nameof(PreRunOptions)} defined for iteration {iteration}", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 			return _preRunOptions[iteration];
 		}

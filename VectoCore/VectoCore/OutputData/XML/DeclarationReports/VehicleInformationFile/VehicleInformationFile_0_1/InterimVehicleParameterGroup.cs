@@ -84,7 +84,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 			switch (vehicleInputData.AirdragModifiedMultistep) {
 				case null:
-					throw new VectoException("AirdragModifiedMultistage must be set if an airdrag component has been set in previous stages.");
+					throw new VectoException("AirdragModifiedMultistage must be set if an airdrag component has been set in previous stages.", ErrorCodes.VEHICLE_AIRDRAG_MODIFIED_NOT_SET);
 				default:
 					return new XElement(_v27 + XMLNames.Bus_AirdragModifiedMultistep, vehicleInputData.AirdragModifiedMultistep);
 			}
