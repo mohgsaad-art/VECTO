@@ -22,7 +22,6 @@ from typing import TypedDict
 
 import re
 from ordered_set import OrderedSet as oset  # type: ignore
-# from lxml import etree
 
 # %%
 # =============================================================================
@@ -276,11 +275,11 @@ def find_VINs(link_txt: str) -> list[str]:
     ## From https://stackoverflow.com/a/30314935/548792
     ## Note that by the standard, S.America has numbers in the first 2 places,
     ## see https://en.wikipedia.org/wiki/Vehicle_identification_number#List_of_common_WMI
-    
+
     ## test_string = r'NLTPNG23L01005961.xml NLTPNG23601005968.xml 012345697.xml W1V5M23Z0RN293908 1V5WM23Z0RN293908 VNE454454 V1E123456 V11123456 1VE123456 NMC250LKBLBF00004 320LGBLBE00000 ZX9E6BLC0RATAM106_completed_veh.xml'
-    
+
     # regexp = r"(?<![A-HJ-NPR-Z\d])[A-Z]{2,3}[A-Z0-9]+[0-9]+[A-Z0-9]+(?![A-HJ-NPR-Z\d])" # Original, cannot find W1V5M23Z0RN293908
-    
+
     regexp = r"(?<![A-HJ-NPR-Z\d])[A-Z0-9]*[A-Z][A-Z0-9]+[0-9]{3}(?![A-HJ-NPR-Z\d])" # modified, find all
     VIN_list = re.findall(regexp, link_txt)
 
@@ -295,22 +294,27 @@ def scan_issue_files(datafiles: list) -> list[T_scan]:
         issue_data = json.loads(datafile.read_text())
         iid: int = issue_data["iid"]
         art10label: str = ''
-        
+
         art10labels = [l for l in issue_data["issue"]["labels"] if 'art10' in l]
         if art10labels: # for issues kept in the database while not having and art10 label anymore
             art10label = art10labels[0]
-        
+
         ## Scan certain text bodies for file links & VINs.
         #
         issue_dict: dict = issue_data["issue"]
         title: str = issue_dict["title"]
         desc: str = issue_dict["description"]
         notes: list[str] = [i["body"] for i in issue_data["notes"]]
+        # label_events: list = [(label_event["created_at"],label_event["label"]["name"]) for label_event in issue_data["label_events"]
+        #                       if label_event["label"] and 'art10' in label_event["label"]["name"]]
         text_blob = "\n".join([title, desc, *notes])
 
         scanned = {
             "iid": iid,
-            "label": art10label,
+            # "label": art10label,
+            # "created_at": issue_dict["created_at"],
+            # "closed_at": issue_dict["closed_at"],
+            # "label_events": label_events,
             "VINs": find_VINs("\n".join([title, desc])),
             "links": find_links(text_blob),
         }
@@ -322,6 +326,95 @@ def scan_issue_files(datafiles: list) -> list[T_scan]:
     return all_scans
 
 # upload archive
+def read_issue_files(datafiles: list) -> list[T_scan]:
+    # read all issues files and get the status: the input must be sorted, as only last file for a given issue is remembered
+    report_by_issue = {}
+    for datafile in datafiles:
+        issue_data = json.loads(datafile.read_text())
+
+        iid: int = issue_data["iid"]
+        issued: dict = issue_data["issue"]
+
+        ## TODO: check if resources come back sorted by date?
+        # seems so
+        all_label_dates = [i["created_at"] for i in issue_data["label_events"]]
+        if all_label_dates:
+            assert all_label_dates == sorted(all_label_dates), (
+                all_label_dates,
+                sorted(all_label_dates),
+            )
+
+        # art10label: str = ''
+
+        # art10labels = [l for l in issue_data["issue"]["labels"] if 'art10' in l]
+        # if art10labels: # for issues kept in the database while not having and art10 label anymore
+        #     art10label = art10labels[0]
+
+        label_dates = {
+            i["label"]["name"]: i["created_at"]
+            for i in issue_data["label_events"]
+            if i["label"] is not None and i["action"] == "add" and i["label"]["name"].startswith("art10::")
+        }
+
+        all_mile_evs = issue_data["milestone_events"]
+        last_mile_ev = all_mile_evs and all_mile_evs[-1]
+        if last_mile_ev and last_mile_ev["action"] == "add":
+            # last_mile = last_mile_ev["milestone"]
+            milestone = {
+                # NOTE: use milestone title from issue, event's title may differ
+                # if it has been renamed in the mean time.
+                "milestone": issue_data["issue"]["milestone"]["title"],
+                "milestone_date": last_mile_ev["created_at"],
+            }
+        elif issue_data["issue"]["milestone"]:
+            milestone = {
+                # NOTE: use milestone title from issue, event's title may differ
+                # if it has been renamed in the mean time.
+                "milestone": issue_data["issue"]["milestone"]["title"],
+                "milestone_date": None,
+            }
+        else:
+            milestone = {}
+
+        issue_values = filter_nested_dict(
+            issued,
+            [
+                "state",
+                "author.name",
+                "author.id",
+                "created_at",
+                "closed_at",
+                "closed_by.name",
+                "assignee.name",
+                "confidential",
+                "discussion_locked",
+            ],
+        )
+
+        art10_label = [
+            i
+            for i in get_nested(issue_data, ["issue", "labels"])
+            if i.startswith("art10::")
+        ]
+        art10_label = art10_label[0] if art10_label else None
+
+        report_by_issue[iid] = {
+            **issue_values,
+            "art10_label": art10_label,
+            **label_dates,
+            **milestone,
+        }
+
+    issues_report_df = pd.DataFrame.from_dict(report_by_issue, orient="index")
+    issues_report_df = (
+        issues_report_df.rename(
+            columns={"confidential": "is_confidential", "discussion_locked": "is_locked"}
+        )
+        .rename_axis("iid")
+        .sort_index()
+    )
+
+    return issues_report_df
 
 def check_archive(fpath: Path | str, *, password=None, defaultpassword=None, verbosity=0) -> str | None:
     """Return any archive-error as string or None if ok."""
@@ -347,23 +440,23 @@ def extract_archive(
     fpath: Path | str, outdir: Path | str, *, password=None, defaultpassword=None, verbosity=0
 ) -> str | None:
     """Return any archive-error as string or None if ok."""
-    
-    
+
+
     err = None
     simple_zip_case = str(fpath).endswith('.zip') and (password is None)
-    
+
     if simple_zip_case:
-    
+
         try:
-            shutil.unpack_archive(str(fpath), outdir) 
+            shutil.unpack_archive(str(fpath), outdir)
             # works better to unpack zip file containing both simlink and abs path
             # avoid to unpack twice (in root and in a subfolder)
-            
+
         except Exception as ex:
             err = f"{type(ex).__name__}: {ex}"
-    
+
     if (not simple_zip_case) or (err != None):
-    
+
         try:
             patoolib.extract_archive(
                 str(fpath), outdir=outdir, password=password, verbosity=verbosity
@@ -384,7 +477,7 @@ def extract_archive(
 
     return err
 
-# parse xml files 
+# parse xml files
 
 def el_text(xml_tree, *xpaths: str) -> str | None:
     for xpath in xpaths:

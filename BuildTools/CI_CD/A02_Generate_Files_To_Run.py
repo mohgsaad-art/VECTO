@@ -40,6 +40,7 @@ from FUNCTIONS.utils_generate_vecto_input2run import (
     get_vecto_file_data,
     get_vehicles,
     scan_pool,
+    read_pool_stats,
 )
 from FUNCTIONS.utils_pool import ISSUE_DESC_FILENAME, timed
 
@@ -318,14 +319,16 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
     save_dir_extract = issues_input_dir / 'A01_EXTRACT'
 
     with timed('Scan local pool'):
-        df_issue_label, df_issue_vins, df_hash_sorted = scan_pool(
+        df_issue_vins, df_hash_sorted = scan_pool(
             save_dir_raw, save_dir_extract, ISSUE_DESC_FILENAME
         )
+
+        df_issue_label = read_pool_stats(save_dir_raw, ISSUE_DESC_FILENAME)
 
     downloaded_files = [f for f in save_dir_raw.glob('*/uploads/**/*') if f.is_file()]
     extracted_files = [f for f in save_dir_extract.glob('*/uploads/**/*') if f.is_file()]
     df_local_path = generate_df_path(downloaded_files + extracted_files)
-    df_local_path = df_local_path.join(df_issue_label.set_index('Issue'), on='iid', how='left')
+    df_local_path = df_local_path.join(df_issue_label[['art10_label']], on='iid', how='left')
 
     with timed('Sort and deduplicate vehicles'):
         df_vecto = get_vecto_file_data(df_local_path)
@@ -350,7 +353,7 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
     # Build manifests from df_vehicles_ref
     col_to_explode = ['REF_local_path', 'REF_file_type', 'REF_vehicle_type']
     df_to_run = (
-        df_vehicles_ref[df_vehicles_ref.REF_Label != 'art10::rejected']
+        df_vehicles_ref[df_vehicles_ref.REF_art10_label != 'art10::rejected']
         .explode(col_to_explode)
     )
 
