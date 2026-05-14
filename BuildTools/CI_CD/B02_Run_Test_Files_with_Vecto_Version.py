@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jan 29 10:33:00 2024
+B02 - Run VECTO simulations locally in parallel.
 
-@author: alixgui
+Executes all .vecto/.xml input files found under XX_Results using
+a pebble ProcessPool. Skips files that already have results unless
+--force-rerun is set. Logs stdout/stderr per file. Applies a 5-hour
+timeout for HEV jobs and a 1-hour timeout for all others.
+
+Usage:
+    python B02_Run_Test_Files_with_Vecto_Version.py <vecto_root>
+        [--force-rerun]        Overwrite existing results
+        [--max-workers <n>]    Parallel worker count (default: CPU core count)
 """
 # based on https://programtalk.com/python-examples/pebble.process.Pool/
 # example 25

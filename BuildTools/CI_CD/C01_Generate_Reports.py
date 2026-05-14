@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Generate all VECTO CI test reports (pass/fail summary, VSUM detail, MRF/CRF).
+C01 - Generate all VECTO CI test reports (pass/fail summary, VSUM detail, MRF/CRF).
 
 All three report types share the same OR report number so they form a coherent bundle:
   OR_{Version}_{Date}_{NNNN}_{Hash}.xlsx          -- pass/fail summary
   OR_{Version}_{Date}_{NNNN}_{Hash}_DETAIL.xlsx   -- VSUM detail
   OR_{Version}_{Date}_{NNNN}_{Hash}_CRF.xlsx      -- MRF/CRF fuel consumption
+
+Usage:
+    python C01_Generate_Reports.py <vecto_root>
+        [--report-dir <path>]        Directory where Reports/ will be created (default: D:/Reports or C:/Reports)
+        [--interim-report]           Write to Interim_Reports/ subfolder instead of Reports/
+        [--reports-cache <path>]     Cache directory used to determine the next report number
+        [--mr-reports-cache <path>]  Directory for MR OR reports (default: <reports-cache>/MR)
+        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-mr-run
+        [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
 import argparse

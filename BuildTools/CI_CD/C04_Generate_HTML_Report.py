@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr  2 2026
+C04 - Generate a static HTML dashboard from a C01 OR report.
+
+Reads the most recent OR*.xlsx summary report (excluding DETAIL and CRF
+variants) from the report directory, extracts metadata from the filename
+(version, date, commit hash), and produces a self-contained HTML file
+with pass/fail counts and colour-coded result rows.
+
+Usage:
+    python C04_Generate_HTML_Report.py
+        [--report-dir <path>]   Directory inside which the Reports/ folder is located
+                                (default: D:/Reports or C:/Reports)
+        [--interim-report]      Read from and write to Interim_Reports/ instead of Reports/
 """
 
 import argparse

@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jan 29 10:33:00 2024
+B01 - Prepare the XX_Results run directory from the test pool.
 
-@author: alixgui
+Copies .xml and .vecto input files from the test pool
+(02_TO_RUN_GENERIC and 12_TO_RUN_ISSUES) into XX_Results,
+filtering out result files (.vsum, .RSLT, .VIF).
+Use --force-rerun to overwrite previously copied files.
+
+Usage:
+    python B01_Generate_All_Files_to_Run_for_Vecto_Versions.py <vecto_root> <test_pool_path>
+        [--force-rerun]   Overwrite existing files in XX_Results
 """
 
 # import

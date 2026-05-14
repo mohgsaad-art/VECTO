@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-A02 - Update the Article 10 test pool from GitLab.
+A01 - Update the Article 10 test pool from GitLab.
 
 Connects to GitLab, downloads new issue attachments since the last run,
 extracts archives, and saves a status.json timestamp.
 
 Usage:
-    python A02_Update_Pool.py <pool_root>
+    python A01_Update_Pool.py <pool_root>
         [--gitlab-url <url>]      GitLab instance URL (default: https://code.europa.eu)
         [--project-path <path>]   GitLab project path (default: vecto/vecto)
         [--token <token>]         GitLab private token; falls back to credentials.GITLAB_TOKEN
