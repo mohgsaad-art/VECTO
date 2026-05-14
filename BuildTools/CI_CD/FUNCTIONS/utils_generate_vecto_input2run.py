@@ -9,7 +9,6 @@ Created on Sun Apr 12 18:50:23 2026
 import copy
 import itertools as itt
 import json
-import os
 import re
 from datetime import datetime
 from pathlib import Path
@@ -17,7 +16,7 @@ import hashlib
 
 import pandas as pd
 import numpy as np
-from lxml import etree
+from lxml import etree, objectify
 from ordered_set import OrderedSet as oset  # type: ignore
 
 from .utils import (
@@ -123,6 +122,7 @@ def read_vecto_file(fpath: Path | str) -> list:
             etree.indent(xml_tree,space='\t',level=0)
 
             xml_tree_cp = copy.deepcopy(xml_tree)
+            objectify.deannotate(xml_tree_cp, cleanup_namespaces=True)
             xml_tree_str = etree.tostring(xml_tree_cp,method='xml', encoding='UTF-8')
 
             # hash1 = str(int(hashlib.sha1(x11).hexdigest(), 16) % (10 ** 8))
