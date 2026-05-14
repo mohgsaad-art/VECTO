@@ -20,63 +20,63 @@ flowchart TD
 
     A02d3["Declaration/&lt;powertrain&gt;/&lt;category&gt;_&lt;hash&gt;/input.zip"]
 
-    A02g --> B03
-    A02d3 --> B03
+    A02g --> B01
+    A02d3 --> B01
 
     %% ── HTCondor submission ────────────────────────────────────────────────
-    B03["B03 — Submit to HTCondor <br> Patch submit template <br> condor_submit"]
-    B03 --> B32
+    B01["B01 — Submit to HTCondor <br> Patch submit template <br> condor_submit"]
+    B01 --> B12
 
-    B32["B32 — Generate queue file <br> Walk test_pool_path for input.zip <br> Build job list"]
-    B32 --> B32d1
+    B12["B12 — Generate queue file <br> Walk test_pool_path for input.zip <br> Build job list"]
+    B12 --> B12d1
 
-    B32d1{"--force-rerun?"}
-    B32d1 -->|No| B32d2["Skip already-completed <br> (*_out.zip exists)"]
-    B32d1 -->|Yes| B32d3
+    B12d1{"--force-rerun?"}
+    B12d1 -->|No| B12d2["Skip already-completed <br> (*_out.zip exists)"]
+    B12d1 -->|Yes| B12d3
 
-    B32d2 --> B32d3
+    B12d2 --> B12d3
 
-    B32d3{"--no-hev?"}
-    B32d3 -->|Yes| B32d4["Exclude HEV jobs"]
-    B32d3 -->|No| B32d5
+    B12d3{"--no-hev?"}
+    B12d3 -->|Yes| B12d4["Exclude HEV jobs"]
+    B12d3 -->|No| B12d5
 
-    B32d4 --> B32d5
+    B12d4 --> B12d5
 
-    B32d5{"--ref-vecto-root <br> supplied?"}
-    B32d5 -->|Yes| B32d6["get_missing_ids() <br> vs latest release OR report"]
-    B32d5 -->|No| B32write
+    B12d5{"--ref-vecto-root <br> supplied?"}
+    B12d5 -->|Yes| B12d6["get_missing_ids() <br> vs latest release OR report"]
+    B12d5 -->|No| B12write
 
-    B32d6 --> B32d7{"REF OR report <br> found?"}
-    B32d7 -->|No| B32write
-    B32d7 -->|Yes — append REF jobs| B32d8
+    B12d6 --> B12d7{"REF OR report <br> found?"}
+    B12d7 -->|No| B12write
+    B12d7 -->|Yes — append REF jobs| B12d8
 
-    B32d8{"MR dir exists? <br> (ref_root/MR)"}
-    B32d8 -->|Yes| B32d9["get_missing_ids() <br> vs MR OR report <br> Append MR jobs"]
-    B32d8 -->|No| B32write
+    B12d8{"MR dir exists? <br> (ref_root/MR)"}
+    B12d8 -->|Yes| B12d9["get_missing_ids() <br> vs MR OR report <br> Append MR jobs"]
+    B12d8 -->|No| B12write
 
-    B32d9 --> B32write["Write batch_arguments.txt <br> (current + REF + MR jobs)"]
-    B32write --> B03lim
+    B12d9 --> B12write["Write batch_arguments.txt <br> (current + REF + MR jobs)"]
+    B12write --> B01lim
 
-    B03lim{"--limit N set?"}
-    B03lim -->|Yes| B03trunc["Truncate queue to N jobs"]
-    B03lim -->|No| B03submit
+    B01lim{"--limit N set?"}
+    B01lim -->|Yes| B01trunc["Truncate queue to N jobs"]
+    B01lim -->|No| B01submit
 
-    B03trunc --> B03submit["condor_submit <br> htc_submit_generated.sh"]
-    B03submit --> B03poll
+    B01trunc --> B01submit["condor_submit <br> htc_submit_generated.sh"]
+    B01submit --> B01poll
 
-    B03poll["Poll condor_q every 30s <br> (max 10h)"]
-    B03poll --> B03d1{"QUEUE_NAME <br> in condor_q?"}
-    B03d1 -->|Yes — still running| B03poll
-    B03d1 -->|No — all done| B34
+    B01poll["Poll condor_q every 30s <br> (max 10h)"]
+    B01poll --> B01d1{"QUEUE_NAME <br> in condor_q?"}
+    B01d1 -->|Yes — still running| B01poll
+    B01d1 -->|No — all done| B14
 
     %% ── Result extraction ──────────────────────────────────────────────────
-    B34["B34 — Unzip results <br> Move *_out.zip → Z00_VECTO_OUTPUTS/&lt;version&gt;/ <br> Extract → XX_RESULTS/&lt;version&gt;/"]
-    B34 --> B34d1
+    B14["B14 — Unzip results <br> Move *_out.zip → Z00_VECTO_OUTPUTS/&lt;version&gt;/ <br> Extract → XX_RESULTS/&lt;version&gt;/"]
+    B14 --> B14d1
 
-    B34d1{"ref_vecto_root/MR <br> exists?"}
-    B34d1 -->|Yes| B34mr["B34 — Unzip MR results <br> XX_RESULTS/&lt;mr_version&gt;/"]
-    B34d1 -->|No| C01
-    B34mr --> C01
+    B14d1{"ref_vecto_root/MR <br> exists?"}
+    B14d1 -->|Yes| B14mr["B14 — Unzip MR results <br> XX_RESULTS/&lt;mr_version&gt;/"]
+    B14d1 -->|No| C01
+    B14mr --> C01
 
     %% ── Report generation ──────────────────────────────────────────────────
     C01["C01 — Generate reports <br> Read XX_RESULTS/&lt;version&gt;/ <br> Build Success / VSUM / CRF sheets"]
@@ -124,9 +124,9 @@ flowchart TD
     C04out --> END([Pipeline complete])
 
     %% ── Worker node (HTCondor) ─────────────────────────────────────────────
-    B33["B33 — Run single VECTO job <br> (HTCondor worker node) <br> Unzip vecto_root + input.zip <br> Run vectocmd <br> Archive *_out.zip"]
-    B03submit -.->|"dispatched per job"| B33
-    B33 -.->|"output zip returned"| B34
+    B13["B13 — Run single VECTO job <br> (HTCondor worker node) <br> Unzip vecto_root + input.zip <br> Run vectocmd <br> Archive *_out.zip"]
+    B01submit -.->|"dispatched per job"| B13
+    B13 -.->|"output zip returned"| B14
 
     %% ── Styling ────────────────────────────────────────────────────────────
     classDef script fill:#dbeafe,stroke:#2563eb,color:#1e3a5f
@@ -134,8 +134,8 @@ flowchart TD
     classDef io fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef endpoint fill:#f1f5f9,stroke:#64748b,color:#1e293b
 
-    class A01,A02,B03,B32,B34,B33,C01,C04 script
-    class A02d1,A02d2,B03lim,B03d1,B32d1,B32d3,B32d5,B32d7,B32d8,B34d1,C01d1,C01d2,C01d3,C01d4,C04d1,C04d2 decision
-    class A02g,A02d3,B32write,B34mr,C01mr,C01write,C01ref,C01mrd,C01fail,C01copy,C04delta,C04mr,C04out io
+    class A01,A02,B01,B12,B14,B13,C01,C04 script
+    class A02d1,A02d2,B01lim,B01d1,B12d1,B12d3,B12d5,B12d7,B12d8,B14d1,C01d1,C01d2,C01d3,C01d4,C04d1,C04d2 decision
+    class A02g,A02d3,B12write,B14mr,C01mr,C01write,C01ref,C01mrd,C01fail,C01copy,C04delta,C04mr,C04out io
     class START,END endpoint
 ```

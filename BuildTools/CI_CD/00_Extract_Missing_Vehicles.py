@@ -39,7 +39,7 @@ def get_vehicle_ids_from_pool(test_pool_path: str) -> set[str]:
     """Return the set of vehicle IDs present in the test pool.
 
     Walks <test_pool_path> for input.zip files and derives each vehicle's
-    unique ID using the same logic as B32:
+    unique ID using the same logic as B12:
         rel   = os.path.normpath(os.path.relpath(input_dir, input_root))
         id    = rel.replace(os.sep, '__')
     """

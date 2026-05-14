@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-B32 - Generate the HTCondor queue file (batch_arguments.txt).
+B12 - Generate the HTCondor queue file (batch_arguments.txt).
 
 For each combination of VECTO version and input directory found under
 input_root (the test_pool_path argument), writes one line to batch_arguments.txt in the

@@ -52,7 +52,7 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 ```
 - `generic_input_dir`: directory containing generic `.vecto` and `.xml` vehicle input files (e.g. `01_INPUTS_GENERIC`).
 - `issues_input_dir`: root of the Article 10 test pool (contains `A00_RAW` and `A01_EXTRACT` subdirs).
-- `output_dir`: output root. Zips are written to `<output_dir>/To_Run/<vehicle>/input.zip`. Pass `<output_dir>/To_Run` as `test_pool_path` to B03/B32.
+- `output_dir`: output root. Zips are written to `<output_dir>/To_Run/<vehicle>/input.zip`. Pass `<output_dir>/To_Run` as `test_pool_path` to B01/B12.
 - `--force-repackage`: re-zip even if `<vehicle>/input.zip` already exists.
 - Generic vehicles are placed under `<output_dir>/To_Run/<mode>/<powertrain>/<vehicle>/`.
 - Issue vehicles are placed under `<output_dir>/To_Run/articles/<vehicle>/`.
@@ -83,24 +83,24 @@ python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-c
 - Exits with a return code equal to the number of missing vehicles (0 if none).
 - Implements the Case 2 backwards-compatibility check: run only new/un-run vehicles against the current VECTO version.
 
-### B03 — Submit test cases to HTCondor
+### B01 — Submit test cases to HTCondor
 ```bash
-python B03_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>] [--limit N]
+python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>] [--limit N]
 ```
-- `vecto_root`: path to the VECTO installation directory (passed through to B32 and B33).
+- `vecto_root`: path to the VECTO installation directory (passed through to B12 and B13).
 - `test_pool_path`: root directory of the test pool (input files expected directly under `<test_pool_path>/<vehicle>/input.zip`).
 - `--queue-name`: HTCondor queue name used to track this submission (default: basename of `vecto_root`).
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, missing vehicles are also queued against this version for delta comparison (Case 1 backward-compatibility). Also used to derive the MR VECTO root (`<ref-vecto-root>/MR`).
-- `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B32.
+- `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B12.
 - `--limit N`: truncate the queue to the first N jobs after generation (useful for testing).
 - Requires HTCondor (`condor_submit`, `condor_q`) to be available on the system.
-- Internally calls B32 to generate the queue file, then submits via `condor_submit`.
+- Internally calls B12 to generate the queue file, then submits via `condor_submit`.
 - Polls `condor_q` every 30 s until the queue is empty (timeout: 10 h).
-- Extracts result archives via B34 once all jobs finish. If `<ref-vecto-root>/MR` exists, also extracts MR result archives.
+- Extracts result archives via B14 once all jobs finish. If `<ref-vecto-root>/MR` exists, also extracts MR result archives.
 
-### B32 — Generate HTCondor queue file
+### B12 — Generate HTCondor queue file
 ```bash
-python B32_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
+python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
 ```
 - `vecto_root`: path to the VECTO installation directory.
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
@@ -111,9 +111,9 @@ python B32_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 - Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first, then reference-version jobs, then MR-version jobs.
 - Prepares the job list before submission.
 
-### B33 — Run a single VECTO job on an HTCondor worker
+### B13 — Run a single VECTO job on an HTCondor worker
 ```bash
-python B33_run_single_vecto_file.py <vecto_root> <input_archive> <output_filename>
+python B13_run_single_vecto_file.py <vecto_root> <input_archive> <output_filename>
 ```
 - `vecto_root`: path to the VECTO installation directory, or a `.zip` archive of it (unpacked to `_CONDOR_SCRATCH_DIR`).
 - `input_archive`: path to the zipped input files (`input.zip`).
@@ -121,15 +121,15 @@ python B33_run_single_vecto_file.py <vecto_root> <input_archive> <output_filenam
 - Called by the HTCondor submit script — not intended to be run directly.
 - Unpacks the input archive, runs VECTO, and archives the results.
 
-### B34 — Extract HTCondor result archives
+### B14 — Extract HTCondor result archives
 ```bash
-python B34_Unzip_Results.py <vecto_root> [--force-rerun]
+python B14_Unzip_Results.py <vecto_root> [--force-rerun]
 ```
 - `vecto_root`: path to the VECTO installation directory. Used to determine the version subfolder (`XX_RESULTS/<version>/`, `Z00_VECTO_OUTPUTS/<version>/`).
 - `--force-rerun`: overwrite already-extracted result directories (default: skip existing).
 - Moves `*_out.zip` files from the current working directory into `Z00_VECTO_OUTPUTS/<version>/` (created in cwd).
 - Unpacks each archive into `XX_RESULTS/<version>/` (created in cwd), reconstructing the directory tree from the flat output filename.
-- Called automatically by B03 after all HTCondor jobs finish.
+- Called automatically by B01 after all HTCondor jobs finish.
 
 ### C01 — Generate all reports
 ```bash

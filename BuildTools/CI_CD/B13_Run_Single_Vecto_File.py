@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-B33 - Run a single VECTO simulation inside an HTCondor worker node.
+B13 - Run a single VECTO simulation inside an HTCondor worker node.
 
 This script is the HTCondor equivalent of B02's run_individual_file. Each
 worker node:
@@ -11,7 +11,7 @@ worker node:
   5. Archives the output and moves it to the submission directory.
 
 Called by the HTCondor submit script with three positional arguments:
-    python B33_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filename>
+    python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filename>
 """
 
 import argparse

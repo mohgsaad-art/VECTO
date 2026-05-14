@@ -7,7 +7,7 @@ Merges the work of three scripts into one pass with no intermediate folders:
   - A03: scan the Article 10 test pool, deduplicate vehicles by content hash
   - A11: zip each vehicle directory into <output_dir>/<vehicle>/input.zip
 
-Output is fed directly to B03/B32 as <test_pool_path>/To_Run.
+Output is fed directly to B01/B12 as <test_pool_path>/To_Run.
 
 Usage:
     python A2311_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <output_dir>
@@ -419,7 +419,7 @@ def main() -> None:
     parser.add_argument(
         'output_dir',
         help='Output root. Zips are written to <output_dir>/To_Run/<vehicle>/input.zip. '
-             'Pass <output_dir>/To_Run as test_pool_path to B03/B32.',
+             'Pass <output_dir>/To_Run as test_pool_path to B01/B12.',
     )
     parser.add_argument(
         '--force-repackage',

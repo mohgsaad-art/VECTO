@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""B03 - Submit VECTO test cases to HTCondor and wait for completion.
+"""B01 - Submit VECTO test cases to HTCondor and wait for completion.
 
 Steps:
-  1. Generate the HTCondor queue file from the test pool (calls B32).
+  1. Generate the HTCondor queue file from the test pool (calls B12).
   2. Patch the submit script template with the queue name.
   3. Submit the job to HTCondor via condor_submit.
   4. Poll condor_q every 30 s until the queue is empty (max 10 h).
@@ -14,7 +14,7 @@ import subprocess
 import time
 import os
 
-SUBMIT_TEMPLATE = 'B31_HTCondor_Submit_Template.sh'
+SUBMIT_TEMPLATE = 'B11_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
 POLL_INTERVAL_SECONDS = 30
@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     'vecto_root',
-    help='Path to the VECTO installation directory (passed through to B32 and B33).'
+    help='Path to the VECTO installation directory (passed through to B12 and B13).'
 )
 parser.add_argument(
     'test_pool_path',
@@ -77,7 +77,7 @@ print('Generating queue file...')
 print(f'--- vecto ref root: "{args.ref_vecto_root}"')
 _ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root else ''
 _cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
-output32 = run(f'python B32_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
+output32 = run(f'python B12_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
 print(output32)
 
 # --- Step 1b: Truncate queue file if --limit is set ---
@@ -122,12 +122,12 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
 
 # --- Step 5: Extract result files ---
 print('Extracting result files...')
-run(f'python B34_Unzip_Results.py "{vecto_root}"')
+run(f'python B14_Unzip_Results.py "{vecto_root}"')
 
 if args.ref_vecto_root:
     mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
     if os.path.isdir(mr_vecto_root):
         print('Extracting MR result files...')
-        output = run(f'python B34_Unzip_Results.py "{mr_vecto_root}"')
+        output = run(f'python B14_Unzip_Results.py "{mr_vecto_root}"')
 
 print('Done.')
