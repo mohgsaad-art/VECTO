@@ -59,23 +59,6 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 - No intermediate folders are created: all vehicles are collected in memory and written directly as `input.zip` files.
 - Produces a `Vehicles_found_<timestamp>.xlsx` diagnostic report in the current working directory (only the most recent is kept).
 
-### B01 — Prepare XX_RESULTS run directory
-```bash
-python B01_Generate_All_Files_to_Run_for_Vecto_Versions.py <vecto_root> <test_pool_path> [--force-rerun]
-```
-- `vecto_root`: path to the VECTO installation directory.
-- `test_pool_path`: directory containing `02_TO_RUN_GENERIC` and `12_TO_RUN_ISSUES`. `XX_RESULTS` will be created here.
-- `--force-rerun`: re-copies input files into `XX_RESULTS` even if they already exist.
-
-### B02 — Run test files with a VECTO version
-```bash
-python B02_Run_Test_Files_with_Vecto_Version.py <vecto_root> [--max-workers N] [--force-rerun]
-```
-- `vecto_root`: path to the VECTO installation directory (must contain `vectocmd.exe` on Windows, `vectocmd.dll` on Linux).
-- `--max-workers`: number of parallel workers (default: number of CPU cores). Reduce on machines with limited memory.
-- `--force-rerun`: re-run simulations even if a result file already exists.
-- Reads test cases from `XX_RESULTS` in the current working directory (created by B01).
-
 ### C04 — Generate HTML dashboard
 ```bash
 python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
@@ -126,7 +109,7 @@ python B32_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, two extra job groups are appended: (1) vehicles missing from the reference OR report, run against the reference executable; (2) vehicles missing from the MR OR report (`<reports-cache>/MR`), run against the MR executable (`<ref-vecto-root>/MR`). This enables both the reference delta (C44) and the Intermediate (MR) delta.
 - `--reports-cache`: directory containing `OR_*.xlsx` report files used to detect missing vehicles for the reference version. Defaults to the standard CI Reports directory. MR reports are read from `<reports-cache>/MR`.
 - Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first, then reference-version jobs, then MR-version jobs.
-- HTCondor equivalent of B01: prepares the job list before submission.
+- Prepares the job list before submission.
 
 ### B33 — Run a single VECTO job on an HTCondor worker
 ```bash
@@ -136,7 +119,7 @@ python B33_run_single_vecto_file.py <vecto_root> <input_archive> <output_filenam
 - `input_archive`: path to the zipped input files (`input.zip`).
 - `output_filename`: output archive name (without extension). Result is saved as `<output_filename>.zip`.
 - Called by the HTCondor submit script — not intended to be run directly.
-- HTCondor equivalent of B02's `run_individual_file`: unpacks, runs VECTO, archives results.
+- Unpacks the input archive, runs VECTO, and archives the results.
 
 ### B34 — Extract HTCondor result archives
 ```bash
