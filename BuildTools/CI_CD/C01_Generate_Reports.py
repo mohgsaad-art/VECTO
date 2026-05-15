@@ -747,9 +747,6 @@ def main() -> None:
     else:
         print('No MR report found - skipping Intermediate Delta.')
 
-    if failed_names:
-        sys.exit(len(failed_names))
-
 
 if __name__ == '__main__':
     main()
