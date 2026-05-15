@@ -50,7 +50,7 @@ parser.add_argument(
 parser.add_argument(
     '--limit',
     type=int,
-    default=10,
+    default=None,
     metavar='N',
     help='Limit the number of jobs submitted to HTCondor to the first N entries in the queue file.'
 )
