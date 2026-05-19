@@ -300,38 +300,6 @@ def update_nested_dict(nested_dict, keys, new_value):
       if (key in nested_dict) or (isinstance(key,int) and isinstance(nested_dict,list)) :
          update_nested_dict(nested_dict[key], keys[1:], new_value)
 
-# def change_file_rootdir(inputs_dic,filename,rootdir):
-
-#     lpath = get_inputs_path(inputs_dic)
-
-#     for p in lpath:
-
-#         val = get_dict_val_from_keypath(inputs_dic,p)
-
-#         if not isinstance(val,str):
-#             continue
-
-#         if (filename in val):
-
-#             if rootdir=='.' or rootdir=='':
-#                 new_filename = os.path.basename(val)
-#             else:
-#                 new_filename = os.path.join(rootdir,os.path.basename(val))
-
-#             update_nested_dict(inputs_dic, p, new_filename)
-
-#     return inputs_dic
-
-# def root_all_files(inputs_dic):
-#     for p in lpath:
-
-#         val = get_dict_val_from_keypath(inputs_dic,p)
-
-#         if not isinstance(val,str):
-#             continue
-
-#         new_filename = os.path.basename(val)
-
 def replace_string_in_filepath(inputs_dic,oldstr,newstr):
 
     lpath = get_inputs_path(inputs_dic)
@@ -406,9 +374,6 @@ def write_vecto(inputs_dic,outpath):
 
             etree.indent(xml_tree,space='\t',level=0)
 
-            # if not outpath.endswith('.xml'):
-            #     outpath = outpath + '.xml'
-
             xml_tree.write(f_path, encoding='utf-8', xml_declaration=True, pretty_print=False)
 
         elif typ=='csv':
@@ -418,59 +383,4 @@ def write_vecto(inputs_dic,outpath):
 
 
 
-if __name__ == "__main__":
-
-
-    # file_vecto_fpath = os.path.join('INPUTS','Group 54','ML3van.vecto')
-
-    # inputs = {}
-    # inputs['root']= os.path.dirname(file_vecto_fpath)
-
-    # inputs['vecto']={}
-    # inputs['vecto']['file']=os.path.basename(file_vecto_fpath)
-
-
-    # f = open(file_vecto_fpath)
-    # data = json.load(f)
-
-    # inputs['vecto']['data']=data
-
-    # inputs2 = copy.deepcopy(inputs)
-
-    # body = data['Body']
-
-    # # load_data(inputs,body)
-
-    # inputs3 = load_vecto(file_vecto_fpath)
-
-    # lpaths3 = get_inputs_path(inputs3)
-
-    # write_vecto(inputs3,'TEST_WRITE')
-
-    # # test changing names
-
-    # test = {'a':'abc','b':{'c':'cde','d':'cde'}}
-    # print(test)
-    # # update_nested_dict(test, ['b','c'], 'efg')
-    # # print(test)
-    # # update_nested_dict(test, ['b','c'], 'cde')
-    # # print(test)
-
-    # test2 = change_file_rootdir(test,'cde','vecto')
-    # print('change_file_rootdir')
-    # print(test2)
-
-    # test changing names with real vecto file
-
-    file_vecto_fpath2 = os.path.join('INPUTS2','Generic Vehicles','Declaration Mode','PEV','GenericIEPC','IEPC_Gbx1Speed','IEPC__Gbx1.vecto')
-
-    inputs_ini = load_vecto(file_vecto_fpath2)
-    inputs4 = load_vecto(file_vecto_fpath2)
-
-    replace_string_in_filepath(inputs4,'..','.')
-    # change_file_rootdir(inputs4,'..','.')
-    write_vecto(inputs4,r'TEST_WRITE_RENAME\TEST')
-
-    ptest = find_keys_for_value(inputs4,'IEPC_Gbx1_drag.viepcd')
-    ptest2 = find_keys_for_value(inputs4,'..')
 

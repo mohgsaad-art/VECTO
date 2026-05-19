@@ -15,7 +15,6 @@ import pandas as pd
 import functools as fnt
 import patoolib
 
-# from typing import Iterable, TypedDict, overload
 from typing import overload
 from typing import Literal as L
 from typing import TypedDict

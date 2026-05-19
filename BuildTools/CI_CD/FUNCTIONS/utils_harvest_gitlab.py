@@ -5,36 +5,19 @@ Created on Wed Apr 15 14:02:00 2026
 @author: alixgui
 """
 
-# %%
-# import copy
-# import functools as fnt
-# import hashlib
 import itertools as itt
 import json
-# import os
-# import re
-# import shutil
 import sys
-# from collections import OrderedDict as odict
 from datetime import datetime, timedelta
 from pathlib import Path
-# from pprint import pprint
-# from textwrap import dedent
-# from typing import Iterable, TypedDict, overload
 from typing import TypedDict
 from typing import Literal as L
 
 import gitlab
 import pandas as pd
-# import numpy as np
 import patoolib
-# import py7zr
-# from faker import Faker
-# from lxml import etree
-# from ordered_set import StableSet as oset  # type: ignore
 from ordered_set import OrderedSet as oset  # type: ignore
 
-# Graciously fall back to `print()` when not run with VSCode's code cells.
 try:
     from IPython.display import Markdown, display
 except ImportError:
@@ -42,10 +25,8 @@ except ImportError:
     Markdown = str  # type: ignore
 
 from .utils import ensure_dir, next_fpath, dictify
-# from .utils import banner, backup_dir_if_exists 
 from .utils import trim_root, locate_pswd, check_archive, extract_archive
-# from .utils import find_links, find_VINs
-from .utils import get_issue_id_from_path
+from .utils import get_issue_id_from_path, scan_issue_files
 
 # local function
 
