@@ -1,0 +1,7 @@
+pandas
+numpy
+lxml
+openpyxl
+ordered-set
+patool
+python-gitlab

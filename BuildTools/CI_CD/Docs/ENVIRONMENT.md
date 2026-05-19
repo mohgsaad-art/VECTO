@@ -2,11 +2,36 @@
 
 ## Setup (first time)
 
+### Option A — Conda
+
 ```bash
 conda env create -f environment.yml
 ```
 
+### Option B — Python venv
+
+```bash
+python -m venv .venv
+```
+
+**Linux / macOS:**
+```bash
+source .venv/bin/activate
+```
+
+**Windows:**
+```cmd
+.venv\Scripts\activate
+```
+
+Then install the dependencies:
+```bash
+pip install -r requirements.txt
+```
+
 ## Activate
+
+### Conda
 
 **Linux / macOS:**
 ```bash
@@ -18,10 +43,28 @@ conda activate vecto_env
 conda activate vecto_env
 ```
 
+### Python venv
+
+**Linux / macOS:**
+```bash
+source .venv/bin/activate
+```
+
+**Windows:**
+```cmd
+.venv\Scripts\activate
+```
+
 ## Update (if environment.yml changes)
 
+### Conda
 ```bash
 conda env update -f environment.yml --prune
+```
+
+### Python venv
+```bash
+pip install --upgrade -r requirements.txt
 ```
 
 ## Running the scripts
