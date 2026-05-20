@@ -82,6 +82,16 @@ def bool_cell(value) -> str:
         return '<td style="text-align:center;color:#28a745;font-size:15px">&#10003;</td>'
     return '<td style="text-align:center;color:#dc3545;font-size:15px">&#10007;</td>'
 
+def regression_cell(value) -> str:
+    if pd.isna(value) or value == '':
+        return '<td style="text-align:center;color:#aaa">-</td>'
+    if value == 'ERROR':
+        return (
+            '<td><span style="padding:2px 8px;border-radius:4px;font-size:11px;'
+            'background:#dc3545;color:#fff">ERROR</span></td>'
+        )
+    return '<td style="text-align:center;color:#28a745;font-size:15px">&#10003;</td>'
+
 def delta_cell(value) -> str:
     if pd.isna(value) or value == '':
         return '<td style="text-align:center;color:#aaa">-</td>'
@@ -92,10 +102,12 @@ def delta_cell(value) -> str:
         )
     return '<td style="text-align:center;color:#28a745;font-size:15px">&#10003;</td>'
 
-_has_delta    = 'Delta Status'    in df.columns
-_has_delta_mr = 'Delta Status_MR' in df.columns
-n_delta_warn    = df['Delta Status'].str.startswith('WARNING').sum()    if _has_delta    else 0
-n_delta_mr_warn = df['Delta Status_MR'].str.startswith('WARNING').sum() if _has_delta_mr else 0
+_has_delta      = 'Delta Status'      in df.columns
+_has_delta_mr   = 'Delta Status_MR'   in df.columns
+_has_regression = 'Regression Status' in df.columns
+n_delta_warn    = df['Delta Status'].str.startswith('WARNING').sum()    if _has_delta      else 0
+n_delta_mr_warn = df['Delta Status_MR'].str.startswith('WARNING').sum() if _has_delta_mr   else 0
+n_regression_err = (df['Regression Status'] == 'ERROR').sum()           if _has_regression else 0
 
 # build table rows
 rows_html = ''
@@ -107,13 +119,16 @@ for test_name, row in df.iterrows():
         bool_cell(row[col]) if col in row.index else '<td></td>'
         for col in _CRITERIA_COLS
     )
-    delta_col    = delta_cell(row.get('Delta Status',    float('nan'))) if _has_delta    else ''
-    delta_mr_col = delta_cell(row.get('Delta Status_MR', float('nan'))) if _has_delta_mr else ''
-    _delta_val    = row.get('Delta Status',    '') if _has_delta    else ''
-    _delta_mr_val = row.get('Delta Status_MR', '') if _has_delta_mr else ''
+    delta_col      = delta_cell(row.get('Delta Status',      float('nan'))) if _has_delta      else ''
+    delta_mr_col   = delta_cell(row.get('Delta Status_MR',   float('nan'))) if _has_delta_mr   else ''
+    regression_col = regression_cell(row.get('Regression Status', float('nan'))) if _has_regression else ''
+    _delta_val      = row.get('Delta Status',      '') if _has_delta      else ''
+    _delta_mr_val   = row.get('Delta Status_MR',   '') if _has_delta_mr   else ''
+    _regression_val = row.get('Regression Status', '') if _has_regression else ''
     _warn_icon = ''
     if (isinstance(_delta_val, str) and _delta_val.startswith('WARNING')) or \
-       (isinstance(_delta_mr_val, str) and _delta_mr_val.startswith('WARNING')):
+       (isinstance(_delta_mr_val, str) and _delta_mr_val.startswith('WARNING')) or \
+       _regression_val == 'ERROR':
         _warn_icon = ' <span style="color:#856404" title="Delta warning">&#9888;</span>'
     rows_html += (
         f'<tr style="background:{bg}">'
@@ -122,6 +137,7 @@ for test_name, row in df.iterrows():
         f'{criteria_cells}'
         f'{delta_col}'
         f'{delta_mr_col}'
+        f'{regression_col}'
         f'</tr>\n'
     )
 
@@ -182,6 +198,7 @@ html = f"""<!DOCTYPE html>
   <div class="card card-error"><span class="num">{n_error}</span>Failed</div>
   {'<div class="card card-warn"><span class="num">' + str(n_delta_warn) + '</span>Warnings</div>' if _has_delta else ''}
   {'<div class="card card-warn"><span class="num">' + str(n_delta_mr_warn) + '</span>Inter Warnings</div>' if _has_delta_mr else ''}
+  {'<div class="card card-error"><span class="num">' + str(n_regression_err) + '</span>Regressions</div>' if _has_regression else ''}
   <div class="card card-skip"><span class="num">{n_not_run}</span>Not run</div>
 </div>
 
@@ -198,6 +215,7 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(5)">Complete step &#8597;</th>
       {'<th onclick="sortTable(6)">Delta &#8597;</th>' if _has_delta else ''}
       {'<th onclick="sortTable(' + str(7 if _has_delta else 6) + ')">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
+      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr)) + ')">Regression &#8597;</th>' if _has_regression else ''}
     </tr>
   </thead>
   <tbody>

@@ -112,7 +112,8 @@ python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
 - Produces a self-contained `HTML_REPORT_{Date}_{CommitHash}.html` — open directly in any browser, no server needed.
 - Features: colour-coded pass/fail rows, summary counts, live search filter, sortable columns.
 - Displays a `Delta` column when the OR report contains a `Delta Status` column (reference delta), and a `Trans Delta` column when it contains a `Delta Status_MR` column (Intermediate/MR delta).
-- Summary cards show warning counts for each delta type when present.
+- Displays a `Regression` column when the OR report contains a `Regression Status` column — shows `ERROR` for vehicles that passed in the reference run but fail in the current run, `OK` otherwise, and blank for new vehicles with no reference entry.
+- Summary cards show warning counts for each delta type and a regression error count when present.
 
 ### 00 — Extract missing vehicles
 ```bash

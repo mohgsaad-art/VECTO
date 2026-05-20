@@ -109,6 +109,18 @@ def build_delta_summary(var_deltas: dict[str, pd.DataFrame]) -> pd.DataFrame:
     return df_summary
 
 
+def build_regression_status(ref_report: str, current_report: str) -> pd.Series:
+    """Return Series indexed by test name: 'ERROR' where ref=OK and current=ERROR, else 'OK'.
+    Only cases present in both reports are included (inner join).
+    """
+    ref_df = pd.read_excel(ref_report,     sheet_name='Success', index_col=0)
+    cur_df = pd.read_excel(current_report,  sheet_name='Success', index_col=0)
+    joined = ref_df[['Success']].rename(columns={'Success': 'ref'}).join(
+                 cur_df[['Success']].rename(columns={'Success': 'cur'}), how='inner')
+    regression = (joined['ref'] == 'OK') & joined['cur'].str.startswith('ERROR', na=False)
+    return regression.map({True: 'ERROR', False: 'OK'})
+
+
 def write_delta_report(output_path: str, var_deltas: dict[str, pd.DataFrame], df_summary: pd.DataFrame) -> None:
     """Write the delta report XLSX: Summary sheet first, then one sheet per variable."""
     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
@@ -203,6 +215,19 @@ def append_delta_to_report(ref_report: str, current_report: str, sheet_suffix: s
             test_name = row[0].value
             ws.cell(row=row[0].row, column=next_col, value=status_map.get(test_name, ''))
 
+        wb.save(current_report)
+
+    # Patch 'Regression Status' only for the reference delta run (not MR)
+    if not sheet_suffix:
+        regression_map = build_regression_status(ref_report, current_report).to_dict()
+        wb = openpyxl.load_workbook(current_report)
+        ws = wb['Success']
+        header_row = next(ws.iter_rows(min_row=1, max_row=1))
+        next_col = len(header_row) + 1
+        ws.cell(row=1, column=next_col, value='Regression Status')
+        for row in ws.iter_rows(min_row=2):
+            test_name = row[0].value
+            ws.cell(row=row[0].row, column=next_col, value=regression_map.get(test_name, ''))
         wb.save(current_report)
 
     print(f'Delta sheets appended to: {current_report}')
