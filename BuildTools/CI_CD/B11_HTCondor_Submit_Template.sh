@@ -15,5 +15,6 @@ batch_name = LEGENT_pyjeo_vecto
 output = D:\Apps\Python\alixgui\test_case_VECTOCI_HTCONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\Apps\Python\alixgui\test_case_VECTOCI_HTCONDOR\Z01_LOGS\$(output_file_name).err
 log    = D:\Apps\Python\alixgui\test_case_VECTOCI_HTCONDOR\Z01_LOGS\$(output_file_name).log
+periodic_remove = JobStatus == 2 && CurrentTime-EnteredCurrentStatus > 3600*3
 
 queue vecto,input_dir,output_file_name from batch_arguments.txt
