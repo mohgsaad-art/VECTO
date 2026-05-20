@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region Implementation of IGearboxInfo
 
-		public GearboxType GearboxType => GearboxType.AMT;
+		public GearboxType GearboxType => GearboxType.APTN;
 
 		public GearshiftPosition Gear { get; }
 
