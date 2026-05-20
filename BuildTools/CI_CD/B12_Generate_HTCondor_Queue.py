@@ -134,6 +134,7 @@ def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input
     """Return job-arg tuples for vehicles missing from the given vecto_root's latest OR report."""
     missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache)
     missing_dirs = em.resolve_input_dirs(missing_ids, test_pool_path)
+    print(f'Identified {len(missing_ids)} missing vehicle(s) for VECTO version at {vecto_root}')
 
     version = get_vecto_version(vecto_root)
     result_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS', version)
@@ -146,6 +147,7 @@ def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input
         output_filename = rel.replace(os.sep, '__')
         if not force_rerun and output_filename + '_out.zip' in existing:
             continue
+        print(f'Queuing job for missing vehicle: {output_filename}')
         job_list.append((vecto_root, input_dir, output_filename))
 
     if no_hev:
