@@ -94,7 +94,7 @@ print(f'Patching submit template -> {SUBMIT_GENERATED}')
 with open(SUBMIT_TEMPLATE) as f:
     content = f.read()
 
-content = content.replace('LEGENT_pyjeo_vecto', QUEUE_NAME)
+content = content.replace('vecto_batch', QUEUE_NAME)
 
 with open(SUBMIT_GENERATED, 'w') as f:
     f.write(content)
