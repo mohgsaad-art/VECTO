@@ -207,15 +207,15 @@ html = f"""<!DOCTYPE html>
 <table id="resultsTable">
   <thead>
     <tr>
-      <th onclick="sortTable(0)">Test Name &#8597;</th>
-      <th onclick="sortTable(1)">Status &#8597;</th>
-      <th onclick="sortTable(2)">VSUM &#8597;</th>
-      <th onclick="sortTable(3)">Log 100% &#8597;</th>
-      <th onclick="sortTable(4)">MRF &#8597;</th>
-      <th onclick="sortTable(5)">Complete step &#8597;</th>
-      {'<th onclick="sortTable(6)">Delta &#8597;</th>' if _has_delta else ''}
-      {'<th onclick="sortTable(' + str(7 if _has_delta else 6) + ')">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
-      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr)) + ')">Regression &#8597;</th>' if _has_regression else ''}
+      <th onclick="sortTable(0)" title="Test case identifier derived from the input directory path">Test Name &#8597;</th>
+      <th onclick="sortTable(1)" title="Overall result: OK when all criteria pass, ERROR otherwise">Status &#8597;</th>
+      <th onclick="sortTable(2)" title="True when a vsum file exists and all simulations in it have Status = Success">VSUM &#8597;</th>
+      <th onclick="sortTable(3)" title="True when the VECTO log file contains a 100% completion line">Log 100% &#8597;</th>
+      <th onclick="sortTable(4)" title="True when the RSLT_MANUFACTURER file contains no Error entries">MRF &#8597;</th>
+      <th onclick="sortTable(5)" title="True when the complete-step check passes (bus-specific; n/a for other vehicles)">Complete step &#8597;</th>
+      {'<th onclick="sortTable(6)" title="WARNING when CO2/FC delta vs. reference version exceeds the defined threshold">Delta &#8597;</th>' if _has_delta else ''}
+      {'<th onclick="sortTable(' + str(7 if _has_delta else 6) + ')" title="WARNING when CO2/FC delta vs. MR version exceeds the defined threshold">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
+      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr)) + ')" title="ERROR when the previous run was OK and the current run is ERROR">Regression &#8597;</th>' if _has_regression else ''}
     </tr>
   </thead>
   <tbody>
