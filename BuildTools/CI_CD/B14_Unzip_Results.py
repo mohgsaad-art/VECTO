@@ -59,8 +59,9 @@ for filename in os.listdir(version_storage):
     zip_outfile = os.path.join(version_storage, filename)
 
     # Reconstruct the directory path from the flat filename:
-    # '__' separators become path separators.
-    rel_path = filename.replace('_out.zip', '')
+    # Strip the job-type suffix (_REF) added by B12 for missing-vehicle jobs,
+    # then replace '__' separators with path separators.
+    rel_path = filename.replace('_out.zip', '').removesuffix('_REF')
     rel_path = rel_path.replace('__', os.sep)
 
     outpath = os.path.join(extract_dir, vecto_version, rel_path)

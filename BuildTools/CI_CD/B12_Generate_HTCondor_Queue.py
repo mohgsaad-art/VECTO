@@ -144,7 +144,7 @@ def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input
     job_list = []
     for input_dir in missing_dirs:
         rel = os.path.normpath(os.path.relpath(input_dir, input_root))
-        output_filename = rel.replace(os.sep, '__')
+        output_filename = rel.replace(os.sep, '__') + '_REF'
         if not force_rerun and output_filename + '_out.zip' in existing:
             continue
         print(f'Queuing job for missing vehicle: {output_filename}')
