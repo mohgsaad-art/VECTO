@@ -143,7 +143,7 @@ def get_issue_data(gitlab_issue):
         "iid": gitlab_issue.iid,
         "issue": gitlab_issue.asdict(),
         # "discussions": dictify(issue.discussions.list(order_by="updated_at")),
-        "notes": dictify(gitlab_issue.notes.list(order_by="updated_at",order='asc',get_all=True)), # used to get link, must be in chronological order
+        "notes": dictify(gitlab_issue.notes.list(order_by="updated_at",sort='asc',get_all=True)), # used to get link, must be in chronological order
         "status_events": dictify(gitlab_issue.resourcestateevents.list()),
         "label_events": dictify(gitlab_issue.resourcelabelevents.list()),
         "milestone_events": dictify(gitlab_issue.resourcemilestoneevents.list()),
