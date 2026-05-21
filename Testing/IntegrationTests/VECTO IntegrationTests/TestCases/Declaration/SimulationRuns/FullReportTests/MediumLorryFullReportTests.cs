@@ -123,8 +123,9 @@ public class MediumLorryFullReportTests : FullReportTestsBase
         CheckReportExists(reportWriter);
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLCustomerReport, XmlDocumentType.CustomerReport), "CIF invalid");
+        Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport), "Monitoring Report invalid");
 
-		if (!inputProvider.JobInputData.Vehicle.ExemptedVehicle) {
+        if (!inputProvider.JobInputData.Vehicle.ExemptedVehicle) {
 			Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Summary, reportWriter.XMLCustomerReport));
 			//CheckElementCount(XMLNames.Report_Results_Summary, reportWriter.XMLCustomerReport, 2);
 		}
@@ -157,8 +158,9 @@ public class MediumLorryFullReportTests : FullReportTestsBase
 		CheckReportExists(reportWriter);
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLCustomerReport, XmlDocumentType.CustomerReport), "CIF invalid");
+        Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport), "Monitoring Report invalid");
 
-		Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Error, reportWriter.XMLCustomerReport));
+        Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Error, reportWriter.XMLCustomerReport));
 		AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Error_Val,
 			XMLNames.Report_Results, XMLNames.Report_Result_Status);
 

@@ -165,6 +165,7 @@ public class CompleteBusFullReportTests : FullReportTestsBase
 
 		ValidateAndPrint(completeFileWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport);
 		ValidateAndPrint(completeFileWriter.XMLCustomerReport, XmlDocumentType.CustomerReport);
+        ValidateAndPrint(completeFileWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport);
 
         CheckElementTypeNameContains(completeFileWriter.XMLMultistageReport, "Vehicle", expectedType);
 

@@ -170,8 +170,9 @@ public class PrimaryBusFullReportTests : FullReportTestsBase
         CheckReportExists(reportWriter, CifShouldExist: false, VifShouldExist: true);
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMultistageReport, XmlDocumentType.MultistepOutputData), "VIF invalid");
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
+        Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport), "Monitoring Report invalid");
 
-		AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Success_Val,
+        AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Success_Val,
 			XMLNames.Report_Results, XMLNames.Report_Result_Status);
 
 
@@ -207,8 +208,9 @@ public class PrimaryBusFullReportTests : FullReportTestsBase
 		CheckReportExists(reportWriter, CifShouldExist: false, VifShouldExist: true);
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMultistageReport, XmlDocumentType.MultistepOutputData), "VIF invalid");
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
+        Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport), "Monitoring Report invalid");
 
-		Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Error, reportWriter.XMLManufacturerReport));
+        Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Error, reportWriter.XMLManufacturerReport));
 		AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Error_Val,
 			XMLNames.Report_Results, XMLNames.Report_Result_Status);
 	}
@@ -241,8 +243,9 @@ public class PrimaryBusFullReportTests : FullReportTestsBase
 		CheckReportExists(reportWriter, CifShouldExist: false, VifShouldExist: true);
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMultistageReport, XmlDocumentType.MultistepOutputData), "VIF invalid");
 		Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
+        Assert.IsTrue(ValidateAndPrint(reportWriter.XMLMonitoringReport, XmlDocumentType.MonitoringReport), "Monitoring Report invalid");
 
-		AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Success_Val,
+        AssertElementValue(reportWriter.XMLManufacturerReport, XMLNames.Report_Results_Status_Success_Val,
 			XMLNames.Report_Results, XMLNames.Report_Result_Status);
 
 		if (GetElements(reportWriter.XMLManufacturerReport, XMLNames.Report_Results,

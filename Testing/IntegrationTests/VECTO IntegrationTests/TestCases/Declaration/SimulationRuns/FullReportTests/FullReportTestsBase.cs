@@ -169,7 +169,8 @@ public class FullReportTestsBase
             bool CifShouldExist = true,
             bool VifShouldExist = false,
             bool PrimaryMrfShouldExist = false,
-            bool PrimaryReportShouldExist = false)
+            bool PrimaryReportShouldExist = false,
+            bool MonitoringReportShouldExist = true)
     {
         var fail = false;
 
@@ -179,6 +180,8 @@ public class FullReportTestsBase
             XmlDocumentType.ManufacturerReport);
         fail |= CheckReport(VifShouldExist, fileWriter.XMLPrimaryVehicleReportName, fileWriter.XMLMultistageReport,
             XmlDocumentType.MultistepOutputData);
+        fail |= CheckReport(MonitoringReportShouldExist, fileWriter.XMLMonitoringReportName, fileWriter.XMLMonitoringReport,
+            XmlDocumentType.MonitoringReport);
 
 		if (fail) {
             Assert.Fail();
