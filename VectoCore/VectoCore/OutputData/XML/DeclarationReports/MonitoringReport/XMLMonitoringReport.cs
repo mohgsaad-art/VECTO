@@ -228,12 +228,14 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteBaseVehicleData();
             WriteFullConventionalComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WriteCompleted_Data()
         { 
             WriteBaseVehicleData();
             WriteAdvancedReducingTechnologiesForCompletedVehicle();
+            WriteExtraTechnologies();
         }
 
         protected void WriteExempted_Data()
@@ -247,6 +249,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteFullConventionalComponents();
             WriteEV_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WriteHEV_S2_Data()
@@ -255,6 +258,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteFullConventionalComponents();
             WriteHEV_Sx_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WriteHEV_S3_Data()
@@ -263,6 +267,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteNoGearboxConventionalComponents();
             WriteHEV_Sx_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WriteHEV_S4_Data()
@@ -271,6 +276,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteNoGearboxNoAxlegearConventionalComponents();
             WriteHEV_Sx_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WriteHEV_IEPC_S_Data()
@@ -279,6 +285,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteNoGearboxOptionalAxlegearConventionalComponents();
             WriteHEV_Sx_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WritePEV_E2_Data()
@@ -287,6 +294,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteNoEngineConventionalComponents();
             WriteEV_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WritePEV_E3_Data()
@@ -295,6 +303,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteNoEngineNoGearboxConventionalComponents();
             WriteEV_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WritePEV_E4_Data()
@@ -303,6 +312,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteAxleWheels();
             WriteEV_ElectricComponents();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         protected void WritePEV_IEPC_Data()
@@ -311,7 +321,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WriteOptionalAxlegearConventionalComponents();
             WriteEV_ElectricComponents();
             WriteAdvancedReducingTechnologies();
-		}
+            WriteExtraTechnologies();
+        }
         
         private void WriteMultiple_PEV_Data()
         {
@@ -320,6 +331,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WritePowertrains();
             WriteAxleWheels();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         private void WriteMultiple_FCHV_Data()
@@ -330,6 +342,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WritePowertrains();
             WriteAxleWheels();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         private void WriteMultiple_SHEV_Data()
@@ -341,6 +354,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
             WritePowertrains();
             WriteAxleWheels();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
         }
 
         private void WritePowertrains()
@@ -410,7 +424,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
 			WriteEV_ElectricComponents();
             WriteFuelCellComponent();
             WriteAdvancedReducingTechnologies();
-		}
+            WriteExtraTechnologies();
+        }
 
 		protected void WriteFCHV_F3_Data()
 		{
@@ -419,7 +434,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
 			WriteEV_ElectricComponents();
             WriteFuelCellComponent();
             WriteAdvancedReducingTechnologies();
-		}
+            WriteExtraTechnologies();
+        }
 
 		protected void WriteFCHV_F4_Data()
 		{
@@ -428,6 +444,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
 			WriteEV_ElectricComponents();
             WriteFuelCellComponent();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
 		}
 
 		protected void WriteFCHV_IEPC_Data()
@@ -437,6 +454,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
 			WriteEV_ElectricComponents();
             WriteFuelCellComponent();
             WriteAdvancedReducingTechnologies();
+            WriteExtraTechnologies();
 		}
 
 		protected void WriteBaseVehicleData()
@@ -568,6 +586,13 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
         {
             _additionalFields.Add(
                 new XElement(_tns + XMLNames.MonitoringAdvReducingTech, new XComment(GetReducingTechnologies()))
+            );
+        }
+
+        private void WriteExtraTechnologies()
+        {
+            _additionalFields.Add(
+                new XElement(_tns + "ExtraTechnologies", new XComment(GetExtraTechnologies()))
             );
         }
 
@@ -828,6 +853,13 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
                 new XElement(_tns + XMLNames.MonitoringMake, 
                     GetPlaceholder($"{prefix}_{PlaceHolder.MAKE}"))
             };
+        }
+
+        private string GetExtraTechnologies()
+        {
+            var sampleTech = new XElement("Technology", GetPlaceholder(PlaceHolder.TECHNOLOGY_BRAND_NAME));
+            
+            return Environment.NewLine + sampleTech.ToString() + Environment.NewLine;
         }
 
         protected string GetReducingTechnologies()

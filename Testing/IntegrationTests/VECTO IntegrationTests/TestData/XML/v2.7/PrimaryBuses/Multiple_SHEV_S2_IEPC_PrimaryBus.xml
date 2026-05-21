@@ -3650,6 +3650,9 @@
 <Entry category="other">##TECHNOLOGY_BRAND_NAME##</Entry>
 -->
 			</AdvancedReducingTechnologies>
+			<ExtraTechnologies>
+				<Technology>Tech1</Technology>
+			</ExtraTechnologies>
 		</MonitoringData>
 	</Vehicle>
 </tns:VectoInputDeclaration>
