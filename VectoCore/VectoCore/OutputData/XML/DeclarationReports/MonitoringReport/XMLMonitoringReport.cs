@@ -359,7 +359,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
         {
             _additionalFields.Add(
                 new XElement(_tns + "Powertrain",
-                    new XAttribute("axleNumber", axlePt.AxleNumber),
+                    new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                     new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "xEV_EM2_Powertrain_DataType"),
                     GetElectricMachine(),
                     GetGearbox(),
@@ -372,7 +372,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
         {
             _additionalFields.Add(
                 new XElement(_tns + "Powertrain",
-                    new XAttribute("axleNumber", axlePt.AxleNumber),
+                    new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                     new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "xEV_EM3_Powertrain_DataType"),
                     GetElectricMachine(),
                     GetAxlegear()
@@ -384,7 +384,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
         {
             _additionalFields.Add(
                 new XElement(_tns + "Powertrain",
-                    new XAttribute("axleNumber", axlePt.AxleNumber),
+                    new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                     new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "xEV_EM4_Powertrain_DataType"),
                     GetElectricMachine()
                 )
@@ -395,7 +395,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
         {
             _additionalFields.Add(
                 new XElement(_tns + "Powertrain",
-                    new XAttribute("axleNumber", axlePt.AxleNumber),
+                    new XAttribute("axleNumber", axlePt.AxleNumber.Value),
                     new XAttribute(AbstractManufacturerReport.XSI + XMLNames.XSIType, "xEV_IEPC_Powertrain_DataType"),
                     GetElectricMachine(),
                     (axlePt.AxleGearInputData != null) ? GetAxlegear() : null

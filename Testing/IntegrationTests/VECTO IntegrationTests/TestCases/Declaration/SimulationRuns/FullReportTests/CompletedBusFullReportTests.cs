@@ -246,7 +246,7 @@ public class CompletedBusFullReportTests : FullReportTestsBase
 		completedJobContainer.Execute(false);
         completedJobContainer.WaitFinished();
 
-        CheckReportExists(completedFileWriter, CifShouldExist: false, MrfShouldExist: false, VifShouldExist: true);
+        CheckReportExists(completedFileWriter, CifShouldExist: false, MrfShouldExist: false, VifShouldExist: true, MonitoringReportShouldExist: false);
 		CheckElementTypeNameContains(completedFileWriter.XMLMultistageReport, "Vehicle", expectedType);
 
 		// this is the actual test: run completed simulation

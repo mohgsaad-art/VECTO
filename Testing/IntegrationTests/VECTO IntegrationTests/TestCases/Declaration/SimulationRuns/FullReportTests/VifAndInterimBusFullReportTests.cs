@@ -159,7 +159,7 @@ public class VifAndInterimBusFullReportTests : FullReportTestsBase
         // assertions
         File.Delete(fileWriter.XMLPrimaryVehicleReportName);
 
-        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false);
+        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false, MonitoringReportShouldExist: false);
 
         CheckElementTypeNameContains(interimFileWriter.XMLMultistageReport, "Vehicle", expectedType);
 
@@ -221,7 +221,7 @@ public class VifAndInterimBusFullReportTests : FullReportTestsBase
         // assertions
         File.Delete(fileWriter.XMLPrimaryVehicleReportName);
 
-        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false);
+        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false, MonitoringReportShouldExist: false);
 
         CheckElementTypeNameContains(interimFileWriter.XMLMultistageReport, "Vehicle", expectedType);
 
@@ -302,7 +302,7 @@ public class VifAndInterimBusFullReportTests : FullReportTestsBase
         // assertions
         File.Delete(fileWriter.XMLPrimaryVehicleReportName);
 
-        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false);
+        CheckReportExists(interimFileWriter, VifShouldExist: true, MrfShouldExist: false, CifShouldExist: false, MonitoringReportShouldExist: false);
 
         CheckElementTypeNameContains(interimFileWriter.XMLMultistageReport, "Vehicle", expectedType);
 
