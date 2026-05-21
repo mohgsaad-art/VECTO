@@ -277,7 +277,7 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
 
         vsum = vsums[0]
         df_vsum = pd.read_csv(vsum, skiprows=[0])[:-1]
-        vsum_ok = (df_vsum['Status'] == 'Success').all()
+        vsum_ok = len(df_vsum) > 0 and (df_vsum['Status'] == 'Success').all()
 
         log = logs[0]
         with open(log) as fh:
