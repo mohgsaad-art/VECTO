@@ -14,6 +14,7 @@
 	<!-- Changelog
 	13-05-2025: Updated to MRF v1.0 and added FCHV vehicle types.
 	11-06-2025: Added VectoMonitoringOutputType types for multiple powertrain lorries. 
+	21-05-2026: Added optional element 'ExtraTechnologies' to all (non-exempted) vehicle types.
 	-->
 	
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v1.0" schemaLocation="VectoOutputManufacturer.1.0.xsd"/>
@@ -727,6 +728,7 @@
 		<xs:sequence>
 			<xs:group ref="BaseVehicleData"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Exempted_DataType">
@@ -739,6 +741,7 @@
 			<xs:group ref="BaseVehicleData"/>
 			<xs:group ref="FullConventionalComponents"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="HEV-Px_IHPC_DataType">
@@ -747,6 +750,7 @@
 			<xs:group ref="FullConventionalComponents"/>
 			<xs:group ref="xEV-ElectricComponents"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Abstract_SHEV_Sx_DataType" abstract="true"/>
@@ -758,6 +762,7 @@
 					<xs:group ref="FullConventionalComponents"/>
 					<xs:group ref="HEV-Sx-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -770,6 +775,7 @@
 					<xs:group ref="NoGearboxConventionalComponents"/>
 					<xs:group ref="HEV-Sx-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -782,6 +788,7 @@
 					<xs:group ref="NoGearboxNoAxlegearConventionalComponents"/>
 					<xs:group ref="HEV-Sx-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -792,6 +799,7 @@
 			<xs:group ref="NoGearboxOptionalAxlegearConventionalComponents"/>
 			<xs:group ref="HEV-Sx-ElectricComponents"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Abstract_PEV_Ex_DataType" abstract="true"/>
@@ -803,6 +811,7 @@
 					<xs:group ref="NoEngineConventionalComponents"/>
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -815,6 +824,7 @@
 					<xs:group ref="NoEngineNoGearboxConventionalComponents"/>
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -827,6 +837,7 @@
 					<xs:group ref="AxleWheelsConventionalComponents"/>
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -837,6 +848,7 @@
 			<xs:group ref="OptionalAxlegearConventionalComponents"/>
 			<xs:group ref="xEV-ElectricComponents"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Abstract_FCHV_Fx_DataType" abstract="true"/>
@@ -849,6 +861,7 @@
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="FuelCell" type="FuelCellDataType" maxOccurs="2"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -862,6 +875,7 @@
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="FuelCell" type="FuelCellDataType" maxOccurs="2"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -875,6 +889,7 @@
 					<xs:group ref="xEV-ElectricComponents"/>
 					<xs:element name="FuelCell" type="FuelCellDataType" maxOccurs="2"/>
 					<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+					<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -886,6 +901,7 @@
 			<xs:group ref="xEV-ElectricComponents"/>
 			<xs:element name="FuelCell" type="FuelCellDataType" maxOccurs="2"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Multiple_PEV_DataType">
@@ -895,6 +911,7 @@
 			<xs:element name="Powertrain" type="Abstract_Powertrain_xEV_DataType" minOccurs="2" maxOccurs="2"/>
 			<xs:element name="AxleWheels" type="AxleWheelsDataType"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Multiple_FCHV_DataType">
@@ -905,6 +922,7 @@
 			<xs:element name="Powertrain" type="Abstract_Powertrain_xEV_DataType" minOccurs="2" maxOccurs="2"/>
 			<xs:element name="AxleWheels" type="AxleWheelsDataType"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Multiple_SHEV_DataType">
@@ -916,6 +934,7 @@
 			<xs:element name="Powertrain" type="Abstract_Powertrain_xEV_DataType" minOccurs="2" maxOccurs="2"/>
 			<xs:element name="AxleWheels" type="AxleWheelsDataType"/>
 			<xs:element name="AdvancedReducingTechnologies" type="AdvReducingTechDataType"/>
+			<xs:element name="ExtraTechnologies" type="ExtraTechnologiesType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -1265,6 +1284,14 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtraTechnologiesType">
+		<xs:annotation>
+			<xs:documentation>#119</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Technology" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ElectricMachineDataType">
