@@ -67,7 +67,7 @@ def update_pool(
     saved_last_status_path = pool_root / 'status.json'
 
     print(70 * '=')
-    print('A02 - Update Pool')
+    print('A01 - Update Pool')
 
     # Connect
     with timed('GitLab connection'):
