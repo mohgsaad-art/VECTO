@@ -317,6 +317,7 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
     """Scan the Article 10 pool, deduplicate vehicles, return in-memory manifests."""
     save_dir_raw = issues_input_dir / 'A00_RAW'
     save_dir_extract = issues_input_dir / 'A01_EXTRACT'
+    save_dir_others  = issues_input_dir / 'A02_OTHERS'
 
     with timed('Scan local pool'):
         df_issue_vins, df_hash_sorted = scan_pool(
@@ -327,7 +328,8 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
 
     downloaded_files = [f for f in save_dir_raw.glob('*/uploads/**/*') if f.is_file()]
     extracted_files = [f for f in save_dir_extract.glob('*/uploads/**/*') if f.is_file()]
-    df_local_path = generate_df_path(downloaded_files + extracted_files)
+    others_files = [f for f in save_dir_others.glob('*/uploads/**/*') if f.is_file()]
+    df_local_path = generate_df_path(downloaded_files + extracted_files + others_files)
     df_local_path = df_local_path.join(df_issue_label[['art10_label']], on='iid', how='left')
 
     with timed('Sort and deduplicate vehicles'):

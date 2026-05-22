@@ -101,6 +101,7 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 - Issue vehicles are placed under `<output_dir>/To_Run/articles/<vehicle>/`.
 - No intermediate folders are created: all vehicles are collected in memory and written directly as `input.zip` files.
 - Produces a `Vehicles_found_<timestamp>.xlsx` diagnostic report in the current working directory (only the most recent is kept).
+- **Override mechanism (`A02_OTHERS`):** files placed under `A02_OTHERS` replace the corresponding inputs from `A00_RAW`. To override a file, mirror its path under `A02_OTHERS` — the sorting algorithm picks the `A02_OTHERS` copy instead of the original. For example, to override `A00_RAW/555/uploads/23d4ert546tfcb45mnbd3/original_input.xml`, place the replacement at `A02_OTHERS/555/uploads/23d4ert546tfcb45mnbd3/modified_input.xml`.
 
 ### C04 — Generate HTML dashboard
 ```bash
