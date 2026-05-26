@@ -263,6 +263,9 @@ def collect_generic_vehicles(input_dir: str) -> list[VehicleManifest]:
                             'type': 'NA', 'powertrain': 'NA', 'tree': xml_tree})
             continue
         type_attr = next((v for k, v in vehicle.attrib.items() if 'type' in k), '')
+        if 'Exempted' in type_attr:
+            print(f'  SKIPPING exempted vehicle: {fxml}')
+            continue
         if 'Primary' in type_attr:
             vtype = 'PrimaryBus'
         elif 'Completed' in type_attr:
