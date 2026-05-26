@@ -214,3 +214,16 @@ python C44_Generate_Delta_Report.py <ref_report> <current_report> [--output <pat
   - `append_delta_to_report(ref, current, sheet_suffix='')` — appends delta sheets directly to an existing OR report and patches the `Success` sheet with a `Delta Status<sheet_suffix>` column. Use `sheet_suffix='_MR'` to write the Intermediate Delta alongside the reference delta in the same workbook without overwriting existing sheets.
   - `generate_delta_report(ref, current, output_path=None)` — writes a standalone delta `.xlsx`.
 - Returns `None` (and skips writing) if no matching variable sheets are found in both reports.
+
+#### Troubleshooting: delta column not appearing in the report
+
+If the `Delta` or `Inter Delta` column is absent from the HTML/OR report, check:
+
+- **Reports cache**: confirm that at least one `OR_*.xlsx` file is present in
+  `--reports-cache` (for reference delta) or `--mr-reports-cache` (for Inter Delta).
+- **Reference VECTO version**: the version string of the reference OR report must
+  match the current run's version (e.g. reference `5.1.1` vs. current `5.1.1-DEV`).
+  A mismatch causes no vehicles to be paired and the delta is silently skipped.
+- **Root vs. MR cache**: for a missing `Delta`, check the root `--reports-cache`
+  folder; for a missing `Inter Delta`, check the `--mr-reports-cache` folder
+  (defaults to `<reports-cache>/MR`).
