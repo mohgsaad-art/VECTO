@@ -1,4 +1,6 @@
+using System.Xml;
 using Ninject.Modules;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 
@@ -31,6 +33,9 @@ namespace TUGraz.VectoCore.Ninject.XMLInputData
 
             Bind<IXMLAirdragDeclarationInputData>().To<XMLDeclarationAirdragDataProviderV26>()
                 .Named(XMLDeclarationAirdragDataProviderV26.QUALIFIED_XSD_TYPE);
-		}
+
+            Bind<IComponentInputData>().ToConstructor((syntax) => new XMLDeclarationAirdragDataProviderV26(null, syntax.Inject<XmlNode>(), syntax.Inject<string>()))
+                .Named(XMLDeclarationAirdragDataProviderV26.QUALIFIED_XSD_TYPE);
+        }
 	}
 }
