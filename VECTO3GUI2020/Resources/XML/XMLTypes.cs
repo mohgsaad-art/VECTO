@@ -14,7 +14,7 @@ namespace VECTO3GUI2020.Resources.XML
 		public const string Vehicle_Pev_CompletedBusDeclarationType =
 			XMLDeclarationPEVCompletedBusDataProviderV24.XSD_TYPE;
 		public const string Vehicle_Iepc_CompletedBusDeclarationType =
-			XMLDeclarationIepcCompletedBusDataProviderV24.XSD_TYPE;
+            XMLDeclaration_PEV_CompletedBus_DataProviderV27.XSD_TYPE;
 		public const string Vehicle_Exempted_CompletedBusDeclarationType =
 			XMLDeclarationExemptedCompletedBusDataProviderV24.XSD_TYPE;
 
