@@ -46,7 +46,6 @@ namespace VECTO3GUI2020.Ninject.Factories
             #region Vehicle
             AddVehicleWriterBinding<XMLCompletedBusVehicleWriterHEV>(XMLCompletedBusVehicleWriterHEV.VERSION);
 			AddVehicleWriterBinding<XMLCompletedBusVehicleWriterPEV>(XMLCompletedBusVehicleWriterPEV.VERSION);
-			AddVehicleWriterBinding<XMLCompletedBusVehicleWriterIEPC>(XMLCompletedBusVehicleWriterIEPC.VERSION);
 			AddVehicleWriterBinding<XMLCompletedBusVehicleWriterFCHV>(XMLCompletedBusVehicleWriterFCHV.VERSION);
 
             #endregion Vehicle

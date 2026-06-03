@@ -41,7 +41,6 @@ public class XMLCompletedBusVehicleWriterTest
 	[TestCase(XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24, XMLDeclarationExemptedCompletedBusDataProviderV24.XSD_TYPE, typeof(XMLCompletedBusVehicleWriterExempted))]
 	[TestCase(XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24, XMLDeclarationHevCompletedBusDataProviderV24.XSD_TYPE, typeof(XMLCompletedBusVehicleWriterHEV))]
 	[TestCase(XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24, XMLDeclarationPEVCompletedBusDataProviderV24.XSD_TYPE, typeof(XMLCompletedBusVehicleWriterPEV))]
-	[TestCase(XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24, XMLDeclarationIepcCompletedBusDataProviderV24.XSD_TYPE, typeof(XMLCompletedBusVehicleWriterIEPC))]
     public void WriteVehicle(string version, string type, Type expectedWriter)
 	{
 
