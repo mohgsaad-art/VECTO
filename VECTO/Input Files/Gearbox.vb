@@ -246,7 +246,7 @@ Public Class Gearbox
 
                 if gearbox.Type = GearboxType.IEPC Then
                     if (gearbox.Gears.Count > 0) Then
-                        Throw New VectoSimulationException("No gears are allowed for IEPC gearbox.", ErrorCodes.GEARBOX_IEPC_NO_GEARS_ALLOWED)
+                        Throw New VectoException("No gears are allowed for IEPC gearbox.", ErrorCodes.GEARBOX_IEPC_NO_GEARS_ALLOWED)
                     End If
                     gearboxData = new GearboxData() With{ .Inertia = 0.SI(of KilogramSquareMeter), .TractionInterruption = 0.SI(of Second)} 
                 else

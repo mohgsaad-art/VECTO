@@ -9,7 +9,6 @@ public class VectoExceptionsTests
 	public void Test_VectoExceptions()
 	{
 		new VectoException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, new Exception("Inner"));
-		new VectoSimulationException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE);
-		new VectoSimulationException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, new Exception("Inner"));
+		new VectoException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE);
 	}
 }

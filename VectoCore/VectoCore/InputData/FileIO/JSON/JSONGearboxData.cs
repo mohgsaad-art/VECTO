@@ -134,7 +134,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
+					throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				return gears[0].GetEx<double>(JsonKeys.Gearbox_Gear_Ratio);
 			}
@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
+					throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				var lossMap = gears[0][JsonKeys.Gearbox_Gear_LossMapFile];
 				if (lossMap != null) {
@@ -171,7 +171,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get {
 				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
 				if (!gears.Any()) {
-					throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
+					throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 				}
 				return gears[0].GetEx<double>(JsonKeys.Gearbox_Gear_Efficiency);
 			}

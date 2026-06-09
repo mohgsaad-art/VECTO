@@ -223,7 +223,7 @@ public class PrimaryBusIgnoreResult
                         break;
                     case ResponseDrivingCycleDistanceExceeded r:
                         if (r.MaxDistance.IsSmallerOrEqual(0)) {
-                            throw new VectoSimulationException($"DistanceExceeded, MaxDistance is invalid: {r.MaxDistance}", ErrorCodes.VECTORUN_DISTANCE_EXCEEDED);
+                            throw new VectoException($"DistanceExceeded, MaxDistance is invalid: {r.MaxDistance}", ErrorCodes.VECTORUN_DISTANCE_EXCEEDED);
                         }
                         ds = r.MaxDistance;
                         break;
@@ -239,7 +239,7 @@ public class PrimaryBusIgnoreResult
                         throw new Exception($"DistanceRun got an unexpected response: {response}");
                 }
                 if (loopCount++ > Constants.SimulationSettings.MaximumIterationCountForSimulationStep) {
-                    throw new VectoSimulationException("Maximum iteration count for a single simulation interval reached! Aborting!", ErrorCodes.VECTORUN_MAXIMUM_ITERATION_COUNT_EXCEEDED);
+                    throw new VectoException("Maximum iteration count for a single simulation interval reached! Aborting!", ErrorCodes.VECTORUN_MAXIMUM_ITERATION_COUNT_EXCEEDED);
                 }
 
 				if (AbsTime > 100.SI<Second>()) {

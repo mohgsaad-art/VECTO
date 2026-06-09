@@ -352,8 +352,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				if (data.DriverData.PTODriveMinSpeed == null) 
 				{
-					throw new VectoSimulationException(
-						"PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
+					throw new VectoException("PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
 				}
 
                 RoadSweeperAuxiliary rdSwpAux = new RoadSweeperAuxiliary(container);
@@ -560,8 +559,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				if (data.DriverData.PTODriveMinSpeed == null) 
 				{
-					throw new VectoSimulationException(
-						"PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
+					throw new VectoException("PTO activity 'road sweeping' requested, but no min. engine speed or gear provided", ErrorCodes.PTO_MISSING_DATA);
 				}
 
 				rdSwpAux = new RoadSweeperAuxiliary(container);

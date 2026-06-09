@@ -168,7 +168,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			if (angularVelocity == null) {
 				// if the clutch disengages the idle controller should take over!
-				throw new VectoSimulationException("angular velocity is null! Clutch open without IdleController?", ErrorCodes.ICE_ANGULAR_VELOCITY_IS_NULL);
+				throw new VectoException("angular velocity is null! Clutch open without IdleController?", ErrorCodes.ICE_ANGULAR_VELOCITY_IS_NULL);
 			}
 			//if (angularVelocity < ModelData.IdleSpeed.Value() - EngineIdleSpeedStopThreshold) {
 			//	CurrentState.OperationMode = EngineOperationMode.Stopped;
@@ -421,12 +421,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter fullDragTorque)
 		{
 			if (fullDragTorque.IsGreater(0) && torqueDemand < 0) {
-				throw new VectoSimulationException($"P_engine_drag > 0! Tq_drag: {fullDragTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
+				throw new VectoException($"P_engine_drag > 0! Tq_drag: {fullDragTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
 					ErrorCodes.ICE_POSITIVE_FULL_DRAG_TORQUE_WITH_NEGATIVE_TORQUE_DEMAND);
 			}
 
 			if (dynamicFullLoadTorque <= 0 && torqueDemand > 0) {
-				throw new VectoSimulationException($"P_engine_full < 0! Tq_full: {dynamicFullLoadTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
+				throw new VectoException($"P_engine_full < 0! Tq_full: {dynamicFullLoadTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
 					ErrorCodes.ICE_NEGATIVE_DYNAMIC_FULL_LOAD_TORQUE_WITH_POSITIVE_TORQUE_DEMAND);
 			}
 		}
@@ -788,7 +788,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						retVal = RequestPort.Request(absTime, dt, 0.SI<NewtonMeter>(), angularSpeed2, false);
 					break;
 					default:
-						throw new VectoSimulationException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+						throw new VectoException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				return retVal;
 			}
@@ -843,7 +843,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						retVal = RequestPort.Request(absTime, dt, 0.SI<NewtonMeter>(), angularSpeed, false);
 						break;
 					default:
-						throw new VectoSimulationException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+						throw new VectoException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				return retVal;
 			}

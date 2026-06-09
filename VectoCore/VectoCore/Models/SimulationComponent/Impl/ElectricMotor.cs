@@ -308,7 +308,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					}
 
 					if (!dryRun) {
-						throw new VectoSimulationException(
+						throw new VectoException(
 							"electric motor cannot provide torque when gearbox and clutch are disengaged", ErrorCodes.ELECTRICMOTOR_CANNOT_PROVIDE_TORQUE);
 					}
 				}

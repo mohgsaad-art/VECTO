@@ -209,7 +209,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case ResponseBatteryEmpty _:
 					return response;
 				default:
-					throw new VectoSimulationException($"DrivingAction Accelerate.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					throw new VectoException($"DrivingAction Accelerate.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 			if (retVal == null) {
 				// unhandled response (overload, delta > 0) - we need to search for a valid operating point..	
@@ -342,7 +342,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							case ResponseBatteryEmpty _:
 								return retVal;
 							default:
-								throw new VectoSimulationException($"DrivingAction Accelerate after Overload\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+								throw new VectoException($"DrivingAction Accelerate after Overload\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 						}
 
 						break;
@@ -365,7 +365,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						retVal = NextComponent.Request(absTime, nextOperatingPoint.SimulationInterval, nextOperatingPoint.Acceleration, gradient, false);
 						break;
 					default:
-						throw new VectoSimulationException($"DrivingAction Accelerate after SearchOperatingPoint.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+						throw new VectoException($"DrivingAction Accelerate after SearchOperatingPoint.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 			}
 
@@ -426,7 +426,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var retVal = CoastOrRollAction(absTime, ds, maxVelocity, gradient, true);
 			if (retVal is ResponseGearShift)
-				throw new VectoSimulationException($"DrivingAction Roll: Gearshift during Roll action.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+				throw new VectoException($"DrivingAction Roll: Gearshift during Roll action.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 
 			return retVal;
 		}
@@ -560,7 +560,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case ResponseBatteryEmpty _:
 					return response;
 				default:
-					throw new VectoSimulationException($"CoastOrRoll Action: unhandled response from powertrain.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					throw new VectoException($"CoastOrRoll Action: unhandled response from powertrain.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 
 			CurrentState.Response = response;
@@ -785,7 +785,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case ResponseBatteryEmpty _:
 					return response;
 				default:
-					throw new VectoSimulationException($"DrivingAction Brake: first request.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					throw new VectoException($"DrivingAction Brake: first request.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 
 			if (retVal != null) {
@@ -918,7 +918,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								operatingPoint.Acceleration, gradient, false);
 						}
 					} else {
-						throw new VectoSimulationException(
+						throw new VectoException(
 							$"DrivingAction Brake: request failed after braking power was found.\n{r}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 					}
 
@@ -926,7 +926,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case ResponseBatteryEmpty _:
 					return retVal;
 				default:
-					throw new VectoSimulationException($"DrivingAction Brake: request failed after braking power was found.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					throw new VectoException($"DrivingAction Brake: request failed after braking power was found.\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 
 			CurrentState.Acceleration = operatingPoint.Acceleration;
@@ -985,7 +985,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						Log.Error("Unexpected Condition: Distance has been adjusted from {0} to {1}, currentVelocity: {2} acceleration: {3}, targetVelocity: {4}",
 							operatingPoint.SimulationDistance, ds, DataBus.VehicleInfo.VehicleSpeed,
 							operatingPoint.Acceleration, nextTargetSpeed);
-						throw new VectoSimulationException($"Simulation distance unexpectedly adjusted! {ds} -> {operatingPoint.SimulationDistance}", 
+						throw new VectoException($"Simulation distance unexpectedly adjusted! {ds} -> {operatingPoint.SimulationDistance}", 
 							ErrorCodes.DRIVER_DISTANCE_UNEXPECTEDLY_ADJUSTED);
 					}
 					return operatingPoint;
@@ -1077,7 +1077,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					deltaPower = ClutchInfo.ClutchClosed(absTime) && GearboxInfo.GearEngaged(absTime) ? r.Delta : r.Gearbox.PowerRequest;
 					break;
 				default:
-					throw new VectoSimulationException($"cannot use response for searching braking power!\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					throw new VectoException($"cannot use response for searching braking power!\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 			
 			try {
@@ -1355,7 +1355,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					case ResponseDryRun r: return r.Gearbox.PowerRequest;
 					case ResponseOverload r: return r.Delta;
 					case ResponseFailTimeInterval r: return r.Gearbox.PowerRequest;
-					default: throw new VectoSimulationException($"SearchOperatingPoint: Unknown response type.\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+					default: throw new VectoException($"SearchOperatingPoint: Unknown response type.\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 			}
 
@@ -1363,7 +1363,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case ResponseOverload r: return r.Delta;
 				case ResponseEngineSpeedTooHigh r: return r.DeltaEngineSpeed * 1.SI<NewtonMeter>();
 				case ResponseDryRun r: return coastingOrRoll ? r.DeltaDragLoad : r.DeltaFullLoad;
-				default: throw new VectoSimulationException($"SearchOperatingPoint: Unknown response type.\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+				default: throw new VectoException($"SearchOperatingPoint: Unknown response type.\n{initialResponse}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 		}
 
@@ -1414,7 +1414,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// can be reached within ds.
 			Log.Error("Unexpected Condition: Distance has been adjusted from {0} to {1}, currentVelocity: {2} acceleration: {3}, targetVelocity: {4}",
 				retVal.SimulationDistance, ds, currentSpeed, CurrentState.Acceleration, targetVelocity);
-			throw new VectoSimulationException($"Simulation distance unexpectedly adjusted! {ds} -> {retVal.SimulationDistance}", 
+			throw new VectoException($"Simulation distance unexpectedly adjusted! {ds} -> {retVal.SimulationDistance}", 
 				ErrorCodes.DRIVER_DISTANCE_UNEXPECTEDLY_ADJUSTED);
 		}
 
@@ -1453,7 +1453,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Error("TargetVelocity ({0}) and VehicleVelocity ({1}) must be zero when vehicle is halting!",
 					targetVelocity,
 					DataBus.VehicleInfo.VehicleSpeed);
-				throw new VectoSimulationException(
+				throw new VectoException(
 					$"TargetVelocity ({targetVelocity}) and VehicleVelocity ({DataBus.VehicleInfo.VehicleSpeed}) must be zero when vehicle is halting!",
 					ErrorCodes.DRIVER_VELOCITY_NOT_ZERO_WHEN_HALTING);
 			}
@@ -1481,7 +1481,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (CurrentState.Response != null && !(CurrentState.Response is ResponseSuccess)) {
-				throw new VectoSimulationException("Previous request did not succeed!", ErrorCodes.VECTORUN_PREVIOUS_REQUEST_FAILED);
+				throw new VectoException("Previous request did not succeed!", ErrorCodes.VECTORUN_PREVIOUS_REQUEST_FAILED);
 			}
 			CurrentState.Response = null;
 			DriverStrategy.CommitSimulationStep();

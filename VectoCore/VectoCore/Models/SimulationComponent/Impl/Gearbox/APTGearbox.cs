@@ -196,7 +196,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             }
 
             if (!Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
-                throw new VectoSimulationException(
+                throw new VectoException(
                     "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
             }
             var response = Gear.TorqueConverterLocked.Value
@@ -234,7 +234,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
                 response = NextComponent.Initialize(inTorque, inAngularVelocity);
             } else {
                 if (!ModelData.Gears[gear.Gear].HasTorqueConverter) {
-                    throw new VectoSimulationException(
+                    throw new VectoException(
                         "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
                 }
                 response = TorqueConverter.Initialize(inTorque, inAngularVelocity);
@@ -246,7 +246,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
                 case ResponseOverload _:
                     break;
                 default:
-                    throw new VectoSimulationException($"AT-Gearbox.Initialize.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+                    throw new VectoException($"AT-Gearbox.Initialize.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
             }
 
             return new ResponseDryRun(this) {
@@ -339,7 +339,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             bool dryRun)
         {
             if (!Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
-                throw new VectoSimulationException(
+                throw new VectoException(
                     "Torque converter requested by strategy for gear without torque converter!", ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
             }
 

@@ -113,7 +113,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var response = NextComponent.Initialize(first.VehicleTargetSpeed, first.RoadGradient);
 			if (!(response is ResponseSuccess)) {
-				throw new VectoSimulationException($"MeasuredSpeedDrivingCycle: Couldn't find start gear.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+				throw new VectoException($"MeasuredSpeedDrivingCycle: Couldn't find start gear.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 			}
 
 			response.AbsTime = AbsTime;
@@ -153,7 +153,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IResponse Request(Second absTime, Meter ds)
 		{
 			Log.Fatal("MeasuredSpeed Cycle can not handle distance request.");
-			throw new VectoSimulationException("MeasuredSpeed Cycle can not handle distance request.", ErrorCodes.CYCLE_CANNOT_HANDLE_REQUEST);
+			throw new VectoException("MeasuredSpeed Cycle can not handle distance request.", ErrorCodes.CYCLE_CANNOT_HANDLE_REQUEST);
 		}
 
 		public virtual IResponse Request(Second absTime, Second dt)
@@ -196,11 +196,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var deltaT = CycleIterator.RightSample.Time - absTime;
 
 			if (DataBus.VehicleInfo.VehicleSpeed.IsSmaller(0)) {
-				throw new VectoSimulationException("vehicle velocity is smaller than zero", ErrorCodes.CYCLE_NEGATIVE_VEHICLE_VELOCITY);
+				throw new VectoException("vehicle velocity is smaller than zero", ErrorCodes.CYCLE_NEGATIVE_VEHICLE_VELOCITY);
 			}
 
 			if (deltaT.IsSmaller(0)) {
-				throw new VectoSimulationException("deltaT is smaller than zero", ErrorCodes.CYCLE_NEGATIVE_DELTA_TIME);
+				throw new VectoException("deltaT is smaller than zero", ErrorCodes.CYCLE_NEGATIVE_DELTA_TIME);
 			}
 
 			var acceleration = deltaV / deltaT;
@@ -242,7 +242,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					case ResponseSuccess _:
 						break;
 					default:
-						throw new VectoSimulationException($"MeasuredSpeedDrivingCycle received an unexpected response.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
+						throw new VectoException($"MeasuredSpeedDrivingCycle received an unexpected response.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 
 			} while (!(response is ResponseSuccess || response is ResponseFailTimeInterval) && (++responseCount < 10));
@@ -255,7 +255,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			CurrentState.SimulationDistance = acceleration / 2 * dt * dt + DataBus.VehicleInfo.VehicleSpeed * dt;
 			if (CurrentState.SimulationDistance.IsSmaller(0)) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					"MeasuredSpeed: Simulation Distance must not be negative. Driving Backward is not allowed.", ErrorCodes.CYCLE_NEGATIVE_DISTANCE);
 			}
 

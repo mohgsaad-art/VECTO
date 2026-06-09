@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
 			if (TorqueConverter != null && Gear.TorqueConverterLocked == null) {
-				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
+				throw new VectoException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
 			}
 
 			var inAngularVelocity = CalculateInAngularSpeed(outAngularVelocity);
@@ -176,10 +176,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive;
 
 			if (TorqueConverter != null && TorqueConverterActive == null) {
-				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
+				throw new VectoException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
 			}
 			if (gear != 0 && !ModelData.Gears.ContainsKey(gear)) {
-				throw new VectoSimulationException($"Requested Gear {gear} from driving cycle is not available", ErrorCodes.GEARBOX_REQUESTED_GEAR_NOT_AVAILABLE);
+				throw new VectoException($"Requested Gear {gear} from driving cycle is not available", ErrorCodes.GEARBOX_REQUESTED_GEAR_NOT_AVAILABLE);
 			}
 
 			// mk 2016-11-30: added additional check for outAngularVelocity due to failing test: MeasuredSpeed_Gear_AT_PS_Run
@@ -292,11 +292,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private void CheckModelData(TransmissionLossMap effectiveLossMap, double effectiveRatio)
 		{
 			if (effectiveLossMap == null || double.IsNaN(effectiveRatio)) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					$"Ratio or loss-map for gear {Gear}{(Gear.TorqueConverterLocked.HasValue ? (Gear.TorqueConverterLocked.Value ? "L" : "C") : string.Empty)} invalid. Please check input data.", ErrorCodes.GEARBOX_INVALID_GEAR_DATA);
 			}
 			if (Gear.TorqueConverterLocked.HasValue && !Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					"Torque converter requested by cycle for gear without torque converter!", 
 					ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
 			}

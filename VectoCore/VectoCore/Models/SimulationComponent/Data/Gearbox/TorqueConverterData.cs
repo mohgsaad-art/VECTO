@@ -255,7 +255,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 				}
 			}
 			if (solutions.Count == 0) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					$"Torque Converter: Failed to find operating point for inputTorque/inputSpeed! n_in: {inAngularVelocity}, tq_in: {inTorque}",
 					ErrorCodes.TORQUECONVERTER_NO_OPERATING_POINT_FOUND);
 			}
@@ -279,7 +279,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 					};
 				}
 			}
-			throw new VectoSimulationException(
+			throw new VectoException(
 				$"Torque Converter: Failed to find operating point for outputSpeed/outputTorque/inputSpeed! n_out: {outAngularVelocity}, n_in: {inAngularVelocity}, tq_out: {outTorque}",
 				ErrorCodes.TORQUECONVERTER_NO_OPERATING_POINT_FOUND);
 		}
@@ -300,7 +300,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 					};
 				}
 			}
-			throw new VectoSimulationException(
+			throw new VectoException(
 				$"Torque Converter: Failed to find operating point for outputSpeed/outputTorque/inputSpeed! n_out: {outAngularVelocity}, n_in: {inAngularVelocity}, tq_in: {inTorque}",
 				ErrorCodes.TORQUECONVERTER_NO_OPERATING_POINT_FOUND);
 		}

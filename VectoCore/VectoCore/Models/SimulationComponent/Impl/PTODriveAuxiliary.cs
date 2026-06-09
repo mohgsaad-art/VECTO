@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 		{
 			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.PTOActive == PTOActivity.PTOActivityWhileDrive) {
 				if (PTOActivityStart != null && !DataBus.DrivingCycleInfo.CycleData.LeftSample.Distance.IsEqual(PTOCycleDistanceStart)) {
-					throw new VectoSimulationException(
+					throw new VectoException(
 						"Additional PTO activation during drive requested while PTO still active!", 
 						ErrorCodes.PTO_ACTIVATION_REQUESTED_WHILE_PTO_ACTIVE);
 				}

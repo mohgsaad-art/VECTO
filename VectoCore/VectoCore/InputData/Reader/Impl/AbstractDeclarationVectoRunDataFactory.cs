@@ -45,7 +45,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			if (checkJobType) {
 				if (dataProvider.JobInputData.JobType.IsOneOf(BatteryElectricVehicle, ParallelHybridVehicle, SerialHybridVehicle))
 				{
-					throw new VectoSimulationException(
+					throw new VectoException(
 						"Electric and Hybrid Vehicles are not supported in Declaration Mode. Aborting Simulation.",
 						ErrorCodes.VECTORUNDATAFACTORY_UNSUPPORTED_VEHICLE_TYPE);
 				}

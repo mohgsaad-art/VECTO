@@ -802,7 +802,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
         protected virtual void Upshift(Second absTime, GearshiftPosition gear)
 		{
 			if (!Gears.HasSuccessor(gear)) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					"ShiftStrategy wanted to shift up but no higher gear available.", ErrorCodes.SHIFTSTRATEGY_HIGHER_GEAR_NOT_AVAILABLE);
 			}
 
@@ -813,7 +813,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected virtual void Downshift(Second absTime, GearshiftPosition gear)
 		{
 			if (!Gears.HasPredecessor(gear)) {
-				throw new VectoSimulationException(
+				throw new VectoException(
 					"ShiftStrategy wanted to shift down but no lower gear available.", ErrorCodes.SHIFTSTRATEGY_LOWER_GEAR_NOT_AVAILABLE);
 			}
 			_nextGear.SetState(absTime, false, Gears.Predecessor(gear));

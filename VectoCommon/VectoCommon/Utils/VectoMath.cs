@@ -315,7 +315,7 @@ namespace TUGraz.VectoCommon.Utils
 			Meter distance, Meter ds)
 		{
 			if (!(ds > 0)) {
-				throw new VectoSimulationException($"ds has to be greater than 0! ds: {ds}", ErrorCodes.MATH_DISTANCE_NOT_POSITIVE);
+				throw new VectoException($"ds has to be greater than 0! ds: {ds}", ErrorCodes.MATH_DISTANCE_NOT_POSITIVE);
 			}
 
 			var retVal = new OperatingPoint() { Acceleration = acceleration, SimulationDistance = ds };
@@ -326,7 +326,7 @@ namespace TUGraz.VectoCommon.Utils
 				}
 				//Log.Error("{2}: vehicle speed is {0}, acceleration is {1}", currentSpeed.Value(), acceleration.Value(),
 				//	distance);
-				throw new VectoSimulationException(
+				throw new VectoException(
 					$"vehicle speed has to be > 0 if acceleration = 0!  v: {currentSpeed.Value()}, a: {acceleration.Value()}, distance: {distance}", 
 					ErrorCodes.MATH_SPEED_NOT_POSITIVE_WHEN_ACCELERATING);
 			}
@@ -350,7 +350,7 @@ namespace TUGraz.VectoCommon.Utils
 					//Log.Error(
 					//	"Could not find solution for computing required time interval to drive distance ds: {0}. currentSpeed: {1}, acceleration: {2}, stopDistance: {3}, distance: {4}",
 					//	ds, currentSpeed, acceleration, stopDistance,distance);
-					throw new VectoSimulationException($"Could not find solution for time-interval!  ds: {ds}, stopDistance: {stopDistance}", 
+					throw new VectoException($"Could not find solution for time-interval!  ds: {ds}, stopDistance: {stopDistance}", 
 						ErrorCodes.MATH_NO_SOLUTION_FOR_TIME_INTERVAL);
 				}
 

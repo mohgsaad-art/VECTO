@@ -203,7 +203,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				);
 				var step = vehiclePort.Request(absTime, simulationInterval, acceleration, gradient, false);
 				if (!(step is ResponseSuccess) && !(step is ResponseEngineSpeedTooHigh)) {
-					throw new VectoSimulationException("failed to find acceleration for rolling", ErrorCodes.SPEEDPREPROCESSOR_ROLLING_CANNOT_FIND_ACCELERATION);
+					throw new VectoException("failed to find acceleration for rolling", ErrorCodes.SPEEDPREPROCESSOR_ROLLING_CANNOT_FIND_ACCELERATION);
 				}
 
 				absTime += simulationInterval;

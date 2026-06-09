@@ -615,7 +615,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			{
 				if (gearbox.Gears.Count > 0)
 				{
-					throw new VectoSimulationException("No gears are allowed for IEPC gearbox.", ErrorCodes.GEARBOX_IEPC_NO_GEARS_ALLOWED);
+					throw new VectoException("No gears are allowed for IEPC gearbox.", ErrorCodes.GEARBOX_IEPC_NO_GEARS_ALLOWED);
 				}
 
 				retVal.Inertia = 0.SI<KilogramSquareMeter>();
@@ -625,7 +625,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (gearbox.Gears.Count < 2)
 			{
-				throw new VectoSimulationException("At least two Gear-Entries must be defined in Gearbox!", ErrorCodes.GEARBOX_NOT_ENOUGH_GEARS_DEFINED);
+				throw new VectoException("At least two Gear-Entries must be defined in Gearbox!", ErrorCodes.GEARBOX_NOT_ENOUGH_GEARS_DEFINED);
 			}
 
 			var gearsInput = GearboxDataAdapterBase.FilterDisabledGears(vehicle.TorqueLimits, gearbox);
@@ -854,7 +854,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			if (driver.Lookahead == null) {
-				throw new VectoSimulationException("Error: Lookahead Data is missing.", ErrorCodes.DRIVER_LOOKAHEAD_DATA_MISSING);
+				throw new VectoException("Error: Lookahead Data is missing.", ErrorCodes.DRIVER_LOOKAHEAD_DATA_MISSING);
 			}
 
 			var lookAheadData = new DriverData.LACData {

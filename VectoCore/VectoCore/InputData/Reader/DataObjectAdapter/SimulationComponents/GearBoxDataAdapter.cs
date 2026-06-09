@@ -357,13 +357,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (!supportedGearboxTypes.Contains(gearbox.Type))
 			{
-				throw new VectoSimulationException($"Unsupported gearbox type: {gearbox.Type}!", ErrorCodes.GEARBOX_UNSUPPORTED_TYPE);
+				throw new VectoException($"Unsupported gearbox type: {gearbox.Type}!", ErrorCodes.GEARBOX_UNSUPPORTED_TYPE);
 			}
 
 			var gearsInput = FilterDisabledGears(vehicle.TorqueLimits, gearbox);  //gearbox.Gears;
 			if (gearsInput.Count < 1)
 			{
-				throw new VectoSimulationException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
+				throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 			}
 			
 			SetDeclarationData(retVal);

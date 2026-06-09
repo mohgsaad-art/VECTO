@@ -120,7 +120,7 @@ public class DistanceBasedDrivingCycleTests
         var exceeded = (ResponseDrivingCycleDistanceExceeded)cycle.OutPort().Request(absTime, 1000.SI<Meter>());
         Assert.AreEqual(811, exceeded.MaxDistance.Value(), Tolerance);
 
-        AssertHelper.Exception<VectoSimulationException>(() => {
+        AssertHelper.Exception<VectoException>(() => {
             //container.CommitSimulationStep(absTime, exceeded.SimulationInterval);
 			cycle.CommitSimulationStep(absTime, response.SimulationInterval, modData);
             absTime += exceeded.SimulationInterval;

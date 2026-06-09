@@ -296,7 +296,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Ba
 			}
 
 			if (entry1 == null || entry2 == null) {
-				throw new VectoSimulationException("Failed to lookup internal resistance!", ErrorCodes.REESS_INTERNAL_RESISTANCE_LOOKUP_FAILED);
+				throw new VectoException("Failed to lookup internal resistance!", ErrorCodes.REESS_INTERNAL_RESISTANCE_LOOKUP_FAILED);
 			}
 
 			return	VectoMath.Interpolate(entry1.Item1, entry2.Item1,

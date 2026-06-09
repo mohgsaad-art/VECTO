@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						break;
 					case ResponseDrivingCycleDistanceExceeded r:
 						if (r.MaxDistance.IsSmallerOrEqual(0)) {
-							throw new VectoSimulationException($"DistanceExceeded, MaxDistance is invalid: {r.MaxDistance}", ErrorCodes.VECTORUN_DISTANCE_EXCEEDED);
+							throw new VectoException($"DistanceExceeded, MaxDistance is invalid: {r.MaxDistance}", ErrorCodes.VECTORUN_DISTANCE_EXCEEDED);
 						}
 						ds = r.MaxDistance;
 						break;
@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						throw new VectoException($"DistanceRun got an unexpected response: {response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				if (loopCount++ > Constants.SimulationSettings.MaximumIterationCountForSimulationStep) {
-					throw new VectoSimulationException("Maximum iteration count for a single simulation interval reached! Aborting!", ErrorCodes.VECTORUN_MAXIMUM_ITERATION_COUNT_EXCEEDED);
+					throw new VectoException("Maximum iteration count for a single simulation interval reached! Aborting!", ErrorCodes.VECTORUN_MAXIMUM_ITERATION_COUNT_EXCEEDED);
 				}
 				debug.Add($"[DR.DST-{loopCount}]", response);
 			} while (!(response is ResponseSuccess || response is ResponseCycleFinished || response is ResponseBatteryEmpty));
