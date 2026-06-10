@@ -15,7 +15,7 @@ import argparse
 import datetime
 import os
 import re
-
+import numpy as np
 import pandas as pd
 
 # ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ def load_var_series(report_path: str, var: str) -> pd.Series | None:
     return df[col]
 
 
-def build_var_deltas(ref_report: str, current_report: str) -> dict[str, pd.DataFrame]:
+def build_var_deltas_OLD(ref_report: str, current_report: str) -> dict[str, pd.DataFrame]:
     """Compute per-variable delta DataFrames between two OR reports.
 
     Returns a dict keyed by variable name. Each DataFrame has columns:
@@ -88,6 +88,92 @@ def build_var_deltas(ref_report: str, current_report: str) -> dict[str, pd.DataF
 
         var_deltas[var] = df
         print(f'  {var}: {len(df)} matched test cases')
+
+    return var_deltas
+
+def load_var_series_wkey(report_path: str, var: str, key: list = None, filter_success: bool = False) -> pd.Series | None:
+    """Load a variable's per-case mean values from an OR report.
+
+    Returns a Series indexed by 'case', or None if the sheet/column is absent.
+    """
+    sheet = make_sheet_name(var)
+    try:
+        df = pd.read_excel(report_path, sheet_name=sheet)
+        # fill the missing values for keys
+
+        # prefill the key that are nan on first line of a case: it means that this key has no value,
+        # and shouldnt be filled with the one of the previous case
+        df.loc[df[key[0]].notna(),key] = df.loc[df[key[0]].notna(),key].replace(np.nan,'NA')
+        df[key]=df[key].ffill()
+    except Exception:
+        print(f'  Sheet "{sheet}" not found in {os.path.basename(report_path)} - skipping.')
+        return None
+
+    col = next((c for c in df.columns if var in c), None)
+    if col is None:
+        print(f'  Column matching "{var}" not found in sheet "{sheet}" - skipping.')
+        return None
+
+    if filter_success and 'Status' in df.columns:
+        sel = df['Status']=='Success'
+    else:
+        sel = slice(-1)
+
+    df=df[sel]
+
+    if key:
+        if len(set(key)-set(df.columns))==0: # all key names exists:
+            return df.set_index(key)[col]
+    else:
+        return df[col]
+
+
+
+def build_var_deltas(ref_report: str, current_report: str) -> dict[str, pd.DataFrame]:
+    """Compute per-variable delta DataFrames between two OR reports.
+
+    Returns a dict keyed by variable name. Each DataFrame has columns:
+        reference, current, delta_abs, delta_pct
+    indexed by 'case'. Only variables with data in both reports are included.
+    """
+    var_deltas: dict[str, pd.DataFrame] = {}
+
+    filter_success = True # to estimate delta only on successful simulations
+
+    for var in _DELTA_VARIABLES:
+        keys = ['case', 'Cycle [-]', 'HDV CO2 vehicle class [-]', 'Corrected Actual Curb Mass [kg]', 'Loading [kg]', 'Vehicle fuel type [-]', 'Ovc Mode [-]', 'Job [-]']
+
+        ref_series = load_var_series_wkey(ref_report, var, key = keys, filter_success=filter_success)
+        cur_series = load_var_series_wkey(current_report, var, key = keys, filter_success=filter_success)
+
+        if ref_series is None or cur_series is None:
+            continue
+
+        df = (ref_series.rename('reference')
+              .to_frame()
+              .join(cur_series.rename('current'), how='inner')
+              .dropna())
+
+        df['delta_abs'] = df['current'] - df['reference']
+        df['delta_pct'] = (df['delta_abs'] / df['reference'].replace(0, float('nan'))) * 100
+        df['delta_pct_pos'] = abs(df['delta_abs']) / (df['reference']+1.0*(df['delta_abs']==0.0)) * 100
+
+        df = df.reset_index()
+        sel = (df['Ovc Mode [-]']!='ChargeSustaining') | (df['Job [-]'].str.endswith('-F'))
+        df_sel = df[sel]
+
+        # select only the config presenting highest variation
+        indx = df_sel.groupby('case')['delta_pct_pos'].idxmax()
+        df_sel = df_sel.drop(labels = ['delta_pct_pos'], axis=1)
+
+        if any(np.isnan(indx)) or np.nan in indx:
+            print('Nan index found for simulation selection')
+
+        key2drop = list(set(keys)-set(['case']))
+        df_out = df_sel.loc[indx].drop(labels= key2drop, axis=1)
+
+        var_deltas[var] = df_out.set_index('case')
+        print(f'  {var}: {len(df_out)} matched test cases')
 
     return var_deltas
 
