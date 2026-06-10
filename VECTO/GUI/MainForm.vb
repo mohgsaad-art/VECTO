@@ -1093,8 +1093,8 @@ lbFound:
                                          .Message = "Finished Reading Data for job: " + jobFile})
 
             Catch ex As Exception
-                MsgBox($"ERROR running job {jobFile}: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
-                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = ex.Message})
+                MsgBox($"ERROR running job {jobFile}: [{ex.GetErrorCode()}]: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
+                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = $"[{ex.GetErrorCode()}]: {ex.Message}"})
                 Return
             End Try
         Next
@@ -1159,7 +1159,7 @@ lbFound:
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
                                       New VectoProgress _
-                                         With {.Target = "ListBox", .Message = progressEntry.Value.Error.Message})
+                                         With {.Target = "ListBox", .Message = CreateErrorMessage(progressEntry.Value.Error)})
             End If
 
         Next
@@ -1203,6 +1203,16 @@ lbFound:
         End If
     End Sub
 
+    Private Shared Function CreateErrorMessage(ex As Exception) As String
+        Return $"{ex.Data(RunInfo.RunIdentifier)} ({ex.Data(RunInfo.CycleName)} {ex.Data(RunInfo.RunSuffix)}) Progress: {ex.Data(RunInfo.Progress):P1} - absTime: {ex.Data(RunInfo.AbsTime):F1}, distance: {ex.Data(RunInfo.Distance):F1}, dt: {ex.Data(RunInfo.Dt):F1}, v: {ex.Data(RunInfo.Speed)}, {GetGearInfo(ex)}, f_equiv:{If(ex.Data(RunInfo.F_equiv), "-")} | [{ex.GetErrorCode()}]: {ex.Message}"
+    End Function
+
+    Private Shared Function GetGearInfo(ex As Exception) As String
+        Return TryCast(ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
+                Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").
+                Join()
+    End Function
+
     Private Function GetOutputDirectory(jobFile As String) As String
 
         Dim outFile As String = jobFile
@@ -1233,7 +1243,7 @@ lbFound:
 
             If Not p.Value.Error Is Nothing Then
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError",
-                                                .Message = $"Finished Run {runName} with ERROR: {p.Value.Error.Message}",
+                                                .Message = $"Finished Run {runName} with ERROR: {CreateErrorMessage(p.Value.Error)}",
                                                 .Link = modFilename})
             Else
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",

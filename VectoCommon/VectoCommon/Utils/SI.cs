@@ -181,6 +181,7 @@ namespace TUGraz.VectoCommon.Utils
 	/// <summary>
 	/// SI Class for Second [s].
 	/// </summary>
+	[Serializable]
 	public class Second : SIBase<Second>
 	{
 		private static readonly int[] Units = { 0, 0, 1, 0, 0, 0, 0 };
@@ -192,6 +193,7 @@ namespace TUGraz.VectoCommon.Utils
 	/// <summary>
 	/// SI Class for Meter [m].
 	/// </summary>
+	[Serializable]
 	public class Meter : SIBase<Meter>
 	{
 		private static readonly int[] Units = { 0, 1, 0, 0, 0, 0, 0 };
@@ -1099,6 +1101,7 @@ namespace TUGraz.VectoCommon.Utils
 	/// SI Class for Meter per second [m/s].
 	/// </summary>
 	[DebuggerDisplay("{Val.ToString(\"G4\"),nq} [m/s] ({AsKmph.ToString(\"G4\"),nq} [km/h])")]
+	[Serializable]
 	public class MeterPerSecond : SIBase<MeterPerSecond>
 	{
 		private static readonly int[] Units = { 0, 1, -1, 0, 0, 0, 0 };

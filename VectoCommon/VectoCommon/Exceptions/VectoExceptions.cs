@@ -44,26 +44,41 @@ namespace TUGraz.VectoCommon.Exceptions
 	{
 		public VectoException(string message, ErrorCode errorCode) : base(message)
         {
-			Data[nameof(ErrorCode)] = errorCode;
+			Data[RunInfo.ErrorCode] = errorCode;
 
             LogManager.Flush();
         }
 
         public VectoException(string message, ErrorCode errorCode, Exception innerException) : base(message, innerException)
         {
-            Data[nameof(ErrorCode)] = errorCode;
+            Data[RunInfo.ErrorCode] = errorCode;
 
             LogManager.Flush();
         }
 
-		public ErrorCode Code => (ErrorCode)Data[nameof(ErrorCode)];
+		public ErrorCode ErrorCode => (ErrorCode)Data[RunInfo.ErrorCode];
+    }
+
+    public enum RunInfo
+    {
+        ErrorCode,
+        RunIdentifier,
+        CycleName,
+        RunSuffix,
+        AbsTime,
+        Distance,
+        Speed,
+        F_equiv,
+        GearInfo,
+        Dt,
+        Progress
     }
 
     public static class ExceptionExtensions
     {
         public static ErrorCode GetErrorCode(this Exception ex)
         {
-            return (ex is VectoException vectoException) ? vectoException.Code : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
+            return (ex is VectoException vectoException) ? vectoException.ErrorCode : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
         }
     }
 }

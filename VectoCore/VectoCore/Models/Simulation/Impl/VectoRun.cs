@@ -113,6 +113,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             Container.AbsTime = AbsTime;
 
             Initialize();
+
             IResponse response = null;
             var iterationCount = 0;
             
@@ -123,8 +124,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         Log.Warn(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
                         throw new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED);
                     }
+
                     response = DoSimulationStep();
                     debug.Add($"[VR.R] ---- ITERATION {iterationCount++} ---- ", response);
+                    
                     if (response is ResponseSuccess) {
                         Container.CommitSimulationStep(AbsTime, dt);
                         AbsTime += dt;
@@ -136,7 +139,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         }
                         Container.AbsTime = AbsTime;
                     }
-                } while (response is ResponseSuccess);
+                } 
+                while (response is ResponseSuccess);
+
                 if (CalculateAggregateValues()) 
                 {
                     GetContainer().ModalData.CalculateAggregateValues();
@@ -152,21 +157,24 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                     Log.Error(e);
 
                     Container.RunStatus = Status.Aborted;
-                    var ex = CreateFinalException(e);
 
                     try
                     {
-                        Container.FinishSimulationRun(ex);
+                        Container.FinishSimulationRun(DecorateExceptionWithRunData(e));
                     }
                     catch (Exception) { }
 
-					throw ex;
+					throw;
 				}
 			}
 
-            if (Container.RunStatus == Status.PrimaryBusSimulationIgnore) {
-                var errorExists = !string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
-                Container.FinishSimulationRun(errorExists ? new Exception(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError) : null);
+            if (Container.RunStatus == Status.PrimaryBusSimulationIgnore) 
+            {
+                var exception = string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError)
+                    ? null
+                    : DecorateExceptionWithRunData(new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED));
+
+                Container.FinishSimulationRun(exception);
                 WritingResultsDone = true;
                 FinishedWithoutErrors = true;
                 IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
@@ -220,35 +228,32 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             {
                 if (response is ResponseBatteryEmpty) 
                 {
-                    throw new VectoException(
-                        $"{RunIdentifier} ({CycleName} {RunSuffix}) REESS was empty before cycle could be finished. Progress: {Progress:P1} - absTime: {AbsTime:F1}, distance: {Container.MileageCounter.Distance:F1}, dt: {dt:F1}",
-                        ErrorCodes.REESS_EMPTY_BEFORE_CYCLE_END);
-				} 
+                    throw DecorateExceptionWithRunData(new VectoException("REESS was empty before cycle could be finished.", ErrorCodes.REESS_EMPTY_BEFORE_CYCLE_END));
+                } 
                 else if (string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError))
                 {     
-                    var gearInfo = TryCatch(() => Container.GearboxesInfo.Select(x => $"Gear{x.AxleNumber.FormatAxleNumber()}: {x.Gear}").Join());
-                    var fEquiv = TryCatch(() => Container.RunData.HybridStrategyParameters?.EquivalenceFactor) ?? "-";
-                    throw new VectoException(
-                        $"{RunIdentifier} ({CycleName} {RunSuffix}) Driving Cycle could not be finished. Progress: {Progress:P1} - absTime: {AbsTime:F1}, distance: {Container.MileageCounter.Distance:F1}, dt: {dt:F1}, v: {Container.VehicleInfo.VehicleSpeed:F1}, {gearInfo}, f_equiv:{fEquiv}",
-                        ErrorCodes.VECTORUN_CYCLE_CANNOT_FINISH);  
-				}
+                    throw DecorateExceptionWithRunData(new VectoException("Driving Cycle could not be finished.", ErrorCodes.VECTORUN_CYCLE_CANNOT_FINISH));
+                }
 			}
 
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
 			Log.Info("VectoJob finished.");
 		}
 
-        private VectoException CreateFinalException(Exception exception)
+        private Exception DecorateExceptionWithRunData(Exception exception)
         {
-            var gearInfo = TryCatch(() => Container.GearboxesInfo.Select(x => $"Gear{x.AxleNumber.FormatAxleNumber()}: {x.Gear}").Join());
-            var fEquiv = TryCatch(() => Container.RunData.HybridStrategyParameters?.EquivalenceFactor) ?? "-";
-            var distance = Container.MileageCounter.Distance;
-            var speed = Container.VehicleInfo.VehicleSpeed;
-            
-            return new VectoException(
-                $"{RunIdentifier} ({CycleName} {RunSuffix}) - absTime: {AbsTime}, distance: {distance}, dt: {dt}, v: {speed}, {gearInfo} | {exception.Message}, f_equiv:{fEquiv}",
-                exception.GetErrorCode(),
-                exception);
+            exception.Data[RunInfo.RunIdentifier] = RunIdentifier;
+            exception.Data[RunInfo.CycleName] = CycleName;
+            exception.Data[RunInfo.RunSuffix] = RunSuffix;
+            exception.Data[RunInfo.AbsTime] = AbsTime;
+            exception.Data[RunInfo.Distance] = Container.MileageCounter.Distance;
+            exception.Data[RunInfo.Speed] = Container.VehicleInfo.VehicleSpeed;
+            exception.Data[RunInfo.F_equiv] = Container.RunData.HybridStrategyParameters?.EquivalenceFactor;
+            exception.Data[RunInfo.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber, x => x.Gear);
+            exception.Data[RunInfo.Dt] = dt;
+            exception.Data[RunInfo.Progress] = Progress;
+
+            return exception;
         }
 
         protected virtual bool CheckCyclePortProgress()

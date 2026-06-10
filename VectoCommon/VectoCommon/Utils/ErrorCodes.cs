@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace TUGraz.VectoCommon.Utils
 {
@@ -398,10 +399,13 @@ namespace TUGraz.VectoCommon.Utils
         public static readonly ErrorCode XML_VALIDATION_FAILED = new ErrorCode(nameof(XML_VALIDATION_FAILED));
     }
 
+    [Serializable]
     public class ErrorCode : IEquatable<ErrorCode>
     {
         public ErrorCode(string code)
         {
+            Debug.Assert(!string.IsNullOrEmpty(code));
+
             Code = code;
         }
 
