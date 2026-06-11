@@ -3,7 +3,11 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration.VehicleOperation
 {
-	public class VehicleOperationLookup
+	public interface IVehicleOperationLookup
+	{
+		VehicleOperationLookup.VehicleOperationData LookupVehicleOperation(VehicleClass hdvClass, MissionType mission);
+	}
+	public class VehicleOperationLookup : IVehicleOperationLookup
 	{
 
 		private MileageLookup _mileageLookup = new MileageLookup();

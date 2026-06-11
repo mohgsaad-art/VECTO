@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.OutputData
 		private readonly IModalDataFilter[] _filters;
 		private readonly Action<ModalDataContainer> _addReportResult;
 		public ModalResults Data { get; set; }
-		private DataRow CurrentRow { get; set; }
+		protected DataRow CurrentRow { get; set; }
 
 		private readonly IModalDataWriter _writer;
 		private readonly List<string> _additionalColumns = new List<string>();

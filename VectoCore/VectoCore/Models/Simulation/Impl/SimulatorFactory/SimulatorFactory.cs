@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 		public IVectoRunDataFactory RunDataFactory { get; protected set; }
 
-		public SummaryDataContainer SumData { get; set; }
+		public ISumData SumData { get; set; }
 
 		public IOutputDataWriter ReportWriter { get; protected set; }
 

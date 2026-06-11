@@ -27,6 +27,8 @@
 .PARAMETER LocalRegistryPath
     Path to the local NuGet feed folder. Prompted if not provided when using -Setup.
 
+.PARAMETER Debug
+
 .PARAMETER Help
     Display full help for this script.
 
@@ -35,6 +37,9 @@
 
 .EXAMPLE
     .\build_beta_release.ps1 -Version 4.5.5 -Publish
+
+.EXAMPLE
+    .\build_beta_release.ps1 -Version 4.5.5 -Publish -Debug
 
 .EXAMPLE
     .\build_beta_release.ps1 -Version 4.5.5 -Delete
@@ -52,6 +57,7 @@ param(
     [switch]$Setup,
     [switch]$Publish,
     [switch]$Delete,
+    [switch]$Debug,
     [switch]$Republish,
     [switch]$Help,
     [string]$Version = $null,
@@ -79,6 +85,34 @@ function Remove-LocalNugetPackages([string]$version) {
         Write-Host "Deleting package: $pkg $version" -ForegroundColor Magenta
         dotnet nuget delete $pkg $version -s "local-vecto-registry" --non-interactive
     }
+}
+
+function Update-BuildPropsSymbols([switch]$includeSymbols){
+    $BuildPropsFile = "Directory.Build.props"
+    $DebugRgx = "<DebugSymbols>(?:tru|fals)e<\/DebugSymbols>"
+    $DebugNode = "<DebugSymbols>true</DebugSymbols>"
+
+
+    (Get-Content -Path $BuildPropsFile) |
+        ForEach-Object {$_ -Replace $DebugRgx, $DebugNode} |
+            Set-Content -Path $BuildPropsFile
+
+    $BuildPropsFile = "Directory.Build.props"
+    $IncludeRgx = "<IncludeSymbols>(?:tru|fals)e<\/IncludeSymbols>"
+    $IncludeNode = "<IncludeSymbols>true</IncludeSymbols>"
+
+
+    (Get-Content -Path $BuildPropsFile) |
+        ForEach-Object {$_ -Replace $IncludeRgx, $IncludeNode} |
+            Set-Content -Path $BuildPropsFile
+
+    $DebugTypeRgx = "<DebugType>*<\/DebugType>"
+    $DebugTypeNode = "<DebugType>full</DebugType>"
+
+    (Get-Content -Path $BuildPropsFile) |
+        ForEach-Object {$_ -Replace $DebugTypeRgx, $DebugTypeNode} |
+            Set-Content -Path $BuildPropsFile
+
 }
 
 function Update-BuildPropsVersion([string]$version) {
@@ -132,6 +166,12 @@ if ($Delete) {
     Write-Host "Restored packages might persist in the local nuget cache, i.e. $env:USERPROFILE\.nuget\packages." -ForegroundColor Yellow
 }
 
+if ($Debug) {
+    Write-Host "Added Debug Symbols to NuGet package" -ForegroundColor Yellow
+    Update-BuildPropsSymbols $Debug
+}
+
+
 if ($Publish) {
     $VersionNumber = Set-ReleaseVersion
 
@@ -150,7 +190,14 @@ if ($Publish) {
         dotnet nuget push $_.FullName -s "local-vecto-registry"
     }
 
+
+
     # Revert all changes made to the repo
     git restore .\VECTO.sln
     git restore .\Directory.Build.props
+}
+
+if($Delete){
+    Write-Host "Clearing nuget cache" -ForegroundColor Yellow
+    dotnet nuget locals all --clear
 }

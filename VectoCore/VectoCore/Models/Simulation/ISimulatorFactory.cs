@@ -45,7 +45,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 		bool ActualModalData { get; set; }
 
 		bool Validate { get; set; }
-		SummaryDataContainer SumData { get; set; }
+		ISumData SumData { get; set; }
 		int JobNumber { get; set; }
 		IVectoRunDataFactory RunDataFactory { get; }
 		ISimulatorFactory FollowUpSimulatorFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries);

@@ -280,11 +280,17 @@
 			<VectoNuget Include ="$(SolutionDir)VectoCore\VectoCore\bin\Release\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoCommon\bin\Release\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\*$(Version)*.nupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCore\VectoCore\bin\Release\*$(Version)*.snupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoCommon\bin\Release\*$(Version)*.snupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\*$(Version)*.snupkg" />
 		</ItemGroup>
 		<ItemGroup Condition="'$(Configuration)'=='MockupDeploy'">
 			<VectoNuget Include ="$(SolutionDir)VectoCore\VectoCore\bin\MockupRelease\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoCommon\bin\Release\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\*$(Version)*.nupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCore\VectoCore\bin\MockupRelease\*$(Version)*.snupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoCommon\bin\Release\*$(Version)*.snupkg" />
+			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\*$(Version)*.snupkg" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(VectoNuget)" DestinationFolder ="$(NuGetPath)"/>

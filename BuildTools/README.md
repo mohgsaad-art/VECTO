@@ -20,6 +20,7 @@ Builds the VECTO solution as a beta release and manages NuGet packages in the lo
 | `-Delete` | switch | Delete `VectoCore`, `VectoCommon`, and `VectoHashing` from `local-vecto-registry` for the given version. |
 | `-Republish` | switch | Shorthand for `-Delete` followed by `-Publish`. Useful when updating an existing beta version. |
 | `-LocalRegistryPath` | string | Path to the local NuGet feed folder. Prompted when using `-Setup` if not provided. |
+|`-Debug` | switch | Include debug symbols in published NuGet packages. |
 | `-Help` | switch | Display full help output via `Get-Help`. |
 
 Running the script with no switches prints a usage summary.
@@ -35,6 +36,9 @@ Running the script with no switches prints a usage summary.
 
 # Build and publish a new beta version
 .\build_beta_release.ps1 -Version 4.5.5 -Publish
+
+# Build and publish a new beta version with debug symbols
+.\build_beta_release.ps1 -Version 4.5.5 -Publish -Debug
 
 # Delete packages for a beta version
 .\build_beta_release.ps1 -Version 4.5.5 -Delete
