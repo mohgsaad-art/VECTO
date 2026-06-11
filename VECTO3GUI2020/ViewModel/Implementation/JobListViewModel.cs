@@ -667,7 +667,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 						new MessageEntry()
 						{
 							Type = MessageType.StatusMessage,
-							Message = CreateErrorMessage(progressEntry.Value.Error)
+							Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo()
 						}
 					);
 				}
@@ -735,7 +735,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
                     outputMessages.Report(new MessageEntry()
                     {
                         Type = MessageType.StatusMessage,
-                        Message = string.Format("Finished Run {0} with ERROR: {1}", runName, CreateErrorMessage(p.Value.Error)),
+                        Message = string.Format("Finished Run {0} with ERROR: {1}", runName, p.Value.Error.GetMessageWithCycleRunInfo()),
                         //Link = modFilename
                         //Link = modFilename
 						//Link = "<CSV>" + modFilename
@@ -760,14 +760,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 					});
                 }
             }
-		}
-
-		private static string CreateErrorMessage(Exception ex)
-		{
-			return $"{ex.Data[RunInfo.RunIdentifier]} ({ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) Progress: {ex.Data[RunInfo.Progress]:P1} - absTime: {ex.Data[RunInfo.AbsTime]:F1}, " + 
-				$"distance: {ex.Data[RunInfo.Distance]:F1}, dt: {ex.Data[RunInfo.Dt]:F1}, v: {ex.Data[RunInfo.Speed]}, " +
-				$"{(ex.Data[RunInfo.GearInfo] as Dictionary<AxleNumber, GearshiftPosition>)?.Select(kvp => $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").Join()} " +
-				$", f_equiv:{ex.Data[RunInfo.F_equiv] ?? "-"} | [{ex.GetErrorCode()}]: {ex.Message}";
 		}
 
         private string GetOutputDirectory(string jobFilePath)

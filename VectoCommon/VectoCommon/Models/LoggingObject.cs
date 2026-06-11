@@ -30,8 +30,12 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 using NLog;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Models
 {
@@ -145,7 +149,7 @@ namespace TUGraz.VectoCommon.Models
 		public void Error(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-				_log.Error(e.Message, message, args);
+				_log.Error(e, message, args);
 			}
 		}
 

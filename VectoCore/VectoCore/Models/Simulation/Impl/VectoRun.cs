@@ -101,14 +101,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             }
             var debug = new DebugData();
 
-            Log.Info($"{CycleName} {RunSuffix}: VectoJob preprocessing.");
+            Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle preprocessing.");
 
             foreach (var preprocessing in Container.GetPreprocessingRuns) {
                 preprocessing.RunPreprocessing();
             }
 
             Container.StartSimulationRun();
-            Log.Info($"{CycleName} {RunSuffix}: VectoJob started running.");
+            Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle started running.");
 
             Container.AbsTime = AbsTime;
 
@@ -121,7 +121,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 do {
                     if (!string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError))
                     {
-                        Log.Warn($"{CycleName} {RunSuffix}: {Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError}");
                         throw new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED);
                     }
 
@@ -132,7 +131,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         Container.CommitSimulationStep(AbsTime, dt);
                         AbsTime += dt;
                         if (_cancelled) {
-                            Log.Error($"{CycleName} {RunSuffix}: Cycle run cancelled!");
+                            Log.Error($"{RunName} {CycleName} {RunSuffix}: Cycle run cancelled!");
                             Container.RunStatus = Status.Canceled;
                             Container.FinishSimulationRun();
                             return;
@@ -153,14 +152,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             {
                 if (_postMortemAnalyzer?.AbortSimulation(Container, e) ?? true) 
                 {
-                    Log.Error($"{CycleName} {RunSuffix}: Cycle run aborted!");
-                    Log.Error(e);
-
+                    DecorateExceptionWithRunData(e);
                     Container.RunStatus = Status.Aborted;
 
+                    Log.Error($"{RunName} {CycleName} {RunSuffix}: Cycle run aborted!");
+                    
                     try
                     {
-                        Container.FinishSimulationRun(DecorateExceptionWithRunData(e));
+                        Container.FinishSimulationRun(e);
                     }
                     catch (Exception) { }
 
@@ -172,13 +171,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             {
                 var exception = string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError)
                     ? null
-                    : DecorateExceptionWithRunData(new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED));
+                    : DecorateExceptionWithRunData(new VectoException(
+                        Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, 
+                        ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED));
 
                 Container.FinishSimulationRun(exception);
                 WritingResultsDone = true;
                 FinishedWithoutErrors = true;
                 IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-                Log.Info($"{CycleName} {RunSuffix}: Cycle finished.");
+                Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle finished.");
                 return;
             }
 
@@ -237,12 +238,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-			Log.Info($"{CycleName} {RunSuffix}: Cycle finished.");
+			Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle finished.");
 		}
 
         private Exception DecorateExceptionWithRunData(Exception exception)
         {
             exception.Data[RunInfo.RunIdentifier] = RunIdentifier;
+            exception.Data[RunInfo.RunName] = RunName;
             exception.Data[RunInfo.CycleName] = CycleName;
             exception.Data[RunInfo.RunSuffix] = RunSuffix;
             exception.Data[RunInfo.AbsTime] = AbsTime;
@@ -252,6 +254,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             exception.Data[RunInfo.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber, x => x.Gear);
             exception.Data[RunInfo.Dt] = dt;
             exception.Data[RunInfo.Progress] = Progress;
+            exception.Data[RunInfo.HasFullRunInfo] = true;
 
             return exception;
         }

@@ -1159,7 +1159,7 @@ lbFound:
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
                                       New VectoProgress _
-                                         With {.Target = "ListBoxError", .Message = CreateErrorMessage(progressEntry.Value.Error)})
+                                         With {.Target = "ListBoxError", .Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo()})
             End If
 
         Next
@@ -1203,10 +1203,6 @@ lbFound:
         End If
     End Sub
 
-    Private Shared Function CreateErrorMessage(ex As Exception) As String
-        Return $"{ex.Data(RunInfo.RunIdentifier)} ({ex.Data(RunInfo.CycleName)} {ex.Data(RunInfo.RunSuffix)}) Progress: {ex.Data(RunInfo.Progress):P1} - absTime: {ex.Data(RunInfo.AbsTime):F1}, distance: {ex.Data(RunInfo.Distance):F1}, dt: {ex.Data(RunInfo.Dt):F1}, v: {ex.Data(RunInfo.Speed)}, {GetGearInfo(ex)}, f_equiv:{If(ex.Data(RunInfo.F_equiv), "-")} | [{ex.GetErrorCode()}]: {ex.Message}"
-    End Function
-
     Private Shared Function GetGearInfo(ex As Exception) As String
         Return TryCast(ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
                 Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").
@@ -1243,11 +1239,11 @@ lbFound:
 
             If Not p.Value.Error Is Nothing Then
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError",
-                                                .Message = $"Finished Run {runName} with ERROR: {CreateErrorMessage(p.Value.Error)}",
+                                                .Message = $"Finished with error: {runName}",
                                                 .Link = modFilename})
             Else
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
-                                                .Message = $"Finished Run {runName} successfully."})
+                                                .Message = $"Finished successfully: {runName}"})
             End If
 
             If (File.Exists(modFilename)) Then

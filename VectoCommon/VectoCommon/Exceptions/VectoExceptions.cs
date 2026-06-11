@@ -30,6 +30,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -61,8 +63,10 @@ namespace TUGraz.VectoCommon.Exceptions
 
     public enum RunInfo
     {
+        HasFullRunInfo,
         ErrorCode,
         RunIdentifier,
+        RunName,
         CycleName,
         RunSuffix,
         AbsTime,
@@ -79,6 +83,20 @@ namespace TUGraz.VectoCommon.Exceptions
         public static ErrorCode GetErrorCode(this Exception ex)
         {
             return (ex is VectoException vectoException) ? vectoException.ErrorCode : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
+        }
+
+        public static string GetMessageWithCycleRunInfo(this Exception ex)
+        {
+            if (!ex.Data.Contains(RunInfo.HasFullRunInfo) || !(bool)ex.Data[RunInfo.HasFullRunInfo])
+            {
+                return ex.Message;
+            }
+
+            return $"{ex.Data[RunInfo.RunIdentifier]} ({ex.Data[RunInfo.RunName]} {ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) " +
+                $"Progress: {ex.Data[RunInfo.Progress]:P1} - absTime: {ex.Data[RunInfo.AbsTime]:F1}, " +
+                $"distance: {ex.Data[RunInfo.Distance]:F1}, dt: {ex.Data[RunInfo.Dt]:F1}, v: {ex.Data[RunInfo.Speed]}, " +
+                $"{(ex.Data[RunInfo.GearInfo] as Dictionary<AxleNumber, GearshiftPosition>)?.Select(kvp => $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").Join()} " +
+                $", f_equiv:{ex.Data[RunInfo.F_equiv] ?? "-"} | [{ex.GetErrorCode()}]: {ex.Message}";
         }
     }
 }
