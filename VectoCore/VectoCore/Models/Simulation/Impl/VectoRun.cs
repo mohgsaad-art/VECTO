@@ -101,14 +101,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             }
             var debug = new DebugData();
 
-            Log.Info("VectoJob preprocessing.");
+            Log.Info($"{CycleName} {RunSuffix}: VectoJob preprocessing.");
 
             foreach (var preprocessing in Container.GetPreprocessingRuns) {
                 preprocessing.RunPreprocessing();
             }
 
             Container.StartSimulationRun();
-            Log.Info("VectoJob started running.");
+            Log.Info($"{CycleName} {RunSuffix}: VectoJob started running.");
 
             Container.AbsTime = AbsTime;
 
@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 do {
                     if (!string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError))
                     {
-                        Log.Warn(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
+                        Log.Warn($"{CycleName} {RunSuffix}: {Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError}");
                         throw new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED);
                     }
 
@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         Container.CommitSimulationStep(AbsTime, dt);
                         AbsTime += dt;
                         if (_cancelled) {
-                            Log.Error("Run canceled!");
+                            Log.Error($"{CycleName} {RunSuffix}: Cycle run cancelled!");
                             Container.RunStatus = Status.Canceled;
                             Container.FinishSimulationRun();
                             return;
@@ -153,7 +153,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             {
                 if (_postMortemAnalyzer?.AbortSimulation(Container, e) ?? true) 
                 {
-                    Log.Error("CYCLE RUN ABORTED! ========================");
+                    Log.Error($"{CycleName} {RunSuffix}: Cycle run aborted!");
                     Log.Error(e);
 
                     Container.RunStatus = Status.Aborted;
@@ -178,7 +178,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 WritingResultsDone = true;
                 FinishedWithoutErrors = true;
                 IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-                Log.Info("VectoJob finished.");
+                Log.Info($"{CycleName} {RunSuffix}: Cycle finished.");
                 return;
             }
 
@@ -237,7 +237,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-			Log.Info("VectoJob finished.");
+			Log.Info($"{CycleName} {RunSuffix}: Cycle finished.");
 		}
 
         private Exception DecorateExceptionWithRunData(Exception exception)
@@ -266,16 +266,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
         public bool WritingResultsDone { get; protected set; }
 
         public void Cancel() => _cancelled = true;
-
-        private static object TryCatch(Func<object> action)
-        {
-            try {
-                return action();
-            } catch (Exception e) {
-                LogManager.GetLogger(typeof(VectoRun).FullName).Info(e);
-                return null;
-            }
-        }
 
         protected abstract IResponse DoSimulationStep();
 

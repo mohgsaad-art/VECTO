@@ -1150,7 +1150,7 @@ lbFound:
         fileWriters.Clear()
 
         For Each progressEntry As KeyValuePair(Of Integer, JobContainer.ProgressEntry) In jobContainer.GetProgress()
-            sender.ReportProgress(100, New VectoProgress With {.Target = "ListBox",
+            sender.ReportProgress(100, New VectoProgress With {.Target = IIf(progressEntry.Value.Success, "ListBox", "ListBoxError").ToString(),
                                      .Message = String.Format("{0,-60} {1,8:P} {2,10:F2}s - {3}",
                                                               $"{progressEntry.Value.RunName} {progressEntry.Value.CycleName} {progressEntry.Value.RunSuffix}",
                                                               progressEntry.Value.Progress,
@@ -1159,7 +1159,7 @@ lbFound:
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
                                       New VectoProgress _
-                                         With {.Target = "ListBox", .Message = CreateErrorMessage(progressEntry.Value.Error)})
+                                         With {.Target = "ListBoxError", .Message = CreateErrorMessage(progressEntry.Value.Error)})
             End If
 
         Next
