@@ -29,8 +29,15 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 					segment = DeclarationData.GetTruckSegment(vehicle).Segment;
                 }
 				if (vehicle.VehicleCategory.IsBus()) {
-					segment = DeclarationData.PrimaryBusSegments.Lookup(vehicle.VehicleCategory, vehicle.AxleConfiguration,
-						vehicle.Articulated);
+					segment = vehicle.VehicleCategory.IsCompletedBus()
+						? DeclarationData.CompletedBusSegments.Lookup(
+							vehicle.AxleConfiguration.NumAxles(), 
+							vehicle.VehicleCode, 
+							vehicle.RegisteredClass, 
+							vehicle.NumberPassengerSeatsLowerDeck,
+							vehicle.Height,
+							vehicle.LowEntry)
+                        : DeclarationData.PrimaryBusSegments.Lookup(vehicle.VehicleCategory, vehicle.AxleConfiguration, vehicle.Articulated);
 				}
 
 				if (segment == null) {
