@@ -185,7 +185,12 @@ namespace TUGraz.VectoCommon.Models
 			}
 		}
 
-		public static VehicleCategory Parse(string vehicleCategory)
+		public static bool IsCompletedBus(this VehicleCategory category)
+        {
+            return category == VehicleCategory.HeavyBusCompletedVehicle;
+        }
+
+        public static VehicleCategory Parse(string vehicleCategory)
 		{
 			switch (vehicleCategory) {
 				case "Bus":
