@@ -199,7 +199,7 @@ namespace TUGraz.VectoCore.Utils
 			var duplicates = _points.GroupBy(pt => new { pt.X, pt.Y }, x => x).Where(g => g.Count() > 1).ToList();
 
 			foreach (var duplicate in duplicates) {
-				Log.Error("{0}: Input Point appears twice: x: {1}, y: {2}", duplicate.Key.X, duplicate.Key.Y);
+				Log.Warn("{0}: Input Point appears twice: x: {1}, y: {2}", duplicate.Key.X, duplicate.Key.Y);
 			}
 			if (duplicates.Any()) {
 				throw new VectoException($"{_mapName}: Input Data for Delaunay map contains duplicates! \n{string.Join("\n", duplicates.Select(pt => $"{pt.Key.X} / {pt.Key.Y}"))}",

@@ -153,7 +153,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             {
                 if (_postMortemAnalyzer?.AbortSimulation(Container, e) ?? true) 
                 {
-                    Log.Error("SIMULATION RUN ABORTED! ========================");
+                    Log.Error("CYCLE RUN ABORTED! ========================");
                     Log.Error(e);
 
                     Container.RunStatus = Status.Aborted;

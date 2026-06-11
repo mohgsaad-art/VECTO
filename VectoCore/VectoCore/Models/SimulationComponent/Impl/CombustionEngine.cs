@@ -283,7 +283,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if ((deltaFull * avgEngineSpeed).IsGreater(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance) &&
 				(deltaDrag * avgEngineSpeed).IsSmaller(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance)) {
 				//throw new VectoSimulationException(
-				Log.Error(
+				Log.Warn(
 					"Unexpected condition: requested torque_out is above gearbox full-load and engine is below drag load! deltaFull: {0}, deltaDrag: {1}",
 					deltaFull, deltaDrag);
 			}
@@ -475,7 +475,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var gearbox = PowertrainContainer.GearboxInfo;
 				var pt1 = ModelData.FullLoadCurves[gearbox.Gear.Gear].PT1(avgEngineSpeed);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration && pt1.Extrapolated) {
-					Log.Error(
+					Log.Warn(
 						"requested rpm below minimum rpm in pt1 - extrapolating. n_eng_avg: {0}",
 						avgEngineSpeed);
 				}

@@ -638,7 +638,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					searcher: this);
 			} catch (Exception e) {
-				Log.Error(e, "Failed to find engine speed for valid torque converter operating point! absTime: {0}", absTime);
+				Log.Warn(e, "Failed to find engine speed for valid torque converter operating point! absTime: {0}", absTime);
 
 				// if no engine speed can be found that results in an operating point on the TC curve, set the TC in-torque to the maximum
 				// available from the engine. reverse-calc TC-in-torque from average engine torque 
@@ -1137,7 +1137,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return operatingPoint;
 			} 
 			catch (VectoException ve) when (ve.GetErrorCode() == ErrorCodes.SEARCH_FAILED) {
-				Log.Error($"Failed to find operating point for braking power! absTime: {absTime}  {ve}");
+				Log.Warn($"Failed to find operating point for braking power! absTime: {absTime}  {ve}");
 				if (GearboxInfo.GearboxType.AutomaticTransmission() && !GearboxInfo.TCLocked) {
 					// AT transmission in TC gear - maybe search failed because engine speed 'jumps' during
 					// search and cannot reach drag curve
@@ -1332,7 +1332,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							searcher: this);
 						return ComputeTimeInterval(retVal.Acceleration, retVal.SimulationDistance);
 					} catch (VectoException ve2) {
-						Log.Error(ve2);
+						Log.Warn(ve2);
 						return null;
 					}
 				}

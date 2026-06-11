@@ -172,7 +172,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		{
 			var addReportResult = PrepareReport(data);
 			if (!data.Cycle.CycleType.IsDistanceBased() && ModalResults1Hz && !warning1Hz) {
-				Log.Error("Output filter for 1Hz results is only available for distance-based cycles!");
+				Log.Warn("Output filter for 1Hz results is only available for distance-based cycles!");
 				warning1Hz = true;
 			}
 			var fuels = data.EngineData != null ? data.EngineData.Fuels.Select(x => x.FuelData).ToList() : new List<IFuelProperties>();

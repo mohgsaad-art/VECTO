@@ -449,8 +449,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 					if (reserve < base.GearshiftParams.TorqueReserve) {
 						continue;
-					} else {
-						//Log.Error("foo");
 					}
 				}
 

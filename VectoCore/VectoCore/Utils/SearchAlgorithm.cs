@@ -178,7 +178,7 @@ namespace TUGraz.VectoCore.Utils
 			//iterationCount += 100;
 			log.Debug("LineSearch could not find an operating point.");
 #if DEBUG
-			log.Error("Exceeded max iterations when searching for operating point!");
+			log.Warn("Exceeded max iterations when searching for operating point!");
 #endif
 			WriteSearch(debug, "LineSearch.csv");
 			throw new VectoException($"Failed to find operating point! points: {debug.LocalData.Select(d => d.b).Join()}", ErrorCodes.SEARCH_FAILED);
@@ -302,7 +302,7 @@ namespace TUGraz.VectoCore.Utils
 
 			log.Debug("InterpolateSearch could not find an operating point.");
 #if DEBUG
-			log.Error("InterpolateSearch exceeded max iterations when searching for operating point!");
+			log.Warn("InterpolateSearch exceeded max iterations when searching for operating point!");
 #endif
 			WriteSearch(debug, "InterpolateSearch.csv");
 			throw new VectoException($"Failed to find operating point! points: {debug.LocalData.Select(d => d.b).Join()}", ErrorCodes.SEARCH_FAILED);

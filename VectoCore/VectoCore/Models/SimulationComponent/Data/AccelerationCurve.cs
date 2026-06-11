@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			_entries = entries;
 			var smallValues = _entries.Where(e => e.Key < 5.KMPHtoMeterPerSecond()).OrderBy(e => e.Key).ToList();
 			if (smallValues.Count >= 2) {
-				Log.Error(
+				Log.Warn(
 					"Found small velocity entries in Driver-Acceleration/Deceleration file. Values dismissed:" +
 					smallValues.Skip(1).Select(e => e.Key.AsKmph.ToString("F1")).Join());
 				foreach (var kv in smallValues.Skip(1)) {
@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		{
 			var index = 1;
 			if (key < _entries[0].Key) {
-				Log.Error(
+				Log.Warn(
 					"requested velocity below minimum - extrapolating. velocity: {0}, min: {1}",
 					key.ConvertToKiloMeterPerHour(), _entries[0].Key.ConvertToKiloMeterPerHour());
 			} else {

@@ -894,7 +894,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				if (_optimalPoint == null) {
 					var tmp = OptimalPoints.Values.SelectMany(x => x).Where(x => x.ElectricPower > MinGensetPower).ToArray();
 					if (!tmp.Any()) {
-						Log.Error($"No GenSet operating point with a power greater than {MinGensetPower} found!");
+						Log.Warn($"No GenSet operating point with a power greater than {MinGensetPower} found!");
 					}
 					_optimalPoint = tmp.MinBy(x => x.FuelConsumption / x.ElectricPower);
 				}

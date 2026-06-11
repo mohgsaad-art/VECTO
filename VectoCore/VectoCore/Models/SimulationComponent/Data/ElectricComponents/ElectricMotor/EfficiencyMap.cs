@@ -256,7 +256,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 				if (e.GetErrorCode() == ErrorCodes.SEARCH_FAILED)
 				{
 #if DEBUG
-                    Log.Error("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, e.Message);
+                    Log.Warn("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, e.Message);
 #endif
                 }
                 else
