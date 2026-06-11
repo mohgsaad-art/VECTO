@@ -46,6 +46,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
 using static TUGraz.VectoCore.Models.Simulation.Data.VectoRunData;
 using static TUGraz.VectoCore.Models.SimulationComponent.Data.DriverData;
@@ -61,6 +62,8 @@ namespace TUGraz.VectoCore.OutputData
 		void Write(IModalDataContainer modData, VectoRunData runData);
 		void RegisterComponent(VectoSimulationComponent component, VectoRunData runData);
 		void AddAuxiliary(string id);
+		void Finish();
+		ISummaryWriter SummaryWriter { get; }
 	}
 
 	/// <summary>

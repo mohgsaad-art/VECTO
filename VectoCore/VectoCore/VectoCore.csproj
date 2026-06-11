@@ -14,7 +14,7 @@
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-	  <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
+    <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
     <DebugType>full</DebugType>
@@ -26,15 +26,6 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
 	<PropertyGroup Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net48|AnyCPU'" />
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'" />
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net6.0|AnyCPU'" />

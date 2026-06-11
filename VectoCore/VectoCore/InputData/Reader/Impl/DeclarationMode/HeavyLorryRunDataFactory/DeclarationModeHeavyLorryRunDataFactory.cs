@@ -23,7 +23,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 	{
 		public abstract class LorryBase : AbstractDeclarationVectoRunDataFactory
 		{
-            protected VehicleOperationLookup VehicleOperation => new VehicleOperationLookup();
+            protected virtual IVehicleOperationLookup VehicleOperation => new VehicleOperationLookup();
 
             public ILorryDeclarationDataAdapter DataAdapter { get; }
 			public new IDeclarationInputDataProvider InputDataProvider { get; }

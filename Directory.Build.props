@@ -20,9 +20,10 @@
 	  <DefineTrace>false</DefineTrace>
     <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <WarningLevel>5</WarningLevel>
-    <DebugSymbols>false</DebugSymbols>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DefineConstants></DefineConstants>
 <!--    <SkipAddAllResxFilesAsAdditionalFiles>true</SkipAddAllResxFilesAsAdditionalFiles>-->
   </PropertyGroup>
@@ -40,7 +41,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <WarningLevel>1</WarningLevel>
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
   </PropertyGroup>

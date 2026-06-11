@@ -123,7 +123,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		
 
-		private readonly SummaryDataContainer _sumWriter;
+		private readonly ISumData _sumWriter;
 		internal readonly List<RunEntry> Runs = new List<RunEntry>();
 		private readonly ConcurrentDictionary<int, byte> _unfinishedRuns = new ConcurrentDictionary<int, byte>(); //only key is used 
 		private ReaderWriterLockSlim _runsRwLock = new ReaderWriterLockSlim();
@@ -143,7 +143,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// Initializes a new empty instance of the <see cref="JobContainer"/> class.
 		/// </summary>
 		/// <param name="sumWriter">The sum writer.</param>
-		public JobContainer(SummaryDataContainer sumWriter, IJobArchiveBuilder jobArchiveBuilder = null)
+		public JobContainer(ISumData sumWriter, IJobArchiveBuilder jobArchiveBuilder = null)
 		{
 			_sumWriter = sumWriter;
 			_jobArchiveBuilder = jobArchiveBuilder;
