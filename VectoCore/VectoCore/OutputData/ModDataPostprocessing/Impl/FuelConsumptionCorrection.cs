@@ -301,49 +301,49 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
 		public KilogramPerMeter FC_AUXHTR_KM_CORR => FC_AUXHTR_KM;
 
-		public KilogramPerMeter FC_REESS_SOC_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_REESS_SOC_KM => null;
 
-		public KilogramPerMeter FC_REESS_SOC_CORR_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_REESS_SOC_CORR_KM => null;
 
-		public KilogramPerSecond FC_REESS_SOC_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_REESS_SOC_H => null;
 
-		public KilogramPerSecond FC_REESS_SOC_CORR_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_REESS_SOC_CORR_H => null;
 
-		public KilogramPerWattSecond EngineLineCorrectionFactor => throw new System.NotImplementedException();
+		public KilogramPerWattSecond EngineLineCorrectionFactor => null;
 
-		public KilogramPerWattSecond VehicleLine => throw new System.NotImplementedException();
+		public KilogramPerWattSecond VehicleLine => null;
 
 		public KilogramPerWattSecond FuelCellLine => throw new System.NotImplementedException();
 
-		public KilogramPerSecond FC_ESS_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_ESS_H => null;
 
-		public KilogramPerSecond FC_ESS_CORR_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_ESS_CORR_H => null;
 
-		public KilogramPerSecond FC_BusAux_PS_CORR_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_BusAux_PS_CORR_H => null;
 
-		public KilogramPerSecond FC_BusAux_ES_CORR_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_BusAux_ES_CORR_H => null;
 
-		public KilogramPerSecond FC_WHR_CORR_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_WHR_CORR_H => null;
 
-		public KilogramPerSecond FC_FINAL_H => throw new System.NotImplementedException();
+		public KilogramPerSecond FC_FINAL_H => null;
 
-		public KilogramPerMeter FC_WHR_CORR_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_WHR_CORR_KM => null;
 
-		public KilogramPerMeter FC_BusAux_PS_CORR_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_BusAux_PS_CORR_KM => null;
 
-		public KilogramPerMeter FC_BusAux_ES_CORR_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_BusAux_ES_CORR_KM => null;
 
-		public KilogramPerMeter FC_ESS_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_ESS_KM => null;
 
-		public KilogramPerMeter FC_ESS_CORR_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_ESS_CORR_KM => null;
 
-		public KilogramPerMeter FC_FINAL_KM => throw new System.NotImplementedException();
+		public KilogramPerMeter FC_FINAL_KM => null;
 
-		public VolumePerMeter FuelVolumePerMeter => throw new System.NotImplementedException();
+		public VolumePerMeter FuelVolumePerMeter => null;
 
 		public Kilogram TotalFuelConsumptionCorrected => FC_AUXHTR_KM_CORR * _distance;
 
-		public Joule EnergyDemand => throw new System.NotImplementedException();
+		public Joule EnergyDemand => null;
 
 		#endregion
 	}

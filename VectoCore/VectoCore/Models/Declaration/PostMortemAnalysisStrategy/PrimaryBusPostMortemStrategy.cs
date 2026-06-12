@@ -40,8 +40,8 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 				return true;
 			}
 
-			if (!container.DrivingCycleInfo.RoadGradient.IsGreater(0)) {
-				// road gradient must be greater than 0
+            if (!container.DrivingCycleInfo.RoadGradient?.IsGreater(0) ?? false) {
+                // road gradient must be greater than 0
 				return true;
 			}
 

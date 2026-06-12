@@ -17,6 +17,7 @@ Imports TUGraz.VectoCore.InputData
 Imports TUGraz.VectoHashing
 Imports TUGraz.VectoCore.InputData.FileIO.JSON
 Imports TUGraz.VectoCore.Ninject
+Imports TUGraz.VectoCore.OutputData.FileIO
 
 <CustomValidation(GetType(VectoVTPJob), "ValidateJob")>
 Public Class VectoVTPJob

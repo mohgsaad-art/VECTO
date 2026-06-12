@@ -267,6 +267,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 					DeltaFullLoad = delta,
 					DeltaDragLoadTorque = inTorque,
 					DeltaFullLoadTorque = inTorque,
+					DeltaEngineSpeed = (remainingPowerTrain as ResponseDryRun)?.DeltaEngineSpeed
 				};
 			}
 
