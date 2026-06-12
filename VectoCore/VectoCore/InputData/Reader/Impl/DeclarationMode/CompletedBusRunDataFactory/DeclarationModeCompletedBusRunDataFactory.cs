@@ -872,11 +872,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
             private void EnsureElectricBusAux(IAuxiliaryConfig busAux)
             {
                 if (busAux.PneumaticUserInputsConfig.CompressorMap != null) {
-                    throw new VectoException("Compressor drive is required to be electrically driven!");
+                    throw new VectoException("Compressor drive is required to be electrically driven!", ErrorCodes.VEHICLE_INCOMPATIBLE_AUXILIARY_CONFIGURATION);
                 }
 
                 if (!busAux.ElectricalUserInputsConfig.ConnectESToREESS) {
-                    throw new VectoException("Electric system must be supplied from HV REESS!");
+                    throw new VectoException("Electric system must be supplied from HV REESS!", ErrorCodes.VEHICLE_INCOMPATIBLE_AUXILIARY_CONFIGURATION);
                 }
             }
             #endregion

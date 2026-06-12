@@ -857,7 +857,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 			#if !DEBUG
 			if (xmlVersionNewer) {
-				throw new VectoException($"Not allowed to run simulation because VECTO version ({vectoVersionStr}) is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).");
+				throw new VectoException(
+					$"Not allowed to run simulation because VECTO version ({vectoVersionStr}) is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).",
+					ErrorCodes.VTP_VECTO_VERSION_TOO_OLD);
 			}
 			#endif
 		}

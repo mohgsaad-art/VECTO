@@ -377,6 +377,7 @@ namespace TUGraz.VectoCommon.Utils
 
         public static readonly ErrorCode VTP_CYCLE_NOT_FOUND = new ErrorCode(nameof(VTP_CYCLE_NOT_FOUND));
         public static readonly ErrorCode VTP_CYCLE_INVALID = new ErrorCode(nameof(VTP_CYCLE_INVALID));
+        public static readonly ErrorCode VTP_VECTO_VERSION_TOO_OLD = new ErrorCode(nameof(VTP_VECTO_VERSION_TOO_OLD));
 
         public static readonly ErrorCode WHEELEND_FRICTION_EXCEEDS_STANDARD = new ErrorCode(nameof(WHEELEND_FRICTION_EXCEEDS_STANDARD));
         public static readonly ErrorCode WHEELEND_FRICTION_NEGATIVE = new ErrorCode(nameof(WHEELEND_FRICTION_NEGATIVE));
