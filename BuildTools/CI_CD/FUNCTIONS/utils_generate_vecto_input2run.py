@@ -236,6 +236,8 @@ def select_vecto_inputs(file_type_list: list) -> list:
         x_arg.append(int(np.argwhere(x==3).flatten()[0]))
         return x_arg
 
+    return x_arg  # empty list — no recognised file type combination
+
 def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
 
     # for each issue, VIN and xml type, get the last uploaded file
@@ -269,10 +271,17 @@ def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
     # REMOVE VIF if there is a primary or a main
     col2sort = [c for c in df_vehicles.columns if c!='file_type']
 
-    df_vehicles['selection'] =  df_vehicles['file_type'].apply(select_vecto_inputs)
+    df_vehicles['selection'] = df_vehicles['file_type'].apply(select_vecto_inputs)
+
+    no_valid_input = df_vehicles['selection'].apply(len) == 0
+    if no_valid_input.any():
+        print(f'WARNING: {no_valid_input.sum()} vehicle(s) skipped - no recognized file-type combination.')
+        for file_types in df_vehicles.loc[no_valid_input, 'file_type']:
+            print(f'  file_type values found: {file_types}')
+        df_vehicles = df_vehicles[~no_valid_input]
 
     for col in col2sort:
-        df_vehicles[col] = df_vehicles.apply(lambda x: np.array(x[col])[x['selection']], axis=1)
+        df_vehicles[col] = df_vehicles.apply(lambda x: list(np.array(x[col])[x['selection']]), axis=1)
 
     df_vehicles.drop(columns=["selection"], axis=1, inplace=True)
 
