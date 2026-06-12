@@ -28,6 +28,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public Watt Initialize()
         {
+            if (DataBus.IsTestPowertrain) {
+                return 0.SI<Watt>();
+            }
             PreviousState.ConsumedEnergy = 0.SI<WattSecond>();
             CurrentState.ConsumedEnergy = 0.SI<WattSecond>();
             _electricConsumers.ForEach(aux => aux.Initialize());

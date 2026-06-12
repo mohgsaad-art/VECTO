@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -845,7 +846,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle,
 						rd);
 
-				SetOvcModeProperties(ovcMode, rd);
+                if (rd.BatteryOnlyHybridMode) {
+                    EnsureElectricBusAux(rd.BusAuxiliaries);
+                }
+                SetOvcModeProperties(ovcMode, rd);
 				if (ovcMode == OvcHevMode.ChargeSustaining) {
 					rd.IterativeRunStrategy = new HevChargeSustainingIterativeRunStrategy();
 				}
@@ -862,8 +866,18 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 						PrimaryVehicle.EngineIdleSpeed, gbx.Type, gbx.Gears.Count);
 			}
 
-			#endregion
-		}
+            private void EnsureElectricBusAux(IAuxiliaryConfig busAux)
+            {
+                if (busAux.PneumaticUserInputsConfig.CompressorMap != null) {
+                    throw new VectoException("Compressor drive is required to be electrically driven!");
+                }
+
+                if (!busAux.ElectricalUserInputsConfig.ConnectESToREESS) {
+                    throw new VectoException("Electric system must be supplied from HV REESS!");
+                }
+            }
+            #endregion
+        }
 
 		public class HEV_P1 : ParallelHybrid
 		{

@@ -127,6 +127,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			dynamic spec = access(results.specificResult);
 			dynamic gen = access(results.genericResult);
+            if (gen is SI genSI && genSI.IsEqual(0, 1e-12)) {
+                return 0.0;
+            }
 			dynamic factor = spec / gen;
 			if (factor is Scalar sc)
 			{
@@ -138,32 +141,30 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 
         private IResultEntry GetCompletedResult(IResultEntry generic, IResultEntry specific, IResult primary)
-		{
+        {
 
-			var result = new CompletedBusResult
-            {
+            var result = new CompletedBusResult {
                 Status = VectoRun.Status.Success,
                 VectoRunData = specific.VectoRunData,
             };
             result.Status = generic.Status != VectoRun.Status.Success ? generic.Status : result.Status;
             result.Status = specific.Status != VectoRun.Status.Success ? specific.Status : result.Status;
             var errors = new List<string>();
-			var stacktraces = new List<string>();
-			if (generic.Status != VectoRun.Status.Success) {
+            var stacktraces = new List<string>();
+            if (generic.Status != VectoRun.Status.Success) {
                 errors.Add($"Generic simulation run: {generic.Error}");
                 stacktraces.Add($"Generic simulation run: {generic.StackTrace}");
-			}
+            }
 
-			if (specific.Status != VectoRun.Status.Success) {
+            if (specific.Status != VectoRun.Status.Success) {
                 errors.Add($"Specific simulation run: {specific.Error}");
                 stacktraces.Add($"Specific simulation run: {specific.StackTrace}");
-			}
+            }
             result.Error = errors.Any() ? errors.Join(Environment.NewLine) : null;
-			result.StackTrace = stacktraces.Any() ? stacktraces.Join(Environment.NewLine) : null;
-			result.OVCIteration = specific.OVCIteration;
+            result.StackTrace = stacktraces.Any() ? stacktraces.Join(Environment.NewLine) : null;
+            result.OVCIteration = specific.OVCIteration;
             result.OVCMode = specific.OVCMode;
-            if (generic.OVCMode != specific.OVCMode)
-            {
+            if (generic.OVCMode != specific.OVCMode) {
                 throw new VectoException($"generic OVC Mode must be equal to specific OVC Mode! but was gen_ovc = {generic.OVCMode} != {specific.OVCMode} = spec_ovc");
             }
             result.BatteryData = specific.BatteryData;
@@ -172,12 +173,12 @@ namespace TUGraz.VectoCore.OutputData.XML
             result.TotalVehicleMass = specific.TotalVehicleMass;
             result.Payload = specific.Payload;
             result.PassengerCount = specific.PassengerCount;
-			result.VehicleClass = specific.VehicleClass;
-			result.PrimaryVehicleClass = primary.VehicleGroup;
-            
-			result.WeightingFactor = specific.WeightingFactor;
-			result.FuelMode = specific.FuelMode;
-			result.LoadingType = specific.LoadingType;
+            result.VehicleClass = specific.VehicleClass;
+            result.PrimaryVehicleClass = primary.VehicleGroup;
+
+            result.WeightingFactor = specific.WeightingFactor;
+            result.FuelMode = specific.FuelMode;
+            result.LoadingType = specific.LoadingType;
 
             ///Factor for each fuel
             /// Factor for electric Energy Consumption
@@ -197,7 +198,7 @@ namespace TUGraz.VectoCore.OutputData.XML
             result.MaxSpeed = specific.MaxSpeed;
 
 
-			result.MaxChargingPower = specific.MaxChargingPower;
+            result.MaxChargingPower = specific.MaxChargingPower;
             result.MaxDeceleration = specific.MaxDeceleration;
             result.MaxAcceleration = specific.MaxAcceleration;
             result.FullLoadPercentage = specific.FullLoadPercentage;
@@ -207,6 +208,10 @@ namespace TUGraz.VectoCore.OutputData.XML
             result.EngineSpeedDrivingMax = specific.EngineSpeedDrivingMax;
             result.AverageGearboxEfficiency = specific.AverageGearboxEfficiency;
             result.AverageAxlegearEfficiency = specific.AverageAxlegearEfficiency;
+
+            if (errors.Any()) {
+                return result;
+            }
 
             //Fuels
 			result.FuelData = primary.EnergyConsumption.Keys.Select(x =>
