@@ -28,6 +28,10 @@
     Path to the local NuGet feed folder. Prompted if not provided when using -Setup.
 
 .PARAMETER Debug
+    Include debug symbols in nuget package
+	
+.PARAMETER ReleaseCandidateBuild
+	Set compile flag for release candidate version (disables deprecated XML versions, for example)
 
 .PARAMETER Help
     Display full help for this script.
@@ -58,6 +62,7 @@ param(
     [switch]$Publish,
     [switch]$Delete,
     [switch]$Debug,
+	[switch]$ReleaseCandidateBuild,
     [switch]$Republish,
     [switch]$Help,
     [string]$Version = $null,
@@ -138,7 +143,7 @@ if ($Help) {
     exit 0
 }
 
-if (-not $Setup -and -not $Publish -and -not $Delete) {
+if (-not $Setup -and -not $Publish -and -not $Delete -and -not $Republish) {
     Get-Help $PSCommandPath
     exit 0
 }
@@ -171,6 +176,10 @@ if ($Debug) {
     Update-BuildPropsSymbols $Debug
 }
 
+if ($ReleaseCandidateBuild) {
+	Write-Host "Building ReleaseCandidate version"
+	$ReleaseType = "RELEASE_CANDIDATE"
+}
 
 if ($Publish) {
     $VersionNumber = Set-ReleaseVersion
