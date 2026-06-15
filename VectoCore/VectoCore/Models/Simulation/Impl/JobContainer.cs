@@ -528,7 +528,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						Run.Run();
 					} catch (Exception ex) {
 						ExecException = ex;
-						Log.Error(ex.GetMessageWithCycleRunInfo());
+						Log.Error(ex);
                         throw;
 					} finally {
 						stopWatch.Stop();

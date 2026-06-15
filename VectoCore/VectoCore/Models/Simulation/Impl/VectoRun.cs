@@ -131,7 +131,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                         Container.CommitSimulationStep(AbsTime, dt);
                         AbsTime += dt;
                         if (_cancelled) {
-                            Log.Error($"{RunName} {CycleName} {RunSuffix}: Cycle run cancelled!");
+                            Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle run cancelled!");
                             Container.RunStatus = Status.Canceled;
                             Container.FinishSimulationRun();
                             return;
@@ -155,7 +155,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                     DecorateExceptionWithRunData(e);
                     Container.RunStatus = Status.Aborted;
 
-                    Log.Error($"{RunName} {CycleName} {RunSuffix}: Cycle run aborted!");
+                    Log.Info($"{RunName} {CycleName} {RunSuffix}: Cycle run aborted!");
                     
                     try
                     {

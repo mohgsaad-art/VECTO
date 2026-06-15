@@ -85,6 +85,17 @@ namespace TUGraz.VectoCommon.Exceptions
             return (ex is VectoException vectoException) ? vectoException.ErrorCode : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
         }
 
+        public static string GetMessageWithCycleID(this Exception ex)
+        {
+            if (!ex.Data.Contains(RunInfo.HasFullRunInfo) || !(bool)ex.Data[RunInfo.HasFullRunInfo])
+            {
+                return ex.Message;
+            }
+
+            return $"{ex.Data[RunInfo.RunIdentifier]} ({ex.Data[RunInfo.RunName]} {ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) " +
+                $"[{ex.GetErrorCode()}]: {ex.Message}";
+        }
+
         public static string GetMessageWithCycleRunInfo(this Exception ex)
         {
             if (!ex.Data.Contains(RunInfo.HasFullRunInfo) || !(bool)ex.Data[RunInfo.HasFullRunInfo])

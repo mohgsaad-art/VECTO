@@ -328,25 +328,30 @@ Public Class MainForm
         VectoWorkerV3.WorkerReportsProgress = True
         VectoWorkerV3.WorkerSupportsCancellation = True
 
+        AddHandler LoggingObject.OnLogEvent, AddressOf HandleLogMessages
+
         'Set mode (Batch/Standard)
         ModeUpdate()
 
         DeclOnOff()
     End Sub
 
-    ' ReSharper disable once UnusedMember.Global -- used via Logging Framework! 
-    Public Shared Sub LogMethod(level As String, message As String)
+    Private Sub HandleLogMessages(sender As Object, logEventArgs As LoggingObject.LogEventArgs)
+        Dim level As String = logEventArgs.Level
+        Dim Message As String = logEventArgs.Message
+        Dim exception As Exception = logEventArgs.Exception
+
         If VectoWorkerV3 Is Nothing Then
-            Debug.WriteLine("{0}, {1}", level, message)
+            Debug.WriteLine("{0}, {1}", level, Message)
             Return
         End If
 
         If VectoWorkerV3.IsBusy AndAlso Not VectoWorkerV3.CancellationPending Then
             If level = "Warn" Then
                 VectoWorkerV3.ReportProgress(100,
-                                             New VectoProgress With {.Target = "ListBoxWarning", .Message = message})
+                                             New VectoProgress With {.Target = "ListBoxWarning", .Message = Message})
             ElseIf level = "Error" Or level = "Fatal" Then
-                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = message})
+                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = IIf(exception Is Nothing, Message, exception.GetMessageWithCycleID()).ToString(), .Exception = exception})
             End If
         End If
     End Sub
@@ -1150,7 +1155,7 @@ lbFound:
         fileWriters.Clear()
 
         For Each progressEntry As KeyValuePair(Of Integer, JobContainer.ProgressEntry) In jobContainer.GetProgress()
-            sender.ReportProgress(100, New VectoProgress With {.Target = IIf(progressEntry.Value.Success, "ListBox", "ListBoxError").ToString(),
+            sender.ReportProgress(100, New VectoProgress With {.Target = "ListBox",
                                      .Message = String.Format("{0,-60} {1,8:P} {2,10:F2}s - {3}",
                                                               $"{progressEntry.Value.RunName} {progressEntry.Value.CycleName} {progressEntry.Value.RunSuffix}",
                                                               progressEntry.Value.Progress,
@@ -1238,10 +1243,8 @@ lbFound:
             Dim runName As String = $"{p.Value.RunName} {p.Value.CycleName} {p.Value.RunSuffix}"
 
             If Not p.Value.Error Is Nothing Then
-                VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError",
-                                                .Message = $"Finished with error: {runName}",
-                                                .Link = modFilename,
-                                                .Exception = p.Value.Error})
+                VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
+                                                .Message = $"Finished with error: {runName}"})
             Else
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
                                                 .Message = $"Finished successfully: {runName}"})
@@ -1261,15 +1264,15 @@ lbFound:
         Select Case progress.Target
             Case "ListBox"
                 If progress.Link Is Nothing Then
-                    MsgToForm(MessageType.Normal, progress.Message, "", "", progress.Exception)
+                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Exception)
                 Else
-                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Link, progress.Exception)
+                    MsgToForm(MessageType.Normal, progress.Message, progress.Link, progress.Exception)
                 End If
             Case "ListBoxWarning"
-                MsgToForm(MessageType.Warn, progress.Message, "", "", progress.Exception)
+                MsgToForm(MessageType.Warn, progress.Message, "", progress.Exception)
                 Return
             Case "ListBoxError"
-                MsgToForm(MessageType.Err, progress.Message, "", "", progress.Exception)
+                MsgToForm(MessageType.Err, progress.Message, "", progress.Exception)
                 Return
             Case "Status"
                 Status(progress.Message)
@@ -1555,7 +1558,7 @@ lbFound:
 
 
     'Add message to message list
-    Public Sub MsgToForm(id As MessageType, msg As String, source As String, link As String, exception As Exception)
+    Public Sub MsgToForm(id As MessageType, msg As String, link As String, exception As Exception)
 
         If (InvokeRequired) Then
             'Me.Invoke(New MsgToFormDelegate(AddressOf MSGtoForm), ID, Msg, Source, Link)
@@ -1566,10 +1569,13 @@ lbFound:
         lv0 = New ListViewItem
         lv0.Text = msg
         lv0.SubItems.Add(Now.ToString("HH:mm:ss.ff"))
-        lv0.SubItems.Add(source)
         lv0.Tag = exception
 
-        Task.Run(Sub() LogFile.WriteToLog(id, msg & vbTab & source))
+        If Not exception Is Nothing Then
+            lv0.SubItems.Add("Click for Details")
+        End If
+
+        Task.Run(Sub() LogFile.WriteToLog(id, msg & vbTab))
 
         Select Case id
 
