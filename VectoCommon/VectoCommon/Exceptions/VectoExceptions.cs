@@ -93,10 +93,11 @@ namespace TUGraz.VectoCommon.Exceptions
             }
 
             return $"{ex.Data[RunInfo.RunIdentifier]} ({ex.Data[RunInfo.RunName]} {ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) " +
+                $"[{ ex.GetErrorCode()}]: { ex.Message} | " +
                 $"Progress: {ex.Data[RunInfo.Progress]:P1} - absTime: {ex.Data[RunInfo.AbsTime]:F1}, " +
                 $"distance: {ex.Data[RunInfo.Distance]:F1}, dt: {ex.Data[RunInfo.Dt]:F1}, v: {ex.Data[RunInfo.Speed]}, " +
                 $"{(ex.Data[RunInfo.GearInfo] as Dictionary<AxleNumber, GearshiftPosition>)?.Select(kvp => $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").Join()} " +
-                $", f_equiv:{ex.Data[RunInfo.F_equiv] ?? "-"} | [{ex.GetErrorCode()}]: {ex.Message}";
+                $", f_equiv:{ex.Data[RunInfo.F_equiv] ?? "-"}";
         }
     }
 }

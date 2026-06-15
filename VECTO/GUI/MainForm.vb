@@ -1094,7 +1094,7 @@ lbFound:
 
             Catch ex As Exception
                 MsgBox($"ERROR running job {jobFile}: [{ex.GetErrorCode()}]: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
-                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = $"[{ex.GetErrorCode()}]: {ex.Message}"})
+                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = $"[{ex.GetErrorCode()}]: {ex.Message}", .Exception = ex})
                 Return
             End Try
         Next
@@ -1159,7 +1159,7 @@ lbFound:
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
                                       New VectoProgress _
-                                         With {.Target = "ListBoxError", .Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo()})
+                                         With {.Target = "ListBoxError", .Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo(), .Exception = progressEntry.Value.Error})
             End If
 
         Next
@@ -1240,7 +1240,8 @@ lbFound:
             If Not p.Value.Error Is Nothing Then
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError",
                                                 .Message = $"Finished with error: {runName}",
-                                                .Link = modFilename})
+                                                .Link = modFilename,
+                                                .Exception = p.Value.Error})
             Else
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
                                                 .Message = $"Finished successfully: {runName}"})
@@ -1260,15 +1261,15 @@ lbFound:
         Select Case progress.Target
             Case "ListBox"
                 If progress.Link Is Nothing Then
-                    MsgToForm(MessageType.Normal, progress.Message, "", "")
+                    MsgToForm(MessageType.Normal, progress.Message, "", "", progress.Exception)
                 Else
-                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Link)
+                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Link, progress.Exception)
                 End If
             Case "ListBoxWarning"
-                MsgToForm(MessageType.Warn, progress.Message, "", "")
+                MsgToForm(MessageType.Warn, progress.Message, "", "", progress.Exception)
                 Return
             Case "ListBoxError"
-                MsgToForm(MessageType.Err, progress.Message, "", "")
+                MsgToForm(MessageType.Err, progress.Message, "", "", progress.Exception)
                 Return
             Case "Status"
                 Status(progress.Message)
@@ -1554,7 +1555,7 @@ lbFound:
 
 
     'Add message to message list
-    Public Sub MsgToForm(id As MessageType, msg As String, source As String, link As String)
+    Public Sub MsgToForm(id As MessageType, msg As String, source As String, link As String, exception As Exception)
 
         If (InvokeRequired) Then
             'Me.Invoke(New MsgToFormDelegate(AddressOf MSGtoForm), ID, Msg, Source, Link)
@@ -1566,6 +1567,7 @@ lbFound:
         lv0.Text = msg
         lv0.SubItems.Add(Now.ToString("HH:mm:ss.ff"))
         lv0.SubItems.Add(source)
+        lv0.Tag = exception
 
         Task.Run(Sub() LogFile.WriteToLog(id, msg & vbTab & source))
 
@@ -1624,7 +1626,12 @@ lbFound:
         Dim txt As String
         If LvMsg.SelectedIndices.Count > 0 Then
             If Not LvMsg.SelectedItems(0).Tag Is Nothing Then
-                If _
+                If TypeOf LvMsg.SelectedItems(0).Tag Is Exception Then
+                    Dim ex As Exception = TryCast(LvMsg.SelectedItems(0).Tag, Exception)
+                    If ex IsNot Nothing Then
+                        MsgBox(ex.GetMessageWithCycleRunInfo(), MsgBoxStyle.OkOnly, "Error Details")
+                    End If
+                ElseIf _
                     Len(CStr(LvMsg.SelectedItems(0).Tag)) > 4 AndAlso
                     Microsoft.VisualBasic.Left(CStr(LvMsg.SelectedItems(0).Tag), 4) = "<UM>" Then
                     txt = CStr(LvMsg.SelectedItems(0).Tag).Replace("<UM>", MyAppPath & "User Manual")
@@ -2127,6 +2134,7 @@ Lb1:
         Public Target As String
         Public Message As String
         Public Link As String
+        Public Exception As Exception
     End Class
 
     Private Sub btnExportXML_Click(sender As Object, e As EventArgs) Handles btnExportXML.Click
