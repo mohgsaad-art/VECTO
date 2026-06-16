@@ -1635,7 +1635,9 @@ lbFound:
                 If TypeOf LvMsg.SelectedItems(0).Tag Is Exception Then
                     Dim ex As Exception = TryCast(LvMsg.SelectedItems(0).Tag, Exception)
                     If ex IsNot Nothing Then
-                        MsgBox(ex.GetMessageWithCycleRunInfo(), MsgBoxStyle.OkOnly, "Error Details")
+                        Using errorForm As New ErrorForm(ex)
+                            errorForm.ShowDialog()
+                        End Using
                     End If
                 ElseIf _
                     Len(CStr(LvMsg.SelectedItems(0).Tag)) > 4 AndAlso

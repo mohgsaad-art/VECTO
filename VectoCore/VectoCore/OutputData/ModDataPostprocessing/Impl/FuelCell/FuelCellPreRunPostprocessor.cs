@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 
         public FuelCellPreRunPostprocessor(IModalDataContainer modData)
-		{
+		{	
 			FillPreRunResults(modData);
 			RunName = modData?.RunName ?? "";
 		}
@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 							CalculateFuelCellPowerDemandForWindowSize(distance, fcData, batData, out var result);
 							return result;
 						} catch (Exception ex) {
-							Log.Warn(ex, $"Failed to calculate fuel cell power for distance ${distance}");
+							Log.Warn(ex, $"Failed to calculate fuel cell power for distance {distance}");
                             return new SearchResult(false, batData.InitialSoC, distance, Array.Empty<FCCalcEntry>(), ex.Message);
                         }
 					},
