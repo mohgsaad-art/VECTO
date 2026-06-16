@@ -23,7 +23,7 @@ import pandas as pd
 # ---------------------------------------------------------------------------
 
 _DELTA_VARIABLES = ['CO2 [g/km]', 'FC-Final [g/km]', 'EC_el_final [kWh/km]']
-_DELTA_THRESHOLD = 0.0003  # 0.03%
+_DELTA_THRESHOLD = 0.003  # 0.3%
 
 _VAR_SHORT = {
     'CO2 [g/km]':           'CO2_delta_pct',
