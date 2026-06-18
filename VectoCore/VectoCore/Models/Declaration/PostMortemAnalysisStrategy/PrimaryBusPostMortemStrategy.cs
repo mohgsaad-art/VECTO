@@ -24,8 +24,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 		{
             if (container.RunData.JobType.IsFCHV() 
 				&& container.RunData.Mission.MissionType.IsOneOf(MissionType.Coach, MissionType.Interurban) 
-				&& exception.Data.Contains(RunInfo.ErrorCode)
-				&& (exception.Data[RunInfo.ErrorCode] as ErrorCode) == ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED)
+				&& (exception.GetErrorCode() == ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED))
             {
                 return false;
             }
