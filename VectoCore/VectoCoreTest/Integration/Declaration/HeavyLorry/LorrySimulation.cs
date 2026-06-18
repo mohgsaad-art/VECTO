@@ -1305,10 +1305,9 @@ public class LorrySimulation
 		}
 
 		if (!segment.Found) {
-			throw new VectoException(
-				"no segment found for vehicle configuration: vehicle category: {0}, axle configuration: {1}, GVMR: {2}",
-				vehicle.VehicleCategory, vehicle.AxleConfiguration,
-				vehicle.GrossVehicleMassRating);
+			throw new Exception(
+				$"no segment found for vehicle configuration: vehicle category: {vehicle.VehicleCategory}, axle configuration: {vehicle.AxleConfiguration}, " +
+				$"Gross Vehicle Mass Rating: {vehicle.GrossVehicleMassRating}");
 		}
 
 		return segment;

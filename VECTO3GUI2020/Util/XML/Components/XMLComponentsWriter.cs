@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-using TUGraz.VectoCommon.Exceptions;
+using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.Utils;
@@ -25,7 +25,7 @@ namespace VECTO3GUI2020.Util.XML.Components
 		public XElement GetComponents()
 		{
 			if (_inputData == null) {
-				throw new VectoException("Input data not initialized");
+				throw new Exception("Input data not initialized");
 			}
 
 			return DoCreateComponents();

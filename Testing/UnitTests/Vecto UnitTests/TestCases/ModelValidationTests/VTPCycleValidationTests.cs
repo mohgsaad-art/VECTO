@@ -395,7 +395,7 @@ public class VTPCycleValidationTests
         };
         target.Parameters.Add(new MethodCallParameter("${level}"));
         target.Parameters.Add(new MethodCallParameter("${message}"));
-        SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Error);
+        SimpleConfigurator.ConfigureForTargetLogging(target, LogLevel.Warn);
     }
 
 

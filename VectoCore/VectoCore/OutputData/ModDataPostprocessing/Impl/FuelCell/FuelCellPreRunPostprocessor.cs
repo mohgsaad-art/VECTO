@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 
         public FuelCellPreRunPostprocessor(IModalDataContainer modData)
-		{
+		{	
 			FillPreRunResults(modData);
 			RunName = modData?.RunName ?? "";
 		}
@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 							CalculateFuelCellPowerDemandForWindowSize(distance, fcData, batData, out var result);
 							return result;
 						} catch (Exception ex) {
-							Log.Warn(ex, $"Failed to calculate fuel cell power for distance ${distance}");
+							Log.Warn(ex, $"Failed to calculate fuel cell power for distance {distance}");
                             return new SearchResult(false, batData.InitialSoC, distance, Array.Empty<FCCalcEntry>(), ex.Message);
                         }
 					},
@@ -227,7 +227,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 					},
 					abortCriterion: (d, o) => {
 						if (d < minWindowSize) {
-							throw new VectoSearchAbortedException($"Window size < {minWindowSize}, {(o as SearchResult).Reason}");
+							throw new VectoException($"Window size < {minWindowSize}, {(o as SearchResult).Reason}", ErrorCodes.SEARCH_ABORTED);
 						}
 
 						if (!accepted.Any() || !rejected.Any()) {
@@ -264,14 +264,14 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			result = null;
 			var fcSufficient = CheckFCPower(fcData, batData, out var msg);
 			if (!fcSufficient) {
-				throw new VectoException($"FuelCell power not sufficient {msg}");
+				throw new VectoException($"FuelCell power not sufficient {msg}", ErrorCodes.FUELCELL_INSUFFICIENT_POWER);
 			}
 
             var maxWindowSize = fcData.MaxWindowSize ?? TotalDistance;
 			try {
 				return CalculateFuelCellPowerDemandForWindowSize(maxWindowSize, fcData, batData, out result);
 			} catch (Exception e) {
-				Log.Warn(e, "Failed to calculate fuel cell power with full distance");
+				Log.Warn(e, "Failed to calculate fuel cell power with full distance", ErrorCodes.FUELCELL_POWER_CALCULATION_FAILED);
 			}
 
 			return false;
@@ -292,7 +292,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
             shiftedSoc = (initSoc_min + initSoc_max) / 2;
 
 			if (shiftedSoc.IsSmaller(batMinSoc) || shiftedSoc.IsGreater(batMaxSoc)) {
-				throw new VectoException($"Calculated SoC {shiftedSoc} is out of range!");
+				throw new VectoException($"Calculated SoC {shiftedSoc} is out of range!", ErrorCodes.FUELCELL_SOC_VIOLATION);
 			}
 
 			return true;
@@ -400,7 +400,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 					var SoC = RequestFromEs(entry, infEs, infinityDummyContainer, tracingInfinityBat, ref deltaEnergyBatInt);
 					processedFcCalcEntries.Add(entry);
 					if ((SoC - tracingInfinityBat.MinSoC).IsGreater(usableRange)) {
-						throw new VectoException("Violation of usable SoC should be covered");
+						throw new VectoException("Violation of usable SoC should be covered", ErrorCodes.FUELCELL_SOC_VIOLATION);
 						//commented-out to avoid compile-time warning
 						//if (entry.P_el_dem.IsGreater(0)) {
 						//	throw new VectoException(
@@ -428,7 +428,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 				var response = infEs.Request(entry.t, entry.dt, entry.P_Bat_T_Final, false).RESSResponse;
 				if (!(response is RESSResponseSuccess))
 				{
-					throw new VectoException("Unexpected Response");
+					throw new VectoException("Unexpected Response", ErrorCodes.FUELCELL_UNEXPECTED_RESPONSE);
 				}
                 tracingInfinityBat.CommitSimulationStep(entry.t, entry.dt, infinityDummyContainer);
 			}
@@ -479,7 +479,10 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			var weights = new List<double>(maxInc.Length);
 			var totalIncPotential = maxInc.Sum();
 			if (totalIncPotential < -deltaEnergyBatInt) {
-				throw new VectoException($"Delta Energy Battery cannot be compensated by Fuel Cell! DeltaBat: {(-deltaEnergyBatInt).ConvertToKiloWattHour()}, FuelCell Incr. potential: {totalIncPotential.ConvertToKiloWattHour()}");
+				throw new VectoException(
+					$"Delta Energy Battery cannot be compensated by Fuel Cell! DeltaBat: {(-deltaEnergyBatInt).ConvertToKiloWattHour()}, " +
+					$"FuelCell Incr. potential: {totalIncPotential.ConvertToKiloWattHour()}",
+					ErrorCodes.FUELCELL_CANNOT_COMPENSATE_BATTERY_DELTA_ENERGY);
 			}
 			for (var i = 0; i < maxInc.Length; i++) {
 				var weight = maxInc[i] / totalIncPotential;
@@ -488,7 +491,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 				entry.delta_P_FCS = weights[i] * -deltaEnergyBatInt / entry.dt;
 
 				if (entry.FCPowerFinal.IsGreater(entry.P_max_CFCS)) {
-					throw new VectoException("Power too high");
+					throw new VectoException("Power too high", ErrorCodes.FUELCELL_EXCESSIVE_POWER);
 				}
 			}
 		}
@@ -504,7 +507,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			//Request determined battery power from infinity battery system
 			var batResponse = infinityEs.Request(entry.t, entry.dt, batPower, false).RESSResponse;
 			if (!(batResponse is RESSResponseSuccess)) {
-				throw new VectoException("Unexpected Response");
+				throw new VectoException("Unexpected Response", ErrorCodes.FUELCELL_UNEXPECTED_RESPONSE);
 			}
 
 			//infinityEs.CommitSimulationStep(entry.t, entry.dt, infinityDummyContainer);
@@ -534,7 +537,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 			if ((maxSocSafe - minSocSafe).IsSmallerOrEqual(0)) {
 				throw new VectoException(
-					"Battery is too small! Usable SOC range would be negative when safety margins are considered.");
+					"Battery is too small! Usable SOC range would be negative when safety margins are considered.", ErrorCodes.FUELCELL_SOC_VIOLATION);
 			}
 
 			batData.Batteries.ForEach(tuple => {
@@ -673,7 +676,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			System.Diagnostics.Debug.Assert(minFcPower < maxFcPower, "min power must be smaller than max power");
 			if (windowSize.IsGreater(totalDistance))
 			{
-				throw new VectoException("Window size must not exceed cycle distance!");
+				throw new VectoException("Window size must not exceed cycle distance!", ErrorCodes.FUELCELL_WINDOW_SIZE_TOO_BIG);
 			}
 
 			var maxChargingPower = es.MaxChargePower(0.5.SI<Second>());

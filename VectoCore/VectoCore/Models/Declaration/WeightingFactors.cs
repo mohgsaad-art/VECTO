@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				return new ReadOnlyDictionary<Tuple<MissionType, LoadingType>, double>(Data[group]);
 			} catch (Exception e) {
-				throw new VectoException(ErrorMessage, e, group);
+				throw new VectoException(string.Format(ErrorMessage, group), ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 			}
 		}
 
@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 					var factorsPerLoading = factors.Split('/');
 					if (factorsPerLoading.Length != loadingTypes.Length) {
-						throw new VectoException("Number of entries in MissionProfileWeights does not match expected payloads");
+						throw new VectoException("Number of entries in MissionProfileWeights does not match expected payloads", ErrorCodes.DATATABLE_INVALID_DATA);
 					}
 					for (var i = 0; i < loadingTypes.Length; i++) {
 						var cycleAndPayload = Tuple.Create(missionType, loadingTypes[i]);
@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				if (!isNormalWeights && !hasVocationalWeights)
 				{
-					throw new VectoException("Weighting Factors for {0} do not sum up to 1.0! sum: {1}", entry.Key, sum);
+					throw new VectoException($"Weighting Factors for {entry.Key} do not sum up to 1.0! sum: {sum}", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 			}
 		}

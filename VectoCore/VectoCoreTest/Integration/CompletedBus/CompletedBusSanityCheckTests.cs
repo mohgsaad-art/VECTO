@@ -190,7 +190,7 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 				{ BusHVACSystemConfiguration.Configuration10, Tuple.Create(HeatPumpType.none, HeatPumpType.non_R_744_3_stage) },
 			};
 			if (!hvacConfig.HasValue || !mapping.ContainsKey(hvacConfig.Value)) {
-				throw new VectoException("invalid hvac configuration");
+				throw new Exception("invalid hvac configuration");
 			}
 			var entry = mapping[hvacConfig.Value];
 			return (entry.Item1, entry.Item2);

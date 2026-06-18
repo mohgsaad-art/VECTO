@@ -222,7 +222,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		]
 		public void Gearbox_LessThanTwoGearsException(string wrongFile)
 		{
-			AssertHelper.Exception<VectoSimulationException>(
+			AssertHelper.Exception<VectoException>(
 				() => MockSimulationDataFactory.CreateGearboxDataFromFile(wrongFile, EngineDataFile),
 				"At least one Gear-Entry must be defined in Gearbox!");
 		}

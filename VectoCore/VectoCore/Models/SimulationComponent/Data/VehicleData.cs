@@ -274,10 +274,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		protected void ComputeRollResistanceAndReducedMassWheels()
 		{
 			if (TotalVehicleMass == 0.SI<Kilogram>()) {
-				throw new VectoException("Total vehicle weight must be greater than 0! Set CurbWeight and Loading before!");
+				throw new VectoException("Total vehicle weight must be greater than 0! Set CurbWeight and Loading before!", ErrorCodes.VEHICLE_TOTAL_WEIGHT_IS_ZERO);
 			}
 			if (DynamicTyreRadius == null) {
-				throw new VectoException("Dynamic tyre radius must be set before axles!");
+				throw new VectoException("Dynamic tyre radius must be set before axles!", ErrorCodes.VEHICLE_DYNAMIC_TYRE_RADIUS_NOT_SET);
 			}
 
 			var g = Physics.GravityAccelleration;

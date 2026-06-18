@@ -36,6 +36,7 @@ using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 
@@ -67,8 +68,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					AllowedForMT = entry.AllowedForMT,
 					AllowedForAMT = entry.AllowedForAMT
 				};
-			} catch (Exception) {
-				throw new VectoException(string.Format(ErrorMessage, enginestopstart, ecoRoll, pcc));
+			} catch (Exception e) {
+				throw new VectoException(string.Format(ErrorMessage, enginestopstart, ecoRoll, pcc), ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, e);
 			}
 		}
 
@@ -109,15 +110,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var entry = Lookup(
 				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
 			if (gbxType.AutomaticTransmission() && !entry.AllowedForAT) {
-				throw new VectoException("ADAS combination {0} not allowed for AT transmissions", entry.ID);
+				throw new VectoException($"ADAS combination {entry.ID} not allowed for AT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
 			}
 
 			if (gbxType == GearboxType.MT && !entry.AllowedForMT) {
-				throw new VectoException("ADAS combination {0} not allowed for MT transmissions", entry.ID);
+				throw new VectoException($"ADAS combination {entry.ID} not allowed for MT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
 			}
 
 			if (gbxType == GearboxType.AMT && !entry.AllowedForAMT) {
-				throw new VectoException("ADAS combination {0} not allowed for AMT transmissions", entry.ID);
+				throw new VectoException($"ADAS combination {entry.ID} not allowed for AMT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
 			}
 
 			return entry;
@@ -131,17 +132,17 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
                 if (gbxType.AutomaticTransmission() && !entry.AllowedForAT)
                 {
-                    throw new VectoException("ADAS combination {0} not allowed for AT transmissions", entry.ID);
+                    throw new VectoException($"ADAS combination {entry.ID} not allowed for AT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
                 }
 
                 if (gbxType == GearboxType.MT && !entry.AllowedForMT)
                 {
-                    throw new VectoException("ADAS combination {0} not allowed for MT transmissions", entry.ID);
+                    throw new VectoException($"ADAS combination {entry.ID} not allowed for MT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
                 }
 
                 if (gbxType == GearboxType.AMT && !entry.AllowedForAMT)
                 {
-                    throw new VectoException("ADAS combination {0} not allowed for AMT transmissions", entry.ID);
+                    throw new VectoException($"ADAS combination {entry.ID} not allowed for AMT transmissions", ErrorCodes.ADAS_INVALID_COMBINATION);
                 }
             }
 			

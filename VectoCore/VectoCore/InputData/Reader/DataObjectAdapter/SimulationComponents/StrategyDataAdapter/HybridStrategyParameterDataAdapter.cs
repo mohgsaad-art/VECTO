@@ -241,7 +241,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			}
 
 			if (batterySystemData != null && superCap != null) {
-				throw new VectoException("Supercap AND Batteries not supported");
+				throw new VectoException("Supercap AND Batteries not supported", ErrorCodes.REESS_MULTIPLE_TYPES);
 			}
 
 			var result = new HybridStrategyParameters();
@@ -316,7 +316,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			SuperCapData superCapData, Kilogram vehicleMass, OvcHevMode ovcMode)
 		{
 			if (batterySystemData == null && superCapData == null) {
-				throw new VectoException("Either Battery or SuperCap must be set");
+				throw new VectoException("Either Battery or SuperCap must be set", ErrorCodes.REESS_MISSING);
 			}
 
 			
@@ -348,23 +348,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 		private void SetGenericParameters(ref HybridStrategyParameters result, SuperCapData superCapData, Kilogram vehicleMass, OvcHevMode ovcMode)
 		{
-
-			
 			SetSuperCapParameters(result, superCapData, vehicleMass, 70.KMPHtoMeterPerSecond());
 			if (result.MinSoC >= result.TargetSoC) {
 				SetSuperCapParameters(result, superCapData, vehicleMass, 30.KMPHtoMeterPerSecond());
 			}
 
-
-
-
-
-
-
-
-
 			if (result.MinSoC >= result.TargetSoC || result.TargetSoC >= 1) {
-				throw new VectoException("SSupercap: Min SOC higher than Target SOC");
+				throw new VectoException("SSupercap: Min SOC higher than Target SOC", ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC);
 			}
 		}
 
@@ -415,7 +405,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				result.TargetSoC = reessMaxSoc - 1 * deltaSoc;
 				result.MinSoC = reessMinSoc + 2 * deltaSoc;
 				if (reessMinSoc >= result.TargetSoC) {
-					throw new VectoException("Min SOC higher than Target SOC - probably the battery capacity is too small");
+					throw new VectoException("Min SOC higher than Target SOC - probably the battery capacity is too small", ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC);
 				}
 			}
 

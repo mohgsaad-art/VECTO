@@ -120,8 +120,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
 					throw new VectoException(
-						"{2} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n_out:{0}, torque_out:{1}",
-						CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.OutTorque, GetType().Name);
+                        $"{GetType().Name} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: " +
+						$"n_out:{CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute()}, torque_out:{CurrentState.OutTorque}", 
+						ErrorCodes.GEARBOX_LOSS_MAP_EXTRAPOLATED);
 				}
 			}
 			AdvanceState();

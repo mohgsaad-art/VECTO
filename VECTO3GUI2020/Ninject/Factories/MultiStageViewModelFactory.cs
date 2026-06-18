@@ -1,4 +1,4 @@
-﻿using TUGraz.VectoCommon.Exceptions;
+﻿using System;
 using TUGraz.VectoCommon.InputData;
 using VECTO3GUI2020.ViewModel.Interfaces.Common;
 using VECTO3GUI2020.ViewModel.Interfaces.Document;
@@ -51,7 +51,7 @@ namespace VECTO3GUI2020.Ninject.Factories
 			if (_vehicleViewModelFactory.CreateNewVehicleViewModel(arch) is IMultistageVehicleViewModel veh) {
 				return veh;
 			};
-			throw new VectoException($"Could not create viewmodel for {arch} completed bus!");
+			throw new Exception($"Could not create viewmodel for {arch} completed bus!");
 		}
 
         public IVehicleViewModel GetInterimStageVehicleViewModel(IVehicleDeclarationInputData consolidatedVehicleData, bool exempted)

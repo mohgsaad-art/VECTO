@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				XMLNames.Axlegear_TorqueLossMap, XMLNames.Axlegear_TorqueLossMap_Entry,
 				AttributeMappings.TransmissionLossmapMapping);
 
-		public virtual double Efficiency => throw new VectoException("Efficiency not supported in Declaration Mode!");
+		public virtual double Efficiency => throw new VectoException("Efficiency not supported in Declaration Mode!", ErrorCodes.XML_BAD_DATA);
 
 		public virtual AxleLineType LineType
 		{

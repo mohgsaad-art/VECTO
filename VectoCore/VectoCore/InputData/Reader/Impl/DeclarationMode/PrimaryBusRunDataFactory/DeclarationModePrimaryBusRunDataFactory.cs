@@ -76,7 +76,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 					throw new VectoException(
 						$"Failed to find missions for completed vehicle with code: {CompletedVehicle.VehicleCode}, registration class: {CompletedVehicle.RegisteredClass}, " +
 						$"passenger seats in lower deck: {CompletedVehicle.NumberPassengerSeatsLowerDeck}, height: {CompletedVehicle.Height}, " +
-						$"low entry: {CompletedVehicle.LowEntry}, number of axles: {Vehicle.AxleConfiguration.NumAxles()}");
+						$"low entry: {CompletedVehicle.LowEntry}, number of axles: {Vehicle.AxleConfiguration.NumAxles()}", 
+						ErrorCodes.VECTORUNDATAFACTORY_MISSION_NOT_FOUND);
 				}
 
 				var missionTypes = completedVehicleSegment.Missions.Select(x => x.MissionType).Distinct();
@@ -92,7 +93,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				{
 					throw new VectoException(
 						$"Failed to find missions for a {groupData.CompletedGroup} completed vehicle (matches {groupData.PrimaryGroup} primary vehicles), " +
-						$"with an input of a {_segment.VehicleClass.ToXML()} primary vehicle.");
+						$"with an input of a {_segment.VehicleClass.ToXML()} primary vehicle.", 
+						ErrorCodes.VECTORUNDATAFACTORY_MISSION_NOT_FOUND);
 				}
 
 				return matchingMissions;
@@ -107,8 +109,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 			{
 				if (Vehicle.VehicleCategory != VehicleCategory.HeavyBusPrimaryVehicle)
 				{
-					throw new VectoException(
-						"Invalid vehicle category for bus factory! {0}", Vehicle.VehicleCategory.GetCategoryName());
+					throw new VectoException($"Invalid vehicle category for bus factory! {Vehicle.VehicleCategory.GetCategoryName()}",
+						ErrorCodes.VECTORUNDATAFACTORY_UNSUPPORTED_VEHICLE_TYPE);
 				}
 
 				var segment = DeclarationData.PrimaryBusSegments.Lookup(
@@ -117,9 +119,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				if (!segment.Found)
 				{
 					throw new VectoException(
-						"no segment found for vehicle configuration: vehicle category: {0}, axle configuration: {1}, articulated: {2}, primary",
-						Vehicle.VehicleCategory, Vehicle.AxleConfiguration,
-						Vehicle.Articulated);
+						$"no segment found for vehicle configuration: vehicle category: {Vehicle.VehicleCategory}, axle configuration: {Vehicle.AxleConfiguration}, " +
+						$"articulated: {Vehicle.Articulated}, primary", 
+						ErrorCodes.VECTORUNDATAFACTORY_SEGMENT_NOT_FOUND);
 				}
 
 				return segment;
@@ -482,7 +484,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				var engine = Vehicle.Components.EngineInputData;
 				var engineModes = engine.EngineModes;
 				if (!modeIdx.HasValue) {
-					throw new VectoException("Engine mode has to be specified for conventional vehicle");
+					throw new VectoException("Engine mode has to be specified for conventional vehicle", ErrorCodes.VECTORUNDATAFACTORY_UNSPECIFIED_ENGINE_MODE);
 				}
 				var engineMode = engineModes[modeIdx.Value];
 
@@ -739,7 +741,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				var axleGearRequired = !iepcInput.DifferentialIncluded && !iepcInput.DesignTypeWheelMotor;
 				if (axleGearRequired && vehicle.Components.AxleGearInputData == null) {
 					throw new VectoException(
-						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}",
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 
 				var numGearsPowermap =
@@ -749,12 +752,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 
 				if (numGearsPowermap.Any(x => x.Item2 != gearCount)) {
 					throw new VectoException(
-						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				if (numGearsDrag > 1 && numGearsDrag != gearCount) {
 					throw new VectoException(
-						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				return axleGearRequired;
@@ -1024,7 +1029,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				if (axleGearRequired && vehicle.Components.AxleGearInputData == null)
 				{
 					throw new VectoException(
-						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+						$"Axlegear reqhired for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}",
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 
 				var numGearsPowermap =
@@ -1035,13 +1041,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				if (numGearsPowermap.Any(x => x.Item2 != gearCount))
 				{
 					throw new VectoException(
-						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				if (numGearsDrag > 1 && numGearsDrag != gearCount)
 				{
 					throw new VectoException(
-						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				return axleGearRequired;
@@ -1074,7 +1082,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				var engine = Vehicle.Components.EngineInputData;
 				var engineModes = engine.EngineModes;
 				if (!modeIdx.HasValue) {
-					throw new VectoException("Engine mode has to be specified for parallel hybrid vehicle");
+					throw new VectoException("Engine mode has to be specified for parallel hybrid vehicle", ErrorCodes.VECTORUNDATAFACTORY_UNSPECIFIED_ENGINE_MODE);
 				}
 				var engineMode = engineModes[modeIdx.Value];
 
@@ -1103,7 +1111,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 
 				if (runData.BatteryOnlyHybridMode && runData.Aux.Any(x => x.ID != Constants.Auxiliaries.IDs.Fan && !x.ConnectToREESS)) {
 					throw new VectoException(
-						"Vehicles with a battery dominant mode are required to have electrically powered auxiliaries");
+						"Vehicles with a battery dominant mode are required to have electrically powered auxiliaries",
+						ErrorCodes.VEHICLE_INCOMPATIBLE_AUXILIARY_CONFIGURATION);
 				}
 				runData.DriverData = DriverData;
 
@@ -1170,11 +1179,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 			private void EnsureElectricBusAux(IAuxiliaryConfig busAux)
 			{
 				if (busAux.InputData.PneumaticSupply.CompressorDrive != CompressorDrive.electrically) {
-					throw new VectoException("Compressor drive is required to be electrically driven!");
+					throw new VectoException("Compressor drive is required to be electrically driven!", ErrorCodes.VEHICLE_INCOMPATIBLE_AUXILIARY_CONFIGURATION);
 				}
 
 				if (!busAux.InputData.ElectricSupply.ESSupplyFromHEVREESS) {
-					throw new VectoException("Electric system must be supplied from HV REESS!");
+					throw new VectoException("Electric system must be supplied from HV REESS!", ErrorCodes.VEHICLE_INCOMPATIBLE_AUXILIARY_CONFIGURATION);
 				}
 			}
 
@@ -1413,7 +1422,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				var axleGearRequired = !iepcInput.DifferentialIncluded && !iepcInput.DesignTypeWheelMotor;
 				if (axleGearRequired && Vehicle.Components.AxleGearInputData == null) {
 					throw new VectoException(
-						$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}");
+						$"Axlegear required for selected type of IEPC! DifferentialIncluded: {iepcInput.DifferentialIncluded}, DesignTypeWheelMotor: {iepcInput.DesignTypeWheelMotor}",
+						ErrorCodes.VEHICLE_MISSING_AXLEGEAR);
 				}
 
 				var numGearsPowermap =
@@ -1423,12 +1433,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 
 				if (numGearsPowermap.Any(x => x.Item2 != gearCount)) {
 					throw new VectoException(
-						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}");
+						$"Number of gears for voltage levels does not match! PowerMaps: {numGearsPowermap.Select(x => $"{x.Item1}: {x.Item2}").Join()}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				if (numGearsDrag > 1 && numGearsDrag != gearCount) {
 					throw new VectoException(
-						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}");
+						$"Number of gears drag curve does not match gear count! DragCurve {numGearsDrag}; Gear count: {gearCount}",
+						ErrorCodes.IEPC_GEARS_MISMATCH);
 				}
 
 				return axleGearRequired || Vehicle.Components.AxleGearInputData != null;

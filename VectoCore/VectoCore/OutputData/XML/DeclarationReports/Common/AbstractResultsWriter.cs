@@ -36,7 +36,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 				case VectoRun.Status.Pending:
 				case VectoRun.Status.Running:
 				case VectoRun.Status.REESSEmpty:
-					throw new VectoException($"No result Writer available for run status ${status}");
+					throw new VectoException($"No result Writer available for run status ${status}", ErrorCodes.REPORT_NO_RESULT_WRITER);
 				case VectoRun.Status.Success:
 					return ResultSuccessWriter;
 				case VectoRun.Status.Canceled:
@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
         {
             if (!results.All(x => x.OVCMode.IsOneOf(OvcHevMode.ChargeSustaining, OvcHevMode.ChargeDepleting))) {
 				throw new VectoException(
-					"Simulation runs for OVC vehicles must be either Charge Sustaining or Charge Depleting!");
+					"Simulation runs for OVC vehicles must be either Charge Sustaining or Charge Depleting!", ErrorCodes.REPORT_RESULT_OVC_INVALID_MODE);
 			}
 
             var retVal = new List<IOVCResultEntry>(results.Count / 2);
@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
                                                         x.LoadingType == cdEntry.LoadingType);
                 if (csEntry == null) {
 					throw new VectoException(
-						$"no matching result for {cdEntry.Mission}, {cdEntry.LoadingType}, {cdEntry.FuelMode} found!");
+						$"no matching result for {cdEntry.Mission}, {cdEntry.LoadingType}, {cdEntry.FuelMode} found!", ErrorCodes.REPORT_NO_MATCHING_RESULT);
 				}
 
 
@@ -113,7 +113,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 		{
 			if (!results.All(r => r.OVCMode == OvcHevMode.ChargeSustaining || r.OVCMode == OvcHevMode.ChargeDepleting))
 			{
-				throw new VectoException("All simulation runs for OVC-FCHV vehicles must be Charge Sustaining or Charge Depleting!");
+				throw new VectoException("All simulation runs for OVC-FCHV vehicles must be Charge Sustaining or Charge Depleting!", ErrorCodes.REPORT_RESULT_OVC_INVALID_MODE);
 			}
 
 			var cdResults = results.Where(x => x.OVCIteration == 0);

@@ -75,7 +75,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data {
 					return index;
 				}
 			}
-			throw new VectoException("angular velocity {0} exceeds drag curve. min: {1} max: {2}", angularVelocity, Entries.First().MotorSpeed, Entries.Last().MotorSpeed);
+			throw new VectoException($"angular velocity {angularVelocity} exceeds drag curve. min: {Entries.First().MotorSpeed} max: {Entries.Last().MotorSpeed}",
+                ErrorCodes.ELECTRICMOTOR_INVALID_ANGULAR_VELOCITY);
 
 		}
 

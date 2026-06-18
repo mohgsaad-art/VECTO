@@ -37,7 +37,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			if (runData.AxlePowertrainsDict.Keys.Count > 1)
 			{
-				throw new VectoException("Multiple Powertrains are not supported");
+				throw new VectoException("Multiple Powertrains are not supported", ErrorCodes.VEHICLE_MULTIPLE_POWERTRAINS);
 			}
 			return new VelocitySpeedGearshiftPreprocessor(VelocityDropData, runData.GearboxSinglePwt.TractionInterruption,
 				TestPowertrain, SimplePowertrainContainer, -grad, grad);
@@ -330,11 +330,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			PowertrainContainer = powertrainContainer;
 			ModelData = runData;
 			if (ModelData.ElectricMachinesSinglePwt.Select(x => x.Item1).Distinct().Count() > 1) {
-				throw new VectoException("More than one electric motors are currently not supported");
+				throw new VectoException("More than one electric motors are currently not supported", ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED);
 			}
 			StrategyParameters = ModelData.HybridStrategyParameters;
 			if (StrategyParameters == null) {
-				throw new VectoException("Model parameters for hybrid strategy required!");
+				throw new VectoException("Model parameters for hybrid strategy required!", ErrorCodes.HYBRIDSTRATEGY_MISSING_PARAMETERS);
 			}
 
 			GearList = runData.GearboxSinglePwt.GearList;
@@ -361,7 +361,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
             SimplePowertrainContainer = TestPowertrain.Container.SimplePowertrains[powertrainContainer.AxleNumber];
 			var shiftStrategyParameters = runData.GearshiftParametersSinglePwt;
 			if (shiftStrategyParameters == null) {
-				throw new VectoException("Parameters for shift strategy missing!");
+				throw new VectoException("Parameters for shift strategy missing!", ErrorCodes.HYBRIDSTRATEGY_MISSING_PARAMETERS);
 			}
 			if (shiftStrategyParameters.AllowedGearRangeFC > 2 || shiftStrategyParameters.AllowedGearRangeFC < 1) {
 				WarnGearShiftRange();
@@ -679,7 +679,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return gbx.GetPreviousState.OutAngularVelocity;
 				case IAPTGearbox atGbx:
 					return atGbx.GetPreviousState.OutAngularVelocity;
-				default: throw new VectoException("Unsupported gearbox type!");
+				default: throw new VectoException("Unsupported gearbox type!", ErrorCodes.HYBRIDSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 		}
 

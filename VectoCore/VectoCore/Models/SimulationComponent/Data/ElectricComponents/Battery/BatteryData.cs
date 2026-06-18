@@ -233,7 +233,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Ba
 					return index;
 				}
 			}
-			throw new VectoException("soc {0} exceeds battery model data. min: {1} max: {2}", soc, Entries.First().SOC, Entries.Last().SOC);
+			throw new VectoException($"soc {soc} exceeds battery model data. min: {Entries.First().SOC} max: {Entries.Last().SOC}", ErrorCodes.REESS_INVALID_SOC);
 		}
 
 		
@@ -296,7 +296,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Ba
 			}
 
 			if (entry1 == null || entry2 == null) {
-				throw new VectoSimulationException("Failed to lookup internal resistance!");
+				throw new VectoException("Failed to lookup internal resistance!", ErrorCodes.REESS_INTERNAL_RESISTANCE_LOOKUP_FAILED);
 			}
 
 			return	VectoMath.Interpolate(entry1.Item1, entry2.Item1,
@@ -320,8 +320,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Ba
 				}
 			}
 
-			throw new VectoException("soc {0} exceeds battery model data. min: {1} max: {2}", soc, Entries.First().SoC,
-				Entries.Last().SoC);
+			throw new VectoException($"soc {soc} exceeds battery model data. min: {Entries.First().SoC} max: {Entries.Last().SoC}", ErrorCodes.REESS_INVALID_SOC);
 		}
 
 		public class InternalResistanceMapEntry
@@ -381,8 +380,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Ba
 				}
 			}
 
-			throw new VectoException("soc {0} exceeds battery model data. min: {1} max: {2}", soc, Entries.First().SoC,
-				Entries.Last().SoC);
+			throw new VectoException($"soc {soc} exceeds battery model data. min: {Entries.First().SoC} max: {Entries.Last().SoC}", ErrorCodes.REESS_INVALID_SOC);
 		}
 
 		public class MaxCurrentEntry

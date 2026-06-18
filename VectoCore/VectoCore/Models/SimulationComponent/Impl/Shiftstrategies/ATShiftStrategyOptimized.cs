@@ -58,7 +58,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			MaxMass = RunData.VehicleData.MaximumVehicleMass;
 
 			if (GearshiftParams == null) {
-				throw new VectoException("Parameters for shift strategy missing!");
+				throw new VectoException("Parameters for shift strategy missing!", ErrorCodes.SHIFTSTRATEGY_MISSING_PARAMETERS);
 			}
 
 			InitializeShiftlinesTCToLocked();
@@ -74,7 +74,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					_gearbox = gbx;
 					return;
 				}
-				throw new VectoException("This shift strategy can't handle gearbox of type {0}, expected {1}", value.GetType().Name, nameof(APTGearbox));
+				throw new VectoException($"This shift strategy can't handle gearbox of type {value.GetType().Name}, expected {nameof(APTGearbox)}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
         private void InitializeShiftlinesTCToLocked()
 		{
 			if (GearshiftParams.LoadStageThresoldsUp.Length != GearshiftParams.LoadStageThresoldsDown.Length) {
-				throw new VectoException("Thresholds for loadstage definition Up/Down need to be of same length!");
+				throw new VectoException("Thresholds for loadstage definition Up/Down need to be of same length!", ErrorCodes.SHIFTSTRATEGY_INVALID_LOADSTAGE_THRESHOLDS);
 			}
 
 			foreach (var entry in GearshiftParams.LoadStageThresoldsUp.Zip(
@@ -98,15 +98,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			};
 
 			if (GearshiftParams.ShiftSpeedsTCToLocked.Length < GearshiftParams.LoadStageThresoldsUp.Length + 1) {
-				throw new VectoException(
-					"Shift speeds TC -> L need to be defined for all {0} load stages",
-					GearshiftParams.LoadStageThresoldsUp.Length + 1);
+				throw new VectoException($"Shift speeds TC -> L need to be defined for all {GearshiftParams.LoadStageThresoldsUp.Length + 1} load stages",
+					ErrorCodes.SHIFTSTRATEGY_INVALID_SHIFTSPEEDS_TC2LOCKED);
 			}
 
 			for (var loadStage = 1; loadStage <= 6; loadStage++) {
 				if (GearshiftParams.ShiftSpeedsTCToLocked[loadStage - 1].Length != 6) {
-					throw new VectoException("Exactly 6 shift speeds need to be provided! (downhill/level/uphill)*(a_max/a_min)");
-				}
+					throw new VectoException("Exactly 6 shift speeds need to be provided! (downhill/level/uphill)*(a_max/a_min)",
+                        ErrorCodes.SHIFTSTRATEGY_INVALID_SHIFTSPEEDS_TC2LOCKED);
+                }
 
 				var shiftLines = new ShiftLines();
 				for (var i = 0; i < 6; i++) {
@@ -802,8 +802,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
         protected virtual void Upshift(Second absTime, GearshiftPosition gear)
 		{
 			if (!Gears.HasSuccessor(gear)) {
-				throw new VectoSimulationException(
-					"ShiftStrategy wanted to shift up but no higher gear available.");
+				throw new VectoException(
+					"ShiftStrategy wanted to shift up but no higher gear available.", ErrorCodes.SHIFTSTRATEGY_HIGHER_GEAR_NOT_AVAILABLE);
 			}
 
 			_nextGear.SetState(absTime, false, Gears.Successor(gear));
@@ -813,8 +813,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected virtual void Downshift(Second absTime, GearshiftPosition gear)
 		{
 			if (!Gears.HasPredecessor(gear)) {
-				throw new VectoSimulationException(
-					"ShiftStrategy wanted to shift down but no lower gear available.");
+				throw new VectoException(
+					"ShiftStrategy wanted to shift down but no lower gear available.", ErrorCodes.SHIFTSTRATEGY_LOWER_GEAR_NOT_AVAILABLE);
 			}
 			_nextGear.SetState(absTime, false, Gears.Predecessor(gear));
 		}
@@ -878,7 +878,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			if (currentGear.TorqueConverterLocked != nextGear.TorqueConverterLocked && currentGear.Gear != nextGear.Gear) {
 				throw new VectoException(
-					"skipping gear from converter to locked not allowed! {0} -> {1}", currentGear.Name, nextGear.Name);
+					$"skipping gear from converter to locked not allowed! {currentGear.Name} -> {nextGear.Name}", ErrorCodes.SHIFTSTRATEGY_SKIPPED_GEAR_TC2LOCKED);
 			}
 
 			_nextGear.SetState(absTime, disengaged: false, gear: nextGear);

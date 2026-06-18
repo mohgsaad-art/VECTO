@@ -135,7 +135,7 @@ internal static class MockComponent
 	{
 		if (mocked.Components.AirdragInputData == null)
 		{
-			throw new VectoException("Airdrag not mocked");
+			throw new Exception("Airdrag not mocked");
 		};
 
 		var airdrag = Mock.Get(mocked.Components.AirdragInputData);

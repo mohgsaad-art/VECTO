@@ -93,12 +93,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 			protected override void ParseData(DataTable table)
 			{
 				if (table.Columns.Count < 2) {
-					throw new VectoException("LAC Decision Factor File for Vdrop must consist of at least 2 columns.");
+					throw new VectoException("LAC Decision Factor File for Vdrop must consist of at least 2 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 				}
 
 				if (table.Rows.Count < 2) {
 					throw new VectoException(
-						"LAC Decision Factor File for Vdrop must consist of at least two lines with numeric values (below file header)");
+						"LAC Decision Factor File for Vdrop must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 				}
 
 				if (table.Columns.Contains(Fields.VelocityDrop) && table.Columns.Contains(Fields.DecisionFactor)) {
@@ -142,12 +142,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 			protected override void ParseData(DataTable table)
 			{
 				if (table.Columns.Count < 2) {
-					throw new VectoException("LAC Decision Factor File for Vtarget must consist of at least 2 columns.");
+					throw new VectoException("LAC Decision Factor File for Vtarget must consist of at least 2 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 				}
 
 				if (table.Rows.Count < 2) {
 					throw new VectoException(
-						"LAC Decision Factor File for Vtarget must consist of at least two lines with numeric values (below file header)");
+						"LAC Decision Factor File for Vtarget must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 				}
 
 				if (table.Columns.Contains(Fields.TargetVelocity) && table.Columns.Contains(Fields.DecisionFactor)) {

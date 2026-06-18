@@ -1,4 +1,4 @@
-﻿using TUGraz.VectoCommon.Exceptions;
+﻿using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -17,8 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PowertrainPosition position) : base(container, powertrainContainer, data, control, position, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException(
-					"TestpowertrainIEPC component must not be used in real powertrain - use dedicated component instead");
+				throw new Exception("TestpowertrainIEPC component must not be used in real powertrain - use dedicated component instead");
 			}
 
         }
@@ -41,8 +40,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PowertrainPosition position) : base(container, powertrainContainer, data, control, position)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"IEPC component must not be used in test powertrain - use dedicated component instead");
+				throw new Exception("IEPC component must not be used in test powertrain - use dedicated component instead");
 			}
 		}
 

@@ -105,8 +105,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				if (primaryResult == null)
 				{
 					throw new VectoException(
-						"no primary result entry set for simulation run vehicle class: {0}, mission: {1}, payload: {2}",
-						genericResult.VehicleClass, genericResult.Mission, genericResult.Payload);
+						$"no primary result entry set for simulation run vehicle class: {genericResult.VehicleClass}, mission: {genericResult.Mission}, payload: {genericResult.Payload}",
+                        ErrorCodes.REPORT_PRIMARY_RESULT_NOT_FOUND);
 				}
 
 				(ManufacturerRpt as IXMLManufacturerReportCompletedBus)?.WriteResult(genericResult, specificResult, primaryResult, GetCompletedResult);
@@ -164,8 +164,10 @@ namespace TUGraz.VectoCore.OutputData.XML
             result.StackTrace = stacktraces.Any() ? stacktraces.Join(Environment.NewLine) : null;
             result.OVCIteration = specific.OVCIteration;
             result.OVCMode = specific.OVCMode;
-            if (generic.OVCMode != specific.OVCMode) {
-                throw new VectoException($"generic OVC Mode must be equal to specific OVC Mode! but was gen_ovc = {generic.OVCMode} != {specific.OVCMode} = spec_ovc");
+            if (generic.OVCMode != specific.OVCMode)
+            {
+                throw new VectoException($"generic OVC Mode must be equal to specific OVC Mode! but was gen_ovc = {generic.OVCMode} != {specific.OVCMode} = spec_ovc",
+                    ErrorCodes.REPORT_RESULT_OVC_MISMATCH);
             }
             result.BatteryData = specific.BatteryData;
             result.Mission = generic.Mission;

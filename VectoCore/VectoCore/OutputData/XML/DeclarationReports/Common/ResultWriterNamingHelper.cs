@@ -1,5 +1,6 @@
 ﻿using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
@@ -19,7 +20,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 					return GetJSONResultWriterName(inputData);
 			}
 
-			throw new VectoException("unhandled input data source type {0}", inputData.DataSource.SourceType);
+			throw new VectoException($"unhandled input data source type {inputData.DataSource.SourceType}", ErrorCodes.INPUT_INVALID_DATASOURCE);
 		}
 
 		private static string GetXMLResultWriterName(IDeclarationInputDataProvider inputData)
@@ -31,8 +32,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 					case XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V11:
 						return RESULT_WRITER_3rd_AMDM;
 				}
-				throw new VectoException("unknown XML type of multistep input data {0}",
-					inputData.JobInputData.Vehicle.DataSource.TypeVersion);
+				throw new VectoException($"unknown XML type of multistep input data {inputData.JobInputData.Vehicle.DataSource.TypeVersion}", ErrorCodes.INPUT_INVALID_DATASOURCE);
 			}
 
             switch (inputData.JobInputData.Vehicle.DataSource.TypeVersion) {
@@ -47,8 +47,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 					return RESULT_WRITER_3rd_AMDM;
 			}
 
-			throw new VectoException("unknown XML type of input data {0}",
-				inputData.JobInputData.Vehicle.DataSource.TypeVersion);
+			throw new VectoException($"unknown XML type of input data {inputData.JobInputData.Vehicle.DataSource.TypeVersion}", ErrorCodes.INPUT_INVALID_DATASOURCE);
 		}
 
 		private static string GetJSONResultWriterName(IDeclarationInputDataProvider inputData)

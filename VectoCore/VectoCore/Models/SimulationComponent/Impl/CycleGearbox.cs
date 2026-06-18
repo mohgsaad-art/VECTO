@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				new CycleTorqueConverter(container, ModelData.TorqueConverterData),
 				new TorqueConverter(this, strategy, container, powertrainContainer, ModelData.TorqueConverterData, runData));
 			if (TorqueConverter == null) {
-				throw new VectoException("Torque Converter required for AT transmission!");
+				throw new VectoException("Torque Converter required for AT transmission!", ErrorCodes.GEARBOX_MISSING_TORQUE_CONVERTER_DATA);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
 			if (TorqueConverter != null && Gear.TorqueConverterLocked == null) {
-				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
+				throw new VectoException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
 			}
 
 			var inAngularVelocity = CalculateInAngularSpeed(outAngularVelocity);
@@ -176,10 +176,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive;
 
 			if (TorqueConverter != null && TorqueConverterActive == null) {
-				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
+				throw new VectoException("Driving cycle does not contain information about TorqueConverter!", ErrorCodes.CYCLE_TORQUE_CONVERTER_INFO_MISSING);
 			}
 			if (gear != 0 && !ModelData.Gears.ContainsKey(gear)) {
-				throw new VectoSimulationException("Requested Gear {0} from driving cycle is not available", gear);
+				throw new VectoException($"Requested Gear {gear} from driving cycle is not available", ErrorCodes.GEARBOX_REQUESTED_GEAR_NOT_AVAILABLE);
 			}
 
 			// mk 2016-11-30: added additional check for outAngularVelocity due to failing test: MeasuredSpeed_Gear_AT_PS_Run
@@ -292,12 +292,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private void CheckModelData(TransmissionLossMap effectiveLossMap, double effectiveRatio)
 		{
 			if (effectiveLossMap == null || double.IsNaN(effectiveRatio)) {
-				throw new VectoSimulationException(
-					"Ratio or loss-map for gear {0}{1} invalid. Please check input data", Gear,
-					Gear.TorqueConverterLocked.HasValue ? (Gear.TorqueConverterLocked.Value ? "L" : "C") : "");
+				throw new VectoException(
+					$"Ratio or loss-map for gear {Gear}{(Gear.TorqueConverterLocked.HasValue ? (Gear.TorqueConverterLocked.Value ? "L" : "C") : string.Empty)} invalid. Please check input data.", ErrorCodes.GEARBOX_INVALID_GEAR_DATA);
 			}
 			if (Gear.TorqueConverterLocked.HasValue && !Gear.TorqueConverterLocked.Value && !ModelData.Gears[Gear.Gear].HasTorqueConverter) {
-				throw new VectoSimulationException("Torque converter requested by cycle for gear without torque converter!");
+				throw new VectoException(
+					"Torque converter requested by cycle for gear without torque converter!", 
+					ErrorCodes.GEARBOX_GEAR_MISSING_TORQUE_CONVERTER);
 			}
 		}
 
@@ -473,8 +474,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						Gear, CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.OutTorque);
 					if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
 						throw new VectoException(
-							"Gear {0} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n:{1}, torque:{2}",
-							Gear, CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.OutTorque);
+							$"Gear {Gear} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: " +
+							$"n:{CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute()}, torque:{CurrentState.OutTorque}", ErrorCodes.GEARBOX_LOSS_MAP_EXTRAPOLATED);
 					}
 				}
 			}

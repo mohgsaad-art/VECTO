@@ -35,6 +35,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.OutputData.XML;
@@ -86,7 +87,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				XMLNames.AngleDrive_TorqueLossMap, XMLNames.Angledrive_LossMap_Entry,
 				AttributeMappings.TransmissionLossmapMapping);
 
-		public virtual double Efficiency => throw new VectoException("Efficiency not supported in Declaration Mode!");
+		public virtual double Efficiency => throw new VectoException("Efficiency not supported in Declaration Mode!", ErrorCodes.XML_BAD_DATA);
 
 		#endregion
 

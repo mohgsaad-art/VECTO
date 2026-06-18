@@ -258,7 +258,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 				case Constants.FileExtensions.VectoJobFile:
 					return LoadJsonFile(fileName);
 				default: 
-					throw new VectoException($"{extension} not supported!");
+					throw new VectoException($"{extension} not supported!", ErrorCodes.INPUT_UNSUPPORTED_TYPE);
 			}
 			
 		}
@@ -280,7 +280,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 			if (!documentType.IsOneOf(XmlDocumentType.MultistepOutputData, XmlDocumentType.DeclarationJobData))
 			{
 				return Task.FromException<IDocumentViewModel>(
-					new VectoXMLException($"{documentType.ToString()} not supported"));
+					new VectoException($"{documentType.ToString()} not supported", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE));
 			}
 
             var inputDataProvider = _inputDataReader.CreateDeclaration(fileName);
@@ -667,7 +667,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 						new MessageEntry()
 						{
 							Type = MessageType.StatusMessage,
-							Message = progressEntry.Value.Error.Message
+							Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo()
 						}
 					);
 				}
@@ -735,8 +735,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
                     outputMessages.Report(new MessageEntry()
                     {
                         Type = MessageType.StatusMessage,
-                        Message = string.Format("Finished Run {0} with ERROR: {1}", runName,
-                            p.Value.Error.Message),
+                        Message = string.Format("Finished Run {0} with ERROR: {1}", runName, p.Value.Error.GetMessageWithCycleRunInfo()),
                         //Link = modFilename
                         //Link = modFilename
 						//Link = "<CSV>" + modFilename
@@ -763,8 +762,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
             }
 		}
 
-
-		private string GetOutputDirectory(string jobFilePath)
+        private string GetOutputDirectory(string jobFilePath)
 		{
 			var outFile = jobFilePath;
 			var outputDirectory = Settings.Default.DefaultOutputPath;

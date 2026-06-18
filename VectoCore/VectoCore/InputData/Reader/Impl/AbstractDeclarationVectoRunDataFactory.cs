@@ -45,7 +45,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			if (checkJobType) {
 				if (dataProvider.JobInputData.JobType.IsOneOf(BatteryElectricVehicle, ParallelHybridVehicle, SerialHybridVehicle))
 				{
-					throw new VectoSimulationException("Electric and Hybrid Vehicles are not supported in Declaration Mode. Aborting Simulation.");
+					throw new VectoException(
+						"Electric and Hybrid Vehicles are not supported in Declaration Mode. Aborting Simulation.",
+						ErrorCodes.VECTORUNDATAFACTORY_UNSUPPORTED_VEHICLE_TYPE);
 				}
 			}
            
@@ -100,7 +102,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OVC) {
 				if (vehicle.Components.ElectricStorage.ElectricStorageElements.Any(e =>
 						e.REESSPack.StorageType == REESSType.SuperCap)) {
-					throw new VectoException("Super caps are not allowed for OVC-HEVs or PEVs");
+					throw new VectoException("Super caps are not allowed for OVC-HEVs or PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
 				}
 			}
 
@@ -115,7 +117,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 			if (hasSuperCap && hasBattery) {
 				//Already handled by XML Schema
-				throw new VectoException("Super caps AND batteries are not supported");
+				throw new VectoException("Super caps AND batteries are not supported", ErrorCodes.REESS_MULTIPLE_TYPES);
 			}
 		}
     }

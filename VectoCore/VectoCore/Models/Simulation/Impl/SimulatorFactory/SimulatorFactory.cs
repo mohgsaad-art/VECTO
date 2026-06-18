@@ -132,7 +132,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			var warning1Hz = false;
 			if (!_simulate) {
 				if (MissingInputEntries.Count > 0) {
-					throw new VectoException("Completed vehicle input: \n" + MissingInputEntries.Select(x => $"{x} is bad or missing. ").Join("\n"));
+					throw new VectoException("Completed vehicle input: \n" + MissingInputEntries.Select(x => $"{x} is bad or missing. ").Join("\n"), 
+						ErrorCodes.SIMFACTORY_COMPLETED_BAD_ENTRIES);
 				}
 				yield break;
 			}
@@ -171,7 +172,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		{
 			var addReportResult = PrepareReport(data);
 			if (!data.Cycle.CycleType.IsDistanceBased() && ModalResults1Hz && !warning1Hz) {
-				Log.Error("Output filter for 1Hz results is only available for distance-based cycles!");
+				Log.Warn("Output filter for 1Hz results is only available for distance-based cycles!");
 				warning1Hz = true;
 			}
 			var fuels = data.EngineData != null ? data.EngineData.Fuels.Select(x => x.FuelData).ToList() : new List<IFuelProperties>();
@@ -226,8 +227,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			ValidationHelper.ClearValHistory();
 
 			if (validationErrors.Any()) {
-				throw new VectoException("Validation of Run-Data Failed: " +
-										$"{validationErrors.Select(r => r.ErrorMessage + r.MemberNames.Join("; ")).Join("\n")}");
+				throw new VectoException($"Validation of Run-Data Failed: {validationErrors.Select(r => r.ErrorMessage + r.MemberNames.Join("; ")).Join("\n")}", 
+					ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 			}
 		}
 
@@ -238,7 +239,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			switch (data.Cycle.CycleType) {
 				case CycleType.DistanceBased:
 					if ((data.SimulationType & SimulationType.DistanceCycle) == 0) {
-						throw new VectoException("Distance-based cycle can not be simulated in {0} mode", data.SimulationType);
+						throw new VectoException($"Distance-based cycle can not be simulated in {data.SimulationType} mode", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 					}
 
 					var container = PowertrainBuilder.Build(data, modData, sumWriter);
@@ -247,13 +248,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 					break;
 				case CycleType.EngineOnly:
 					if ((data.SimulationType & SimulationType.EngineOnly) == 0) {
-						throw new VectoException("Engine-only cycle can not be simulated in {0} mode", data.SimulationType);
+						throw new VectoException($"Engine-only cycle can not be simulated in {data.SimulationType} mode", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 					}
 					run = new TimeRun(PowertrainBuilder.Build(data, modData, sumWriter));
 					break;
 				case CycleType.VTP:
 					if ((data.SimulationType & SimulationType.VerificationTest) == 0) {
-						throw new VectoException("VTP-cycle can not be simulated in {0} mode", data.SimulationType);
+						throw new VectoException($"VTP-cycle can not be simulated in {data.SimulationType} mode", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 					}
 					run = new TimeRun(PowertrainBuilder.Build(data, modData, sumWriter));
 					break;
@@ -262,12 +263,12 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 				case CycleType.MeasuredSpeed:
 				case CycleType.MeasuredSpeedGear:
 					if ((data.SimulationType & (SimulationType.PWheel | SimulationType.MeasuredSpeedCycle)) == 0) {
-						throw new VectoException("{1}-cycle can not be simulated in {0} mode", data.SimulationType, data.Cycle.CycleType);
+						throw new VectoException($"{data.Cycle.CycleType}-cycle can not be simulated in {data.SimulationType} mode", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 					}
 					run = new TimeRun(PowertrainBuilder.Build(data, modData, sumWriter));
 					break;
 				case CycleType.PTO:
-					throw new VectoException("PTO Cycle can not be used as main cycle!");
+					throw new VectoException("PTO Cycle can not be used as main cycle!", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 				default:
 					throw new ArgumentOutOfRangeException("CycleType unknown:" + data.Cycle.CycleType);
 			}

@@ -31,6 +31,7 @@
 
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Utils;
@@ -63,10 +64,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						Log.Info("========= Driving Cycle Finished");
 						break;
 					default:
-						throw new VectoException("TimeRun got an unexpected response: {0}", response);
+						throw new VectoException($"TimeRun got an unexpected response: {response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				if (loopCount++ > Constants.SimulationSettings.MaximumIterationCountForSimulationStep) {
-					throw new VectoSimulationException("Maximum iteration count for a single simulation interval reached! Aborting!");
+					throw new VectoException("Maximum iteration count for a single simulation interval reached! Aborting!", ErrorCodes.VECTORUN_MAXIMUM_ITERATION_COUNT_EXCEEDED);
 				}
 			} while (!(response is ResponseSuccess || response is ResponseCycleFinished));
 

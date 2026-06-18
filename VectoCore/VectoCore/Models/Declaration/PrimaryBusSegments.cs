@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					case "low floor":
 						floorMatches = floorTyoe == FloorType.LowFloor; break;
 					default:
-						throw new VectoException($"Unexpected value in column floor type {floor}");
+						throw new VectoException($"Unexpected value in column floor type {floor}", ErrorCodes.DECLARATIONDATA_INVALID_FLOOR_TYPE);
 				}
 
 				VehicleClass hdvSuperGroupLookedUp = VehicleClassHelper.Parse(r.Field<string>("hdvsupergroup"));

@@ -91,7 +91,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			foreach (var tuple in Data.Entries.Pairwise()) {
 				if (!(tuple.Item2.Time - tuple.Item1.Time).IsEqual(
 						DeclarationData.VTPMode.SamplingInterval, 0.1 * DeclarationData.VTPMode.SamplingInterval)) {
-					Log.Error("Cycle Data exceeds expected sampling frequence of {0}: t: {1}, dt: {2}",
+					Log.Warn("Cycle Data exceeds expected sampling frequence of {0}: t: {1}, dt: {2}",
 						DeclarationData.VTPMode.SamplingInterval, tuple.Item1.Time, tuple.Item2.Time - tuple.Item1.Time);
 				}
 			}
@@ -129,11 +129,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					continue;
 				}
 				if (sumFC / sumEWheel < DeclarationData.VTPMode.LowerFCThreshold ) {
-					Log.Error("Fuel consumption for the previous {0} [min] below threshold of {1} [g/kWh]. t: {2} [s], FC: {3} [g/kWh]", DeclarationData.VTPMode.FCAccumulationWindow.ConvertToMinutes(),
+					Log.Warn("Fuel consumption for the previous {0} [min] below threshold of {1} [g/kWh]. t: {2} [s], FC: {3} [g/kWh]", DeclarationData.VTPMode.FCAccumulationWindow.ConvertToMinutes(),
 						DeclarationData.VTPMode.LowerFCThreshold.ConvertToGramPerKiloWattHour(), entry.Item1.Time, (sumFC / sumEWheel).ConvertToGramPerKiloWattHour());
 				}
 				if (sumFC / sumEWheel > DeclarationData.VTPMode.UpperFCThreshold) {
-					Log.Error("Fuel consumption for the previous {0} [min] above threshold of {1} [g/kWh]. t: {2} [s], FC: {3} [g/kWh]", DeclarationData.VTPMode.FCAccumulationWindow.ConvertToMinutes(),
+					Log.Warn("Fuel consumption for the previous {0} [min] above threshold of {1} [g/kWh]. t: {2} [s], FC: {3} [g/kWh]", DeclarationData.VTPMode.FCAccumulationWindow.ConvertToMinutes(),
 							DeclarationData.VTPMode.UpperFCThreshold.ConvertToGramPerKiloWattHour(), entry.Item1.Time, (sumFC / sumEWheel).ConvertToGramPerKiloWattHour());
 				}
 			}
@@ -147,12 +147,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (hasElectricFan) {
 				if (entry.FanSpeed.IsSmaller(0)) {
-					Log.Error("Fan speed (electric) below zero! t: {0}, n_fan: {1}", entry.Time, entry.FanSpeed);
+					Log.Warn("Fan speed (electric) below zero! t: {0}, n_fan: {1}", entry.Time, entry.FanSpeed);
 				}
 			} else {
 				if (entry.FanSpeed.IsSmaller(DeclarationData.VTPMode.MinFanSpeed) ||
 					entry.FanSpeed.IsGreater(DeclarationData.VTPMode.MaxFanSpeed)) {
-					Log.Error(
+					Log.Warn(
 						"Fan speed (non-electric) exceeds range {0} < n_fan < {1}. t: {2}, n_fan: {3}", DeclarationData.VTPMode.MinFanSpeed,
 						DeclarationData.VTPMode.MaxFanSpeed, entry.Time, entry.FanSpeed);
 				}
@@ -167,14 +167,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var wheelSpeedRatio = VectoMath.Max(
 					entry.WheelSpeedLeft / entry.WheelSpeedRight, entry.WheelSpeedRight / entry.WheelSpeedLeft);
 				if (wheelSpeedRatio > DeclarationData.VTPMode.WheelSpeedDifferenceFactor) {
-					Log.Error(
+					Log.Warn(
 						"Wheel-speed difference rel. (L/R) too high! t: {0} n_left: {1} rpm, n_right: {2} rpm", entry.Time,
 						entry.WheelSpeedLeft.AsRPM, entry.WheelSpeedRight.AsRPM);
 				}
 			} else {
 				if (VectoMath.Abs(entry.WheelSpeedLeft - entry.WheelSpeedRight) >
 					DeclarationData.VTPMode.MaxWheelSpeedDifferenceStandstill) {
-					Log.Error(
+					Log.Warn(
 						"Wheel-speed difference abs. (L/R) too high! t: {0} n_left: {1} rpm, n_right: {2} rpm", entry.Time,
 						entry.WheelSpeedLeft.AsRPM, entry.WheelSpeedRight.AsRPM);
 				}

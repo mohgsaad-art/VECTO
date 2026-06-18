@@ -40,7 +40,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 					return index;
 				}
 			}
-			throw new VectoException("angular velocity {0} exceeds max-torque curve. min: {1} max: {2}", angularVelocity, FullLoadEntries.First().MotorSpeed, FullLoadEntries.Last().MotorSpeed);
+			throw new VectoException($"angular velocity {angularVelocity} exceeds max-torque curve. min: {FullLoadEntries.First().MotorSpeed} max: {FullLoadEntries.Last().MotorSpeed}",
+                ErrorCodes.VEHICLE_ANGULAR_VELOCITY_EXCEEDS_MAX_TORQUE_CURVE);
 
 		}
 

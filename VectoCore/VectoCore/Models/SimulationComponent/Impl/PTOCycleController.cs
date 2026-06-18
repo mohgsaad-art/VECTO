@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -73,11 +74,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			bool dryRun = false)
 		{
 			if (outAngularVelocity != null) {
-				throw new VectoException("{0} can only handle idle requests: AngularVelocity has to be null!",
-					GetType().ToString());
+				throw new VectoException($"{GetType().ToString()} can only handle idle requests: AngularVelocity has to be null!", ErrorCodes.PTO_NON_IDLE_REQUEST);
 			}
 			if (!outTorque.IsEqual(0)) {
-				throw new VectoException("{0} can only handle idle requests: Torque has to be 0!", GetType().ToString());
+				throw new VectoException($"{GetType().ToString()} can only handle idle requests: Torque has to be 0!", ErrorCodes.PTO_NON_IDLE_REQUEST);
 			}
 			if (IdleStart == null) {
 				IdleStart = absTime;
@@ -196,7 +196,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			if (!DataBus.IsTestPowertrain)
 			{
-				throw new VectoException("Only components in a testpowertrain are allowed to be updated!");
+				throw new Exception("Only components in a testpowertrain are allowed to be updated!");
 			}
 			if (other is EPTOCycleController otherPtoCycle) {
 				Reset();

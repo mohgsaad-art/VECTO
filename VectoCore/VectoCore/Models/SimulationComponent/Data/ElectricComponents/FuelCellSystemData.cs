@@ -38,16 +38,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 
 		private void CheckFcCount() {
 			if (FuelCellStrings.Count > 2) {
-				throw new VectoException("Only two strings are supported");
+				throw new VectoException("Only two strings are supported", ErrorCodes.FUELCELL_MAX_STRINGS_EXCEEDED);
 			}
 
 			if (FuelCellStrings.Any(fcs => fcs.FcCount > 3)) {
-				throw new VectoException("Max 3 fuel cells per string are allowed");
+				throw new VectoException("Max 3 fuel cells per string are allowed", ErrorCodes.FUELCELL_MAX_CELLS_PER_STRING_EXCEEDED);
 			}
 
 
 			if (FuelCellStrings.Count < 1) {
-				throw new VectoException("No fuel-cells provided");
+				throw new VectoException("No fuel-cells strings provided", ErrorCodes.FUELCELL_STRINGS_MISSING);
 			}
         }
 
@@ -263,7 +263,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 					return index;
 				}
 			}
-			throw new VectoException("Distance Request {0} exceeds fuel cell model data. min: {1} max: {2}", distance, _entries.First().Distance, _entries.Last().Distance);
+			throw new VectoException($"Distance Request {distance} exceeds fuel cell model data. min: {_entries.First().Distance} max: {_entries.Last().Distance}",
+                ErrorCodes.FUELCELL_DISTANCE_EXCEEDS_MODEL_DATA);
 		}
 
         public class FuelCellPowerMapEntry
@@ -342,7 +343,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 		public KilogramPerSecond Lookup(Watt power, bool useMinEfficiency = true)
 		{
 			if (power < 0) {
-				throw new VectoException($"{nameof(power)} power must be > 0");
+				throw new VectoException($"{nameof(power)} power must be > 0", ErrorCodes.FUELCELL_NEGATIVE_POWER);
 			}
 			if (useMinEfficiency && power < MinEffPower) {
 				return LookupPowerInMap(MinEffPower) * (power / MinEffPower);
@@ -373,7 +374,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 				}
 			}
 			
-			throw new VectoException("Power Request {0} exceeds fuel cell model data. min: {1} max: {2}", power, Entries.First().P_el_out, Entries.Last().P_el_out);
+			throw new VectoException($"Power Request {power} exceeds fuel cell model data. min: {Entries.First().P_el_out} max: {Entries.Last().P_el_out}", 
+				ErrorCodes.FUELCELL_POWER_EXCEEDS_MODEL_DATA);
 		}
 
 		public List<Watt> MeasuredPoints => Entries.Select(e => e.P_el_out).ToList();
@@ -560,7 +562,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 			var fcActive = 1;
 			var minActive = (int)Math.Max(1, Math.Ceiling(Math.Round(power / _fuelCellComponentMap.MaxPowerMap, 6))); //minActive wrt power limits
 			if (minActive > _fcCount) {
-				throw new VectoException($"Power demand too high for string req: {power}, max power {this.MaxPower}");
+				throw new VectoException($"Power demand too high for string req: {power}, max power {this.MaxPower}", ErrorCodes.FUELCELL_POWER_EXCEEDS_MODEL_DATA);
 			}
 
 			fcActive = VectoMath.Max(fcActive, minActive);

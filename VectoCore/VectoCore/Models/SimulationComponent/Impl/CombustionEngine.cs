@@ -168,7 +168,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			if (angularVelocity == null) {
 				// if the clutch disengages the idle controller should take over!
-				throw new VectoSimulationException("angular velocity is null! Clutch open without IdleController?");
+				throw new VectoException("angular velocity is null! Clutch open without IdleController?", ErrorCodes.ICE_ANGULAR_VELOCITY_IS_NULL);
 			}
 			//if (angularVelocity < ModelData.IdleSpeed.Value() - EngineIdleSpeedStopThreshold) {
 			//	CurrentState.OperationMode = EngineOperationMode.Stopped;
@@ -283,7 +283,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if ((deltaFull * avgEngineSpeed).IsGreater(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance) &&
 				(deltaDrag * avgEngineSpeed).IsSmaller(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance)) {
 				//throw new VectoSimulationException(
-				Log.Error(
+				Log.Warn(
 					"Unexpected condition: requested torque_out is above gearbox full-load and engine is below drag load! deltaFull: {0}, deltaDrag: {1}",
 					deltaFull, deltaDrag);
 			}
@@ -421,13 +421,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter fullDragTorque)
 		{
 			if (fullDragTorque.IsGreater(0) && torqueDemand < 0) {
-				throw new VectoSimulationException("P_engine_drag > 0! Tq_drag: {0}, Tq_eng: {1},  n_eng_avg: {2} [1/min] ",
-					fullDragTorque, torqueDemand, CurrentState.EngineSpeed.AsRPM);
+				throw new VectoException($"P_engine_drag > 0! Tq_drag: {fullDragTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
+					ErrorCodes.ICE_POSITIVE_FULL_DRAG_TORQUE_WITH_NEGATIVE_TORQUE_DEMAND);
 			}
 
 			if (dynamicFullLoadTorque <= 0 && torqueDemand > 0) {
-				throw new VectoSimulationException("P_engine_full < 0! Tq_full: {0}, Tq_eng: {1},  n_eng_avg: {2} [1/min] ",
-					dynamicFullLoadTorque, torqueDemand, CurrentState.EngineSpeed.AsRPM);
+				throw new VectoException($"P_engine_full < 0! Tq_full: {dynamicFullLoadTorque}, Tq_eng: {torqueDemand},  n_eng_avg: {CurrentState.EngineSpeed.AsRPM} [1/min] ",
+					ErrorCodes.ICE_NEGATIVE_DYNAMIC_FULL_LOAD_TORQUE_WITH_POSITIVE_TORQUE_DEMAND);
 			}
 		}
 
@@ -475,7 +475,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var gearbox = PowertrainContainer.GearboxInfo;
 				var pt1 = ModelData.FullLoadCurves[gearbox.Gear.Gear].PT1(avgEngineSpeed);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration && pt1.Extrapolated) {
-					Log.Error(
+					Log.Warn(
 						"requested rpm below minimum rpm in pt1 - extrapolating. n_eng_avg: {0}",
 						avgEngineSpeed);
 				}
@@ -570,7 +570,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected Watt ComputeFullLoadPower(PerSecond avgAngularVelocity, NewtonMeter stationaryFullLoadTorque, Second dt, bool dryRun)
 		{
 			if (dt <= 0) {
-				throw new VectoException("ComputeFullLoadPower cannot compute for simulation interval length 0.");
+				throw new VectoException("ComputeFullLoadPower cannot compute for simulation interval length 0.", ErrorCodes.ICE_INTERVAL_IS_ZERO);
 			}
 
 			
@@ -595,7 +595,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							dynFullPowerCalculated = stationaryFullLoadPower;
                         } else {
 							Log.Warn("PT1 calculation failed (dryRun: {0})", dryRun);
-							throw new VectoException("PT1 calculation failed!");
+							throw new VectoException("PT1 calculation failed!", ErrorCodes.ICE_PT1_CALCULATION_FAILED);
                         }
 					}
 				} catch (VectoException e) {
@@ -711,10 +711,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				bool dryRun = false)
 			{
 				if (outAngularVelocity != null) {
-					throw new VectoException("IdleController can only handle idle requests, i.e. angularVelocity == null!");
+					throw new VectoException("IdleController can only handle idle requests, i.e. angularVelocity == null!", ErrorCodes.ICE_IDLE_CONTROLLER_INVALID_ANGULAR_VELOCITY);
 				}
 				if (!outTorque.IsEqual(0, 5e-2)) {
-					throw new VectoException("Torque has to be 0 for idle requests! {0}", outTorque);
+					throw new VectoException($"Torque has to be 0 for idle requests! {outTorque}", ErrorCodes.ICE_IDLE_CONTROLLER_INVALID_TORQUE);
 				}
 
 				return DoHandleRequest(absTime, dt, outTorque, null);
@@ -788,7 +788,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						retVal = RequestPort.Request(absTime, dt, 0.SI<NewtonMeter>(), angularSpeed2, false);
 					break;
 					default:
-						throw new UnexpectedResponseException("searching Idling point", retVal);
+						throw new VectoException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				return retVal;
 			}
@@ -843,7 +843,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						retVal = RequestPort.Request(absTime, dt, 0.SI<NewtonMeter>(), angularSpeed, false);
 						break;
 					default:
-						throw new UnexpectedResponseException("searching Idling point", retVal);
+						throw new VectoException($"searching Idling point\n{retVal}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 				return retVal;
 			}

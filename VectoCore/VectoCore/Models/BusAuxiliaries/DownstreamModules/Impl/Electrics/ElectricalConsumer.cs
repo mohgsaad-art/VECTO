@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electric
 		{
 			set {
 				if (_missions.ContainsKey(mission)) {
-					throw new VectoException("key {0} already exists!", mission.ToString());
+					throw new VectoException($"key {mission} already exists!", ErrorCodes.SYSTEM_DUPLICATE_KEY);
 				}
 
 				_missions[mission] = value;

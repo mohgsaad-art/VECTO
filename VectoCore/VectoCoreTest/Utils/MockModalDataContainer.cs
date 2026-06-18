@@ -89,7 +89,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		{
 			foreach (var entry in fuels) {
 				if (FuelColumns.ContainsKey(entry)) {
-					throw new VectoException("Fuel {0} already added!", entry.FuelType.GetLabel());
+					throw new Exception($"Fuel {entry.FuelType.GetLabel()} already added!");
 				}
 
 				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();
@@ -119,7 +119,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				try {
 					return CurrentRow[FuelColumns[fuel][key]];
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 				}
 
 			}
@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				try {
 					CurrentRow[FuelColumns[fuel][key]] = value;
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 				}
 			}
 		}
@@ -258,7 +258,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			try {
 				return FuelColumns[fuelData][mrf].ColumnName;
 			} catch (KeyNotFoundException e) {
-				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}", e);
+				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}", ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
 			}
 		}
 

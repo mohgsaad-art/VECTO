@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Common {
 			var node = GetNode(nodeName, required: fallbackValue != null);
 
 			if (node == null && fallbackValue == null) {
-				throw new VectoException("Node {0} not found in input data", nodeName);
+				throw new VectoException($"Node {nodeName} not found in input data", ErrorCodes.XML_MISSING_NODE);
 			}
 
 			return node?.InnerText.ToDouble() ?? fallbackValue.Value;
@@ -91,7 +91,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Common {
 			var node = GetNode(nodePath, required: fallbackValue == null);
 
 			if (node == null && fallbackValue == null) {
-				throw new VectoException("Node {0} not found in input data", nodePath.Join("/"));
+				throw new VectoException($"Node {nodePath.Join("/")} not found in input data", ErrorCodes.XML_MISSING_NODE);
 			}
 
 			return node?.InnerText.ToDouble() ?? fallbackValue.Value;
@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Common {
 		{
 			var node = (baseNode ?? BaseNode)?.SelectSingleNode(xpathQuery);
 			if (required && node == null) {
-				throw new VectoException("Node {0} not found", xpathQuery);
+				throw new VectoException($"Node {xpathQuery} not found", ErrorCodes.XML_MISSING_NODE);
 			}
 
 			return node;
@@ -150,7 +150,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Common {
 					return XMLHelper.ReadTableData(mapping, entries);
 				}
 			} catch (NullReferenceException) {
-				throw new VectoException($"Could not find element: {baseElement} {entryElement}");
+				throw new VectoException($"Could not find element: {baseElement} {entryElement}", ErrorCodes.XML_MISSING_NODE);
 			}
 			return null;
 		}

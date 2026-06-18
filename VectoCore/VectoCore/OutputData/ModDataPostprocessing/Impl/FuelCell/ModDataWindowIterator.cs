@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
             if (windowSize.IsGreaterOrEqual(_distance)) 
 			{
-				throw new VectoException("Window size must be smaller than total cycle distance");
+				throw new VectoException("Window size must be smaller than total cycle distance", ErrorCodes.FUELCELL_WINDOW_SIZE_TOO_BIG);
 			}
 
 			SetIteratorPositions(0);
@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			if (EndReached)
 			{
 				//return;
-				throw new VectoException("Failed to move iterator forward - iterated all elements");
+				throw new VectoException("Failed to move iterator forward - iterated all elements", ErrorCodes.FUELCELL_MODALDATA_OUT_OF_BOUNDS);
 
 			}
 
@@ -231,7 +231,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 				if (retVal == startIdx)
 				{
-					throw new VectoException("Failed to move iterator forward - iterated all elements");
+					throw new VectoException("Failed to move iterator forward - iterated all elements", ErrorCodes.FUELCELL_MODALDATA_OUT_OF_BOUNDS);
 				}
 			} while (true);
 		}
@@ -362,7 +362,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 			if (windowDistance.IsGreaterOrEqual(ModData.Distance))
 			{
-				throw new VectoException("Window size must be smaller than total cycle distance");
+				throw new VectoException("Window size must be smaller than total cycle distance", ErrorCodes.FUELCELL_WINDOW_SIZE_TOO_BIG);
 			}
 
 			SetIteratorPositions(0);
@@ -374,7 +374,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			if (CycleEndReached)
 			{
 				//return;
-				throw new VectoException("Failed to move iterator forward - iterated all elements");
+				throw new VectoException("Failed to move iterator forward - iterated all elements", ErrorCodes.FUELCELL_MODALDATA_OUT_OF_BOUNDS);
 
 			}
 
@@ -522,7 +522,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 				if (retVal == startIdx)
 				{
-					throw new VectoException("Failed to move iterator forward - iterated all elements");
+					throw new VectoException("Failed to move iterator forward - iterated all elements", ErrorCodes.FUELCELL_MODALDATA_OUT_OF_BOUNDS);
 				}
 			} while (true);
 		}

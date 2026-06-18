@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			IResponse retVal;
 			do {
 				if (retryCount > 10) {
-					throw new VectoException("SerialHybridStrategy: retry count exceeded! {0}", DebugData);
+					throw new VectoException($"SerialHybridStrategy: retry count exceeded! {DebugData}", ErrorCodes.HYBRIDCONTROLLER_RETRY_COUNT_EXCEEDED);
 				}
 
 				retry = false;
@@ -135,8 +135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					strategySettings.GenSetSpeed, dryRun);
 
 				if (!(gensetResponse is ResponseSuccess || gensetResponse is ResponseDryRun)) {
-					throw new VectoException("Invalid operating point for Genset provided by strategy! {0}",
-						gensetResponse);
+					throw new VectoException($"Invalid operating point for Genset provided by strategy! {gensetResponse}", ErrorCodes.HYBRIDCONTROLLER_GENSET_INVALID_OPERATING_POINT);
 				}
 
 				var gearbox = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber);
@@ -263,7 +262,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{			
 			var axleNumber = AxleNumber;
 			if (_electricMotorCtl.Any(x => (x.Key.Position == pos) && (x.Key.AxleNumber == axleNumber))) {
-				throw new VectoException("Electric motor already registered as position {0}", pos);
+				throw new VectoException($"Electric motor already registered as position {pos}", ErrorCodes.HYBRIDCONTROLLER_ELECTRICMOTOR_ALREADY_REGISTERED);
 			}
 
 			_electricMotorCtl[new EMPlacement(pos, axleNumber)] = new ElectricMotorController(this, motorData);

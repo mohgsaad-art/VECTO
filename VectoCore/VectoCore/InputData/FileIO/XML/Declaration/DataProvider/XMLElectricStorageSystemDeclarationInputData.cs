@@ -123,12 +123,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
                 if (batteries.Any(x => (x.REESSPack as IBatteryPackDeclarationInputData).MinSOC == null))
                 {
-                    throw new VectoException($"Battery SOCmin is undefined. {requiredForVehicles}");
+                    throw new VectoException($"Battery SOCmin is undefined. {requiredForVehicles}", ErrorCodes.XML_MISSING_NODE);
                 }
 
                 if (batteries.Any(x => (x.REESSPack as IBatteryPackDeclarationInputData).MaxSOC == null))
                 {
-                    throw new VectoException($"Battery SOCmax is undefined. {requiredForVehicles}");
+                    throw new VectoException($"Battery SOCmax is undefined. {requiredForVehicles}", ErrorCodes.XML_MISSING_NODE);
                 }
 
                 if (batteries.Any(x => (x.REESSPack as IBatteryPackDeclarationInputData).DeteriorationPerformanceRatio == null))
@@ -317,7 +317,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			var entries = base.GetMaxCurrentMap();
 			if (entries.Rows.Count != 2) {
-				throw new VectoException("exactly 2 entries for the max current map are expected for standard values");
+				throw new VectoException("exactly 2 entries for the max current map are expected for standard values", ErrorCodes.XML_BAD_DATA);
 			}
 
 			var maxChargeCurrentRow = entries.AsEnumerable()
@@ -325,10 +325,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			var maxDischargeCurrentRow = entries.AsEnumerable()
 				.FirstOrDefault(x => x.Field<string>(XMLNames.REESS_CurrentLimits_SoC).ToInt() == 100);
 			if (maxChargeCurrentRow == null) {
-				throw new VectoException("no max current entry for SoC 0% found in input data!");
+				throw new VectoException("no max current entry for SoC 0% found in input data!", ErrorCodes.XML_MISSING_NODE);
 			}
 			if (maxDischargeCurrentRow == null) {
-				throw new VectoException("no max current entry for SoC 100% found in input data!");
+				throw new VectoException("no max current entry for SoC 100% found in input data!", ErrorCodes.XML_MISSING_NODE);
 			}
 
             var maxChargeCurrent = maxChargeCurrentRow.Field<string>(BatteryMaxCurrentReader.Fields.MaxChargeCurrent).ToDouble() * 0.9;
@@ -381,7 +381,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			{
                 if (!entries.AsEnumerable().Any(z => z.Field<string>(XMLNames.REESS_CurrentLimits_SoC).ToInt() == soc))
 				{
-					throw new VectoException($"Battery does not contain Current Limit entry for SoC: {soc}");
+					throw new VectoException($"Battery does not contain Current Limit entry for SoC: {soc}", ErrorCodes.XML_MISSING_NODE);
                 }
             }
 
@@ -395,7 +395,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			var mapSoC = BatterySOCReader.Create(VoltageCurve);
 			if (!mapSoC.ContainsSoC(SoC / 100.0))
 			{
-				throw new VectoException($"Battery SoC map does not contain entry with SoC: {SoC}");
+				throw new VectoException($"Battery SoC map does not contain entry with SoC: {SoC}", ErrorCodes.XML_MISSING_NODE);
 			}
 
             var vNom = mapSoC.Lookup(SoC / 100.0);

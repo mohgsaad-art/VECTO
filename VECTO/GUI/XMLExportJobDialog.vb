@@ -26,7 +26,7 @@ Public Class XMLExportJobDialog
 				_mode = ExecutionMode.Declaration
 				allowSingleFile = False
 			Else
-				Throw New VectoException("Input data is neither declaration nor engineering mode!")
+				Throw New Exception("Input data is neither declaration nor engineering mode!")
 			End If
 		End If
 		_data = data

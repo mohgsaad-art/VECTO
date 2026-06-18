@@ -215,28 +215,28 @@ Public Class ElectricMachine
     protected ReadOnly Property FullLoadCurveLow As TableData 
         Get
             If Not File.Exists(_fullLoadCurvePathLow.FullPath) Then _
-                Throw New VectoException("Full-Load Curve is missing or invalid")
+                Throw New VectoException("Full-Load Curve is missing or invalid", ErrorCodes.ELECTRICMOTOR_FULL_LOAD_CURVE_MISSING)
             Return VectoCSVFile.Read(_fullLoadCurvePathLow.FullPath)
         End Get
     End Property
     public ReadOnly Property DragCurve As TableData Implements IElectricMotorDeclarationInputData.DragCurve
         Get
             If Not File.Exists(_dragCurvePath.FullPath) Then _
-                Throw New VectoException("Drag Curve is missing or invalid")
+                Throw New VectoException("Drag Curve is missing or invalid", ErrorCodes.ELECTRICMOTOR_DRAG_CURVE_MISSING)
             Return VectoCSVFile.Read(_dragCurvePath.FullPath)
         End Get
     End Property
     protected ReadOnly Property EfficiencyMapLow As TableData
         Get
             If Not File.Exists(_efficiencyMapLow.FullPath) Then _
-                Throw New VectoException("Drag Curve is missing or invalid")
+                Throw New VectoException("Efficiency Map is missing or invalid", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_MISSING)
             Return VectoCSVFile.Read(_efficiencyMapLow.FullPath)
         End Get
     End Property
     protected ReadOnly Property FullLoadCurveHi As TableData 
         Get
             If Not File.Exists(_fullLoadCurvePathHi.FullPath) Then _
-                Throw New VectoException("Full-Load Curve is missing or invalid")
+                Throw New VectoException("Full-Load Curve is missing or invalid", ErrorCodes.ELECTRICMOTOR_FULL_LOAD_CURVE_MISSING)
             Return VectoCSVFile.Read(_fullLoadCurvePathHi.FullPath)
         End Get
                     End Property
@@ -244,7 +244,7 @@ Public Class ElectricMachine
     protected ReadOnly Property PowerMapHi As TableData
         Get
             If Not File.Exists(_efficiencyMapHi.FullPath) Then _
-                Throw New VectoException("Drag Curve is missing or invalid")
+                Throw New VectoException("Efficiency Map is missing or invalid", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_MISSING)
             Return VectoCSVFile.Read(_efficiencyMapHi.FullPath)
         End Get
     End Property

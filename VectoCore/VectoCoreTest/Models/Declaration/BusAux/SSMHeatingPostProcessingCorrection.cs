@@ -567,7 +567,7 @@ public class SSMHeatingPostProcessingCorrection
 		if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle,
 				VectoSimulationJobType.EngineOnlySimulation)
 			&& !runData.ElectricMachinesSinglePwt.Any()) {
-			throw new VectoException("hybrid vehicle requires electric machine");
+			throw new Exception("hybrid vehicle requires electric machine");
 		}
 		
 		if (runData.GetEMData().Any(x => x.Item1.Position != PowertrainPosition.GEN)) {

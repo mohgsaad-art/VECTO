@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     ? ratioCombinationResponses
                         .OrderBy(x => VectoMath.Abs(x.Item1.Sum(r => (r as ResponseElectricSystemNotReady).ElectricMotor.ElectricMotorPowerMech)))
                         .First().Item2
-                    : throw new VectoException($"OptimizedTorqueSplitter: no acceptable torque ratios found");
+                    : throw new VectoException($"OptimizedTorqueSplitter: no acceptable torque ratios found", ErrorCodes.TORQUESPLITTER_NO_RATIOS_FOUND);
             }
             
             if (acceptableResponses.Count() == 1)

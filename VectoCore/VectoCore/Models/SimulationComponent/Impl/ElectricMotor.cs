@@ -22,8 +22,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			IElectricMotorControl control, PowertrainPosition position) : base(container, powertrainContainer, data, control, position, false)
 		{
 			if (!container.IsTestPowertrain) {
-				throw new VectoException(
-					"TestpowertrainElectricMotor component must not be used in real powertrain - use dedicated component instead");
+				throw new Exception("TestpowertrainElectricMotor component must not be used in real powertrain - use dedicated component instead");
 			}
         }
 
@@ -75,8 +74,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PowertrainPosition position) : this(container, powertrainContainer, data, control, position, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"ElectricMotor component must not be used in test powertrain - use dedicated component instead");
+				throw new Exception("ElectricMotor component must not be used in test powertrain - use dedicated component instead");
 			}
         }
 
@@ -98,7 +96,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				TransmissionRatioPerGear = ModelData.RatioPerGear;
 				if (TransmissionRatioPerGear == null ||
 					TransmissionRatioPerGear.Length < container.RunData.GearboxSinglePwt.GearList.Count()) {
-					throw new VectoException("For powertrain configuration P2.5 a EM ratio for every gear has to be provided!");
+					throw new VectoException("For powertrain configuration P2.5 a EM ratio for every gear has to be provided!", ErrorCodes.ELECTRICMOTOR_P25_MISSING_GEAR_RATIO);
 				}
 			}
 
@@ -108,7 +106,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container?.AddComponent(this); // We have to do this again because in the base class the position is unknown!
 
 			if (ModelData.Overload.OverloadBuffer.IsSmallerOrEqual(0) && !(container is SimpleVehicleContainer)) {
-				Log.Error("Overload buffer for thermal de-rating is zero or negative! Please check electric motor data!");
+				Log.Warn("Overload buffer for thermal de-rating is zero or negative! Please check electric motor data!");
 			}
 		}
 		public double[] TransmissionRatioPerGear { get; set; }
@@ -287,8 +285,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					};
 				}
 				throw new VectoException(
-					"Invalid operating point provided by strategy! EM Torque: {0}, max Drive Torque: {1}, min Recup Torque: {2}",
-					emTorqueDt, maxDriveTorqueDt, maxRecuperationTorqueDt);
+					$"Invalid operating point provided by strategy! EM Torque: {emTorqueDt}, max Drive Torque: {maxDriveTorqueDt}, min Recup Torque: {maxRecuperationTorqueDt}",
+					ErrorCodes.ELECTRICMOTOR_INVALID_OPERATING_POINT);
 			}
 
 
@@ -310,8 +308,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					}
 
 					if (!dryRun) {
-						throw new VectoSimulationException(
-							"electric motor cannot provide torque when gearbox and clutch are disengaged");
+						throw new VectoException(
+							"electric motor cannot provide torque when gearbox and clutch are disengaged", ErrorCodes.ELECTRICMOTOR_CANNOT_PROVIDE_TORQUE);
 					}
 				}
 				// gearbox is disengaged - ignore em inertia and drag...
@@ -401,9 +399,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					};
 				}
 				throw new VectoException(
-					"Invalid operating point provided by strategy! EM Torque: {0}, req. electric Power: {1}, battery demand motor: {3}, max Power from Battery: {2}",
-					emTorque, electricPower,
-					emTorque < 0 ? electricSupplyResponse.MaxPowerDrive : electricSupplyResponse.MaxPowerDrag, electricSupplyResponse.ConsumerPower);
+					$"Invalid operating point provided by strategy! EM Torque: {emTorque}, req. electric Power: {electricPower}, battery demand motor: " +
+					$"{electricSupplyResponse.ConsumerPower}, max Power from Battery: {(emTorque < 0 ? electricSupplyResponse.MaxPowerDrive : electricSupplyResponse.MaxPowerDrag)}",
+					ErrorCodes.ELECTRICMOTOR_INVALID_OPERATING_POINT);
 			}
 
 
@@ -588,7 +586,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (pwr.ElectricalPower.IsSmaller(maxBatPower)) {
 					maxBatRecuperationTorque = maxEmTorque;
 				} else {
-					throw new VectoException("Failed to get max. recuperation torque", e);
+					throw new VectoException("Failed to get max. recuperation torque", ErrorCodes.ELECTRICMOTOR_FAILED_TO_GET_MAX_RECUPERATION_TORQUE, e);
 				}
 			}
 

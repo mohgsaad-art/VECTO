@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			{
 				return TransmissionLossMapReader.Create(gear.Efficiency, gear.Ratio, $"Gear {i + 1}");
 			}
-			throw new InvalidFileFormatException("Gear {0} LossMap missing.", i + 1);
+			throw new VectoException($"Gear {i + 1} LossMap missing.", ErrorCodes.FILE_INVALID_FORMAT);
 		}
 		#endregion
 		protected static void SetDeclarationData(GearboxData retVal)
@@ -222,15 +222,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var gearNumbers = gbxInputData.Gears.Select(g => g.Gear);
 
 			if (numGears < 1) {
-				throw new VectoException("At least one Gear-Entry must be defined in Gearbox!");
+				throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 			}
 
             if (gearNumbers.Distinct().Count() != numGears) {
-				throw new VectoException("Duplicate gear number");
+				throw new VectoException("Duplicate gear number", ErrorCodes.GEARBOX_INVALID_GEAR_DATA);
 			}
 
 			if (gearNumbers.Min() < 0 || gearNumbers.Max() > numGears) {
-				throw new VectoException("Gear numbers out of range");
+				throw new VectoException("Gear numbers out of range", ErrorCodes.GEARBOX_INVALID_GEAR_DATA);
 			}
 
 		}
@@ -262,9 +262,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if ((toRemove.Count == 1 && toRemove[0].Gear != lastGearNumber)
 				|| (toRemove.Count == 2 && (toRemove[0].Gear != lastGearNumber - 1 || toRemove[1].Gear != lastGearNumber))
-				|| toRemove.Count > 2) {
-				throw new VectoException("Only the last 1 or 2 gears can be disabled. Disabling gear {0} for a {1}-speed gearbox is not allowed.",
-					toRemove.Min(g => g.Gear), gearsInput.Count);
+				|| toRemove.Count > 2) 
+			{
+				throw new VectoException($"Only the last 1 or 2 gears can be disabled. Disabling gear {toRemove.Min(g => g.Gear)} for a {gearsInput.Count}-speed gearbox is not allowed.",
+                    ErrorCodes.GEARBOX_CANNOT_DISABLE_GEARS);
 			}
 
 			foreach (var entry in toRemove) {
@@ -315,12 +316,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				VectoSimulationJobType.SerialHybridVehicle, VectoSimulationJobType.FCHV);
 			if (isBatteryElectric && (runData.ElectricMachinesSinglePwt == null || runData.ElectricMachinesSinglePwt.Count == 0)) {
 				throw new VectoException(
-					"Electric motor data has to be set for battery electric vehicles before creating gearbox data!");
+					"Electric motor data has to be set for battery electric vehicles before creating gearbox data!", ErrorCodes.GEARBOX_MISSING_ELECTRIC_MOTOR_DATA);
 			}
 
 			if (isBatteryElectric && runData.GearshiftParametersSinglePwt == null) {
 				throw new VectoException(
-					"Gearshift parameters have to be set for battery electric vehicles before creating gearbox data!");
+					"Gearshift parameters have to be set for battery electric vehicles before creating gearbox data!", ErrorCodes.GEARBOX_MISSING_GEARSHIFT_PARAMETERS);
 			}
 
             if (vehicle.VehicleType.IsOneOf(
@@ -346,7 +347,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
             if (adas != null && retVal.Type.AutomaticTransmission()  && adas.EcoRoll != EcoRollType.None &&
                            !adas.ATEcoRollReleaseLockupClutch.HasValue)
             {
-                throw new VectoException("Input parameter ATEcoRollReleaseLockupClutch required for AT transmission");
+                throw new VectoException("Input parameter ATEcoRollReleaseLockupClutch required for AT transmission", ErrorCodes.GEARBOX_MISSING_AT_ECOROLL_RELEASE_LOCKUP_CLUTCH);
             }
 
             retVal.ATEcoRollReleaseLockupClutch =
@@ -356,14 +357,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (!supportedGearboxTypes.Contains(gearbox.Type))
 			{
-				throw new VectoSimulationException("Unsupported gearbox type: {0}!", gearbox.Type);
+				throw new VectoException($"Unsupported gearbox type: {gearbox.Type}!", ErrorCodes.GEARBOX_UNSUPPORTED_TYPE);
 			}
 
 			var gearsInput = FilterDisabledGears(vehicle.TorqueLimits, gearbox);  //gearbox.Gears;
 			if (gearsInput.Count < 1)
 			{
-				throw new VectoSimulationException(
-					"At least one Gear-Entry must be defined in Gearbox!");
+				throw new VectoException("At least one Gear-Entry must be defined in Gearbox!", ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
 			}
 			
 			SetDeclarationData(retVal);
@@ -437,9 +437,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 								select (uint)tqLimit.Gear).ToList();
 				if (toRemove.Count > 0 && toRemove.Min() <= gears.Count - toRemove.Count)
 				{
-					throw new VectoException(
-						"Only the last 1 or 2 gears can be disabled. Disabling gear {0} for a {1}-speed gearbox is not allowed.",
-						toRemove.Min(), gears.Count);
+					throw new VectoException($"Only the last 1 or 2 gears can be disabled. Disabling gear {toRemove.Min()} for a {gears.Count}-speed gearbox is not allowed.",
+						ErrorCodes.GEARBOX_CANNOT_DISABLE_GEARS);
 				}
 
 				foreach (var entry in toRemove)
@@ -453,7 +452,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (retVal.Type.AutomaticTransmission() && retVal.Type != GearboxType.APTN && retVal.Type != GearboxType.IHPC)
 			{
 				if (torqueConverter == null) {
-					throw new VectoException("Torque converter data is required for automatic transmission!");
+					throw new VectoException("Torque converter data is required for automatic transmission!", ErrorCodes.GEARBOX_MISSING_TORQUE_CONVERTER_DATA);
 				}
 				var ratio = double.IsNaN(retVal.Gears[1].Ratio)
 					? 1

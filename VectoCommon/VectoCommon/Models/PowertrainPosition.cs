@@ -72,7 +72,7 @@ namespace TUGraz.VectoCommon.InputData {
 				return $"{BatteryElectricPrefix}E{pos}".ParseEnum<PowertrainPosition>();
 			}
 			
-			throw new VectoException("invalid powertrain position {0}", pos);
+			throw new VectoException($"invalid powertrain position {pos}", ErrorCodes.ELECTRICMOTOR_INVALID_POSITION);
 		}
 
 		public static PowertrainPosition Parse(string pos)

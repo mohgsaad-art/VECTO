@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				return Create(VectoCSVFile.ReadStream(stream));
 			} catch (Exception ex) {
-				throw new VectoException("ERROR while loading PTO Idle LossMap: " + ex.Message);
+				throw new VectoException("ERROR while loading PTO Idle LossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -59,12 +59,11 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static PTOLossMap Create(DataTable data)
 		{
 			if (data.Columns.Count != 2) {
-				throw new VectoException("PTO Idle LossMap Data File must consist of 2 columns: {0}, {1}", Fields.EngineSpeed,
-					Fields.PTOTorque);
+				throw new VectoException($"PTO Idle LossMap Data File must consist of 2 columns: {Fields.EngineSpeed}, {Fields.PTOTorque}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("PTO Idle LossMap must contain at least 2 entries.");
+				throw new VectoException("PTO Idle LossMap must contain at least 2 entries.", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			if (!(data.Columns.Contains(Fields.EngineSpeed) && data.Columns.Contains(Fields.PTOTorque))) {

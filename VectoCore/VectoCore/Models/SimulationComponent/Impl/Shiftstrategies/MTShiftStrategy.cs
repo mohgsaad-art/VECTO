@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					_gearbox = gbx;
 					return;
 				}
-				throw new VectoException("This shift strategy can't handle gearbox of type {0}, expected {1}", value.GetType().Name, nameof(MTGearbox));
+				throw new VectoException($"This shift strategy can't handle gearbox of type {value.GetType().Name}, expected {nameof(MTGearbox)}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 		}
 
@@ -424,7 +424,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
             if (TestPowertrain.Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxControl is IMTGearbox)
 			{
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxControl.GetType().FullName);
+				throw new VectoException($"Unknown gearboxtype: {TestPowertrain.Container.Powertrains[AxleNumber.NOT_IN_AXLE_POWERTRAIN].GearboxControl.GetType().FullName}", 
+                    ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 			}
 
 			var maxGradient = runData.Cycle.Entries.Max(x => Math.Abs(x.RoadGradientPercent.Value())) + 1;

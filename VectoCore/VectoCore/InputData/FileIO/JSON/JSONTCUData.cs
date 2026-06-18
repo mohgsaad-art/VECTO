@@ -243,7 +243,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				var retVal = new List<double[]>();
 				foreach (var entry in Body["ShiftSpeedsTCLockup"]) {
 					if (!(entry is JArray)) {
-						throw new VectoException("Array expected");
+						throw new VectoException("Array expected", ErrorCodes.JSON_ARRAY_EXPECTED);
 					}
 
 					retVal.Add(entry.Select(shiftSpeed => shiftSpeed.Value<double>()).ToArray());

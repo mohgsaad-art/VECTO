@@ -94,7 +94,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (whrInputData == null || whrInputData.GeneratedPower == null)
 			{
-				throw new VectoException("Missing WHR Data");
+				throw new VectoException("Missing WHR Data", ErrorCodes.WHR_MISSING_DATA);
 			}
 
 			var whr = new WHRData()

@@ -44,7 +44,6 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore;
@@ -532,7 +531,7 @@ Examples:
 
 				_numLines += 2;
 			} catch (Exception e) {
-				throw new VectoException("Error during writing progress to output: " + e.Message);
+				throw new Exception("Error during writing progress to output: " + e.Message);
 			}
 		}
 

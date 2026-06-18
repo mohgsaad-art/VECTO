@@ -156,7 +156,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
 			public virtual PTOData CreatePTOTransmissionData(IPTOTransmissionInputData ptoData)
 			{
-				throw new VectoException("PTO is not allowed for buses!");
+				throw new VectoException("PTO is not allowed for buses!", ErrorCodes.VEHICLE_PTO_IN_BUS_NOT_ALLOWED);
 			}
 
 			public virtual ShiftStrategyParameters CreateGearshiftData(double axleRatio, PerSecond engineIdlingSpeed, GearboxType gbxType, int gearsCount)
@@ -187,7 +187,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 			public VehicleData CreateVehicleData(IVehicleDeclarationInputData vehicle, Segment segment, Mission first,
 				KeyValuePair<LoadingType, Tuple<Kilogram, double?>> keyValuePair, bool allowVocational)
 			{
-				throw new VectoException("Not applicable for Single Bus!");
+				throw new NotImplementedException();
 			}
 
 			public virtual List<Tuple<PowertrainPosition, ElectricMotorData>> CreateIEPCElectricMachines(IIEPCDeclarationInputData iepc, Volt averageVoltage)
@@ -268,7 +268,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 				}
 
 				if (batteryData != null && superCapData != null) {
-					throw new VectoException("Either battery or super cap must be provided");
+					throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
 				}
 			}
         }
@@ -362,7 +362,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
                 if (batteryData != null && superCapData != null)
                 {
-                    throw new VectoException("Either battery or super cap must be provided");
+                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
                 }
             }
 
@@ -415,13 +415,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
 
 				if (batteryData == null) {
-					throw new VectoException("Could not create BatterySystem for PEV");
+					throw new VectoException("Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING);
 				}
 				setBatteryData(batteryData);
 
 
 				if (superCapData != null) {
-					throw new VectoException("Supercaps are not allowed for PEVs");
+					throw new VectoException("Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
 				}
 			}
         }
@@ -594,12 +594,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
                 if (batteryData == null)
                 {
-                    throw new VectoException($"Could not create BatterySystem for {jobType}");
+                    throw new VectoException($"Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING);
                 }
                 
                 if (superCapData != null)
                 {
-                    throw new VectoException($"Supercaps are not allowed for {jobType}");
+                    throw new VectoException($"Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
                 }
 
                 setBatteryData(batteryData);
@@ -635,7 +635,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
                 if ((batteryData != null) && (superCapData != null))
                 {
-                    throw new VectoException("Either battery or super cap must be provided");
+                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
                 }
 			}
 		}
@@ -669,7 +669,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
                 if ((batteryData != null) && (superCapData != null))
                 {
-                    throw new VectoException("Either battery or super cap must be provided");
+                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
                 }
             }
         }

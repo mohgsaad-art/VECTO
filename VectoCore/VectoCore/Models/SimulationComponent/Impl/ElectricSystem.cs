@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -18,8 +19,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			batterySystemData, false)
 		{
 			if (container != null && !container.IsTestPowertrain) {
-				throw new VectoException(
-                    "TestpowertrainElectricSystem component must not be used in real powertrain - use dedicated component instead");
+				throw new Exception("TestpowertrainElectricSystem component must not be used in real powertrain - use dedicated component instead");
 			}
         }
     }
@@ -41,8 +41,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			batterySystemData, false)
 		{
 			if (container.IsTestPowertrain) {
-				throw new VectoException(
-					"ElectricSystem component must not be used in test powertrain - use dedicated component instead");
+				throw new Exception("ElectricSystem component must not be used in test powertrain - use dedicated component instead");
 			}
         }
 
@@ -132,7 +131,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public void Connect(IFuelCellPort fuelCell)
 		{
 			if (FuelCell != null) {
-				throw new VectoException("Fuel cell is already connected to ES");
+				throw new VectoException("Fuel cell is already connected to ES", ErrorCodes.ELECTRICSYSTEM_FUELCELL_ALREADY_CONNECTED);
 
 			}
 
@@ -155,7 +154,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public void Connect(IElectricEnergyStorage battery)
         {
             if (Battery != null) {
-                throw new VectoException("Battery is already connected!");
+                throw new VectoException("Battery is already connected!", ErrorCodes.ELECTRICSYSTEM_BATTERY_ALREADY_CONNECTED);
             }
             Battery = battery;
         }

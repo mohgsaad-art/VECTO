@@ -21,12 +21,11 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			}
 			if (!(data.Columns.Count == 2 || data.Columns.Count == 4 || data.Columns.Count == 5)) {
 				throw new VectoException(
-					"Internal Resistance Map data must contain either two, four or five columns: {0}, {1}",
-					Fields.StateOfCharge, Fields.InternalResistance);
+					$"Internal Resistance Map data must contain either two, four or five columns: {Fields.StateOfCharge}, {Fields.InternalResistance}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Internal Resistance Map data must contain at least 2 entries!");
+				throw new VectoException("Internal Resistance Map data must contain at least 2 entries!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			if (data.Columns.Count == 2) {
@@ -72,7 +71,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			}
 
 
-			throw new VectoException("Failed to read InternalResistanceMap");
+			throw new VectoException("Failed to read InternalResistanceMap", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 		}
 
 		private static InternalResistanceMap ReadInternalResistanceMap(DataTable data, Tuple<Second, string>[] col1, bool inputInMilliOhm)

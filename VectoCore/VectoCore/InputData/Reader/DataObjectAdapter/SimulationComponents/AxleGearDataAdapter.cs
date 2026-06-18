@@ -1,5 +1,6 @@
 ﻿using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.Interfaces;
 using TUGraz.VectoCore.Models.GenericModelData;
@@ -15,7 +16,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (double.IsNaN(gbxData.AxlegearRatio))
 			{
 				throw new VectoException(
-					"Axlegear ratio required in gearbox data for gearboxes with included axlegear");
+					"Axlegear ratio required in gearbox data for gearboxes with included axlegear", ErrorCodes.AXLEGEAR_MISSING_RATIO);
 			}
 
 			return new AxleGearData()
@@ -38,13 +39,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			{
 				if (data.LossMap == null)
 				{
-					throw new InvalidFileFormatException("LossMap for Axlegear is missing.");
+					throw new VectoException("LossMap for Axlegear is missing.", ErrorCodes.FILE_INVALID_FORMAT);
 				}
 				axleLossMap = TransmissionLossMapReader.Create(data.LossMap, data.Ratio, "Axlegear", true);
 			}
 			if (axleLossMap == null)
 			{
-				throw new InvalidFileFormatException("LossMap for Axlegear is missing.");
+				throw new VectoException("LossMap for Axlegear is missing.", ErrorCodes.FILE_INVALID_FORMAT);
 			}
 			return axleLossMap;
 		}

@@ -112,7 +112,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			{
 				if (AxlePowertrainsDict.Values.Count > 0)
 				{
-					throw new VectoException("Vehicle has multiple Powertrains");
+					throw new VectoException("Vehicle has multiple Powertrains", ErrorCodes.VEHICLE_MULTIPLE_POWERTRAINS);
 				}
 			}
 			return accessor(value);

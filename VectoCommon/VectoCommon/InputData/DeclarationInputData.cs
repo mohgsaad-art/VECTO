@@ -427,7 +427,9 @@ namespace TUGraz.VectoCommon.InputData
 		public static EcoRollType Get(bool ecoRollWithoutEngineStop, bool ecoRollWithEngineStop)
 		{
 			if (ecoRollWithEngineStop && ecoRollWithoutEngineStop) {
-				throw new VectoException("invalid combination for EcoRoll");
+				throw new VectoException(
+					$"invalid combination for EcoRoll: both ecoRollWithEngineStop and ecoRollWithoutEngineStop are true",
+                    ErrorCodes.ADAS_ECOROLL_INVALID_COMBINATION);
 			}
 
 			if (ecoRollWithoutEngineStop) {

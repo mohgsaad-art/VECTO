@@ -374,12 +374,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 
                 if (batteryData == null)
                 {
-                    throw new VectoException($"Could not create BatterySystem for {jobType}");
+                    throw new VectoException($"Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING);
                 }
 
                 if (superCapData != null)
                 {
-                    throw new VectoException($"Supercaps are not allowed for {jobType}");
+                    throw new VectoException($"Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
                 }
 
                 setBatteryData(batteryData);
@@ -411,7 +411,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 
                 if (batteryData != null && superCapData != null)
                 {
-                    throw new VectoException("Either battery or super cap must be provided");
+                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
                 }
 
                 if (batteryData != null)
@@ -483,7 +483,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 				}
 
 				if (batteryData != null && superCapData != null) {
-					throw new VectoException("Either battery or super cap must be provided");
+					throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
 				}
 			}
 
@@ -652,13 +652,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 
 
 				if (batteryData == null) {
-					throw new VectoException("Could not create BatterySystem for PEV");
+					throw new VectoException("Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING);
 				}
 				setBatteryData(batteryData);
 
 
 				if (superCapData != null) {
-					throw new VectoException("Supercaps are not allowed for PEVs");
+					throw new VectoException("Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
 				}
 			}
 		}

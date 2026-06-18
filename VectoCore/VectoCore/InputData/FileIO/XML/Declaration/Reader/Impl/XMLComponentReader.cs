@@ -38,6 +38,7 @@ using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Common;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
@@ -87,7 +88,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			if (componentsNode == null)
 			{
-				throw new VectoException("component node must not be null!");
+				throw new VectoException("component node must not be null!", ErrorCodes.XML_NULL_ARGUMENT);
 			}
 
 			Vehicle = vehicle;
@@ -134,8 +135,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			catch (Exception e)
 			{
 				var gearNumber = gearNode.Attributes?.GetNamedItem(XMLNames.Gearbox_Gear_GearNumber_Attr).InnerText;
-				throw new VectoException(
-					"Unsupported XML Version! Node: {0} Gear: {1} Version: {2}", e, gearNode.LocalName, gearNumber, version);
+				throw new VectoException($"Unsupported XML Version! Node: {gearNode.LocalName} Gear: {gearNumber} Version: {version}", ErrorCodes.XML_UNSUPPORTED_VERSION, e);
 			}
 		}
 
@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			}
 			catch (Exception e)
 			{
-				throw new VectoException("Unsupported XML version! Node: {0} version: {1}", e, auxNode.LocalName, version);
+				throw new VectoException($"Unsupported XML version! Node: {auxNode.LocalName} version: {version}", ErrorCodes.XML_UNSUPPORTED_VERSION, e);
 			}
 		}
 
@@ -165,7 +165,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			{
 				var axleNumber = axleNode.Attributes?.GetNamedItem(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).InnerText;
 				throw new VectoException(
-					"Unsupported XML Version! Node: {0} Axle: {1} Version: {2}", e, axleNode.LocalName, axleNumber, version);
+					$"Unsupported XML Version! Node: {axleNode.LocalName} Axle: {axleNumber} Version: {version}", ErrorCodes.XML_UNSUPPORTED_VERSION, e);
 			}
 		}
 

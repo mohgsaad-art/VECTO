@@ -120,12 +120,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC)
             {
-                throw new VectoException("OVC must be set to true for PEVs.");
+                throw new VectoException("OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
             }
 
             if (!BatteryOnlyMode)
             {
-                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.");
+                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
             }
         }
 
@@ -264,7 +264,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}");
+                throw new VectoException($"No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
             }
 
             return RetarderTypeHelper.Parse(node.InnerText);
@@ -283,7 +283,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}");
+                throw new VectoException($"No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
             }
 
             return node.InnerText.ParseEnum<AngledriveType>();

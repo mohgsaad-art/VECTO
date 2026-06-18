@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (!VehicleType.IsMultiplePowertrains())
 			{
 				throw new VectoException($"PowertrainConfiguration must be one of: " +
-					$"{VectoSimulationJobType.Multiple_PEV}, {VectoSimulationJobType.Multiple_FCHV}, {VectoSimulationJobType.Multiple_SHEV}");
+					$"{VectoSimulationJobType.Multiple_PEV}, {VectoSimulationJobType.Multiple_FCHV}, {VectoSimulationJobType.Multiple_SHEV}", ErrorCodes.JSON_INVALID_JOB_TYPE);
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (Body[JsonKeys.Vehicle_AxlePowertrains] == null)
 			{
 				throw new VectoException(
-					$"Vehicle file '{DataSource.SourceFile}' does not containt field '{JsonKeys.Vehicle_AxlePowertrains}'");
+					$"Vehicle file '{DataSource.SourceFile}' does not contain field '{JsonKeys.Vehicle_AxlePowertrains}'", ErrorCodes.JSON_MISSING_FIELD);
 			}
 
 			var axlePowertrains = new List<IAxlePowertrainEngineeringInputData>();
@@ -159,7 +159,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			IList<FuelCellStringEntry<IFuelCellComponentEngineeringInputData>> fcList = new List<FuelCellStringEntry<IFuelCellComponentEngineeringInputData>>();
 			if (fcsJson == null)
 			{
-				throw new VectoException("Fuel Cell System missing");
+				throw new VectoException("Fuel Cell System missing", ErrorCodes.JSON_MISSING_FIELD);
 			}
 
 			var retVal = new List<ElectricMachineEntry<IElectricMotorEngineeringInputData>>();
@@ -418,7 +418,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
                     case "IEPC_S":
                     case "IEPC-S": return VectoSimulationJobType.IEPC_S;
                     case "IHPC": return VectoSimulationJobType.IHPC;
-                    default: throw new VectoException("Invalid parameter value {0}", Body.GetEx<String>("PowertrainConfiguration"));
+                    default: throw new VectoException($"Invalid parameter value {Body.GetEx<String>("PowertrainConfiguration")}", ErrorCodes.JSON_INVALID_JOB_TYPE);
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
@@ -122,7 +123,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				busEngineStartStop =
 					DeclarationData.Driver.GetEngineStopStartBus(jobType.Value, arch.Value, compressorDrive.Value);
 			} catch (InvalidOperationException ioe) {
-				throw new VectoException("JobType, Architecture and Compressor Drive must be provided for Buses", ioe);
+				throw new VectoException("JobType, Architecture and Compressor Drive must be provided for Buses", ErrorCodes.SYSTEM_INVALID_OPERATION, ioe);
 			}
 	
 

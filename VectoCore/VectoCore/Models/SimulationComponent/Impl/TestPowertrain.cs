@@ -93,7 +93,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     else
                     {
                         throw new VectoException(
-                            "Torque converter missing for automatic transmission: {0}", Container.Powertrains[(gearbox as IGearboxInfo).AxleNumber].TorqueConverterInfo?.GetType().FullName);
+                            $"Torque converter missing for automatic transmission: {Container.Powertrains[(gearbox as IGearboxInfo).AxleNumber].TorqueConverterInfo?.GetType().FullName}",
+                            ErrorCodes.VEHICLE_MISSING_TORQUE_CONVERTER);
                     }
                 }
             }
@@ -116,7 +117,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
             Brakes = container.Brakes;
             if (Brakes == null) {
-                throw new VectoException("Unknown or missing brakes in TestContainer: {0}", Container.Brakes?.GetType().FullName);
+                throw new VectoException($"Unknown or missing brakes in TestContainer: {Container.Brakes?.GetType().FullName}", ErrorCodes.VEHICLE_MISSING_BRAKES);
             }
         }
 

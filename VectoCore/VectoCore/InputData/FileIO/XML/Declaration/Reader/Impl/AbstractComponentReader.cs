@@ -37,6 +37,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 {
@@ -112,13 +113,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 				try {
 					return componentCreator(null, null, null);
 				} catch (Exception e) {
-					throw new VectoException("failed to create dummy instance for component {0}", e, component);
+					throw new VectoException($"failed to create dummy instance for component {component}", ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT, e);
 				}
 			}
 
 
 
-			throw new VectoException("Component {0} not found!", component);
+			throw new VectoException($"Component {component} not found!", ErrorCodes.XML_MISSING_NODE);
 		}
 
 		protected virtual T GetReader<T>(IXMLDeclarationVehicleData vehicle, XmlNode node, Func<string, IXMLDeclarationVehicleData, XmlNode, T> creator) where T : class 

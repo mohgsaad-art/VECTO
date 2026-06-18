@@ -2,6 +2,7 @@
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.OutputData.XML.GroupWriter;
 using TUGraz.VectoCore.OutputData.XML.GroupWriter.Declaration;
 using VECTO3GUI2020.Resources.XML;
@@ -35,7 +36,7 @@ namespace VECTO3GUI2020.Util.XML.Components
             if (_xElement == null)
             {
 				if (_inputData == null) {
-					throw new VectoException($"Writer not initialized call {nameof(Init)} first");
+					throw new VectoException($"Writer not initialized call {nameof(Init)} first", ErrorCodes.AUXILIARIES_WRITER_NOT_INITIALIZED);
 				}
                 Initialize();
                 CreateElements();

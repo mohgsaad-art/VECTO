@@ -2,6 +2,7 @@
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils.Ninject;
@@ -68,7 +69,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 				default:
 					break;
 			}
-			throw new VectoException("Unknown InputData for Declaration Mode!");
+			throw new VectoException("Unknown InputData for Declaration Mode!", ErrorCodes.VECTORUNDATAFACTORY_UNKNOWN_INPUT);
 		}
 
 
@@ -146,7 +147,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 				case IEngineeringInputDataProvider engDataProvider:
 					return _internalFactory.CreateEngineeringRunDataFactory(EngineeringModeVectoRunDataFactory.Name, engDataProvider);
 				default:
-					throw new VectoException("Unknown InputData for Engineering Mode!");
+					throw new VectoException("Unknown InputData for Engineering Mode!", ErrorCodes.VECTORUNDATAFACTORY_UNKNOWN_INPUT);
 			}
 
         }
@@ -156,7 +157,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 			if (report is T castedReport) {
 				return castedReport;
 			} else {
-				throw new VectoException("Error creating VectoRunDataFactory - wrong ReportType");
+				throw new VectoException("Error creating VectoRunDataFactory - wrong ReportType", ErrorCodes.VECTORUNDATAFACTORY_BAD_REPORT_TYPE);
 				//return null;
 			}
 		}

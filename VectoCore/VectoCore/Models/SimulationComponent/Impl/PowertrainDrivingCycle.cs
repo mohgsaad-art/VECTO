@@ -98,7 +98,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Request(Second absTime, Meter ds)
 		{
-			throw new VectoSimulationException("Powertrain Only Simulation can not handle distance request.");
+			throw new VectoException("Powertrain Only Simulation can not handle distance request.", ErrorCodes.CYCLE_CANNOT_HANDLE_REQUEST);
 		}
 
 		public virtual IResponse Request(Second absTime, Second dt)
@@ -169,7 +169,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					case ResponseSuccess _:
 						break;
 					default:
-						throw new UnexpectedResponseException("PowertrainDrivingCycle received an unexpected response.", response);
+						throw new VectoException($"PowertrainDrivingCycle received an unexpected response.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 			} while (!(response is ResponseSuccess || response is ResponseFailTimeInterval) && (++responseCount < 10));
 

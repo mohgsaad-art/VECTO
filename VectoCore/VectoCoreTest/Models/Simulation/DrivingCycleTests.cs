@@ -170,7 +170,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						dt = 1.SI<Second>();
 						break;
 					default:
-						throw new UnexpectedResponseException("Got an unexpected response", response);
+						throw new VectoException($"Got an unexpected response.\n{response}", ErrorCodes.VECTORUN_UNEXPECTED_RESPONSE);
 				}
 			}
 		}

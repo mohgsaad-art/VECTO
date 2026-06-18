@@ -124,7 +124,7 @@ namespace TUGraz.VectoCore.Utils
 		public static void CallBackExceptionOnError(XmlSeverityType severity, ValidationEvent evt, string message)
 		{
 			if (severity == XmlSeverityType.Error) {
-				throw new VectoException("Validation error: {0}", evt?.ValidationEventArgs?.Message ?? message ?? "XML schema not known");
+				throw new VectoException($"Validation error: {evt?.ValidationEventArgs?.Message ?? message ?? "XML schema not known"}", ErrorCodes.XML_VALIDATION_FAILED);
 			}
 		}
 

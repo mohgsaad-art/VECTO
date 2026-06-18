@@ -6,6 +6,7 @@ using Ninject.Extensions.Factory;
 using Ninject.Extensions.Factory.Factory;
 using Ninject.Parameters;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Utils.Ninject
 {
@@ -91,9 +92,8 @@ namespace TUGraz.VectoCore.Utils.Ninject
 			}
 			catch (Exception e) {
 				var name = GetName(methodInfo, arguments);
-				throw new VectoException("failed to create instance for '{1}' via '{0}' version '{2}' name '{3}'", e, methodInfo, methodInfo.ReturnType.Name, arguments[0].ToString(), name);
-				
-				//throw e;
+				throw new VectoException(
+					$"failed to create instance for '{methodInfo.ReturnType.Name}' via '{methodInfo}' version '{arguments[0].ToString()}' name '{name}'", e.GetErrorCode(), e);
 			}
 		}
 

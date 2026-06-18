@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			MeterPerSquareSecond aMax)
 		{
 			if (!LoadStages.ContainsKey(loadStage)) {
-				throw new VectoException("No Shiftlines for load stage {0} found", loadStage);
+				throw new VectoException($"No Shiftlines for load stage {loadStage} found", ErrorCodes.SHIFTLINESSET_NO_LINES_FOUND);
 			}
 
 			var shiftLinesSet = LoadStages[loadStage];

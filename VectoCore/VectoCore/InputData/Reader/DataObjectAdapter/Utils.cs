@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
@@ -24,7 +25,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             
             if (!axlePtArchs.Any(x => x == vehicle.ArchitectureID))
             {
-                throw new VectoException($"ArchitectureID ({vehicle.ArchitectureID}) does not match any axle powertrain architecture.");
+                throw new VectoException($"ArchitectureID ({vehicle.ArchitectureID}) does not match any axle powertrain architecture.", ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
             }
             else
             {
@@ -33,7 +34,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
             if (!axlePtArchs.Any(x => x == vehicle.ArchitectureIDPwt2))
             {
-                throw new VectoException($"ArchitectureIDPwt2 ({vehicle.ArchitectureIDPwt2}) does not match any axle powertrain architecture (ArchitectureID has already been matched).");
+                throw new VectoException($"ArchitectureIDPwt2 ({vehicle.ArchitectureIDPwt2}) does not match any axle powertrain architecture (ArchitectureID has already been matched).", 
+                    ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
             }
         }
 
@@ -41,7 +43,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
         {
             if (axlePts.Select(x => x.AxleNumber).Distinct().Count() < axlePts.Count)
             {
-                throw new VectoException($"Some axle powertrains have the same axleNumber.");
+                throw new VectoException($"Some axle powertrains have the same axleNumber.", ErrorCodes.VEHICLE_DUPLICATE_AXLE_NUMBER);
             }
 
             var axleNumbers = vehicle.Components.AxleWheels.AxlesDeclaration.Select(x => x.AxleNumber).ToList();
@@ -50,7 +52,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             {
                 if (!axleNumbers.Contains(item.AxleNumber))
                 {
-                    throw new VectoException($"Powertrain axleNumber ({item.AxleNumber}) is not found among the Axles of AxleWheels.");
+                    throw new VectoException($"Powertrain axleNumber ({item.AxleNumber}) is not found among the Axles of AxleWheels.", ErrorCodes.VEHICLE_INVALID_AXLE_NUMBER);
                 }
             }
         }
@@ -64,7 +66,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
             if (position != PowertrainPositionHelper.Parse(axlePtData.Architecture.ToString()))
             {
-                throw new VectoException($"ElectricMachine has mismatching PowertrainPosition ({position}) in powertrain with axleNumber: {axlePtData.AxleNumber}.");
+                throw new VectoException($"ElectricMachine has mismatching PowertrainPosition ({position}) in powertrain with axleNumber: {axlePtData.AxleNumber}.", 
+                    ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
             }
         }
 
@@ -83,7 +86,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
                 {
                     throw new VectoException(
                         $"ElectricMachine in ElectricMotorTorqueLimits with axleNumber: {item.Key.AxleNumber}, Position: {item.Key.Position}, " +
-                        "cannot be found among the axle powertrains or it is a duplicate.");
+                        "cannot be found among the axle powertrains or it is a duplicate.", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
                 }
                 else
                 {

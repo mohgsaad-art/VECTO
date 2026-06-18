@@ -396,8 +396,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (AuxCfg.ElectricalUserInputsConfig.ConnectESToREESS) {
 				if (DCDCConverter is null) {
-					throw new VectoException("DCDCConverter is missing: The current configuration for the bus auxiliaries " +
-										     "requires a DCDCConverter (ES supply from HEV REESS is activated).");
+					throw new VectoException(
+						"DCDCConverter is missing: The current configuration for the bus auxiliaries requires a DCDCConverter (ES supply from HEV REESS is activated).", 
+						ErrorCodes.AUXILIARIES_MISSING_DCDCCONVERTER);
 				}
 				DCDCConverter.ConsumerEnergy(-missingEnergy, dryRun);
 			} else {

@@ -2,6 +2,7 @@
 using System.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
 {
@@ -19,7 +20,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
         {
             var matching = Map.Where(x => x.IsEqual(heatPump, electricHeater, fuelHeater)).ToList();
             if (matching.Count != 1) {
-                throw new VectoException($"Zero or more than one matching entry! {matching.Count}");
+                throw new VectoException($"Zero or more than one matching entry! {matching.Count}", ErrorCodes.SYSTEM_NO_EXACT_MATCH);
             }
 
             return matching.First().HeatingDistributionCase;

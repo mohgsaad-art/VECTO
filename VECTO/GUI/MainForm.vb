@@ -328,25 +328,30 @@ Public Class MainForm
         VectoWorkerV3.WorkerReportsProgress = True
         VectoWorkerV3.WorkerSupportsCancellation = True
 
+        AddHandler LoggingObject.OnLogEvent, AddressOf HandleLogMessages
+
         'Set mode (Batch/Standard)
         ModeUpdate()
 
         DeclOnOff()
     End Sub
 
-    ' ReSharper disable once UnusedMember.Global -- used via Logging Framework! 
-    Public Shared Sub LogMethod(level As String, message As String)
+    Private Sub HandleLogMessages(sender As Object, logEventArgs As LoggingObject.LogEventArgs)
+        Dim level As String = logEventArgs.Level
+        Dim Message As String = logEventArgs.Message
+        Dim exception As Exception = logEventArgs.Exception
+
         If VectoWorkerV3 Is Nothing Then
-            Debug.WriteLine("{0}, {1}", level, message)
+            Debug.WriteLine("{0}, {1}", level, Message)
             Return
         End If
 
         If VectoWorkerV3.IsBusy AndAlso Not VectoWorkerV3.CancellationPending Then
             If level = "Warn" Then
                 VectoWorkerV3.ReportProgress(100,
-                                             New VectoProgress With {.Target = "ListBoxWarning", .Message = message})
+                                             New VectoProgress With {.Target = "ListBoxWarning", .Message = Message})
             ElseIf level = "Error" Or level = "Fatal" Then
-                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = message})
+                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = IIf(exception Is Nothing, Message, exception.GetMessageWithCycleID()).ToString(), .Exception = exception})
             End If
         End If
     End Sub
@@ -1093,8 +1098,8 @@ lbFound:
                                          .Message = "Finished Reading Data for job: " + jobFile})
 
             Catch ex As Exception
-                MsgBox($"ERROR running job {jobFile}: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
-                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = ex.Message})
+                MsgBox($"ERROR running job {jobFile}: [{ex.GetErrorCode()}]: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
+                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = $"[{ex.GetErrorCode()}]: {ex.Message}", .Exception = ex})
                 Return
             End Try
         Next
@@ -1159,7 +1164,7 @@ lbFound:
             If (Not progressEntry.Value.Success) Then
                 sender.ReportProgress(100,
                                       New VectoProgress _
-                                         With {.Target = "ListBox", .Message = progressEntry.Value.Error.Message})
+                                         With {.Target = "ListBoxError", .Message = progressEntry.Value.Error.GetMessageWithCycleRunInfo(), .Exception = progressEntry.Value.Error})
             End If
 
         Next
@@ -1203,6 +1208,12 @@ lbFound:
         End If
     End Sub
 
+    Private Shared Function GetGearInfo(ex As Exception) As String
+        Return TryCast(ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
+                Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").
+                Join()
+    End Function
+
     Private Function GetOutputDirectory(jobFile As String) As String
 
         Dim outFile As String = jobFile
@@ -1232,12 +1243,11 @@ lbFound:
             Dim runName As String = $"{p.Value.RunName} {p.Value.CycleName} {p.Value.RunSuffix}"
 
             If Not p.Value.Error Is Nothing Then
-                VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError",
-                                                .Message = $"Finished Run {runName} with ERROR: {p.Value.Error.Message}",
-                                                .Link = modFilename})
+                VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
+                                                .Message = $"Finished with error: {runName}"})
             Else
                 VectoWorkerV3.ReportProgress(0, New VectoProgress With {.Target = "ListBox",
-                                                .Message = $"Finished Run {runName} successfully."})
+                                                .Message = $"Finished successfully: {runName}"})
             End If
 
             If (File.Exists(modFilename)) Then
@@ -1254,15 +1264,15 @@ lbFound:
         Select Case progress.Target
             Case "ListBox"
                 If progress.Link Is Nothing Then
-                    MsgToForm(MessageType.Normal, progress.Message, "", "")
+                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Exception)
                 Else
-                    MsgToForm(MessageType.Normal, progress.Message, "", progress.Link)
+                    MsgToForm(MessageType.Normal, progress.Message, progress.Link, progress.Exception)
                 End If
             Case "ListBoxWarning"
-                MsgToForm(MessageType.Warn, progress.Message, "", "")
+                MsgToForm(MessageType.Warn, progress.Message, "", progress.Exception)
                 Return
             Case "ListBoxError"
-                MsgToForm(MessageType.Err, progress.Message, "", "")
+                MsgToForm(MessageType.Err, progress.Message, "", progress.Exception)
                 Return
             Case "Status"
                 Status(progress.Message)
@@ -1548,7 +1558,7 @@ lbFound:
 
 
     'Add message to message list
-    Public Sub MsgToForm(id As MessageType, msg As String, source As String, link As String)
+    Public Sub MsgToForm(id As MessageType, msg As String, link As String, exception As Exception)
 
         If (InvokeRequired) Then
             'Me.Invoke(New MsgToFormDelegate(AddressOf MSGtoForm), ID, Msg, Source, Link)
@@ -1559,9 +1569,13 @@ lbFound:
         lv0 = New ListViewItem
         lv0.Text = msg
         lv0.SubItems.Add(Now.ToString("HH:mm:ss.ff"))
-        lv0.SubItems.Add(source)
+        lv0.Tag = exception
 
-        Task.Run(Sub() LogFile.WriteToLog(id, msg & vbTab & source))
+        If Not exception Is Nothing Then
+            lv0.SubItems.Add("Click for Details")
+        End If
+
+        Task.Run(Sub() LogFile.WriteToLog(id, msg & vbTab))
 
         Select Case id
 
@@ -1618,7 +1632,14 @@ lbFound:
         Dim txt As String
         If LvMsg.SelectedIndices.Count > 0 Then
             If Not LvMsg.SelectedItems(0).Tag Is Nothing Then
-                If _
+                If TypeOf LvMsg.SelectedItems(0).Tag Is Exception Then
+                    Dim ex As Exception = TryCast(LvMsg.SelectedItems(0).Tag, Exception)
+                    If ex IsNot Nothing Then
+                        Using errorForm As New ErrorForm(ex)
+                            errorForm.ShowDialog()
+                        End Using
+                    End If
+                ElseIf _
                     Len(CStr(LvMsg.SelectedItems(0).Tag)) > 4 AndAlso
                     Microsoft.VisualBasic.Left(CStr(LvMsg.SelectedItems(0).Tag), 4) = "<UM>" Then
                     txt = CStr(LvMsg.SelectedItems(0).Tag).Replace("<UM>", MyAppPath & "User Manual")
@@ -2121,6 +2142,7 @@ Lb1:
         Public Target As String
         Public Message As String
         Public Link As String
+        Public Exception As Exception
     End Class
 
     Private Sub btnExportXML_Click(sender As Object, e As EventArgs) Handles btnExportXML.Click
@@ -2158,7 +2180,7 @@ Lb1:
                     End Select
             End Select
 
-            If input Is Nothing Then Throw New VectoException("No InputDataProvider for file {0} found!", f)
+            If input Is Nothing Then Throw New Exception($"No InputDataProvider for file {f} found!")
 
             XMLExportJobDialog.Initialize(input)
             XMLExportJobDialog.ShowDialog()

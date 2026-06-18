@@ -27,7 +27,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.Document
 			_dataSource = multistep.DataSource;
 			_inputData = multistep;
 			if (_inputData == null) {
-				throw new VectoException("Invalid input file");
+				throw new Exception("Invalid input file");
 			}
 
 			_documentName = Path.GetFileNameWithoutExtension(_inputData.DataSource.SourceFile);

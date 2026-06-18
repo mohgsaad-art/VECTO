@@ -330,7 +330,7 @@ Public Class Engine
 	Public ReadOnly Property FullLoadCurve As TableData Implements IEngineModeDeclarationInputData.FullLoadCurve
 		Get
 			If Not File.Exists(_fullLoadCurvePath.FullPath) Then _
-				Throw New VectoException("Full-Load Curve is missing or invalid")
+				Throw New VectoException("Full-Load Curve is missing or invalid", ErrorCodes.ICE_FULL_LOAD_CURVE_MISSING)
 			Return VectoCSVFile.Read(_fullLoadCurvePath.FullPath)
 		End Get
 	End Property
@@ -473,7 +473,7 @@ Public Class WHRData
 	Public ReadOnly Property GeneratedPower As TableData Implements IWHRData.GeneratedPower
 		Get
 			If Not File.Exists(EngineData.PrimaryEngineFuel._fuelConsumptionMapPath.FullPath) Then _
-				Throw New VectoException("FuelConsumptionMap is missing or invalid")
+				Throw New VectoException("FuelConsumptionMap is missing or invalid", ErrorCodes.ICE_FUEL_CONSUMPTION_MAP_MISSING)
 			Return VectoCSVFile.Read(EngineData.PrimaryEngineFuel._fuelConsumptionMapPath.FullPath)
 		End Get
 	End Property
@@ -596,7 +596,7 @@ Public Class EngineFuel
 	Public ReadOnly Property FuelConsumptionMap As TableData Implements IEngineFuelDeclarationInputData.FuelConsumptionMap
 		Get
 			If Not File.Exists(_fuelConsumptionMapPath.FullPath) Then _
-				Throw New VectoException("FuelConsumptionMap is missing or invalid")
+				Throw New VectoException("FuelConsumptionMap is missing or invalid", ErrorCodes.ICE_FUEL_CONSUMPTION_MAP_MISSING)
 			Return VectoCSVFile.Read(_fuelConsumptionMapPath.FullPath)
 		End Get
 	End Property

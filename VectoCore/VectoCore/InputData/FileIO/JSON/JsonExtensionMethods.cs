@@ -31,6 +31,7 @@
 
 using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -40,7 +41,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			var val = jobject[property];
 			if (val == null) {
-				throw new InvalidFileFormatException("Key {0} not found", property);
+				throw new VectoException($"Key {property} not found", ErrorCodes.FILE_INVALID_FORMAT);
 			}
 			return val;
 		}
@@ -49,7 +50,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			var val = jtoken[property];
 			if (val == null) {
-				throw new InvalidFileFormatException("Key {0} not found", property);
+				throw new VectoException($"Key {property} not found", ErrorCodes.FILE_INVALID_FORMAT);
 			}
 			return val;
 		}

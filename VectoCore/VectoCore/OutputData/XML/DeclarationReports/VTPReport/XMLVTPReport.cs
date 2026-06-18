@@ -293,7 +293,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var vtpResult = Results.OrderBy(x => x.FuelMode).FirstOrDefault(x => x.Mission == MissionType.VerificationTest);
 
 			if (vtpResult == null) {
-				throw new VectoException("no vtp result found for generating vtp report");
+				throw new VectoException("no vtp result found for generating vtp report", ErrorCodes.REPORT_RESULT_VTP_NOT_FOUND);
 			}
 
 			var selectedMission = GetSelectedMission();
@@ -341,7 +341,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var declaredCO2 = result.CO2[key];
 
 			if (result == null) {
-				throw new VectoException("no corresponding simulation result found for generating vtp report");
+				throw new VectoException("no corresponding simulation result found for generating vtp report", ErrorCodes.REPORT_RESULT_VTP_NOT_FOUND);
 			}
 			
 			var verifiedCO2 = declaredCO2 * cVtp.Value();

@@ -120,7 +120,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 	
 
             throw new VectoException(
-                $"Specific implementation for Airdrag Data (Interim Stage) missing {airdrag.GetType().Name}");
+                $"Specific implementation for Airdrag Data (Interim Stage) missing {airdrag.GetType().Name}", ErrorCodes.AIRDRAG_MISSING_IMPLEMENTATION);
 
             //	//if (airdrag == null)
             //	//	return null;

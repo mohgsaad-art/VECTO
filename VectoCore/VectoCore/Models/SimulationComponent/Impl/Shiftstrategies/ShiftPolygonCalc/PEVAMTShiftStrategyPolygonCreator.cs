@@ -41,7 +41,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies.Shift
 		{
 			if (electricMotorData == null)
 			{
-				throw new VectoException("ElectricMotorData is required to calculate Shift Polygon!");
+				throw new VectoException("ElectricMotorData is required to calculate Shift Polygon!", ErrorCodes.SHIFTSTRATEGY_MISSING_ELECTRICMOTOR_DATA);
 			}
 			var emFld = electricMotorData.EfficiencyData.VoltageLevels.First().FullLoadCurve;
 			return ComputeDeclarationShiftPolygon(i, gearboxGears, axlegearRatio, dynamicTyreRadius, electricMotorData,
@@ -64,7 +64,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies.Shift
 			ElectricMotorData electricMotorData, ElectricMotorData emDataLimited)
 		{
 			if (!electricMotorData.EfficiencyData.MaxSpeed.IsEqual(emDataLimited.EfficiencyData.MaxSpeed)) {
-				throw new VectoException("Limited em data should have the same max speed as the original data");
+				throw new VectoException("Limited em data should have the same max speed as the original data", ErrorCodes.SHIFTSTRATEGY_INVALID_ELECTRICMOTOR_DATA);
 			}
 			return DeclarationData.Gearbox.ComputeElectricMotorShiftPolygon(
 				i,

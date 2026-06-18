@@ -43,7 +43,7 @@ Public Module GUI_Subs
 	'Status message
 	' ReSharper disable once InconsistentNaming
 	Public Sub GUIMsg(ByVal id As MessageType, ByVal msg As String)
-		MainForm.MSGtoForm(id, msg, "", "")
+		MainForm.MsgToForm(id, msg, "", Nothing)
 	End Sub
 
 	'Statusbar

@@ -37,6 +37,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Utils;
@@ -94,12 +95,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
             {
                 if (vehicle.H2StorageUsableCapacity == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.");
+                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.", ErrorCodes.XML_MISSING_NODE);
                 }
 
 				if (vehicle.HydrogenStorageTechnology == null)
 				{
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.");
+                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.", ErrorCodes.XML_MISSING_NODE);
                 }
             }
         }
@@ -236,12 +237,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
             {
                 if (vehicle.H2StorageUsableCapacity == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.");
+                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.", ErrorCodes.XML_MISSING_NODE);
                 }
 
                 if (vehicle.HydrogenStorageTechnology == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.");
+                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.", ErrorCodes.XML_MISSING_NODE);
                 }
             }
         }

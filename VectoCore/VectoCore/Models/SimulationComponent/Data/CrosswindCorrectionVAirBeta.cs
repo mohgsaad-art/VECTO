@@ -83,10 +83,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		protected (CrossWindCorrectionCurveReader.AirDragBetaEntry, CrossWindCorrectionCurveReader.AirDragBetaEntry) FindIndex(double beta)
 		{
 			if (beta < AirDragEntries.First().Beta) {
-				throw new VectoSimulationException("Beta / CdxA Lookup table does not cover beta={0}", beta);
+				throw new VectoException($"Beta / CdxA Lookup table does not cover beta={beta}", ErrorCodes.AIRDRAG_ENTRIES_DONT_COVER_BETA);
 			}
 			if (beta > AirDragEntries.Last().Beta) {
-				throw new VectoSimulationException("Beta / CdxA Lookup table does not cover beta={0}", beta);
+				throw new VectoException($"Beta / CdxA Lookup table does not cover beta={beta}", ErrorCodes.AIRDRAG_ENTRIES_DONT_COVER_BETA);
 			}
 
 			return AirDragEntries.GetSection(x => x.Beta < beta);

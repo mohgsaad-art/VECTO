@@ -224,7 +224,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected MeterPerSquareSecond EstimateAccelerationForGear(GearshiftPosition gear, PerSecond gbxAngularVelocityOut)
 		{
 			if (!Gears.Contains(gear)) {
-				throw new VectoSimulationException("EstimateAccelerationForGear: invalid gear: {0}", gear);
+				throw new VectoException($"EstimateAccelerationForGear: invalid gear: {gear}", ErrorCodes.SHIFTSTRATEGY_INVALID_GEAR);
 			}
 
 			var vehicleSpeed = Container.VehicleInfo.VehicleSpeed;

@@ -64,7 +64,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 		public double GetDelaunayZValue(Entry entry)
 		{
 			if (entry.MotorSpeed.IsEqual(0)) {
-				throw new VectoException("Electric motor speed has to be greater than 0");
+				throw new VectoException("Electric motor speed has to be greater than 0", ErrorCodes.ELECTRICMOTOR_SPEED_IS_ZERO);
 			}
 			return - ((entry.PowerElectrical - entry.MotorSpeed * entry.Torque) /
 						(entry.MotorSpeed)).Value();
@@ -250,10 +250,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 					}
                 }
 				return retVal;
-			} catch (VectoSearchFailedException vsfe) {
+			} 
+			catch (VectoException e) 
+			{
+				if (e.GetErrorCode() == ErrorCodes.SEARCH_FAILED)
+				{
 #if DEBUG
-				Log.Error("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, vsfe.Message);
+                    Log.Warn("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, e.Message);
 #endif
+                }
+                else
+				{
+					throw;
+				}
 			}
 
 			return null;

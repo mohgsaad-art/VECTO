@@ -37,6 +37,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
@@ -526,9 +527,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						Running = true;
 						Run.Run();
 					} catch (Exception ex) {
-						Log.Error(ex, "Error during simulation run!");
 						ExecException = ex;
-						throw;
+						Log.Error(ex);
+                        throw;
 					} finally {
 						stopWatch.Stop();
 						Success = Run.FinishedWithoutErrors && ExecException == null;

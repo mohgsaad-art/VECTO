@@ -308,23 +308,21 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 							XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry
 						}, GetNode(XMLNames.Engine_FuelModes_Fuel))
 					.Cast<XmlNode>().All(x => x.Attributes?[fcMapAttr] != null);
+				
 				if (correctionFactorNodes.Count > 0) {
 					if (!whrPwrNodes) {
-						throw new VectoXMLException("WHR correction factors provided but {0} missing for some entries.", fcMapAttr);
-
+						throw new VectoException($"WHR correction factors provided but {fcMapAttr} missing for some entries.", ErrorCodes.XML_MISSING_ATTRIBUTE);
 					}
-					//return new XMLDeclarationWHRData();
 				}
 
 				if (correctionFactorNodes.Count > 1) {
-					throw new VectoXMLException("WHRData (correction factors) can only be defined for one fuel!");
+					throw new VectoException("WHRData (correction factors) can only be defined for one fuel!", ErrorCodes.XML_BAD_DATA);
 				}
 
 				if (whrPwrNodes) {
 					if (correctionFactorNodes.Count == 0) {
-						throw new VectoXMLException("WHR electric power provided but no correction factors found.");
+						throw new VectoException("WHR electric power provided but no correction factors found.", ErrorCodes.XML_MISSING_DATA);
 					}
-					//return new XMLDeclarationWHRData();
 				}
 
 				var fuelNodes = GetNodes(XMLNames.Engine_FuelModes_Fuel);
@@ -335,7 +333,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 						if (GetNodes(XMLNames.Engine_FuelConsumptionMap_Entry, fuel).Cast<XmlNode>()
 																					.Any(x => x.Attributes?[fcMapAttr] != null)) {
 							if (whrFuelNode != null) {
-								throw new VectoException("WHRData ({0}) can only be defined for one fuel!", fcMapAttr);
+								throw new VectoException($"WHRData ({fcMapAttr}) can only be defined for one fuel!", ErrorCodes.XML_BAD_DATA);
 							}
 
 							whrFuelNode = fuel;
@@ -350,13 +348,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					var missing = GetNodes(
 							new[] { XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry }, whrFuelNode)
 						.Cast<XmlNode>().Where(x => x.Attributes?[fcMapAttr] == null);
-					throw new VectoException("WHRData has to be provided for every entry in the FC-Map! {0}",
-						missing.Select(x => $"n: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr]?.Value}, " +
-											$"T: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_Torque_Attr]?.Value}").Join("; "));
+
+					var data = missing.Select(x => $"n: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr]?.Value}, " +
+												   $"T: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_Torque_Attr]?.Value}").Join("; ");
+
+                    throw new VectoException($"WHRData has to be provided for every entry in the FC-Map! {data}", ErrorCodes.XML_MISSING_ATTRIBUTE);
 				}
 
 				if (correctionFactorNodes[0].ParentNode.ParentNode != whrFuelNode) {
-					throw new VectoException("Correction Factors and WHR-Map have to be defined for the same fuel!");
+					throw new VectoException("Correction Factors and WHR-Map have to be defined for the same fuel!", ErrorCodes.XML_BAD_DATA);
 				}
 
 				return new XMLDeclarationWHRData(whrFuelNode, correctionFactorNodes[0]);

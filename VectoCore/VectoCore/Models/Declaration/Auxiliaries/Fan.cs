@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 				technology = "Crankshaft mounted - Electronically controlled visco clutch";
 			}
 			if (!GetTechnologies().Contains(technology)) {
-				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'");
+				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'", ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 			}
 			return vehicleClass.IsMediumLorry()
 				? fanMediumLorries.Lookup(mission, technology, false).PowerDemand + fanMediumLorries.Lookup(mission, technology, true).PowerDemand
@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 		public Watt LookupMechanicalPowerDemand(VehicleClass vehicleClass, MissionType mission, string technology)
 		{
 			if (!GetTechnologies().Contains(technology)) {
-				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'");
+				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'", ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 			}
 			return (vehicleClass.IsMediumLorry()
 				? fanMediumLorries.Lookup(mission, technology, false)
@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 		public Watt LookupElectricalPowerDemand(VehicleClass vehicleClass, MissionType mission, string technology)
 		{
 			if (!GetTechnologies().Contains(technology)) {
-				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'");
+				throw new VectoException($"Auxiliary Lookup Error: Unknown Fan technology: '{technology}'", ErrorCodes.AUXILIARIES_UNKNOWN_TECHNOLOGY);
 			}
 			return (vehicleClass.IsMediumLorry()
 				? fanMediumLorries.Lookup(mission, technology, true)

@@ -1,6 +1,7 @@
 ﻿using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Generic;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Specific;
@@ -48,7 +49,7 @@ public class DummyRunRunDataFactoryFactory : IVectoRunDataFactoryFactory
             default:
                 break;
         }
-        throw new VectoException("Unknown InputData for Declaration Mode!");
+        throw new VectoException("Unknown InputData for Declaration Mode!", ErrorCodes.VECTORUNDATAFACTORY_UNKNOWN_INPUT);
     }
 
     private IVectoRunDataFactory CreateRunDataReader(IMultistageVIFInputData multiStepVifInputData, IDeclarationReport report)

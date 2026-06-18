@@ -613,7 +613,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			foreach (var fuel in fuels) {
 				var entry = fuel.FuelData;
 				if (FuelColumns.ContainsKey(entry)) {
-					throw new VectoException("Fuel {0} already added!", entry.FuelType.GetLabel());
+					throw new VectoException($"Fuel {entry.FuelType.GetLabel()} already added!", ErrorCodes.SYSTEM_DUPLICATE_KEY);
 				}
 
 				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();

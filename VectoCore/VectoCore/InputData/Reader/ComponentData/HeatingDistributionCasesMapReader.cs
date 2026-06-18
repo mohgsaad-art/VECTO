@@ -37,7 +37,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var requiredHeatPumps = EnumHelper.GetValues<HeatPumpType>()
 				.Where(x => !x.IsOneOf(HeatPumpType.none, HeatPumpType.not_applicable)).ToList();
 			if (!HeaderIsValid(data.Columns, requiredHeatPumps)) {
-				throw new VectoException("Invalid Header vor heating distribution map");
+				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			var map = new Dictionary<Tuple<HeatingDistributionCase, int>, HeatingDistributionMap.Entry>();
@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var requiredHeatPumps = EnumHelper.GetValues<HeatPumpType>()
 				.Where(x => !x.IsOneOf(HeatPumpType.none, HeatPumpType.not_applicable)).ToList();
 			if (!HeaderIsValid(data.Columns, requiredHeatPumps)) {
-				throw new VectoException("Invalid Header vor heating distribution map");
+				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			var map = new List<HeatingDistributionCasesMap.Entry>();
@@ -115,7 +115,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				}
 
 				if (allowedHeatPumps.Count > 1) {
-					throw new VectoException("One row shall not contain multiple heatpump technologies!");
+					throw new VectoException("One row shall not contain multiple heatpump technologies!", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 
 				if (allowedHeatPumps.Count == 0) {

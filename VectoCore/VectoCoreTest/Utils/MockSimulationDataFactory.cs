@@ -193,7 +193,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			var jobInput = JSONInputDataFactory.ReadJsonJob(driverDataFile);
 			var engineeringJob = jobInput as IEngineeringInputDataProvider;
 			if (engineeringJob == null) {
-				throw new VectoException("Failed to cas to Engineering InputDataProvider");
+				throw new Exception("Failed to cast to Engineering InputDataProvider");
 			}
 
 			var dao = new EngineeringDataAdapter();

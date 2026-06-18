@@ -257,9 +257,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
             // case C3a
             if (runData.ElectricMachinesSinglePwt.Count != 1) 
             {
-                throw new VectoException("exactly 1 electric machine is required. got {0} ({1})",
-                    runData.ElectricMachinesSinglePwt.Count,
-                    runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()).Join());
+                throw new VectoException($"exactly 1 electric machine is required. got {runData.ElectricMachinesSinglePwt.Count} " +
+                    $"({string.Join(", ", runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()))})", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
             }
 
 			var averageEmEfficiencyCharging = runData.JobType.IsMultiplePowertrains()
@@ -415,10 +414,9 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 					// case C3a
 					if (runData.ElectricMachinesSinglePwt.Count != 1)
 					{
-						throw new VectoException("exactly 1 electric machine is required. got {0} ({1})",
-                            runData.ElectricMachinesSinglePwt.Count,
-                            runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()).Join());
-                    }
+						throw new VectoException($"exactly 1 electric machine is required. got {runData.ElectricMachinesSinglePwt.Count} " +
+                            $"({string.Join(", ", runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()))})", ErrorCodes.VEHICLE_ELECTRICMOTOR_MISMATCH);
+					}
 
 					var emEffGen = runData.GetEMData()
                         .Average(x => modData.ElectricMotorEfficiencyGenerate(x.Item1.Position, x.Item1.AxleNumber));

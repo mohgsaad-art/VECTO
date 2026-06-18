@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 			EMPos = GetEMPos(dataBus, powertrainContainer);
 			if (EMPos == PowertrainPosition.HybridPositionNotSet) {
-				throw new VectoException("PEV Shift Strategy requires electric motor at position E2");
+				throw new VectoException("PEV Shift Strategy requires electric motor at position E2", ErrorCodes.SHIFTSTRATEGY_INVALID_ELECTRICMOTOR_POSITION);
 			}
 
 			var powertrainData = runData.AxlePowertrainsDict[powertrainContainer.AxleNumber];
@@ -137,7 +137,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 								runData.VehicleData.DynamicTyreRadius;
 
 			if (_shiftStrategyParameters == null) {
-				throw new VectoException("Parameters for shift strategy missing!");
+				throw new VectoException("Parameters for shift strategy missing!", ErrorCodes.SHIFTSTRATEGY_MISSING_PARAMETERS);
 			}
 
 			
@@ -850,7 +850,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			get => _gearbox;
 			set {
 				if (!(value is IPEVGearbox || value is IIEPCGearbox || value is IAPTNGearbox)) {
-					throw new VectoException("This shift strategy can't handle gearbox of type {0}", value.GetType());
+					throw new VectoException($"This shift strategy can't handle gearbox of type {value.GetType().Name}", ErrorCodes.SHIFTSTRATEGY_UNSUPPORTED_GEARBOX);
 				}
 				_gearbox = value;
 			}

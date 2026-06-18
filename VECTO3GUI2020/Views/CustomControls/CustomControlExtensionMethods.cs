@@ -30,7 +30,7 @@ namespace VECTO3GUI2020.Views.CustomControls
 
 			if (propertyName == null || binding == null) {
 				var status = binding?.Status;
-				throw new VectoException("Could not resolve binding");
+				throw new Exception("Could not resolve binding");
 			}
 
 			foreach (var resourceManager in resourceManagers) {

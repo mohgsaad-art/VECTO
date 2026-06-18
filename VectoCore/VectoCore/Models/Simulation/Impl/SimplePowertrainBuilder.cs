@@ -140,7 +140,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case CycleType.EngineOnly:
 					break;
 				default:
-					throw new VectoException("Wrong CycleType for SimplePowertrain");
+					throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
 			}
 
 			var engine = ComponentFactory.CreateCombustionEngine(data.Cycle.CycleType, container, powertrainContainer, data.EngineData);
@@ -372,7 +372,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.BusAuxiliaries != null) {
 				if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 
 				var auxCfg = data.BusAuxiliaries;
@@ -426,7 +426,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var engine = ComponentFactory.CreateCombustionEngine(data.Cycle.CycleType, container, powertrainContainer, data.EngineData);
 			var gearbox = GetSimpleGearbox(container, powertrainContainer, data);
 			if (!(gearbox is IHybridControlledGearbox gbx)) {
-				throw new VectoException("Gearbox can not be used for parallel hybrid");
+				throw new VectoException("Gearbox can not be used for parallel hybrid", ErrorCodes.VEHICLE_INVALID_GEARBOX);
 			}
 
 			var ctl = ComponentFactory.CreateHybridController(data.Cycle.CycleType, container, powertrainContainer, null, es);
@@ -451,7 +451,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					ComponentFactory.CreateMeasuredSpeedDrivingCycle(container, GetMeasuredSpeedDummyCycle()).AddComponent(vehicle);
 					break;
 				case CycleType.EngineOnly: break;
-				default: throw new VectoException("Wrong CycleType for SimplePowertrain");
+				default: throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
 			}
 
 			if ((data.SuperCapData != null || data.BatteryData != null) && data.EngineData.WHRType.IsElectrical()) {
@@ -499,7 +499,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.BusAuxiliaries != null) {
 				if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
-					throw new VectoException("BusAux data set but no BusAux component found!");
+					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
 
 				var auxCfg = data.BusAuxiliaries;
@@ -550,7 +550,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 case CycleType.EngineOnly:
                     break;
                 default:
-                    throw new VectoException("Wrong CycleType for SimplePowertrain");
+                    throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
             }
 
             if ((data.SuperCapData != null || data.BatteryData != null) && data.EngineData.WHRType.IsElectrical()) {
@@ -593,7 +593,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
             if (data.BusAuxiliaries != null) {
                 if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
-                    throw new VectoException("BusAux data set but no BusAux component found!");
+                    throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
                 }
 
                 var auxCfg = data.BusAuxiliaries;
@@ -645,7 +645,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case CycleType.EngineOnly:
 					break;
 				default:
-					throw new VectoException("Wrong CycleType for SimplePowertrain");
+					throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
 			}
 
 			var es = ConnectREESS(data, container);
@@ -699,7 +699,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 case CycleType.EngineOnly:
                     break;
                 default:
-                    throw new VectoException("Wrong CycleType for SimplePowertrain");
+                    throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
             }
 
             var es = ConnectREESS(data, container);

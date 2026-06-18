@@ -226,7 +226,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return Tuple.Create(segment.VehicleClass, (bool?)null);
 			}
 
-			throw new VectoException("No Group found for vehicle");
+			throw new VectoException("No Group found for vehicle", ErrorCodes.DECLARATIONDATA_GROUP_NOT_FOUND);
 		}
 
 
@@ -265,9 +265,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			if (!segment.Found && throwException) {
 				throw new VectoException(
-					"no segment found for vehicle configuration: vehicle category: {0}, axle configuration: {1}, GVMR: {2}",
-					vehicle.VehicleCategory, vehicle.AxleConfiguration,
-					vehicle.GrossVehicleMassRating);
+					$"no segment found for vehicle configuration: vehicle category: {vehicle.VehicleCategory}, axle configuration: {vehicle.AxleConfiguration}, " +
+					$"Gross Vehicle Mass Rating: {vehicle.GrossVehicleMassRating}", ErrorCodes.DECLARATIONDATA_SEGMENT_NOT_FOUND);
 			}
 
 			return new SegmentLookup() { Segment = segment, AllowVocational = allowVocational };
@@ -394,7 +393,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				: mission.BusParameter.PassengerDensityRef);
 
 			if (loading != LoadingType.ReferenceLoad && loading != LoadingType.LowLoading) {
-				throw new VectoException("Unhandled loading type: {0}", loading);
+				throw new VectoException($"Unhandled loading type: {loading}", ErrorCodes.DECLARATIONDATA_UNSUPPORTED_LOADING);
 			}
 
 			var passengerCount = registeredPassengerSeats +
@@ -430,12 +429,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				if (compressorSize == "not applicable") {
 					throw new VectoException(
-						$"SizeOfAirSupply: '{compressorSize}' invalid for compressor drive: '{pneumaticSupply.CompressorDrive}'");
+						$"SizeOfAirSupply: '{compressorSize}' invalid for compressor drive: '{pneumaticSupply.CompressorDrive}'", ErrorCodes.DECLARATIONDATA_INVALID_COMPRESSOR_SIZE);
 				}
-
-
-
-
 
 				var resource = GetCompressorResourceForSize(compressorSize);
 
@@ -565,8 +560,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return vehicleLength;
 				}
 
-				throw new VectoException("Internal Length for floorType {0} {1} not defined",
-					vehicleCode.GetFloorType().ToString(), vehicleCode.IsDoubleDeckerBus() ? "DD" : "SD");
+				throw new VectoException($"Internal Length for floorType {vehicleCode.GetFloorType()} {(vehicleCode.IsDoubleDeckerBus() ? "DD" : "SD")} not defined",
+					ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			public static Meter CalculateLengthInteriorLights(
@@ -594,9 +589,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 						return bodyHeight - Constants.BusParameters.HeightLuggageCompartment;
 				}
 
-				throw new VectoException("Internal height for vehicle floor type '{0}' {1} not defined",
-					vehicleCode.GetFloorType().ToString(),
-					vehicleCode.IsDoubleDeckerBus() ? "double decker" : "single decker");
+				throw new VectoException(
+					$"Internal height for vehicle floor type '{vehicleCode.GetFloorType()}' {(vehicleCode.IsDoubleDeckerBus() ? "double decker" : "single decker")} not defined", 
+					ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			public static Meter WindowHeight(bool doubleDecker)
@@ -649,7 +644,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 						case 2: return 1.0.SI<Meter>();
 						case 3: return articulated ? 1.0.SI<Meter>() : 1.25.SI<Meter>();
 						case 4: return 1.25.SI<Meter>();
-						default: throw new VectoException("invalid number of axles {0}", numAxles);
+						default: throw new VectoException($"invalid number of axles {numAxles}", ErrorCodes.DECLARATIONDATA_INVALID_AXLES_COUNT);
 					}
 				}
 
@@ -665,7 +660,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (hvacConfigurationInput) {
 					case BusHVACSystemConfiguration.Unknown:
 					case BusHVACSystemConfiguration.Configuration0:
-						throw new VectoException($"Invalid HVAC Configuration {hvacConfigurationInput}");
+						throw new VectoException($"Invalid HVAC Configuration {hvacConfigurationInput}", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
 
 					case BusHVACSystemConfiguration.Configuration1 when !hasDriverHP && !hasPassengerHP:
 						return BusHVACSystemConfiguration.Configuration1;
@@ -723,7 +718,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 
 				throw new VectoException(
-					$"Invalid HVAC combination! System Configuration: {hvacConfigurationInput.GetName()}, Driver HeatPump: {heatPumpDriver.GetLabel()}, Passenger HeatPump: {heatPumpPassenger.GetLabel()}");
+					$"Invalid HVAC combination! System Configuration: {hvacConfigurationInput.GetName()}, Driver HeatPump: {heatPumpDriver.GetLabel()}, Passenger HeatPump: {heatPumpPassenger.GetLabel()}",
+					ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
 			}
 
 			public static WattSecond CalculateBatteryCapacity(
@@ -949,7 +945,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			private static KilogramSquareMeter ComputeMidEngineInertia(CubicMeter displacement, GearboxType? gbxType)
 			{ 
 				if (!gbxType.HasValue) {
-					throw new VectoException("Gearbox type must be provided!");
+					throw new VectoException("Gearbox type must be provided!", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 				}
 
 				return gbxType.Value.AutomaticTransmission()
@@ -965,7 +961,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					clutchPlateTc = 0.SI<KilogramSquareMeter>();
 				} else {
 					if (!gbxType.HasValue) {
-						throw new VectoException("Gearbox type must be provided!");
+						throw new VectoException("Gearbox type must be provided!", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 					}
 					clutchPlateTc = (gbxType.Value.AutomaticTransmission() ? TorqueConverterInertia : ClutchInertia);
 				}
@@ -1137,7 +1133,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				if ((downshiftMaxSpeedFactor != null && !downshiftMaxSpeedFactor.Value.IsBetween(0.0, 1.0)) ||
 					downShiftMinSpeedFactor != null && !downShiftMinSpeedFactor.Value.IsBetween(0.0, 1.0)) {
-					throw new VectoException("Invalid downshift factors: must be between 0.0 and 1.0");
+					throw new VectoException("Invalid downshift factors: must be between 0.0 and 1.0", ErrorCodes.DECLARATIONDATA_INVALID_DOWNSHIFT_FACTORS);
 				}
 				
 				//EM FullloadCurve
@@ -1171,7 +1167,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					: LimitElectricMotorFullLoadCurve(fullLoadCurveTransformed, gbxMaxTq);
 				
 				if (gears.Count < 2) {
-					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
+					throw new VectoException($"ComputeShiftPolygon needs at least 2 gears. {gears.Count} gears given.", ErrorCodes.DECLARATIONDATA_INSUFFICIENT_GEARS);
 				}
 			
 				var downShift = new List<ShiftPolygon.ShiftPolygonEntry>();
@@ -1371,7 +1367,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				double axlegearRatio, Meter dynamicTyreRadius)
 			{
 				if (gears.Count < 2) {
-					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
+					throw new VectoException($"ComputeShiftPolygon needs at least 2 gears. {gears.Count} gears given.", ErrorCodes.DECLARATIONDATA_INSUFFICIENT_GEARS);
 				}
 
 				var clutchClosingSpeed = (engine.FullLoadCurves[0].RatedSpeed - engine.IdleSpeed) *
@@ -1438,7 +1434,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				if (gears.Count < 2)
 				{
-					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
+					throw new VectoException($"ComputeShiftPolygon needs at least 2 gears. {gears.Count} gears given.", ErrorCodes.DECLARATIONDATA_INSUFFICIENT_GEARS);
 				}
 
 				// ReSharper disable once InconsistentNaming
@@ -1473,7 +1469,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				if (gears.Count < 2)
 				{
-					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
+					throw new VectoException($"ComputeShiftPolygon needs at least 2 gears. {gears.Count} gears given.", ErrorCodes.DECLARATIONDATA_INSUFFICIENT_GEARS);
 				}
 
 				// ReSharper disable once InconsistentNaming
@@ -1973,7 +1969,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			}
 			var batteryData = cdResult.BatteryData;
 			if (batteryData == null) {
-				throw new VectoException("Battery Data is required for OVC post-processing");
+				throw new VectoException("Battery Data is required for OVC post-processing", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			var D19_dailySpecificMileage = vehicleOperation.Mileage.DailyMileage;
@@ -2110,7 +2106,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			}
 			var batteryData = cdResult.BatteryData;
 			if (batteryData == null) {
-				throw new VectoException("Battery Data is required for OVC post-processing");
+				throw new VectoException("Battery Data is required for OVC post-processing", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			var D19_dailySpecificMileage = vehicleOperation.Mileage.DailyMileage;
@@ -2644,7 +2640,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			var batteryData = runDataBatteryData;
 			if (batteryData == null) {
-				throw new VectoException("Battery Data is required for PEV range calculation");
+				throw new VectoException("Battery Data is required for PEV range calculation", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			var D9_chargingEfficiencyBattery = chargingEfficiencyBattery;
@@ -2681,7 +2677,7 @@ namespace TUGraz.VectoCore.Models.Declaration
         internal static ElectricRangesPEV DoCalculateElectricRangesIMCPEV(IModalDataContainer modData, VectoRunData runData, BatterySystemData batteryData)
 		{
 			if (batteryData == null) {
-				throw new VectoException("Battery Data is required for PEV range calculation");
+				throw new VectoException("Battery Data is required for PEV range calculation", ErrorCodes.DECLARATIONDATA_MISSING_DATA);
 			}
 
 			var distance = modData.Distance;

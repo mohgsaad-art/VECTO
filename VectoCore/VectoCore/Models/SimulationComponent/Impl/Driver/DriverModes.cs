@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     }
                 }
 
-                throw new VectoException("HandleRequestEngaged found no operating point.");
+                throw new VectoException("HandleRequestEngaged found no operating point.", ErrorCodes.DRIVER_OPERATING_POINT_NOT_FOUND);
             }
 
             var response = HandleRequestDisengaged(absTime, ds, gradient, velocity, debug);
@@ -541,7 +541,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
                 if (retVal == null)
                 {
-                    throw new VectoException("Failed to find operating point!");
+                    throw new VectoException("Failed to find operating point!", ErrorCodes.DRIVER_OPERATING_POINT_NOT_FOUND);
                 }
 
                 return retVal;
@@ -579,10 +579,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         }
                     }
 
-                    throw new VectoException("No valid operating point found");
+                    throw new VectoException("No valid operating point found", ErrorCodes.DRIVER_OPERATING_POINT_NOT_FOUND);
                 case BrakingPhase.Brake:
                     return DoBrake(absTime, ds, targetVelocity, gradient, brakingDistance, currentDistance);
-                default: throw new VectoException("Invalid Phase in DriverModeBrake");
+                default: throw new VectoException("Invalid Phase in DriverModeBrake", ErrorCodes.DRIVER_MODE_INVALID_PHASE);
             }
         }
 
@@ -665,7 +665,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
                 if (response == null)
                 {
-                    throw new VectoException("No valid operating point found");
+                    throw new VectoException("No valid operating point found", ErrorCodes.DRIVER_OPERATING_POINT_NOT_FOUND);
                 }
             }
 

@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 {
@@ -28,14 +29,10 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 		{
 			if (entry.VehicleClass.IsCompletedBus())
 			{
-                //busSubGroup 
-
-				if (!entry.PrimaryVehicleClass.HasValue || !entry.PrimaryVehicleClass.Value.IsPrimaryBus())
+                if (!entry.PrimaryVehicleClass.HasValue || !entry.PrimaryVehicleClass.Value.IsPrimaryBus())
 				{
-					throw new VectoException($"Expected Primary Bus Class");
+					throw new VectoException($"Expected Primary Bus Class", ErrorCodes.REPORT_RESULT_INVALID_VEHICLE_CLASS);
 				}
-
-
 
                 var primarySubGroup = entry.PrimaryVehicleClass.Value;
 			

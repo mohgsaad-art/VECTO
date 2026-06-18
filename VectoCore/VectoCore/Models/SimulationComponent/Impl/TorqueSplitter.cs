@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
             if (axlePowertrainResponses[_nextComponents.Last()] is ResponseElectricSystemNotReady)
             {
-                return dryRun ? axlePowertrainResponses : throw new VectoException($"TorqueSplitter request got ResponseElectricSystemNotReady");
+                return dryRun ? axlePowertrainResponses : throw new VectoException($"TorqueSplitter request got ResponseElectricSystemNotReady", ErrorCodes.TORQUESPLITTER_ELECTRICSYSTEM_NOT_READY);
             }
 
             while (axlePowertrainResponses.Values.Any(x => x is ResponseElectricSystemNotReady))
@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     searcher: this
                 );
             }
-            catch (VectoSearchAbortedException) { }
+            catch (VectoException ex) when (ex.GetErrorCode() == ErrorCodes.SEARCH_ABORTED) { }
 
             return torqueInFirstAxlePowertrain;
         }

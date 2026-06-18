@@ -124,7 +124,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				return Data[key];
 			} catch (KeyNotFoundException) {
-				throw new VectoException(string.Format(ErrorMessage, key));
+				throw new VectoException(string.Format(ErrorMessage, key), ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 			}
 		}
 
@@ -146,7 +146,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				return Data[Tuple.Create(key1, key2)];
 			} catch (KeyNotFoundException) {
-				throw new VectoException(string.Format(ErrorMessage, key1, key2));
+				throw new VectoException(string.Format(ErrorMessage, key1, key2), ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 			}
 		}
 	}
@@ -162,7 +162,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				return Data[Tuple.Create(key1, key2, key3)];
 			} catch (KeyNotFoundException) {
-				throw new VectoException(string.Format(ErrorMessage, key1, key2, key3));
+				throw new VectoException(string.Format(ErrorMessage, key1, key2, key3), ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 			}
 		}
 

@@ -31,7 +31,7 @@ namespace VECTO3GUI2020.Helper.TemplateSelector
 						type = typeof(MultistageParameterComboBoxView);
 						break;
 					default:
-						throw new VectoException("Unknown MultistageParameterType");
+						throw new Exception("Unknown MultistageParameterType");
 				}
 				factory = new FrameworkElementFactory(type);
 				DataTemplate dt = new DataTemplate();

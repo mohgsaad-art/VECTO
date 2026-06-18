@@ -33,6 +33,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Utils
 {
@@ -43,7 +44,7 @@ namespace TUGraz.VectoCore.Utils
 			var assembly = Assembly.GetExecutingAssembly();
 			var resource = assembly.GetManifestResourceStream(resourceName);
 			if (resource == null) {
-				throw new VectoException("Resource file not found: " + resourceName);
+				throw new VectoException("Resource file not found: " + resourceName, ErrorCodes.RESOURCE_NOT_FOUND);
 			}
 			return resource;
 		}

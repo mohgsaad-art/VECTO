@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Schema;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 using VECTO3GUI2020.Util.XML;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
@@ -45,7 +46,7 @@ namespace VECTO3GUI2020.Helper
 			var documentType = XMLHelper.GetDocumentTypeFromRootElement(xmlDocument.DocumentElement.LocalName);
 			if (documentType == null)
 			{
-				throw new VectoException("unknown xml file! {0}", xmlDocument.DocumentElement.LocalName);
+				throw new VectoException($"unknown xml file! {xmlDocument.DocumentElement.LocalName}", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE);
 			}
 
 			var validator = new XMLValidator(xmlDocument, resultAction, validationErrorAction);

@@ -1,5 +1,5 @@
 ﻿using Ninject.Extensions.Factory;
-using TUGraz.VectoCommon.Exceptions;
+using System;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData;
@@ -559,7 +559,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				return VtpRunDataFactoryName(ExecutionMode.Declaration, vcat);
 			}
 
-			throw new VectoException("Unknown argument for VTP RunDataFactory Name");
+			throw new Exception("Unknown argument for VTP RunDataFactory Name");
 		}
 
 		private string CreateVtpRunDataFactoryNameEng(object[] arguments)
@@ -568,7 +568,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				return VtpRunDataFactoryName(ExecutionMode.Engineering, vcat);
 			}
 
-			throw new VectoException("Unknown argument for VTP RunDataFactory Name");
+			throw new Exception("Unknown argument for VTP RunDataFactory Name");
 		}
 
         private string VtpRunDataFactoryName(ExecutionMode mode, VehicleCategory vcat)

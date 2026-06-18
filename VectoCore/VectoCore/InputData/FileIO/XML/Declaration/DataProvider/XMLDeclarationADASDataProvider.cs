@@ -34,6 +34,7 @@ using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Utils;
 
@@ -178,7 +179,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			if (vehicle.OVC && !EngineStopStart)
 			{
-				throw new VectoException("EngineStopStart must be set to true for OVC-HEV vehicles.");
+				throw new VectoException("EngineStopStart must be set to true for OVC-HEV vehicles.", ErrorCodes.XML_BAD_DATA);
 			}
 		}
 

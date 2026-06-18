@@ -146,10 +146,11 @@ namespace TUGraz.VectoCore.Tests.Models
 
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
-			AssertHelper.Exception<VectoXMLException>(
+			AssertHelper.Exception(
 				() => {
 					var runs = dao.NextRun().ToArray();
-				}, "WHR electric power provided but no correction factors found.");
+				}, 
+				ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -171,10 +172,11 @@ namespace TUGraz.VectoCore.Tests.Models
 
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
-			AssertHelper.Exception<VectoXMLException>(
+			AssertHelper.Exception(
 				() => {
 					var runs = dao.NextRun().ToArray();
-				}, "WHR correction factors provided but electricPower missing for some entries.");
+				}, 
+				ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -197,10 +199,11 @@ namespace TUGraz.VectoCore.Tests.Models
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
-			AssertHelper.Exception<VectoXMLException>(
+			AssertHelper.Exception(
 				() => {
 					var runs = dao.NextRun().ToArray();
-				}, "WHR correction factors provided but electricPower missing for some entries.");
+				}, 
+				ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -286,10 +289,11 @@ namespace TUGraz.VectoCore.Tests.Models
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
-			AssertHelper.Exception<VectoXMLException>(
+			AssertHelper.Exception(
 				() => {
 					var runs = dao.NextRun().ToArray();
-				}, "WHR correction factors provided but electricPower missing for some entries.");
+				}, 
+				ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -312,10 +316,11 @@ namespace TUGraz.VectoCore.Tests.Models
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
-			AssertHelper.Exception<VectoXMLException>(
+			AssertHelper.Exception(
 				() => {
 					var runs = dao.NextRun().ToArray();
-				}, "WHR correction factors provided but electricPower missing for some entries.");
+				}, 
+				ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -335,8 +340,7 @@ namespace TUGraz.VectoCore.Tests.Models
 			var dao = _runDataFactory.CreateDeclarationRunDataFactory(inputDataProvider, new NullDeclarationReport(),
 				new NullVTPReport());
 			//var runs = dao.NextRun().ToArray();
-			AssertHelper.Exception<VectoXMLException>(() => { var tmp = dao.NextRun().ToArray(); });
-			
+			AssertHelper.Exception(() => { var tmp = dao.NextRun().ToArray(); }, ErrorCodes.XML_MISSING_DATA);
 		}
 
 		[TestCase()]
@@ -360,7 +364,7 @@ namespace TUGraz.VectoCore.Tests.Models
 				new NullVTPReport());
 			//var runs = dao.NextRun().ToArray();
 			//Assert.IsTrue(runs.All(x => x.EngineData.ElectricalWHR == null));
-			AssertHelper.Exception<VectoXMLException>(() => { var tmp = dao.NextRun().ToArray(); });
+			AssertHelper.Exception(() => { var tmp = dao.NextRun().ToArray(); }, ErrorCodes.XML_MISSING_DATA);
 		}
 
 

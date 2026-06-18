@@ -331,7 +331,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var multistage = inputData as IMultistepBusInputDataProvider;
 			if (multistage == null) {
-				throw new VectoException("BusAuxGroupWriter requires MultistepInputData");
+				throw new VectoException("BusAuxGroupWriter requires MultistepInputData", ErrorCodes.INPUT_NON_MULTISTEP);
 			}
 
 			var completedBusAux = multistage.JobInputData.ConsolidateManufacturingStage.Vehicle.Components.BusAuxiliaries;
@@ -425,7 +425,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		{
 			var multistage = inputData as IMultistepBusInputDataProvider;
 			if (multistage == null) {
-				throw new VectoException("BusAuxGroupWriter requires MultistepInputData");
+				throw new VectoException("BusAuxGroupWriter requires MultistepInputData", ErrorCodes.INPUT_NON_MULTISTEP);
 			}
 
 			var completedBusAux = multistage.JobInputData.ConsolidateManufacturingStage.Vehicle.Components.BusAuxiliaries;

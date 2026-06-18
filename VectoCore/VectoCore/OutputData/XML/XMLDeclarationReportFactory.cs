@@ -2,6 +2,7 @@
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9.ManufacturerReportXMLTypeWriter;
@@ -53,7 +54,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					break;
 					
 			}
-			throw new VectoException($"Could not create Declaration Report for {input.GetType()}");
+			throw new VectoException($"Could not create Declaration Report for {input.GetType()}", ErrorCodes.REPORT_INVALID_INPUT);
 		}
 
 		public IVTPReport CreateVTPReport(IInputDataProvider input, IOutputDataWriter outputWriter)

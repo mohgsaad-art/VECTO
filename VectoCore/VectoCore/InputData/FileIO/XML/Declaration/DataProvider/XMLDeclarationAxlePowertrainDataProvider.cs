@@ -10,6 +10,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using System.Xml.Schema;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 {
@@ -138,11 +139,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
                 }
                 catch (Exception e)
                 {
-                    throw new VectoException("failed to create dummy instance for component {0}", e, component);
+                    throw new VectoException($"failed to create dummy instance for component {component}", ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT, e);
                 }
             }
 
-            throw new VectoException("Component {0} not found!", component);
+            throw new VectoException($"Component {component} not found!", ErrorCodes.XML_MISSING_NODE);
         }
 
         protected virtual XmlNode GetComponentNode(string component)

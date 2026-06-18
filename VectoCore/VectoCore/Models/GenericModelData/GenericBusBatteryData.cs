@@ -65,7 +65,7 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 
             if (maxSoc <= minSoc)
             {
-                throw new VectoException($"Battery: min SoC ({minSoc}) must be less than max SoC ({maxSoc}).");
+                throw new VectoException($"Battery: min SoC ({minSoc}) must be less than max SoC ({maxSoc}).", ErrorCodes.REESS_MINSOC_NOT_LESS_THAN_MAXSOC);
             }
 
             return new BatteryData {

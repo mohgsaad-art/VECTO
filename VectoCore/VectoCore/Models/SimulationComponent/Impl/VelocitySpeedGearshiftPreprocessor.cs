@@ -71,13 +71,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var vehiclePort = vehicle as IDriverDemandOutPort;
 
             if (vehicle == null || vehiclePort == null) {
-				throw new VectoException("no vehicle found...");
+				throw new VectoException("no vehicle found...", ErrorCodes.VEHICLE_MISSING);
 			}
 
 			var gearbox = SimplePowertrainContainer.Gearbox;
             
 			if (gearbox == null) {
-				throw new VectoException("no gearbox found...");
+				throw new VectoException("no gearbox found...", ErrorCodes.VEHICLE_MISSING_GEARBOX);
 			}
 
 			var modData = container.ModalData as ModalDataContainer;
@@ -203,11 +203,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				);
 				var step = vehiclePort.Request(absTime, simulationInterval, acceleration, gradient, false);
 				if (!(step is ResponseSuccess) && !(step is ResponseEngineSpeedTooHigh)) {
-					throw new VectoSimulationException("failed to find acceleration for rolling");
+					throw new VectoException("failed to find acceleration for rolling", ErrorCodes.SPEEDPREPROCESSOR_ROLLING_CANNOT_FIND_ACCELERATION);
 				}
 
 				absTime += simulationInterval;
-			} catch (VectoSearchAbortedException) {
+			} catch (VectoException ex) when (ex.GetErrorCode() == ErrorCodes.SEARCH_ABORTED) {
 				return 0.KMPHtoMeterPerSecond();
 			}
 
@@ -235,7 +235,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var em = GetEMPos(runData);
 			if (em == null) {
-				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
+				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing", ErrorCodes.VEHICLE_MISSING_ELECTRICMOTOR);
 			}
 
             var voltageLevel = em.Item2.EfficiencyData.VoltageLevels.First();
@@ -247,7 +247,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var em = GetEMPos(runData);
 			if (em == null) {
-				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
+				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing", ErrorCodes.VEHICLE_MISSING_ELECTRICMOTOR);
 			}
 
 			var voltageLevel = em.Item2.EfficiencyData.VoltageLevels.First();

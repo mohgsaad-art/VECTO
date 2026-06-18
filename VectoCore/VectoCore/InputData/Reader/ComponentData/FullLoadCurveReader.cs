@@ -50,19 +50,19 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data, declarationMode);
 			} catch (Exception ex) {
-				throw new VectoException("ERROR while reading FullLoadCurve File: " + ex.Message, ex);
+				throw new VectoException($"ERROR while reading FullLoadCurve File: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, ex);
 			}
 		}
 
 		public static EngineFullLoadCurve Create(DataTable data, bool declarationMode = false)
 		{
 			if (data.Columns.Count < 3) {
-				throw new VectoException("Engine FullLoadCurve Data File must consist of at least 3 columns.");
+				throw new VectoException("Engine FullLoadCurve Data File must consist of at least 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
 			}
 
 			if (data.Rows.Count < 2) {
 				throw new VectoException(
-					"FullLoadCurve must consist of at least two lines with numeric values (below file header)");
+					"FullLoadCurve must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 			}
 
 			List<EngineFullLoadCurve.FullLoadCurveEntry> entriesFld;
@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 										.Select(g => g.Key).ToList();
 			if (duplicates.Count > 0) {
 				throw new VectoException(
-					"Error reading full-load curve: multiple entries for engine speeds {0}", duplicates.Join());
+					$"Error reading full-load curve: multiple entries for engine speeds {duplicates.Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
 			}
 			return new EngineFullLoadCurve(entriesFld, tmp);
 		}

@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public void AddElectricMotor(PowertrainPosition pos, ElectricMotorData motorData)
 		{
 			if (_electricMotorCtl.ContainsKey(pos)) {
-				throw new VectoException("Electric motor already registered as position {0}", pos);
+				throw new VectoException($"Electric motor already registered as position {pos}", ErrorCodes.HYBRIDCONTROLLER_ELECTRICMOTOR_ALREADY_REGISTERED);
 			}
 
 			_electricMotorCtl[pos] = new ElectricMotorController(this, motorData);
