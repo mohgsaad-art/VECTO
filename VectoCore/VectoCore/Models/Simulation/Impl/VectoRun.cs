@@ -251,7 +251,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             exception.Data[RunInfo.Distance] = Container.MileageCounter.Distance;
             exception.Data[RunInfo.Speed] = Container.VehicleInfo.VehicleSpeed;
             exception.Data[RunInfo.F_equiv] = Container.RunData.HybridStrategyParameters?.EquivalenceFactor;
-            exception.Data[RunInfo.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber, x => x.Gear);
+            exception.Data[RunInfo.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber ?? AxleNumber.NOT_IN_AXLE_POWERTRAIN, x => x.Gear);
             exception.Data[RunInfo.Dt] = dt;
             exception.Data[RunInfo.Progress] = Progress;
             exception.Data[RunInfo.HasFullRunInfo] = true;
