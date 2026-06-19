@@ -14,9 +14,9 @@ Public Class ErrorForm
         _exception = Ex
 
         _cycleIdLbl.Text = $"{Ex.Data(RunInfo.RunIdentifier)} {Ex.Data(RunInfo.RunName)} {Ex.Data(RunInfo.CycleName)} {Ex.Data(RunInfo.RunSuffix)}"
-        _codeLbl.Text = Ex.Data(RunInfo.ErrorCode).ToString()
+        _codeLbl.Text = Ex.GetErrorCode().ToString()
         _messageLbl.Text = Ex.Message
-        _fixLbl.Text = Ex.Data(RunInfo.Fix).ToString()
+        _fixLbl.Text = Ex.GetFix()
         _absTimeLbl.Text = $"AbsTime: {Ex.Data(RunInfo.AbsTime)}"
         _progressLbl.Text = $"Progress: {Ex.Data(RunInfo.Progress):P1}"
         _distanceLbl.Text = $"Distance: {Ex.Data(RunInfo.Distance)}"
