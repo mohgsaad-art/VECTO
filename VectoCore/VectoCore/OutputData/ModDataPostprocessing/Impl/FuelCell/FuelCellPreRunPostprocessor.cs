@@ -102,7 +102,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 		{	
 			FillPreRunResults(modData);
 			RunName = modData?.RunName ?? "";
-		}
+            Header = (modData != null) ? $"({modData.RunName} {modData.CycleName} {modData.RunSuffix}): " : "";
+        }
 
 		private void FillPreRunResults(IModalDataContainer modData)
 		{

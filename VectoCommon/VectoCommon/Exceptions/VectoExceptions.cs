@@ -105,8 +105,7 @@ namespace TUGraz.VectoCommon.Exceptions
                 return ex.Message;
             }
 
-            return $"{ex.Data[RunInfo.RunIdentifier]} ({ex.Data[RunInfo.RunName]} {ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) " +
-                $"[{ex.GetErrorCode()}]: {ex.Message}";
+            return $"({ex.Data[RunInfo.RunName]} {ex.Data[RunInfo.CycleName]} {ex.Data[RunInfo.RunSuffix]}) [{ex.GetErrorCode()}]: {ex.Message}";
         }
 
         public static string GetMessageWithCycleRunInfo(this Exception ex)

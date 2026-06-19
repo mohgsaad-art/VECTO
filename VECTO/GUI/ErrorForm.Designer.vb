@@ -32,6 +32,12 @@ Partial Class ErrorForm
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me._fixLbl = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me._gearLbl = New System.Windows.Forms.Label()
         Me._fEquivLbl = New System.Windows.Forms.Label()
         Me._speedLbl = New System.Windows.Forms.Label()
@@ -41,6 +47,7 @@ Partial Class ErrorForm
         Me._absTimeLbl = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me._stackLbl = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -50,10 +57,10 @@ Partial Class ErrorForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(16, 162)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(66, 25)
+        Me.Label1.Size = New System.Drawing.Size(71, 25)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Code:"
         '
@@ -84,7 +91,7 @@ Partial Class ErrorForm
         Me._clipboardBtn.Name = "_clipboardBtn"
         Me._clipboardBtn.Size = New System.Drawing.Size(280, 51)
         Me._clipboardBtn.TabIndex = 5
-        Me._clipboardBtn.Text = "Copy To Clipboard"
+        Me._clipboardBtn.Text = "Copy to Clipboard"
         Me._clipboardBtn.UseVisualStyleBackColor = True
         '
         '_okBtn
@@ -101,7 +108,7 @@ Partial Class ErrorForm
         '
         Me.GroupBox1.BackColor = System.Drawing.SystemColors.Control
         Me.GroupBox1.Controls.Add(Me._messageLbl)
-        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.ForeColor = System.Drawing.Color.Red
         Me.GroupBox1.Location = New System.Drawing.Point(12, 40)
         Me.GroupBox1.Name = "GroupBox1"
@@ -113,6 +120,7 @@ Partial Class ErrorForm
         '_messageLbl
         '
         Me._messageLbl.BackColor = System.Drawing.SystemColors.ControlLight
+        Me._messageLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._messageLbl.Location = New System.Drawing.Point(6, 23)
         Me._messageLbl.Multiline = True
         Me._messageLbl.Name = "_messageLbl"
@@ -125,7 +133,7 @@ Partial Class ErrorForm
         '
         Me.GroupBox2.BackColor = System.Drawing.SystemColors.Control
         Me.GroupBox2.Controls.Add(Me._fixLbl)
-        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.GroupBox2.Location = New System.Drawing.Point(12, 190)
         Me.GroupBox2.Name = "GroupBox2"
@@ -137,6 +145,7 @@ Partial Class ErrorForm
         '_fixLbl
         '
         Me._fixLbl.BackColor = System.Drawing.SystemColors.ControlLight
+        Me._fixLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._fixLbl.Location = New System.Drawing.Point(9, 23)
         Me._fixLbl.Multiline = True
         Me._fixLbl.Name = "_fixLbl"
@@ -147,6 +156,13 @@ Partial Class ErrorForm
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.Label8)
+        Me.Panel1.Controls.Add(Me.Label7)
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.Label5)
+        Me.Panel1.Controls.Add(Me.Label4)
+        Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me._gearLbl)
         Me.Panel1.Controls.Add(Me._fEquivLbl)
         Me.Panel1.Controls.Add(Me._speedLbl)
@@ -159,11 +175,77 @@ Partial Class ErrorForm
         Me.Panel1.Size = New System.Drawing.Size(915, 86)
         Me.Panel1.TabIndex = 9
         '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(796, 4)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label7.Size = New System.Drawing.Size(34, 29)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "dt"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(491, 4)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label6.Size = New System.Drawing.Size(100, 29)
+        Me.Label6.TabIndex = 11
+        Me.Label6.Text = "Distance"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(238, 44)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label5.Size = New System.Drawing.Size(86, 29)
+        Me.Label5.TabIndex = 10
+        Me.Label5.Text = "f_equiv"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(238, 4)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label4.Size = New System.Drawing.Size(102, 29)
+        Me.Label4.TabIndex = 9
+        Me.Label4.Text = "AbsTime"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(9, 44)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label3.Size = New System.Drawing.Size(79, 29)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Speed"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(9, 4)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label2.Size = New System.Drawing.Size(102, 29)
+        Me.Label2.TabIndex = 7
+        Me.Label2.Text = "Progress"
+        '
         '_gearLbl
         '
         Me._gearLbl.AutoSize = True
         Me._gearLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._gearLbl.Location = New System.Drawing.Point(491, 44)
+        Me._gearLbl.Location = New System.Drawing.Point(582, 44)
         Me._gearLbl.Name = "_gearLbl"
         Me._gearLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._gearLbl.Size = New System.Drawing.Size(92, 29)
@@ -174,7 +256,7 @@ Partial Class ErrorForm
         '
         Me._fEquivLbl.AutoSize = True
         Me._fEquivLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._fEquivLbl.Location = New System.Drawing.Point(238, 44)
+        Me._fEquivLbl.Location = New System.Drawing.Point(312, 44)
         Me._fEquivLbl.Name = "_fEquivLbl"
         Me._fEquivLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._fEquivLbl.Size = New System.Drawing.Size(107, 29)
@@ -185,7 +267,7 @@ Partial Class ErrorForm
         '
         Me._speedLbl.AutoSize = True
         Me._speedLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._speedLbl.Location = New System.Drawing.Point(4, 44)
+        Me._speedLbl.Location = New System.Drawing.Point(76, 44)
         Me._speedLbl.Name = "_speedLbl"
         Me._speedLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._speedLbl.Size = New System.Drawing.Size(107, 29)
@@ -196,7 +278,7 @@ Partial Class ErrorForm
         '
         Me._distanceLbl.AutoSize = True
         Me._distanceLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._distanceLbl.Location = New System.Drawing.Point(491, 4)
+        Me._distanceLbl.Location = New System.Drawing.Point(576, 4)
         Me._distanceLbl.Name = "_distanceLbl"
         Me._distanceLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._distanceLbl.Size = New System.Drawing.Size(126, 29)
@@ -207,7 +289,7 @@ Partial Class ErrorForm
         '
         Me._dtLbl.AutoSize = True
         Me._dtLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._dtLbl.Location = New System.Drawing.Point(772, 4)
+        Me._dtLbl.Location = New System.Drawing.Point(822, 4)
         Me._dtLbl.Name = "_dtLbl"
         Me._dtLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._dtLbl.Size = New System.Drawing.Size(69, 29)
@@ -219,7 +301,7 @@ Partial Class ErrorForm
         '
         Me._progressLbl.AutoSize = True
         Me._progressLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._progressLbl.Location = New System.Drawing.Point(4, 4)
+        Me._progressLbl.Location = New System.Drawing.Point(98, 4)
         Me._progressLbl.Name = "_progressLbl"
         Me._progressLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._progressLbl.Size = New System.Drawing.Size(129, 29)
@@ -230,7 +312,7 @@ Partial Class ErrorForm
         '
         Me._absTimeLbl.AutoSize = True
         Me._absTimeLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._absTimeLbl.Location = New System.Drawing.Point(233, 4)
+        Me._absTimeLbl.Location = New System.Drawing.Point(326, 4)
         Me._absTimeLbl.Name = "_absTimeLbl"
         Me._absTimeLbl.Padding = New System.Windows.Forms.Padding(2)
         Me._absTimeLbl.Size = New System.Drawing.Size(129, 29)
@@ -241,7 +323,7 @@ Partial Class ErrorForm
         '
         Me.GroupBox3.BackColor = System.Drawing.SystemColors.Control
         Me.GroupBox3.Controls.Add(Me._stackLbl)
-        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(12, 405)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(914, 176)
@@ -252,6 +334,7 @@ Partial Class ErrorForm
         '_stackLbl
         '
         Me._stackLbl.BackColor = System.Drawing.SystemColors.ControlLight
+        Me._stackLbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._stackLbl.Location = New System.Drawing.Point(9, 23)
         Me._stackLbl.Multiline = True
         Me._stackLbl.Name = "_stackLbl"
@@ -259,6 +342,17 @@ Partial Class ErrorForm
         Me._stackLbl.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me._stackLbl.Size = New System.Drawing.Size(899, 146)
         Me._stackLbl.TabIndex = 0
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(491, 44)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Padding = New System.Windows.Forms.Padding(2)
+        Me.Label8.Size = New System.Drawing.Size(98, 29)
+        Me.Label8.TabIndex = 13
+        Me.Label8.Text = "Gearbox"
         '
         'ErrorForm
         '
@@ -312,4 +406,11 @@ Partial Class ErrorForm
     Friend WithEvents _stackLbl As TextBox
     Friend WithEvents _messageLbl As TextBox
     Friend WithEvents _fixLbl As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label8 As Label
 End Class
