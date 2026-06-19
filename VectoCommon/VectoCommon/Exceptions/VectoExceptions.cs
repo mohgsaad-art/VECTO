@@ -88,6 +88,11 @@ namespace TUGraz.VectoCommon.Exceptions
             return (ex is VectoException vectoException) ? (ErrorCode)vectoException.Data[RunInfo.ErrorCode] : ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE;
         }
 
+        public static string GetFix(this Exception ex)
+        {
+            return (ex is VectoException vectoException) ? (string)vectoException.Data[RunInfo.Fix] : VectoException.NO_FIX_AVAILABLE;
+        }
+
         public static string GetMessageWithCycleID(this Exception ex)
         {
             if (ex == null) 
