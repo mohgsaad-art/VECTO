@@ -435,7 +435,7 @@ namespace TUGraz.VectoHashing
 
 		private string ReadElementValue(XmlNode xmlNode, string elementName)
 		{
-			var node = xmlNode.SelectSingleNode($"./*[local-name()='{elementName}']");
+			var node = xmlNode.SelectSingleNode($".//*[local-name()='{elementName}']");
 			if (node == null) {
 				throw new Exception($"Node '{elementName}' not found!");
 			}
