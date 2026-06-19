@@ -76,6 +76,8 @@ namespace TUGraz.VectoCommon.Models
 			set => _logEnabled.Value = value;
 		}
 
+		public string Header { get; set; } = string.Empty;
+
 		public class LogEventArgs : EventArgs
 		{
 			public Exception Exception { get; private set; }
@@ -137,8 +139,8 @@ namespace TUGraz.VectoCommon.Models
         public void Debug(string message, params object[] args)
 		{
 			if (LogEnabled) {
-				_log.Debug(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Debug", FormatMessage(message, args)));
+				_log.Debug(Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Debug", FormatMessage(Header + message, args)));
             }
         }
 
@@ -150,8 +152,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Debug(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-				_log.Debug(e, message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Debug", FormatMessage(message, args)));
+				_log.Debug(e, Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Debug", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -161,8 +163,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Warn(string message, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Warn(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Warn", FormatMessage(message, args)));
+                _log.Warn(Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Warn", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -172,8 +174,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Warn(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Warn(e, message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Warn", FormatMessage(message, args)));
+                _log.Warn(e, Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Warn", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -183,8 +185,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Error(string message, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Error(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Error", FormatMessage(message, args)));
+                _log.Error(Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Error", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -194,8 +196,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Error(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Error(e, message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Error", FormatMessage(message, args)));
+                _log.Error(e, Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Error", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -205,8 +207,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Fatal(string message, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Fatal(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Fatal", FormatMessage(message, args)));
+                _log.Fatal(Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Fatal", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -216,8 +218,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Fatal(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-				_log.Fatal(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Fatal", FormatMessage(message, args)));
+				_log.Fatal(e, Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Fatal", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -227,8 +229,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Info(string message, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Info(message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Info", FormatMessage(message, args)));
+                _log.Info(Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(null, "Info", FormatMessage(Header + message, args)));
             }
 		}
 
@@ -238,8 +240,8 @@ namespace TUGraz.VectoCommon.Models
 		public void Info(Exception e, string message = null, params object[] args)
 		{
 			if (LogEnabled) {
-                _log.Info(e, message, args);
-                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Info", FormatMessage(message, args)));
+                _log.Info(e, Header + message, args);
+                OnLogEvent?.Invoke(typeof(LoggingObject), new LogEventArgs(e, "Info", FormatMessage(Header + message, args)));
             }
 		}
 

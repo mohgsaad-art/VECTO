@@ -82,6 +82,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 
                 dataBus.AddComponent(this);
 
+                Header = (dataBus.RunData != null) && (dataBus.RunData.JobName != null) && (dataBus.RunData.Cycle != null) && (dataBus.RunData.ModFileSuffix != null)
+                    ? $"({dataBus.RunData.JobName} {dataBus.RunData.Cycle.Name} {dataBus.RunData.ModFileSuffix}): " 
+                    : string.Empty;
             }
         }
 

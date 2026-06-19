@@ -273,7 +273,11 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
 		public string RunName => throw new NotImplementedException();
 
-		public IModalDataPostProcessor PostProcessingCorrection
+		public string CycleName => throw new NotImplementedException();
+
+		public string RunSuffix => throw new NotImplementedException();
+
+        public IModalDataPostProcessor PostProcessingCorrection
 		{
 			set => throw new NotImplementedException();
 		}

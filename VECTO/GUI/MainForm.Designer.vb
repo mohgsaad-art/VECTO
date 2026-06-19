@@ -620,17 +620,17 @@ Partial Class MainForm
         'ColumnHeader1
         '
         Me.ColumnHeader1.Text = "Message"
-        Me.ColumnHeader1.Width = 779
+        Me.ColumnHeader1.Width = 1280
         '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Time"
-        Me.ColumnHeader2.Width = 151
+        Me.ColumnHeader2.Width = 150
         '
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = ""
-        Me.ColumnHeader3.Width = 138
+        Me.ColumnHeader3.Width = 120
         '
         'SplitContainer1
         '

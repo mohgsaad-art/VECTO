@@ -208,14 +208,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				throw new VectoException("Model parameters for hybrid strategy required!", ErrorCodes.HYBRIDSTRATEGY_MISSING_PARAMETERS);
 			}
 
-			//ElectricMotorsOff = ModelData.ElectricMachinesData
-			//	.Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
-			//	.ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
+            Header = $"({container.RunData.JobName} {container.RunData.Cycle.Name} {container.RunData.ModFileSuffix}): ";
 
-			var emDtData = runData.GetEMData().First(x => x.Item1.Position != PowertrainPosition.GEN).Item2;
+            //ElectricMotorsOff = ModelData.ElectricMachinesData
+            //	.Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
+            //	.ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
+
+            var emDtData = runData.GetEMData().First(x => x.Item1.Position != PowertrainPosition.GEN).Item2;
 			var minGensetPower = emDtData.EfficiencyData.VoltageLevels.First().FullLoadCurve.MaxPower * StrategyParameters.GensetMinOptPowerFactor;
 
 			GenSetCharacteristics = new GenSetCharacteristics(minGensetPower);
+			GenSetCharacteristics.Header = Header;
 			runData.GenSet = new VectoRunData.GenSetData() { GenSetCharacteristics = GenSetCharacteristics };
 
 			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, true, string.Empty);

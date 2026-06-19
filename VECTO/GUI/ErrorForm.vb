@@ -13,20 +13,21 @@ Public Class ErrorForm
         InitializeComponent()
         _exception = Ex
 
-        _cycleIdLbl.Text = $"{Ex.Data(RunInfo.RunIdentifier)} {Ex.Data(RunInfo.RunName)} {Ex.Data(RunInfo.CycleName)} {Ex.Data(RunInfo.RunSuffix)}"
+        Me.Text += $" - {Ex.Data(RunInfo.RunName)}"
+        _cycleIdLbl.Text = $"{Ex.Data(RunInfo.CycleName)}    {Ex.Data(RunInfo.RunSuffix)}"
         _codeLbl.Text = Ex.GetErrorCode().ToString()
         _messageLbl.Text = Ex.Message
         _fixLbl.Text = Ex.GetFix()
-        _absTimeLbl.Text = $"AbsTime: {Ex.Data(RunInfo.AbsTime)}"
-        _progressLbl.Text = $"Progress: {Ex.Data(RunInfo.Progress):P1}"
-        _distanceLbl.Text = $"Distance: {Ex.Data(RunInfo.Distance)}"
-        _dtLbl.Text = $"dt: {Ex.Data(RunInfo.Dt)}"
-        _speedLbl.Text = $"Speed: {Ex.Data(RunInfo.Speed)}"
-        _fEquivLbl.Text = $"f_equiv: {Ex.Data(RunInfo.F_equiv)}"
+        _absTimeLbl.Text = $"{Ex.Data(RunInfo.AbsTime)}"
+        _progressLbl.Text = $"{Ex.Data(RunInfo.Progress):P1}"
+        _distanceLbl.Text = $"{Ex.Data(RunInfo.Distance)}"
+        _dtLbl.Text = $"{Ex.Data(RunInfo.Dt)}"
+        _speedLbl.Text = $"{Ex.Data(RunInfo.Speed)}"
+        _fEquivLbl.Text = $"{Ex.Data(RunInfo.F_equiv)}"
         _stackLbl.Text = Ex.StackTrace
 
         Dim gearInfo = TryCast(Ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}")
-        gearInfo = If(gearInfo IsNot Nothing, gearInfo, New List(Of String) From {"Gear: "})
+        gearInfo = If(gearInfo IsNot Nothing, gearInfo, New List(Of String))
         _gearLbl.Text = String.Join(", ", gearInfo)
 
     End Sub
