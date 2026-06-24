@@ -60,7 +60,8 @@ namespace TUGraz.VectoCore.Utils.Ninject
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"failed to create instance for '{methodInfo.ReturnType.Name}' via '{methodInfo.Name}' version '{arguments[0]}'", e.GetErrorCode(), e);
+				throw new VectoException($"failed to create instance for '{methodInfo.ReturnType.Name}' via '{methodInfo.Name}' version '{arguments[0]}'." +
+					$"{Environment.NewLine}{e.Message}", e.GetErrorCode());
 			}
 		}
     }

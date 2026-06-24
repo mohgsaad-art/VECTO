@@ -50,7 +50,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.Read(fileName, true);
 				return Create(data, gearRatio, gearName, extendLossMap);
 			} catch (Exception ex) {
-				throw new VectoException($"ERROR while reading TransmissionLossMap {gearName}: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, ex);
+				throw new VectoException($"ERROR while reading TransmissionLossMap {gearName}: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 

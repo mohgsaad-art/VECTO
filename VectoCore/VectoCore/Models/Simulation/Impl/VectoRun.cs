@@ -247,18 +247,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
         private Exception DecorateExceptionWithRunData(Exception exception)
         {
-            exception.Data[RunInfo.RunIdentifier] = RunIdentifier;
-            exception.Data[RunInfo.RunName] = RunName;
-            exception.Data[RunInfo.CycleName] = CycleName;
-            exception.Data[RunInfo.RunSuffix] = RunSuffix;
-            exception.Data[RunInfo.AbsTime] = AbsTime;
-            exception.Data[RunInfo.Distance] = Container.MileageCounter.Distance;
-            exception.Data[RunInfo.Speed] = Container.VehicleInfo.VehicleSpeed;
-            exception.Data[RunInfo.F_equiv] = Container.RunData.HybridStrategyParameters?.EquivalenceFactor;
-            exception.Data[RunInfo.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber ?? AxleNumber.NOT_IN_AXLE_POWERTRAIN, x => x.Gear);
-            exception.Data[RunInfo.Dt] = dt;
-            exception.Data[RunInfo.Progress] = Progress;
-            exception.Data[RunInfo.HasFullRunInfo] = true;
+            exception.Data[ExceptionData.RunIdentifier] = RunIdentifier;
+            exception.Data[ExceptionData.RunName] = RunName;
+            exception.Data[ExceptionData.CycleName] = CycleName;
+            exception.Data[ExceptionData.RunSuffix] = RunSuffix;
+            exception.Data[ExceptionData.AbsTime] = AbsTime;
+            exception.Data[ExceptionData.Distance] = Container.MileageCounter.Distance;
+            exception.Data[ExceptionData.Speed] = Container.VehicleInfo.VehicleSpeed;
+            exception.Data[ExceptionData.F_equiv] = Container.RunData.HybridStrategyParameters?.EquivalenceFactor;
+            exception.Data[ExceptionData.GearInfo] = Container.GearboxesInfo?.ToDictionary(x => x.AxleNumber ?? AxleNumber.NOT_IN_AXLE_POWERTRAIN, x => x.Gear);
+            exception.Data[ExceptionData.Dt] = dt;
+            exception.Data[ExceptionData.Progress] = Progress;
+            exception.Data[ExceptionData.HasFullRunInfo] = true;
 
             return exception;
         }

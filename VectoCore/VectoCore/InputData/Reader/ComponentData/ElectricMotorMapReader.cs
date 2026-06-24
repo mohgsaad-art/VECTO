@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						0,
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
 				}
 			}
 
@@ -94,7 +94,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						entry.MotorSpeed.Value(),
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
 				}
 			}
 

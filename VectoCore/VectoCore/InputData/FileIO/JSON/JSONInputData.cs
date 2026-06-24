@@ -101,12 +101,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return VectoCSVFile.Read(Path.Combine(BasePath, filename), true);
 				} catch (Exception e) {
 					Log.Warn("Failed to read file {0} {1}", Path.Combine(BasePath, filename), tableType);
-					throw new VectoException($"Failed to read file for {tableType}: {filename}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
+					throw new VectoException($"Failed to read file for {tableType}: {filename}.{Environment.NewLine}{e.Message}", 
+						ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+						"Make sure the file exists and is properly formatted.");
 				}
 			}
 
 			if (required) {
-				throw new VectoException($"Invalid filename for {tableType}: {filename}", ErrorCodes.DATATABLE_INVALID_FILENAME);
+				throw new VectoException($"Invalid filename for {tableType}: {filename}", 
+					ErrorCodes.DATATABLE_INVALID_FILENAME,
+					"Make sure the filename is correct and the file exists.");
 			}
 
 			return null;
@@ -329,7 +333,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						} catch (Exception e) {
 							Log.Debug("Driving Cycle could not be read: " + cycleFile);
 							if (!TolerateMissing) {
-								throw new VectoException("Driving Cycle could not be read: " + cycleFile, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
+								throw new VectoException(
+									$"Driving Cycle could not be read: {cycleFile}.{Environment.NewLine}{e.Message}",
+									ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+									"Make sure the file exists, is properly formatted.");
 							}
 
 							cycleData = new TableData(cycleFile + MissingFileSuffix, DataSourceType.Missing);
@@ -487,7 +494,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						};
 					} catch (Exception) {
 						if (!TolerateMissing) {
-							throw new VectoException($"Failed to read Driver Acceleration Curve: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
+							throw new VectoException($"Failed to read Driver Acceleration Curve: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 						}
 
 						return new DriverAccelerationInputData() {

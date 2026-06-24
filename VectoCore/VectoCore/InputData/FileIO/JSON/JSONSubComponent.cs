@@ -304,7 +304,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				catch (Exception e)
 				{
 					Log.Warn("Failed to read file {0} {1}", Path.Combine(_basePath, filename), tableType);
-					throw new VectoException($"Failed to read file for {tableType}: {filename}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
+					throw new VectoException($"Failed to read file for {tableType}: {filename}.{Environment.NewLine}{e.Message}", 
+						ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+						"Make sure the file exists and is properly formatted.");
 				}
 			}
 

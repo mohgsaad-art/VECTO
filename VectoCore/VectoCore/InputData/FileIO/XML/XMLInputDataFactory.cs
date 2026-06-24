@@ -169,7 +169,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				input.Reader = DeclarationFactory.CreateMultistageInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			} catch (Exception e) {
-				throw new VectoException($"Failed to read Declaration job version {versionNumber}", ErrorCodes.XML_FAILED_TO_READ_FILE, e);
+				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
+					ErrorCodes.XML_FAILED_TO_READ_FILE);
 			}
 		}		
 
@@ -182,7 +183,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				input.Reader = DeclarationFactory.CreateInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			} catch (Exception e) {
-				throw new VectoException($"Failed to read Declaration job version {versionNumber}", ErrorCodes.XML_FAILED_TO_READ_FILE, e);
+				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
+					ErrorCodes.XML_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -195,7 +197,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				return input;
 			}
 			catch (Exception e) {
-				throw new VectoException($"Failed to read Declaration job version {versionNumber}", ErrorCodes.XML_FAILED_TO_READ_FILE, e);
+				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
+					ErrorCodes.XML_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -290,7 +293,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"Failed to read Declaration job version {versionNumber}", ErrorCodes.XML_FAILED_TO_READ_FILE, e);
+				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
+					ErrorCodes.XML_FAILED_TO_READ_FILE);
 			}
 		}
 

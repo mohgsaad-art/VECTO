@@ -2099,7 +2099,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							}
 							else
 							{
-								throw new VectoException("Angledrive: LossMap not found.", ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND, ex);
+								throw new VectoException($"Angledrive: LossMap not found.{Environment.NewLine}{ex.Message}", 
+									ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND);
 							}
 						}
 						return angledriveData;
@@ -2109,7 +2110,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			catch (Exception e)
 			{
-                throw new VectoException($"Error while reading Angledrive data: {e.Message}", e.GetErrorCode(), e);
+                throw new VectoException($"Error while reading Angledrive data: {e.Message}", e.GetErrorCode());
 			}
 		}
 

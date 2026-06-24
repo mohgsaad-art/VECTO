@@ -1858,7 +1858,8 @@ namespace TUGraz.VectoCommon.Utils
 					throw new DivideByZeroException();
 				}
 			} catch (DivideByZeroException ex) {
-				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0[{si2.UnitString}])", ErrorCodes.SI_DIVIDE_BY_ZERO, ex);
+				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0[{si2.UnitString}]).{Environment.NewLine}{ex.Message}", 
+					ErrorCodes.SI_DIVIDE_BY_ZERO);
 			}
 
 			var unitArray = SIUtils.CombineUnits(si1._units, SIUtils.MultiplyUnits(si2._units, -1));
@@ -1870,7 +1871,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator /(SI si1, double d)
 		{
 			if (d.IsEqual(0)) {
-				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0)", ErrorCodes.SI_DIVIDE_BY_ZERO, new DivideByZeroException());
+				throw new VectoException($"Can not compute division by zero ([{si1.UnitString}] / 0)", ErrorCodes.SI_DIVIDE_BY_ZERO);
 			}
 
 			return new SI(si1.Val / d, si1);
@@ -1880,7 +1881,7 @@ namespace TUGraz.VectoCommon.Utils
 		public static SI operator /(double d, SI si1)
 		{
 			if (si1.IsEqual(0)) {
-				throw new VectoException($"Can not compute division by zero (x / 0[{si1.UnitString}])", ErrorCodes.SI_DIVIDE_BY_ZERO, new DivideByZeroException());
+				throw new VectoException($"Can not compute division by zero (x / 0[{si1.UnitString}])", ErrorCodes.SI_DIVIDE_BY_ZERO);
 			}
 
 			return new SI(d / si1.AsBasicUnit, si1._units.Select(u => -u).ToArray());

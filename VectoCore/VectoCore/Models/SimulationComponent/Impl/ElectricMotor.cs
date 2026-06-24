@@ -583,7 +583,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (pwr.ElectricalPower.IsSmaller(maxBatPower)) {
 					maxBatRecuperationTorque = maxEmTorque;
 				} else {
-					throw new VectoException("Failed to get max. recuperation torque", ErrorCodes.ELECTRICMOTOR_FAILED_TO_GET_MAX_RECUPERATION_TORQUE, e);
+					throw new VectoException($"Failed to get max. recuperation torque.{Environment.NewLine}{e.Message}" + $"{Environment.NewLine}{e.Message}", 
+						ErrorCodes.ELECTRICMOTOR_FAILED_TO_GET_MAX_RECUPERATION_TORQUE);
 				}
 			}
 

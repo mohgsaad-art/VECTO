@@ -45,7 +45,6 @@ namespace TUGraz.VectoCore.Tests.Exceptions
 		[TestCase]
 		public void Test_VectoExceptions()
 		{
-			new VectoException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, new Exception("Inner"));
 			new VectoException("Test", ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE);
 		}
 	}

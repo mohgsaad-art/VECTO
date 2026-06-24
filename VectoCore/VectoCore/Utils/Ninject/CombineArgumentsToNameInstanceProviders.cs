@@ -93,7 +93,8 @@ namespace TUGraz.VectoCore.Utils.Ninject
 			catch (Exception e) {
 				var name = GetName(methodInfo, arguments);
 				throw new VectoException(
-					$"failed to create instance for '{methodInfo.ReturnType.Name}' via '{methodInfo}' version '{arguments[0].ToString()}' name '{name}'", e.GetErrorCode(), e);
+					$"failed to create instance for '{methodInfo.ReturnType.Name}' via '{methodInfo}' version '{arguments[0].ToString()}' name '{name}'." +
+					$"{Environment.NewLine}{e.Message}", e.GetErrorCode());
 			}
 		}
 

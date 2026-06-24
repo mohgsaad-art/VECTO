@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				if (throwExceptionOnFailure)
 				{
                     Log.Fatal(errorMessage);
-                    throw new VectoException(errorMessage, ErrorCodes.SYSTEM_INVALID_OPERATION, e);
+                    throw new VectoException(errorMessage + $"{Environment.NewLine}{e.Message}", ErrorCodes.SYSTEM_INVALID_OPERATION);
                 }
 			}
 

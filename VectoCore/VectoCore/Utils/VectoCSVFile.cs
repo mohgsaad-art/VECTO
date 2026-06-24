@@ -163,7 +163,7 @@ namespace TUGraz.VectoCore.Utils
 					table.Rows.Add(cells);
 				} catch (InvalidCastException e) {
 					throw new VectoException(
-						$"Line {lineNumber}: The data format of a value is not correct. {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA, e);
+						$"Line {lineNumber}: The data format of a value is not correct. {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 				lineNumber++;
 			}

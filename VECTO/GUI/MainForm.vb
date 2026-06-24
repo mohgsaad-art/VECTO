@@ -1209,7 +1209,7 @@ lbFound:
     End Sub
 
     Private Shared Function GetGearInfo(ex As Exception) As String
-        Return TryCast(ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
+        Return TryCast(ex.Data(ExceptionData.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
                 Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").
                 Join()
     End Function

@@ -119,7 +119,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var stream = File.OpenRead(fileName);
 				return ReadFromStream(stream, type, Path.GetFileNameWithoutExtension(fileName), crossWindRequired);
 			} catch (Exception ex) {
-				throw new VectoException($"ERROR while opening DrivingCycle File: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_FILE, ex);
+				throw new VectoException($"ERROR while opening DrivingCycle File: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				return ReadFromDataTable(VectoCSVFile.ReadStream(stream), type, name, crossWindRequired);
 			} catch (Exception ex) {
-				throw new VectoException($"ERROR while reading DrivingCycle Stream: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_STREAM, ex);
+				throw new VectoException($"ERROR while reading DrivingCycle Stream: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_STREAM);
 			}
 		}
 
