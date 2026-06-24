@@ -121,7 +121,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 do {
                     if (!string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError))
                     {
-                        throw new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED);
+                        throw new VectoException(
+                            Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, 
+                            ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED,
+                            "Make sure the fuel cell power map and the battery power map are correctly configured.");
                     }
 
                     response = DoSimulationStep();
@@ -173,7 +176,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                     ? null
                     : DecorateExceptionWithRunData(new VectoException(
                         Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError, 
-                        ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED));
+                        ErrorCodes.FUELCELL_POWERMAP_GENERATION_FAILED,
+                        "Make sure the fuel cell power map and the battery power map are correctly configured."));
 
                 Container.FinishSimulationRun(exception);
                 WritingResultsDone = true;

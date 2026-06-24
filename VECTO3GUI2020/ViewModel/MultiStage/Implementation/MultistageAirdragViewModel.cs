@@ -183,7 +183,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		private void ValidationErrorAction(XmlSeverityType arg1, ValidationEvent arg2)
+		private void ValidationErrorAction(XmlSeverityType arg1, XMLValidationEvent arg2)
 		{
 			var xmlException = arg2?.ValidationEventArgs?.Exception as XmlSchemaValidationException;
 			if (xmlException != null)

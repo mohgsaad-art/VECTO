@@ -198,7 +198,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			} catch (Exception e) {
 				if (!TolerateMissing) {
 					throw new VectoException(
-						$"JobFile: Failed to read Vehicle file '{Body[JsonKeys.Vehicle_VehicleFile]}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+						$"JobFile: Failed to read Vehicle file '{Body[JsonKeys.Vehicle_VehicleFile]}': {e.Message}", 
+						ErrorCodes.FILE_FAILED_TO_READ,
+						"Make sure the file exists, is properly formed, and its path is correct in the json field.");
 				}
 
 				return new JSONVehicleDataV7(
@@ -216,7 +218,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				return JSONInputDataFactory.ReadGearbox(Path.Combine(BasePath, gearboxFile));
 			} catch (Exception e) {
 				if (!TolerateMissing) {
-					throw new VectoException($"JobFile: Failed to read Gearbox file '{Body[JsonKeys.Vehicle_GearboxFile]}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+					throw new VectoException($"JobFile: Failed to read Gearbox file '{Body[JsonKeys.Vehicle_GearboxFile]}': {e.Message}", 
+						ErrorCodes.FILE_FAILED_TO_READ,
+                        "Make sure the file exists, is properly formed, and its path is correct in the json field.");
 				}
 
 				return new JSONGearboxDataV6(GetDummyJSONStructure(),
@@ -233,7 +237,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			} catch (Exception e) {
 				if (!TolerateMissing) {
 					throw new VectoException(
-						$"JobFile: Failed to read Engine file '{Body[JsonKeys.Vehicle_EngineFile]}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+						$"JobFile: Failed to read Engine file '{Body[JsonKeys.Vehicle_EngineFile]}': {e.Message}", 
+						ErrorCodes.FILE_FAILED_TO_READ,
+                        "Make sure the file exists, is properly formed, and its path is correct in the json field.");
 				}
 
 				return

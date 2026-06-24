@@ -143,7 +143,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read TCU file '{tcuFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+				throw new VectoException($"JobFile: Failed to read TCU file '{tcuFile}': {e.Message}", 
+					ErrorCodes.FILE_FAILED_TO_READ,
+                    "Make sure the file exists, is properly formed, and its path is correct in the json field.");
 			}
 		}
 
@@ -163,7 +165,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read Gearbox file '{gearboxFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+				throw new VectoException($"JobFile: Failed to read Gearbox file '{gearboxFile}': {e.Message}", 
+					ErrorCodes.FILE_FAILED_TO_READ,
+                    "Make sure the file exists, is properly formed, and its path is correct in the json field.");
 			}
 		}
 
@@ -183,7 +187,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"JobFile: Failed to read IEPC file '{iepcFile}': {e.Message}", ErrorCodes.FILE_FAILED_TO_READ, e);
+				throw new VectoException($"JobFile: Failed to read IEPC file '{iepcFile}': {e.Message}", 
+					ErrorCodes.FILE_FAILED_TO_READ,
+                    "Make sure the file exists, is properly formed, and its path is correct in the json field.");
 			}
 		}
 

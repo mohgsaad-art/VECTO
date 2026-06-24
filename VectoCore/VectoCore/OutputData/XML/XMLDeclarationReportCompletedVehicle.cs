@@ -106,7 +106,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				{
 					throw new VectoException(
 						$"no primary result entry set for simulation run vehicle class: {genericResult.VehicleClass}, mission: {genericResult.Mission}, payload: {genericResult.Payload}",
-                        ErrorCodes.REPORT_PRIMARY_RESULT_NOT_FOUND);
+                        ErrorCodes.REPORT_PRIMARY_RESULT_NOT_FOUND,
+                        "Make sure the relevant primary cycle run completes successfully."
+                        );
 				}
 
 				(ManufacturerRpt as IXMLManufacturerReportCompletedBus)?.WriteResult(genericResult, specificResult, primaryResult, GetCompletedResult);

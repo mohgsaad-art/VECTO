@@ -167,7 +167,7 @@ hashingcmd.exe
 			}
 		}
 
-		private static void ValidationCallBack(XmlSeverityType severity, ValidationEvent evt, string message)
+		private static void ValidationCallBack(XmlSeverityType severity, XMLValidationEvent evt, string message)
 		{
 			var args = evt.ValidationEventArgs;
 			if (severity == XmlSeverityType.Error) {

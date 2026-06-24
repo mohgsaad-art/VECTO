@@ -44,13 +44,13 @@ namespace TUGraz.VectoCore.Utils
 {
 	public class XMLValidator
 	{
-		private readonly Action<XmlSeverityType, ValidationEvent, string> _validationErrorAction;
+		private readonly Action<XmlSeverityType, XMLValidationEvent, string> _validationErrorAction;
 		private readonly Action<bool> _resultAction;
 		private bool _valid;
 		private  XmlDocument _doc;
 		private List<string> _validationErrors = new List<string>();
 
-		private XMLValidator(Action<bool> resultaction, Action<XmlSeverityType, ValidationEvent, string> validationErrorAction)
+		private XMLValidator(Action<bool> resultaction, Action<XmlSeverityType, XMLValidationEvent, string> validationErrorAction)
 		{
 			_validationErrorAction = validationErrorAction ?? ((x, y, s) => { });
 			_resultAction = resultaction ?? (x => { });
@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public XMLValidator(
 			XmlReader document, Action<bool> resultaction = null,
-			Action<XmlSeverityType, ValidationEvent, string> validationErrorAction = null) : this(resultaction, validationErrorAction)
+			Action<XmlSeverityType, XMLValidationEvent, string> validationErrorAction = null) : this(resultaction, validationErrorAction)
 		{
 			_doc = new XmlDocument();
 			_doc.Load(document);
@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public XMLValidator(
 			XmlDocument document, Action<bool> resultaction = null,
-			Action<XmlSeverityType, ValidationEvent, string> validationErrorAction = null) : this(resultaction, validationErrorAction)
+			Action<XmlSeverityType, XMLValidationEvent, string> validationErrorAction = null) : this(resultaction, validationErrorAction)
 		{
 			_doc = document;
 		}
@@ -116,15 +116,23 @@ namespace TUGraz.VectoCore.Utils
 			_resultAction(false);
 			_valid = false;
 			_validationErrors.Add(args?.Message ?? "no schema found");
-			_validationErrorAction(args?.Severity ?? XmlSeverityType.Error, new ValidationEvent { ValidationEventArgs = args }, ValidationError);
+			_validationErrorAction(
+				args?.Severity ?? XmlSeverityType.Error, 
+				new XMLValidationEvent { ValidationEventArgs = args, Validator = this }, 
+				ValidationError);
 		}
 
 		public string ValidationError => _validationErrors.Any() ? _validationErrors.Join(Environment.NewLine) : null;
 
-		public static void CallBackExceptionOnError(XmlSeverityType severity, ValidationEvent evt, string message)
+		public static void CallBackExceptionOnError(XmlSeverityType severity, XMLValidationEvent evt, string message)
 		{
 			if (severity == XmlSeverityType.Error) {
-				throw new VectoException($"Validation error: {evt?.ValidationEventArgs?.Message ?? message ?? "XML schema not known"}", ErrorCodes.XML_VALIDATION_FAILED);
+				throw new VectoException(
+					$"Validation error: {evt?.ValidationEventArgs?.Message ?? message ?? "XML schema not known"}", 
+					ErrorCodes.XML_VALIDATION_FAILED,
+					$"Please, fix the input file ({evt?.Validator?._doc?.BaseURI ?? "unknown"}), using the error message and the appropriate XSD file(s) " +
+					"for guidance. The VECTO XSD files are distributed with every VECTO release, and can be found in the 'XML\\XSD' folder." +
+					" The XML namespaces used in the input file indicate the XSD files to check out.");
 			}
 		}
 
@@ -158,9 +166,10 @@ namespace TUGraz.VectoCore.Utils
 		}
 	}
 
-	public class ValidationEvent
+	public class XMLValidationEvent
 	{
 		public Exception Exception;
 		public ValidationEventArgs ValidationEventArgs;
-	}
+		public XMLValidator Validator;
+    }
 }

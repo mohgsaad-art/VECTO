@@ -228,7 +228,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 					},
 					abortCriterion: (d, o) => {
 						if (d < minWindowSize) {
-							throw new VectoException($"Window size < {minWindowSize}, {(o as SearchResult).Reason}", ErrorCodes.SEARCH_ABORTED);
+							throw new VectoException($"Search for fuel cell power failed. Window size < {minWindowSize}, {(o as SearchResult).Reason}", ErrorCodes.SEARCH_ABORTED);
 						}
 
 						if (!accepted.Any() || !rejected.Any()) {
@@ -265,7 +265,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			result = null;
 			var fcSufficient = CheckFCPower(fcData, batData, out var msg);
 			if (!fcSufficient) {
-				throw new VectoException($"FuelCell power not sufficient {msg}", ErrorCodes.FUELCELL_INSUFFICIENT_POWER);
+				throw new VectoException($"Search for fuel cell power failed. Fuel cell power not sufficient {msg}", ErrorCodes.FUELCELL_INSUFFICIENT_POWER);
 			}
 
             var maxWindowSize = fcData.MaxWindowSize ?? TotalDistance;
@@ -492,7 +492,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 				entry.delta_P_FCS = weights[i] * -deltaEnergyBatInt / entry.dt;
 
 				if (entry.FCPowerFinal.IsGreater(entry.P_max_CFCS)) {
-					throw new VectoException("Power too high", ErrorCodes.FUELCELL_EXCESSIVE_POWER);
+					throw new VectoException("Power too high.", ErrorCodes.FUELCELL_EXCESSIVE_POWER);
 				}
 			}
 		}
