@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
@@ -41,7 +42,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			var val = jobject[property];
 			if (val == null) {
-				throw new VectoException($"Key {property} not found", ErrorCodes.FILE_INVALID_FORMAT);
+				throw new VectoException($"Field '{property}' not found in {Environment.NewLine}{jobject}", 
+					ErrorCodes.FILE_INVALID_FORMAT,
+                    "Make sure that the spelling is right and to include the field in the JObject object, if it is missing.");
 			}
 			return val;
 		}
@@ -50,7 +53,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			var val = jtoken[property];
 			if (val == null) {
-				throw new VectoException($"Key {property} not found", ErrorCodes.FILE_INVALID_FORMAT);
+				throw new VectoException($"Field '{property}' not found in {Environment.NewLine}{jtoken}", 
+					ErrorCodes.FILE_INVALID_FORMAT,
+                    "Make sure that the spelling is right and to include the field in the JToken object, if it is missing.");
 			}
 			return val;
 		}

@@ -76,22 +76,30 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			
 			if (AxleNumber == int.MinValue)
 			{
-				throw new VectoException($"{JsonKeys.Vehicle_AxlePowertrain_AxleNumber} not defined in {JsonKeys.Vehicle_AxlePowertrains}", ErrorCodes.JSON_UNDEFINED_AXLENUMBER);
+				throw new VectoException($"JSON input: '{JsonKeys.Vehicle_AxlePowertrain_AxleNumber}' not defined in '{JsonKeys.Vehicle_AxlePowertrains}", 
+					ErrorCodes.JSON_UNDEFINED_AXLENUMBER,
+                    $"Make sure that '{JsonKeys.Vehicle_AxlePowertrain_AxleNumber}' is defined in '{JsonKeys.Vehicle_AxlePowertrains}'.");
 			}
 
 			if (Architecture == ArchitectureID.UNKNOWN)
 			{
-				throw new VectoException($"Architecture bad or missing in {JsonKeys.Vehicle_AxlePowertrains}", ErrorCodes.JSON_INVALID_ARCHITECTURE);
+				throw new VectoException($"'Architecture' bad or missing in '{JsonKeys.Vehicle_AxlePowertrains}'.", 
+					ErrorCodes.JSON_INVALID_ARCHITECTURE,
+                    $"Make sure that 'Architecture' is properly defined in '{JsonKeys.Vehicle_AxlePowertrains}'.");
 			}
 
 			if (Architecture.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
 			{
-                throw new VectoException($"Architecture {Architecture} is not supported yet!", ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE);
+                throw new VectoException($"Architecture {Architecture} is not supported yet!", 
+					ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE,
+                    $"Please, wait for future updates, that will support '{Architecture}'.");
             }
 
 			if (Architecture.IsIEPC() && (IEPCEngineeringInputData.Gears.Count > 1))
 			{
-                throw new VectoException($"Architecture {Architecture} with multiple gears is not supported yet!", ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE);
+                throw new VectoException($"Architecture {Architecture} with multiple gears is not supported yet!", 
+					ErrorCodes.JSON_UNSUPPORTED_ARCHITECTURE,
+                    $"Please, wait for future updates, that will support '{Architecture}' with multiple gears.");
             }
 		}
 
@@ -417,7 +425,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if ((EPTOCycleDuringStop != null) && (PTOCycleDuringStop != null))
 			{
 				throw new VectoException(
-					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED);
+					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", 
+					ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED,
+					$"Make sure to set only one of {JsonKeys.Vehicle_PTO_Cycle} or {JsonKeys.Vehicle_EPTO_Cycle}.");
 			}
 		}
 
@@ -684,7 +694,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			if((epto != null && pto != null)) {
 				throw new VectoException(
-					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED);
+					$"Setting {JsonKeys.Vehicle_PTO_Cycle} AND {JsonKeys.Vehicle_EPTO_Cycle} is not allowed", 
+					ErrorCodes.JSON_PTO_AND_EPTO_NOT_ALLOWED,
+					$"Make sure to set only one of {JsonKeys.Vehicle_PTO_Cycle} or {JsonKeys.Vehicle_EPTO_Cycle}.");
 			}
 		}
 

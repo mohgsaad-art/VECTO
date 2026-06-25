@@ -147,7 +147,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case "Multiple_FCHV": return VectoSimulationJobType.Multiple_FCHV;
 				case "Mulitple_SHEV": return VectoSimulationJobType.Multiple_SHEV;
 				case "Multiple_PEV": return VectoSimulationJobType.Multiple_PEV;
-                default: throw new VectoException($"Invalid parameter value {json.GetEx<String>(field)}", ErrorCodes.JSON_INVALID_JOB_TYPE);
+                default: throw new VectoException($"Invalid parameter value '{json.GetEx<String>(field)}' for field '{field}'", 
+					ErrorCodes.JSON_INVALID_JOB_TYPE,
+					"Make sure the field contains a valid powertrain type.");
 			}
 		}
 	}
@@ -275,7 +277,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				"CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
 			get {
 				if (VehicleData == null) {
-					throw new VectoException("VehicleData not found", ErrorCodes.FILE_INVALID_FORMAT);
+					throw new VectoException("JSON input: VehicleData not found!", 
+						ErrorCodes.JSON_MISSING_DATA,
+						"Make sure that the JSON vehicle file has been parsed successfully.");
 				}
 
 				return VehicleData;
@@ -289,7 +293,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				"CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
 			get {
 				if (Engine == null) {
-					throw new VectoException("EngineData not found", ErrorCodes.FILE_INVALID_FORMAT);
+					throw new VectoException("JSON input: EngineData not found!", 
+						ErrorCodes.JSON_MISSING_DATA,
+						"Make sure that the JSON engine file has been parsed successfully.");
 				}
 
 				return Engine;
@@ -336,7 +342,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 								throw new VectoException(
 									$"Driving Cycle could not be read: {cycleFile}.{Environment.NewLine}{e.Message}",
 									ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
-									"Make sure the file exists, is properly formatted.");
+									"Make sure the file exists, and is properly formatted.");
 							}
 
 							cycleData = new TableData(cycleFile + MissingFileSuffix, DataSourceType.Missing);
@@ -494,7 +500,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						};
 					} catch (Exception) {
 						if (!TolerateMissing) {
-							throw new VectoException($"Failed to read Driver Acceleration Curve: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+							throw new VectoException($"Failed to read Driver Acceleration Curve: {e.Message}", 
+								ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+								"Make sure the file exists, and is properly formatted.");
 						}
 
 						return new DriverAccelerationInputData() {
@@ -547,7 +555,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				{
 					throw new VectoException(
 						$"Aux: Technology for aux '{aux.GetEx<string>("ID")}' list could not be read. Maybe it is a single string instead of a list of strings?",
-						ErrorCodes.JSON_CANNOT_READ_AUX_TECHNOLOGY);
+						ErrorCodes.JSON_CANNOT_READ_AUX_TECHNOLOGY,
+						"Make sure the Technology field is a list of strings.");
 				}
 
 				var type = AuxiliaryTypeHelper.Parse(aux.GetEx<string>("Type"));
@@ -872,7 +881,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (xmlVersionNewer) {
 				throw new VectoException(
 					$"Not allowed to run simulation because VECTO version ({vectoVersionStr}) is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).",
-					ErrorCodes.VTP_VECTO_VERSION_TOO_OLD);
+					ErrorCodes.VTP_VECTO_VERSION_TOO_OLD,
+					"Make sure to use a version of VECTO that is equal to or newer than the SimulationToolVersion specified in the Manufacturer Report.");
 			}
 			#endif
 		}
@@ -888,7 +898,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				signatureDigest.DigestMethod);
 
 			if (!hash.InnerText.Equals(signatureDigest.DigestValue)) {
-				throw new VectoException($"Manufacturer Report hash: {signatureDigest.DigestValue} differs from calculated hash: {hash.InnerText}", ErrorCodes.MRF_HASH_DIFFERS_FROM_CALCULATED_HASH);
+				throw new VectoException($"Manufacturer Report hash: {signatureDigest.DigestValue} differs from calculated hash: {hash.InnerText}", 
+					ErrorCodes.MRF_HASH_DIFFERS_FROM_CALCULATED_HASH,
+					"Make sure the Manufacturer Report has not been tampered with and is correctly signed.");
 			}
 		}
 
@@ -1245,7 +1257,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		private IDeclarationInputDataProvider CreateReader(string vehicleFileName)
 		{
 			if (Path.GetExtension(vehicleFileName) != ".xml") {
-				throw new VectoException($"unsupported vehicle file format {vehicleFileName}", ErrorCodes.JSON_UNSUPPORTED_VEHICLE_FILE_TYPE);
+				throw new VectoException($"JSON input: unsupported vehicle file format for '{vehicleFileName}'", 
+					ErrorCodes.JSON_UNSUPPORTED_VEHICLE_FILE_TYPE,
+					"Make sure the vehicle file is in XML format.");
 			}
 
 			return _xmlInputReader.CreateDeclaration(vehicleFileName);
@@ -1503,7 +1517,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 			if (JobType == VectoSimulationJobType.Multiple_SHEV)
 			{
-				throw new VectoException("SHEV with multiple powertrains are not yet supported.", ErrorCodes.JSON_UNSUPPORTED_INPUT_DATA);
+				throw new VectoException(
+					"SHEV with multiple powertrains are not yet supported.", 
+					ErrorCodes.JSON_UNSUPPORTED_INPUT_DATA,
+					"Please, wait for future updates that will enable this feature.");
 			}
 		}
 

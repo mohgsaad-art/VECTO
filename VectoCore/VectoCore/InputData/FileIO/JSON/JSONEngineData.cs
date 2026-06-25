@@ -233,7 +233,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			{
 				var fuel = Body.GetEx<string>("FuelType").ParseEnum<FuelType>();
 				if (fuel.IsOneOf(FuelType.H2FC)) {
-					throw new VectoException($"Invalid fuel type {fuel}", ErrorCodes.ICE_INVALID_FUEL_TYPE);
+					throw new VectoException($"Engine: Invalid fuel type {fuel}", 
+						ErrorCodes.ICE_INVALID_FUEL_TYPE,
+                        "Make sure to that the 'FuelType' field, in the engine JSON, declares a valid fuel type for an ICE.");
 				}
 
                 return fuel;
