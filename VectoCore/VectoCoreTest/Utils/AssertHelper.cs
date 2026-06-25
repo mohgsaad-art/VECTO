@@ -37,6 +37,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using TUGraz.VectoCommon.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
@@ -292,9 +293,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 				? metricsFile
 				: Path.Join(TestContext.CurrentContext.TestDirectory, "gitlab_metrics.log");
 
-			File.AppendAllLines(
-				filePath,
-				new List<string>() { $"{metricKey} {actual}" });
+			using var mutex = new Mutex(false, "Global\\VectoGitlabMetrics");
+			mutex.WaitOne();
+			try {
+				File.AppendAllText(filePath, $"{metricKey} {actual}{Environment.NewLine}");
+			} finally {
+				mutex.ReleaseMutex();
+			}
 		}
 
 		public static void ReadMetricsFromVSum(String vsumPath, int vsumRow, Dictionary<String, double> metrics)

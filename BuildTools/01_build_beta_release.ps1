@@ -69,18 +69,20 @@ param(
     [string]$LocalRegistryPath = $null
 )
 
+$LocalRegistryName = "local-vecto-registry"
+
 # docker run -dit --mount type=bind,source="C:\Users\David Amo\Documents\EC\Development\vecto_aclone",target="C:\Users\Public\Documents\vecto" code.europa.eu:4567/vecto/vectoci/vecto-dev-win:v3 pwsh -NoLogo -NonInteractive -File "C:\Users\Public\Documents\vecto\build_release.ps1"
 
 function Add-LocalNugetRegistry([string]$path) {
-    $existing = dotnet nuget list source | Select-String "local-vecto-registry"
+    $existing = dotnet nuget list source | Select-String $LocalRegistryName
     if (-not $existing) {
         if (-not (Test-Path $path)) {
             New-Item -ItemType Directory -Path $path | Out-Null
         }
-        dotnet nuget add source $path --name "local-vecto-registry"
-        Write-Host "Added NuGet source 'local-vecto-registry' at $path" -ForegroundColor Cyan
+        dotnet nuget add source $path --name $LocalRegistryName
+        Write-Host "Added NuGet source '$LocalRegistryName' at $path" -ForegroundColor Cyan
     } else {
-        Write-Host "NuGet source 'local-vecto-registry' already configured, skipping." -ForegroundColor Yellow
+        Write-Host "NuGet source '$LocalRegistryName' already configured, skipping." -ForegroundColor Yellow
     }
 }
 
@@ -88,7 +90,7 @@ function Remove-LocalNugetPackages([string]$version) {
     $packages = @("VectoCore", "VectoCommon", "VectoHashing")
     foreach ($pkg in $packages) {
         Write-Host "Deleting package: $pkg $version" -ForegroundColor Magenta
-        dotnet nuget delete $pkg $version -s "local-vecto-registry" --non-interactive
+        dotnet nuget delete $pkg $version -s $LocalRegistryName --non-interactive
     }
 }
 
@@ -196,7 +198,7 @@ if ($Publish) {
     $NugetReleaseVersion = $(Get-ChildItem -Path ./Nuget)[0].BaseName
     Get-ChildItem -Path "Nuget/$NugetReleaseVersion" | ForEach-Object {
         Write-Host "Pushing package: $($_.FullName)" -ForegroundColor Green
-        dotnet nuget push $_.FullName -s "local-vecto-registry"
+        dotnet nuget push $_.FullName -s $LocalRegistryName
     }
 
 

@@ -6,7 +6,7 @@
 		<RemoveDir Directories="$(ProjectDir)obj\"/>
 	</Target>
 
-	<Target Name="Packaging" AfterTargets="DispatchToInnerBuilds" Condition="('$(Configuration)'=='Deploy') Or ('$(Configuration)' == 'MockupDeploy')">
+	<Target Name="Packaging" AfterTargets="DispatchToInnerBuilds" Condition="'$(Configuration)'=='Deploy'">
 		<Message Text="Packaging in $(Configuration) Configuration $(VersionPrefix)" Importance="high" />
 		<PropertyGroup>
 			<CurrentDate>$([System.DateTime]::Now.ToString(yyy_MM_dd))</CurrentDate>
@@ -21,7 +21,7 @@
 		<MakeDir Directories="$(NuGetPath)"/>
 		<MakeDir Directories="$(ReleasePath)"/>
 
-		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
+		<ItemGroup>
 			<!-- All files for net48 -->
 			<Net48VECTO Include="$(SolutionDir)VECTO\bin\Release\net48\*.exe*"/>
 			<Net48VECTO Include="$(SolutionDir)VECTO\bin\Release\net48\*.dll*"/>
@@ -36,28 +36,12 @@
 			<Net48VectoMultistep Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net48\*.dll*"/>
 		</ItemGroup>
 
-		<!--MockupDeploy-->
-		<ItemGroup Condition="'$(Configuration)'=='MockupDeploy'">
-			<!-- All files for net48 -->
-			<Net48VECTO Include="$(SolutionDir)VECTO\bin\MockupRelease\net48\*.exe*" />
-			<Net48VECTO Include="$(SolutionDir)VECTO\bin\MockupRelease\net48\*.dll*" />
-			<Net48VECTO Include="$(SolutionDir)VECTO\bin\MockupRelease\net48\nlog.config"/>
-			<Net48HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\net48\*.exe*" />
-			<Net48HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\net48\*.dll*" />
-			<Net48HashingTool Include="$(SolutionDir)HashingTool\bin\Release\net48\*.exe*"/>
-			<Net48HashingTool Include="$(SolutionDir)HashingTool\bin\Release\net48\*.dll*"/>
-			<Net48VectoCommandLine Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net48\*.exe*" />
-			<Net48VectoCommandLine Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net48\*.dll*" />
-			<Net48VectoMultistep Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net48\*.exe*" />
-			<Net48VectoMultistep Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net48\*.dll*" />
-		</ItemGroup>
-
 		<Copy SourceFiles="@(Net48VectoCommandLine)" DestinationFolder="$(DeployPath)net48"/>
 		<Copy SourceFiles="@(Net48HashingTool)" DestinationFolder="$(DeployPath)net48"/>
 		<Copy SourceFiles="@(Net48VectoMultistep)" DestinationFolder="$(DeployPath)net48"/>
 		<Copy SourceFiles="@(Net48VECTO)" DestinationFolder="$(DeployPath)net48"/>
 
-		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
+		<ItemGroup>
 			<!-- All files for net6.0 -->
 			<Vecto60 Include="$(SolutionDir)VECTO\bin\Release\net6.0-windows\VECTO.*" Exclude="*.dev.json"/>
 			<Vecto60 Include="$(SolutionDir)VECTO\bin\Release\net6.0-windows\*.dll"/>
@@ -76,27 +60,6 @@
 			<VectoMultistep60 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net6.0-windows\*.dll"/>
 			<VectoMultistepRuntimes60 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net6.0-windows\runtimes\**\*.*"/>
 		</ItemGroup>
-		<!--MockupDeploy-->
-
-		<ItemGroup Condition="'$(Configuration)'=='MockupDeploy'">
-			<!-- All files for net6.0 -->
-			<Vecto60 Include="$(SolutionDir)VECTO\bin\MockupRelease\net6.0-windows\VECTO.*" Exclude="*.dev.json"/>
-			<Vecto60 Include="$(SolutionDir)VECTO\bin\MockupRelease\net6.0-windows\*.dll"/>
-			<Vecto60 Include="$(SolutionDir)VECTO\bin\MockupRelease\net6.0-windows\nlog.config"/>
-			<VectoRuntimes60 Include="$(SolutionDir)VECTO\bin\MockupRelease\net6.0-windows\runtimes\**\*.*"/>
-			<VectoCommandLine60 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net6.0\vectocmd.*" Exclude="*.dev.json"/>
-			<VectoCommandLine60 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net6.0\*.dll"/>
-			<VectoCommandLineRuntimes60 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net6.0\runtimes\**\*.*"/>
-			<HashingTool60 Include="$(SolutionDir)HashingCmd\bin\Release\net6.0\hashingcmd.*" Exclude="*.dev.json"/>
-			<HashingTool60 Include="$(SolutionDir)HashingCmd\bin\Release\net6.0\*.dll"/>
-			<HashingToolRuntimes60 Include="$(SolutionDir)HashingCmd\bin\Release\net6.0\runtimes\**\*.*"/>
-			<HashingTool60 Include="$(SolutionDir)HashingTool\bin\Release\net6.0-windows\HashingTool.*" Exclude="*.dev.json"/>
-			<HashingTool60 Include="$(SolutionDir)HashingTool\bin\Release\net6.0-windows\*.dll*"/>
-			<HashingToolRuntimes60 Include="$(SolutionDir)HashingTool\bin\Release\net6.0-windows\runtimes\**\*.*"/>
-			<VectoMultistep60 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net6.0-windows\VECTOMultistep.*" Exclude="*.dev.json"/>
-			<VectoMultistep60 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net6.0-windows\*.dll"/>
-			<VectoMultistepRuntimes60 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net6.0-windows\runtimes\**\*.*"/>
-		</ItemGroup>
 
 		<Copy SourceFiles="@(HashingTool60)" DestinationFolder="$(DeployPath)net60"/>
 		<Copy SourceFiles="@(VectoMultistep60)" DestinationFolder="$(DeployPath)net60"/>
@@ -107,8 +70,8 @@
 		<Copy SourceFiles="@(VectoCommandLineRuntimes60)" DestinationFiles="@(VectoCommandLineRuntimes60->'$(DeployPath)net60\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
 		<Copy SourceFiles="@(VectoRuntimes60)" DestinationFiles="@(VectoRuntimes60->'$(DeployPath)net60\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
 
-		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
-			<!-- All files for net6.0 -->
+		<ItemGroup>
+			<!-- All files for net8.0 -->
 			<Vecto80 Include="$(SolutionDir)VECTO\bin\Release\net8.0-windows\VECTO.*" Exclude="*.dev.json"/>
 			<Vecto80 Include="$(SolutionDir)VECTO\bin\Release\net8.0-windows\*.dll"/>
 			<Vecto80 Include="$(SolutionDir)VECTO\bin\Release\net8.0-windows\nlog.config"/>
@@ -126,27 +89,6 @@
 			<VectoMultistep80 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net8.0-windows\*.dll"/>
 			<VectoMultistepRuntimes80 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net8.0-windows\runtimes\**\*.*"/>
 		</ItemGroup>
-		<!--MockupDeploy-->
-
-		<ItemGroup Condition="'$(Configuration)'=='MockupDeploy'">
-			<!-- All files for net6.0 -->
-			<Vecto80 Include="$(SolutionDir)VECTO\bin\MockupRelease\net8.0-windows\VECTO.*" Exclude="*.dev.json"/>
-			<Vecto80 Include="$(SolutionDir)VECTO\bin\MockupRelease\net8.0-windows\*.dll"/>
-			<Vecto80 Include="$(SolutionDir)VECTO\bin\MockupRelease\net8.0-windows\nlog.config"/>
-			<VectoRuntimes80 Include="$(SolutionDir)VECTO\bin\MockupRelease\net8.0-windows\runtimes\**\*.*"/>
-			<VectoCommandLine80 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net8.0\vectocmd.*" Exclude="*.dev.json"/>
-			<VectoCommandLine80 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net8.0\*.dll"/>
-			<VectoCommandLineRuntimes80 Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net8.0\runtimes\**\*.*"/>
-			<HashingTool80 Include="$(SolutionDir)HashingCmd\bin\Release\net8.0\hashingcmd.*" Exclude="*.dev.json"/>
-			<HashingTool80 Include="$(SolutionDir)HashingCmd\bin\Release\net8.0\*.dll"/>
-			<HashingToolRuntimes80 Include="$(SolutionDir)HashingCmd\bin\Release\net8.0\runtimes\**\*.*"/>
-			<HashingTool80 Include="$(SolutionDir)HashingTool\bin\Release\net8.0-windows\HashingTool.*" Exclude="*.dev.json"/>
-			<HashingTool80 Include="$(SolutionDir)HashingTool\bin\Release\net8.0-windows\*.dll*"/>
-			<HashingToolRuntimes80 Include="$(SolutionDir)HashingTool\bin\Release\net8.0-windows\runtimes\**\*.*"/>
-			<VectoMultistep80 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net8.0-windows\VECTOMultistep.*" Exclude="*.dev.json"/>
-			<VectoMultistep80 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net8.0-windows\*.dll"/>
-			<VectoMultistepRuntimes80 Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net8.0-windows\runtimes\**\*.*"/>
-		</ItemGroup>
 
 		<Copy SourceFiles="@(HashingTool80)" DestinationFolder="$(DeployPath)net80"/>
 		<Copy SourceFiles="@(VectoMultistep80)" DestinationFolder="$(DeployPath)net80"/>
@@ -157,9 +99,36 @@
 		<Copy SourceFiles="@(VectoCommandLineRuntimes80)" DestinationFiles="@(VectoCommandLineRuntimes80->'$(DeployPath)net80\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
 		<Copy SourceFiles="@(VectoRuntimes80)" DestinationFiles="@(VectoRuntimes80->'$(DeployPath)net80\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
 
+		<ItemGroup>
+			<!-- All files for net10.0 -->
+			<Vecto100 Include="$(SolutionDir)VECTO\bin\Release\net10.0-windows\VECTO.*" Exclude="*.dev.json"/>
+			<Vecto100 Include="$(SolutionDir)VECTO\bin\Release\net10.0-windows\*.dll"/>
+			<Vecto100 Include="$(SolutionDir)VECTO\bin\Release\net10.0-windows\nlog.config"/>
+			<VectoRuntimes100 Include="$(SolutionDir)VECTO\bin\Release\net10.0-windows\runtimes\**\*.*"/>
+			<VectoCommandLine100 Include="$(SolutionDir)VectoConsole\bin\Release\net10.0\vectocmd.*" Exclude="*.dev.json"/>
+			<VectoCommandLine100 Include="$(SolutionDir)VectoConsole\bin\Release\net10.0\*.dll"/>
+			<VectoCommandLineRuntimes100 Include="$(SolutionDir)VectoConsole\bin\Release\net10.0\runtimes\**\*.*"/>
+			<HashingTool100 Include="$(SolutionDir)HashingCmd\bin\Release\net10.0\hashingcmd.*" Exclude="*.dev.json"/>
+			<HashingTool100 Include="$(SolutionDir)HashingCmd\bin\Release\net10.0\*.dll"/>
+			<HashingToolRuntimes100 Include="$(SolutionDir)HashingCmd\bin\Release\net10.0-windows\runtimes\**\*.*"/>
+			<HashingTool100 Include="$(SolutionDir)HashingTool\bin\Release\net10.0-windows\HashingTool.*" Exclude="*.dev.json"/>
+			<HashingTool100 Include="$(SolutionDir)HashingTool\bin\Release\net10.0-windows\*.dll*"/>
+			<HashingToolRuntimes100 Include="$(SolutionDir)HashingTool\bin\Release\net10.0\runtimes\**\*.*"/>
+			<VectoMultistep100 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net10.0-windows\VECTOMultistep.*" Exclude="*.dev.json"/>
+			<VectoMultistep100 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net10.0-windows\*.dll"/>
+			<VectoMultistepRuntimes100 Include="$(SolutionDir)VECTO3GUI2020\bin\Release\net10.0-windows\runtimes\**\*.*"/>
+		</ItemGroup>
 
+		<Copy SourceFiles="@(HashingTool100)" DestinationFolder="$(DeployPath)net100"/>
+		<Copy SourceFiles="@(VectoMultistep100)" DestinationFolder="$(DeployPath)net100"/>
+		<Copy SourceFiles="@(VectoCommandLine100)" DestinationFolder="$(DeployPath)net100"/>
+		<Copy SourceFiles="@(Vecto100)" DestinationFolder="$(DeployPath)net100"/>
+		<Copy SourceFiles="@(HashingToolRuntimes100)" DestinationFiles="@(HashingToolRuntimes100->'$(DeployPath)net100\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
+		<Copy SourceFiles="@(VectoMultistepRuntimes100)" DestinationFiles="@(VectoMultistepRuntimes100->'$(DeployPath)net100\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
+		<Copy SourceFiles="@(VectoCommandLineRuntimes100)" DestinationFiles="@(VectoCommandLineRuntimes100->'$(DeployPath)net100\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
+		<Copy SourceFiles="@(VectoRuntimes100)" DestinationFiles="@(VectoRuntimes100->'$(DeployPath)net100\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"/>
 
-		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
+		<ItemGroup>
 			<!-- All files for the VECTO starters -->
 			<VectoStart Include="$(SolutionDir)Tools\VECTOStart\bin\Deploy\net48\VECTO.exe" />
 			<VectoStart Include="$(SolutionDir)Tools\VECTOMultistepStart\bin\Release\net48\VECTOMultistep.exe" />
@@ -168,20 +137,6 @@
 			<VectoStart Include="$(SolutionDir)Tools\VECTOConsoleStart\bin\Release\net48\vectocmd.exe" />
 
 			<VectoStart Include="$(SolutionDir)Tools\VECTOStart\bin\Deploy\net48\*.dll" />
-			<VectoStart Include="$(SolutionDir)Tools\VECTOMultistepStart\bin\Release\net48\*.dll" />
-			<VectoStart Include="$(SolutionDir)Tools\HashingCmdStart\bin\Release\net48\*.dll" />
-			<VectoStart Include="$(SolutionDir)Tools\HashingToolStart\bin\Release\net48\*.dll" />
-			<VectoStart Include="$(SolutionDir)Tools\VECTOConsoleStart\bin\Release\net48\*.dll" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(Configuration)'=='MockupDeploy'">
-			<!-- All files for the VECTO starters -->
-			<VectoStart Include="$(SolutionDir)Tools\VECTOStart\bin\MockupDeploy\net48\VECTO.exe" />
-			<VectoStart Include="$(SolutionDir)Tools\VECTOMultistepStart\bin\Release\net48\VECTOMultistep.exe" />
-			<VectoStart Include="$(SolutionDir)Tools\HashingCmdStart\bin\Release\net48\hashingcmd.exe" />
-			<VectoStart Include="$(SolutionDir)Tools\HashingToolStart\bin\Release\net48\HashingTool.exe" />
-			<VectoStart Include="$(SolutionDir)Tools\VECTOConsoleStart\bin\Release\net48\vectocmd.exe" />
-
-			<VectoStart Include="$(SolutionDir)Tools\VECTOStart\bin\MockupDeploy\net48\*.dll" />
 			<VectoStart Include="$(SolutionDir)Tools\VECTOMultistepStart\bin\Release\net48\*.dll" />
 			<VectoStart Include="$(SolutionDir)Tools\HashingCmdStart\bin\Release\net48\*.dll" />
 			<VectoStart Include="$(SolutionDir)Tools\HashingToolStart\bin\Release\net48\*.dll" />
@@ -276,7 +231,7 @@
 
 		<!-- <Copy SourceFiles="$(ParameterDocuStyle)" DestinationFolder="$(DeployPath)User Manual\Parameter Documentation\HTML\css"/> -->
 		<!-- NuGet Files-->
-		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
+		<ItemGroup>
 			<VectoNuget Include ="$(SolutionDir)VectoCore\VectoCore\bin\Release\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoCommon\bin\Release\*$(Version)*.nupkg" />
 			<VectoNuget Include ="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\*$(Version)*.nupkg" />
@@ -299,13 +254,11 @@
 
 		<PropertyGroup>
 			<NugetDestinationZip>$(ReleasePath)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
-			<NugetDestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(ReleasePath)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
 		</PropertyGroup>
 		<ZipDirectory SourceDirectory="$(NuGetPath)" DestinationFile="$(NugetDestinationZip)" Overwrite="true"/>
 
 		<PropertyGroup>
 			<DestinationZip>$(ReleasePath)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
-			<DestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(ReleasePath)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
 		</PropertyGroup>
 		<ZipDirectory SourceDirectory="$(SolutionDir)Deploy\" DestinationFile="$(DestinationZip)" Overwrite="true"/>
 	</Target>
