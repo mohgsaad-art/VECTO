@@ -30,7 +30,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 		public XElement[] GetElement(IList<IResultEntry> entries)
 		{
-			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.Mission) && !_ehcMissions.Contains(e.Mission)).ToList());
+			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.Mission)).ToList());
 			var weightedVocationals = DeclarationData.CalculateWeightedSummary(entries.Where(e => vocationalMissions.Contains(e.Mission)).ToList());
 
 			// For Group 16 vehicles normal weights is null. The report needs both always.
@@ -44,7 +44,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 		public XElement[] GetElement(IList<IOVCResultEntry> entries)
 		{
-			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.ChargeDepletingResult.Mission) && !_ehcMissions.Contains(e.ChargeDepletingResult.Mission)).ToList());
+			var weighted = DeclarationData.CalculateWeightedSummary(entries.Where(e => !vocationalMissions.Contains(e.ChargeDepletingResult.Mission)).ToList());
 			var weightedVocationals = DeclarationData.CalculateWeightedSummary(entries.Where(e => vocationalMissions.Contains(e.ChargeDepletingResult.Mission)).ToList());
 
 			// For Group 16 vehicles normal weights is null. The report needs both always.
