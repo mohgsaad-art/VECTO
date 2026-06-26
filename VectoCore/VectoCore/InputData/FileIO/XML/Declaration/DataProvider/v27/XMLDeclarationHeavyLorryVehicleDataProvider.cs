@@ -41,7 +41,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC && BatteryOnlyMode)
             {
-                throw new VectoException("For PHEV vehicles, BatteryOnlyMode should be false if OVC is false.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML vehicle input: For PHEV vehicles, BatteryOnlyMode should be false if OVC is false.", 
+                    ErrorCodes.XML_BAD_DATA,
+                    "Make sure to set BatteryOnlyMode to false if OVC is false for PHEV vehicles.");
             }
         }
 
@@ -113,12 +115,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
 			if (!OVC)
             {
-                throw new VectoException("OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML vehicle input: OVC must be set to true for PEVs.", 
+                    ErrorCodes.XML_BAD_DATA,
+                    "Make sure to set OVC to true for PEVs.");
             }
 
             if (!BatteryOnlyMode)
             {
-                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML vehicle input: BatteryOnlyMode must be set to true for PEVs.", 
+                    ErrorCodes.XML_BAD_DATA,
+                    "Make sure to set BatteryOnlyMode to true for PEVs.");
             }
         }
 
@@ -235,7 +241,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                var ex = new VectoException($"XML vehicle input: No '{XMLNames.Vehicle_RetarderType}' found for axle number: {axleNumber.Value}", 
+                    ErrorCodes.XML_MISSING_NODE,
+                    $"Make sure to add the '{XMLNames.Vehicle_RetarderType}' element with the correct value ({axleNumber?.Value}) for its 'axleNumber' attribute in the XML input.");
+
+                ex.Data[ExceptionData.RunName] = VIN;
+                throw ex;
             }
 
             return RetarderTypeHelper.Parse(node.InnerText);
@@ -254,7 +265,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                var ex = new VectoException($"XML vehicle input: No '{XMLNames.Vehicle_AngledriveType}' found for axle number: {axleNumber.Value}", 
+                    ErrorCodes.XML_MISSING_NODE,
+                    $"Make sure to add the '{XMLNames.Vehicle_AngledriveType}' element with the correct value ({axleNumber?.Value}) for its 'axleNumber' attribute in the XML input.");
+
+                ex.Data[ExceptionData.RunName] = VIN;
+                throw ex;
             }
 
             return node.InnerText.ParseEnum<AngledriveType>();

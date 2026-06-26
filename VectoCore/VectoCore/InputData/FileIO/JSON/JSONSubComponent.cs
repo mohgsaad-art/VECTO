@@ -320,7 +320,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 			if (required)
 			{
-				throw new VectoException($"Invalid filename for {tableType}: {filename}", ErrorCodes.DATATABLE_INVALID_FILENAME);
+				throw new VectoException($"Invalid filename for {tableType}: {filename}", 
+					ErrorCodes.DATATABLE_INVALID_FILENAME,
+                    "Make sure the filename is correct and the file exists.");
 			}
 
 			return null;

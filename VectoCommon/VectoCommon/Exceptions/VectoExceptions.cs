@@ -52,7 +52,7 @@ namespace TUGraz.VectoCommon.Exceptions
             LogManager.Flush();
         }
 
-		public const string NO_FIX_AVAILABLE = "Cannot suggest a fix. You may want to report this issue.";
+        public const string NO_FIX_AVAILABLE = "Cannot suggest a fix. You may want to report this issue.";
     }
 
     public enum ExceptionData
@@ -90,18 +90,26 @@ namespace TUGraz.VectoCommon.Exceptions
             return (ex != null) && ex.Data.Contains(ExceptionData.HasFullRunInfo) && (bool)ex.Data[ExceptionData.HasFullRunInfo];
         }
 
-        public static string GetMessageWithCycleID(this Exception ex)
+        public static string GetHeader(this Exception ex)
         {
-            return ex.HasFullRunInfo() 
-                ? $"({ex.Data[ExceptionData.RunName]} {ex.Data[ExceptionData.CycleName]} {ex.Data[ExceptionData.RunSuffix]}) [{ex.GetErrorCode()}]: {ex.Message}" 
+            var cycleIdComponents = (ex != null)
+                ? new List<Object>() { ex.Data[ExceptionData.RunName], ex.Data[ExceptionData.CycleName], ex.Data[ExceptionData.RunSuffix] }
+                : new List<Object>();
+
+            return (cycleIdComponents.Count(c => c != null) > 0) ? $"({cycleIdComponents.Where(c => c != null).Join(" ")})" : string.Empty;
+        } 
+                
+        public static string GetMessageWithHeaderAndCode(this Exception ex)
+        {
+            return (ex != null) 
+                ? $"{ex.GetHeader()} [{ex.GetErrorCode()}]: {ex.Message}" 
                 : (ex?.Message ?? string.Empty);
         }
 
         public static string GetMessageWithCycleRunInfo(this Exception ex)
         {
             return ex.HasFullRunInfo()
-                ? $"{ex.Data[ExceptionData.RunIdentifier]} ({ex.Data[ExceptionData.RunName]} {ex.Data[ExceptionData.CycleName]} {ex.Data[ExceptionData.RunSuffix]}) " +
-                  $"[{ex.GetErrorCode()}]: {ex.Message} | " +
+                ? $"{ex.Data[ExceptionData.RunIdentifier]} {ex.GetMessageWithHeaderAndCode()} | " +
                   $"Progress: {ex.Data[ExceptionData.Progress]:P1} - absTime: {ex.Data[ExceptionData.AbsTime]}, " +
                   $"distance: {ex.Data[ExceptionData.Distance]}, dt: {ex.Data[ExceptionData.Dt]}, v: {ex.Data[ExceptionData.Speed]}, " +
                   $"{(ex.Data[ExceptionData.GearInfo] as Dictionary<AxleNumber, GearshiftPosition>)?.Select(kvp => $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").Join()} " +

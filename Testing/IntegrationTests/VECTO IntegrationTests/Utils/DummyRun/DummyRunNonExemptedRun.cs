@@ -39,12 +39,12 @@ public class DummyRunNonExemptedRun : VectoRun
 
         if (FinishedWithError)
         {
-            throw new VectoException("Simulation run intentionally aborted!", ErrorCodes.VECTORUN_ABORTED);
+            throw new VectoException("Simulation run intentionally aborted!", ErrorCodes.VECTORUN_ABORTED, "");
         }
 
         if (IgnoreSimulationRun)
         {
-            throw new VectoException("Simulation run shall be ignored", ErrorCodes.VECTORUN_IGNORED);
+            throw new VectoException("Simulation run shall be ignored", ErrorCodes.VECTORUN_IGNORED, "");
         }
 
 

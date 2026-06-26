@@ -106,7 +106,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 		{
 			foreach (var entry in fuels) {
 				if (FuelColumns.ContainsKey(entry)) {
-					throw new VectoException($"Fuel {entry.FuelType.GetLabel()} already added!", ErrorCodes.MODALDATA_FUEL_ALREADY_ADDED);
+					throw new VectoException($"Fuel {entry.FuelType.GetLabel()} already added!", ErrorCodes.MODALDATA_FUEL_ALREADY_ADDED, "");
 				}
 
 				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();
@@ -137,7 +137,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 					return CurrentRow[FuelColumns[fuel][key]];
 				} catch (KeyNotFoundException e) {
 					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.{Environment.NewLine}{e.Message}", 
-						ErrorCodes.SYSTEM_KEY_NOT_FOUND);
+						ErrorCodes.SYSTEM_KEY_NOT_FOUND, "");
 				}
 
 			}
@@ -146,7 +146,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 					CurrentRow[FuelColumns[fuel][key]] = value;
 				} catch (KeyNotFoundException e) {
 					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.{Environment.NewLine}{e.Message}", 
-						ErrorCodes.SYSTEM_KEY_NOT_FOUND);
+						ErrorCodes.SYSTEM_KEY_NOT_FOUND, "");
 				}
 			}
 		}
@@ -283,7 +283,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 				return FuelColumns[fuelData][mrf].ColumnName;
 			} catch (KeyNotFoundException e) {
 				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}.{Environment.NewLine}{e.Message}", 
-					ErrorCodes.SYSTEM_KEY_NOT_FOUND);
+					ErrorCodes.SYSTEM_KEY_NOT_FOUND, "");
 			}
 		}
 
