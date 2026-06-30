@@ -51,7 +51,7 @@ public class DummyRunDeclarationSimulatorFactory : SimulatorFactoryDeclaration
     {
         if (dataProvider is JSONFile json && !(dataProvider is JSONInputDataV10_PrimaryAndStageInputBus || dataProvider is JSONInputDataCompletedBusFactorMethodV7))
         {
-            throw new VectoException($"JSON input data is not supported", ErrorCodes.JSON_UNSUPPORTED_INPUT_DATA);
+            throw new VectoException($"JSON input data is not supported", ErrorCodes.JSON_UNSUPPORTED_INPUT_DATA, "");
         }
     }
 

@@ -93,7 +93,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		{
 			var aborted = progressEntries.Where(e => e.Value.Error != null).ToArray();
 			if (aborted.Any()) {
-				throw new VectoException("Not all primary simulation runs finished successfully!", ErrorCodes.SIMFACTORY_FOLLOWUP_PRIMARY_FAILED);
+				throw new VectoException(
+					"Not all primary cycle runs finished successfully!", 
+					ErrorCodes.SIMFACTORY_FOLLOWUP_PRIMARY_FAILED,
+					"Make sure all primary cycle runs complete successfully to be able to continue with the follow-up simulation.");
 			}
 			//Prepare inputdata for next simulation step
 			var primaryInputData = _inputDataReader.CreateDeclaration(_currentStageOutputDataWriter

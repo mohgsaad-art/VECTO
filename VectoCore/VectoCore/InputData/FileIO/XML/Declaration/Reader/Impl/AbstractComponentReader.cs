@@ -107,17 +107,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 				return componentCreator(version, componentNode, ParentComponent.DataSource.SourceFile);
 			}
 
-
-
 			if (createDummy) {
 				try {
 					return componentCreator(null, null, null);
 				} catch (Exception e) {
-					throw new VectoException($"failed to create dummy instance for component {component}", ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT, e);
+					throw new VectoException($"failed to create dummy instance for component {component}.{Environment.NewLine}{e.Message}", 
+						ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT);
 				}
 			}
-
-
 
 			throw new VectoException($"Component {component} not found!", ErrorCodes.XML_MISSING_NODE);
 		}

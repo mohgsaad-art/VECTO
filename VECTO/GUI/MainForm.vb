@@ -351,7 +351,7 @@ Public Class MainForm
                 VectoWorkerV3.ReportProgress(100,
                                              New VectoProgress With {.Target = "ListBoxWarning", .Message = Message})
             ElseIf level = "Error" Or level = "Fatal" Then
-                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = IIf(exception Is Nothing, Message, exception.GetMessageWithCycleID()).ToString(), .Exception = exception})
+                VectoWorkerV3.ReportProgress(100, New VectoProgress With {.Target = "ListBoxError", .Message = IIf(exception Is Nothing, Message, exception.GetMessageWithHeaderAndCode()).ToString(), .Exception = exception})
             End If
         End If
     End Sub
@@ -1098,8 +1098,8 @@ lbFound:
                                          .Message = "Finished Reading Data for job: " + jobFile})
 
             Catch ex As Exception
-                MsgBox($"ERROR running job {jobFile}: [{ex.GetErrorCode()}]: {ex.Message} {vbCrLf} {ex.InnerException?.Message}", MsgBoxStyle.Critical)
-                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = $"[{ex.GetErrorCode()}]: {ex.Message}", .Exception = ex})
+                MsgBox(ex.GetMessageWithHeaderAndCode(), MsgBoxStyle.Critical)
+                sender.ReportProgress(0, New VectoProgress With {.Target = "ListBoxError", .Message = ex.GetMessageWithHeaderAndCode(), .Exception = ex})
                 Return
             End Try
         Next
@@ -1209,7 +1209,7 @@ lbFound:
     End Sub
 
     Private Shared Function GetGearInfo(ex As Exception) As String
-        Return TryCast(ex.Data(RunInfo.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
+        Return TryCast(ex.Data(ExceptionData.GearInfo), Dictionary(Of AxleNumber, GearshiftPosition))?.
                 Select(Function(kvp) $"Gear{kvp.Key.FormatAxleNumber()}: {kvp.Value}").
                 Join()
     End Function

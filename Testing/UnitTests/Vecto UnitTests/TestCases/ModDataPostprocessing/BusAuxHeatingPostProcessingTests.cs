@@ -552,7 +552,7 @@ public class BusAuxHeatingPostProcessingTests
         if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle, VectoSimulationJobType.EngineOnlySimulation)
             && !runData.ElectricMachinesSinglePwt.Any()) 
         {
-            throw new VectoException("hybrid vehicle requires electric machine", ErrorCodes.VEHICLE_HYBRID_NO_ELECTRIC_MOTOR);
+            throw new VectoException("hybrid vehicle requires electric machine", ErrorCodes.VEHICLE_HYBRID_NO_ELECTRIC_MOTOR, "");
         }
 
         if (runData.ElectricMachinesSinglePwt.Any(x => x.Item1 != PowertrainPosition.GEN)) {

@@ -123,9 +123,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				busEngineStartStop =
 					DeclarationData.Driver.GetEngineStopStartBus(jobType.Value, arch.Value, compressorDrive.Value);
 			} catch (InvalidOperationException ioe) {
-				throw new VectoException("JobType, Architecture and Compressor Drive must be provided for Buses", ErrorCodes.SYSTEM_INVALID_OPERATION, ioe);
+				throw new VectoException($"JobType, Architecture and Compressor Drive must be provided for Buses.{Environment.NewLine}{ioe.Message}", 
+					ErrorCodes.SYSTEM_INVALID_OPERATION);
 			}
-	
 
 			return new DriverData.EngineStopStartData() {
 				EngineOffStandStillActivationDelay = busEngineStartStop.ActivationDelay,

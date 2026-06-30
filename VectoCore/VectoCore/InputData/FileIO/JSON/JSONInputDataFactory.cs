@@ -118,7 +118,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 16:
                     return new JSONInputDataV16_MultiplePowertrains(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Job-File: Unsupported FileVersion. Got: {version} ", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Job-File: Unsupported FileVersion. Got: {version} ", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is between 2 and 16.");
 			}
 		}
 
@@ -144,7 +146,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 14:
 					return new JSONVehicleDataV14_MultiplePowertrains(json, filename, job, tolerateMissing);
 				default:
-					throw new VectoException($"Vehicle-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Vehicle-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is between 7 and 14.");
 			}
 		}
 
@@ -158,7 +162,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 6:
 					return new JSONGearboxDataV6(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Gearbox-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Gearbox-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is between 5 and 6.");
 			}
 		}
 
@@ -174,7 +180,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 5:
 					return new JSONEngineDataV5(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Engine-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Engine-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is between 3 and 5.");
 			}
 		}
 
@@ -194,7 +202,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 6:
 					return new JSONGearboxDataV6(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"GearshiftParameter-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"GearshiftParameter-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1 or 6.");
 			}
 		}
 
@@ -208,7 +218,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 2:
 					return new JSONHybridStrategyParametersSerialHybrid(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"HybridStrategyParameter-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"HybridStrategyParameter-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1 or 2.");
 			}
 		}
 
@@ -221,7 +233,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 1:
 					return new JSONBatteryV1(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Battery-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Battery-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1.");
 			}
 		}
 
@@ -241,7 +255,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 5:
 					return new JSONElectricMotorV5(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"ElectricMotor-File: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"ElectricMotor-File: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is between 1 and 5.");
 			}
 
 		}
@@ -254,7 +270,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 1:
 					return new JSONBusAuxiliariesEngineeringDataV1(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Engineering BusAuxiliaries: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Engineering BusAuxiliaries: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1.");
 			}
 		}
 
@@ -269,7 +287,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 2:
 					return new JSONIEPCDataV2(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Engineering IEPC: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Engineering IEPC: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1 or 2.");
 			}
 		}
 
@@ -282,7 +302,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 5:
 					return ReadElectricMotorData(filename, tolerateMissing);
 				default:
-					throw new VectoException($"Engineering IHPC: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Engineering IHPC: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 5.");
 			}
 		}
 
@@ -296,7 +318,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				case 1:
 					return new JSONFuelCellComponent(json, filename, tolerateMissing);
 				default:
-					throw new VectoException($"Engineering Fuel Cell System: Unsupported FileVersion. Got {version}", ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION);
+					throw new VectoException($"Engineering Fuel Cell System: Unsupported FileVersion. Got {version}", 
+						ErrorCodes.JSON_UNSUPPORTED_FILE_VERSION,
+						"Make sure that the version number is 1.");
 			}
         }
 	}

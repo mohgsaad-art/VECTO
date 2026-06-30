@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				return new ReadOnlyDictionary<Tuple<MissionType, LoadingType>, double>(Data[group]);
 			} catch (Exception e) {
-				throw new VectoException(string.Format(ErrorMessage, group), ErrorCodes.SYSTEM_KEY_NOT_FOUND, e);
+				throw new VectoException(string.Format(ErrorMessage, group) + $"{Environment.NewLine}{e.Message}", ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 			}
 		}
 

@@ -48,19 +48,21 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						: x.PowerElectrical / (x.MotorSpeed * x.Torque))).Where(x => x.Item2.IsGreater(1)).ToArray();
 			if (highEff.Any(x => x.Item2.IsGreater(2))) {
 				if (mode == ExecutionMode.Declaration) {
-					throw new VectoException($"Electric power map contains entries with efficiencies > 2! {highEff.Length} entries: " +
-						$"{highEff.Select(x => $"{x.Item1.MotorSpeed.AsRPM} rpm {x.Item1.Torque} => {x.Item1.PowerElectrical}").Join()}", ErrorCodes.DATATABLE_INVALID_DATA);
+					throw new VectoException($"Electric motor power map contains entries with efficiencies > 2!{Environment.NewLine}{highEff.Length} entries:{Environment.NewLine}" +
+						$"{highEff.Select(x => $"{x.Item1.MotorSpeed.AsRPM} rpm {x.Item1.Torque} => {x.Item1.PowerElectrical}").Join(Environment.NewLine)}", 
+						ErrorCodes.DATATABLE_INVALID_DATA,
+						"Make sure the electric motor power map is correctly configured. Pay attention to the error message.");
 				}
 
 				LogManager.GetLogger(typeof(ElectricMotorMapReader).FullName).Debug(
-					"Electric power map contains entries with efficiencies > 1! {0}",
+					"Electric motor power map contains entries with efficiencies > 1! {0}",
 					highEff.Select(x =>
 						$"{x.Item1.MotorSpeed.AsRPM} rpm {x.Item1.Torque} => {x.Item1.PowerElectrical}").Join());
 			}
 
 			if (highEff.Any()) {
 				LogManager.GetLogger(typeof(ElectricMotorMapReader).FullName).Debug(
-					"Electric power map contains {0} entries with efficiencies > 1! These will be set to an efficiency of {1}!", highEff.Length, DeclarationData.ElectricMachineDefaultEfficiencyFallback);
+					"Electric motor power map contains {0} entries with efficiencies > 1! These will be set to an efficiency of {1}!", highEff.Length, DeclarationData.ElectricMachineDefaultEfficiencyFallback);
 				foreach (var entry in highEff) {
 					// entry contains a referencee to the original entry. so changing it in this array also changes the entries array.
 					entry.Item1.PowerElectrical = entry.Item1.Torque * entry.Item1.MotorSpeed *
@@ -81,7 +83,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						0,
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
 				}
 			}
 
@@ -92,7 +94,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						entry.MotorSpeed.Value(),
 						retVal.GetDelaunayZValue(entry) * count);
 				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY, e);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
 				}
 			}
 
@@ -156,7 +158,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var posTorque = torquesMinRpm.Where(x => x.Torque >= 0).OrderBy(x => x.Torque).Reverse().ToList();
 				if (posTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electrip power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(posTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),

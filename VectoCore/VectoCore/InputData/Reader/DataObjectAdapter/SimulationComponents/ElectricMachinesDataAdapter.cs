@@ -148,10 +148,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					voltageLevels.Add(vLevelData);
 				} catch (Exception ex) {
 					throw new VectoException(
-						$"Could not create Voltage Level data for {entry.VoltageLevel} at position {powertrainPosition}!\n" +
+						$"Electric motor: Could not create Voltage Level data for {entry.VoltageLevel} at position {powertrainPosition}! " +
 						$"{ex.Message} {ex.InnerException?.Message?.Substring(0, Math.Min(256, ex.InnerException.Message.Length))}",
 						ErrorCodes.ELECTRICMOTOR_CANNOT_CREATE_VOLTAGE_LEVEL_DATA,
-						ex);
+						"Make sure the electric motor power map is correctly configured. Pay attention to the error message.");
 				}
 			}
 
@@ -299,7 +299,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					EfficiencyMap = ElectricMotorMapReader.Create(entry.PowerMap.First().PowerMap, count, ExecutionMode.Declaration), //PowerMap
 				};
 			} catch (Exception ex) {
-				throw new VectoException($"Invalid efficiency map at voltage level {entry.VoltageLevel}", ErrorCodes.ELECTRICMOTOR_INVALID_EFFICIENCY_MAP, ex);
+				throw new VectoException($"Invalid efficiency map at voltage level {entry.VoltageLevel}.{Environment.NewLine}{ex.Message}", 
+					ErrorCodes.ELECTRICMOTOR_INVALID_EFFICIENCY_MAP);
 			}
 		}
 

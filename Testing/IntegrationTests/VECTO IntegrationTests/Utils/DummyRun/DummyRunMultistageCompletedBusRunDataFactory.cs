@@ -268,21 +268,21 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
         {
             throw new VectoException(
                 $"Failed to find results in PrimaryVehicleReport for vehicle group: {group}, mission: {mission}, fuel mode: '{fuelMode}', payload: {payload}. " +
-                "Make sure PIF and completed vehicle data match!", ErrorCodes.VECTORUNDATAFACTORY_NO_RESULTS_IN_PRIMARY_VEHICLE_REPORT);
+                "Make sure PIF and completed vehicle data match!", ErrorCodes.VECTORUNDATAFACTORY_NO_RESULTS_IN_PRIMARY_VEHICLE_REPORT, "");
         }
 
         if (primaryResult.ResultStatus == ResultStatus.PrimaryRunIgnored)
         {
             throw new VectoException(
                 "The vehicle group of the complete(d) vehicle falls into a primary vehicle sub-group for which no result could be calculated due to the criterion of insufficient powertrain power." + 
-                $" Group: {group}, mission: {mission}, fuel mode: '{fuelMode}', payload: {payload}.", ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_IGNORED);
+                $" Group: {group}, mission: {mission}, fuel mode: '{fuelMode}', payload: {payload}.", ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_IGNORED, "");
         }
 
         if (primaryResult.ResultStatus != ResultStatus.Success)
         {
             throw new VectoException(
                 $"Simulation results in PrimaryVehicleReport for vehicle group: {group}, mission: {mission}, fuel mode: '{fuelMode}', payload: {payload} not finished successfully.", 
-                ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_FAILED);
+                ErrorCodes.VECTORUNDATAFACTORY_PRIMARY_RUN_FAILED, "");
         }
 
         return primaryResult;

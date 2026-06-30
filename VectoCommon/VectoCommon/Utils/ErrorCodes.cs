@@ -215,6 +215,7 @@ namespace TUGraz.VectoCommon.Utils
         public static readonly ErrorCode JSON_PTO_AND_EPTO_NOT_ALLOWED = new ErrorCode(nameof(JSON_PTO_AND_EPTO_NOT_ALLOWED));
         public static readonly ErrorCode JSON_ARRAY_EXPECTED = new ErrorCode(nameof(JSON_ARRAY_EXPECTED));
         public static readonly ErrorCode JSON_MISSING_FIELD = new ErrorCode(nameof(JSON_MISSING_FIELD));
+        public static readonly ErrorCode JSON_MISSING_DATA = new ErrorCode(nameof(JSON_MISSING_DATA));
 
         public static readonly ErrorCode MATH_LOWER_BOUND_GREATER_THAN_UPPER_BOUND = new ErrorCode(nameof(MATH_LOWER_BOUND_GREATER_THAN_UPPER_BOUND));
         public static readonly ErrorCode MATH_DISTANCE_NOT_POSITIVE = new ErrorCode(nameof(MATH_DISTANCE_NOT_POSITIVE));

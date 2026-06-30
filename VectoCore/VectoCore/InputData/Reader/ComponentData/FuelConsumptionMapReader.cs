@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data);
 			} catch (Exception e) {
-				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, e);
+				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.ReadStream(stream);
 				return Create(data);
 			} catch (Exception e) {
-				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM, e);
+				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						(headerValid ? row.ParseDouble(Fields.EngineSpeed) : row.ParseDouble(0)).RPMtoRad().Value(),
 						entry.FuelConsumption.Value());
 				} catch (Exception e) {
-					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA, e);
+					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA);
 				}
 			}
 

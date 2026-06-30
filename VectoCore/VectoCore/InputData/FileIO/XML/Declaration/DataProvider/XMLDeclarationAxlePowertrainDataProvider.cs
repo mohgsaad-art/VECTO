@@ -139,7 +139,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
                 }
                 catch (Exception e)
                 {
-                    throw new VectoException($"failed to create dummy instance for component {component}", ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT, e);
+                    throw new VectoException($"failed to create dummy instance for component {component}.{Environment.NewLine}{e.Message}", 
+                        ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT);
                 }
             }
 

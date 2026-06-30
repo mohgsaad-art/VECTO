@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data);
 			} catch (Exception ex) {
-				throw new VectoException($"ERROR while reading ShiftPolygon: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, ex);
+				throw new VectoException($"ERROR while reading ShiftPolygon: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 

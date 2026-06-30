@@ -224,7 +224,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 					case ArchitectureID.E3:
 					case ArchitectureID.E4:
 					case ArchitectureID.E_IEPC:
-						throw new VectoException($"Invalid {ArchitectureID} for hybrid vehicle", ErrorCodes.XML_BAD_DATA);
+						throw new VectoException($"XML vehicle input: Invalid architecture '{ArchitectureID}' for hybrid vehicle", 
+							ErrorCodes.XML_BAD_DATA,
+							"Make sure to select the correct architecture for a hybrid vehicle.");
 					case ArchitectureID.P1:
 					case ArchitectureID.P2:
 					case ArchitectureID.P2_5:

@@ -69,13 +69,14 @@ namespace TUGraz.VectoCore.Models.Declaration
 					AllowedForAMT = entry.AllowedForAMT
 				};
 			} catch (Exception e) {
-				throw new VectoException(string.Format(ErrorMessage, enginestopstart, ecoRoll, pcc), ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE, e);
+				throw new VectoException(string.Format(ErrorMessage, enginestopstart, ecoRoll, pcc) + $"{Environment.NewLine}{e.Message}", 
+					ErrorCodes.EXCEPTION_CANNOT_INFER_ERROR_TYPE);
 			}
 		}
 
 		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".ADAS.ADAS_Combinations.csv";
 
-		protected override string ErrorMessage => "ADAS Combination Lookup Error: No entry found for engine stop/start: {0}, eco roll: {1}, PCC: {2}";
+		protected override string ErrorMessage => "ADAS Combination Lookup Error: No entry found for engine stop/start: {0}, eco roll: {1}, PCC: {2}.";
 
 		protected override void ParseData(DataTable table)
 		{
