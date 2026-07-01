@@ -31,6 +31,15 @@ _VAR_SHORT = {
     'EC_el_final [kWh/km]': 'EC_delta_pct',
 }
 
+_CRF_VARIABLES = ['FuelConsumption [g/km]', 'FuelConsumption [MJ/km]', 'CO2 [g/km]']
+_CRF_KEY4CAT   = ['case', 'VehicleGroup', 'Model', 'TPMLM [kg]', 'avgPayload/Passenger [kg]', 'vocational']
+
+_CRF_VAR_SHORT = {
+    'FuelConsumption [g/km]':  'FC_g_km_delta_pct',
+    'FuelConsumption [MJ/km]': 'FC_MJ_km_delta_pct',
+    'CO2 [g/km]':              'CRF_CO2_delta_pct',
+}
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -256,6 +265,80 @@ def generate_delta_report(ref_report: str, current_report: str, output_path: str
     return output_path
 
 
+def load_crf_series(report_path: str, var: str) -> pd.Series | None:
+    """Load a CRF variable's per-case values from a CRF_* sheet in an OR report.
+
+    Returns a Series indexed by 'case', or None if the sheet/column is absent.
+    The sheet name is 'CRF_' + make_sheet_name(var) as written by C01.
+    """
+    sheet = 'CRF_' + make_sheet_name(var)
+    try:
+        df = pd.read_excel(report_path, sheet_name=sheet)
+    except Exception:
+        print(f'  Sheet "{sheet}" not found in {os.path.basename(report_path)} - skipping.')
+        return None
+
+    # Key columns were set as index on write — restore them
+    if not any(k in df.columns for k in _CRF_KEY4CAT):
+        df = df.reset_index()
+
+    col = next((c for c in df.columns if var in c and 'Diff' not in c and 'MOD' not in c), None)
+    if col is None:
+        print(f'  Column matching "{var}" not found in sheet "{sheet}" - skipping.')
+        return None
+
+    if 'case' not in df.columns:
+        print(f'  "case" column not found in sheet "{sheet}" - skipping.')
+        return None
+
+    return df.groupby('case')[col].mean()
+
+
+def build_crf_deltas(ref_report: str, current_report: str) -> dict[str, pd.DataFrame]:
+    """Compute per-variable CRF delta DataFrames between two OR reports.
+
+    Returns a dict keyed by variable name. Each DataFrame has columns:
+        reference, current, delta_abs, delta_pct
+    indexed by 'case'.
+    """
+    crf_deltas: dict[str, pd.DataFrame] = {}
+    for var in _CRF_VARIABLES:
+        ref_series = load_crf_series(ref_report, var)
+        cur_series = load_crf_series(current_report, var)
+        if ref_series is None or cur_series is None:
+            continue
+
+        df = (ref_series.rename('reference')
+              .to_frame()
+              .join(cur_series.rename('current'), how='inner')
+              .dropna())
+
+        df['delta_abs'] = df['current'] - df['reference']
+        df['delta_pct'] = (df['delta_abs'] / df['reference'].replace(0, float('nan'))) * 100
+
+        crf_deltas[var] = df
+        print(f'  CRF {var}: {len(df)} matched test cases')
+
+    return crf_deltas
+
+
+def build_crf_delta_summary(crf_deltas: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Build a CRF delta summary DataFrame.
+
+    Columns: FC_g_km_delta_pct, FC_MJ_km_delta_pct, CRF_CO2_delta_pct, status (OK/WARNING).
+    """
+    frames = [df['delta_pct'].rename(_CRF_VAR_SHORT[var]) for var, df in crf_deltas.items()]
+    if not frames:
+        return pd.DataFrame()
+
+    df_summary = pd.concat(frames, axis=1)
+    df_summary['status'] = df_summary.apply(
+        lambda row: 'OK' if all(abs(v) <= _DELTA_THRESHOLD * 100 for v in row.dropna()) else 'WARNING',
+        axis=1,
+    )
+    return df_summary
+
+
 def append_delta_to_report(ref_report: str, current_report: str, sheet_suffix: str = '') -> None:
     """Compute delta between two OR reports and append the results to current_report.
 
@@ -315,6 +398,31 @@ def append_delta_to_report(ref_report: str, current_report: str, sheet_suffix: s
             test_name = row[0].value
             ws.cell(row=row[0].row, column=next_col, value=regression_map.get(test_name, ''))
         wb.save(current_report)
+
+    # CRF delta: append CRF Delta Summary sheet and patch 'Delta CRF<sheet_suffix>' column
+    crf_deltas  = build_crf_deltas(ref_report, current_report)
+    crf_summary = build_crf_delta_summary(crf_deltas)
+
+    if crf_deltas:
+        with pd.ExcelWriter(current_report, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+            if not crf_summary.empty:
+                crf_summary.to_excel(writer, sheet_name='CRF Delta Summary' + sheet_suffix)
+            for var, df in crf_deltas.items():
+                df.to_excel(writer, sheet_name='ΔCRF_' + make_sheet_name(var) + sheet_suffix)
+
+        if not crf_summary.empty and 'status' in crf_summary.columns:
+            crf_status_map = crf_summary['status'].to_dict()
+            wb = openpyxl.load_workbook(current_report)
+            ws = wb['Success']
+            header_row = next(ws.iter_rows(min_row=1, max_row=1))
+            next_col = len(header_row) + 1
+            ws.cell(row=1, column=next_col, value='Delta CRF' + sheet_suffix)
+            for row in ws.iter_rows(min_row=2):
+                test_name = row[0].value
+                ws.cell(row=row[0].row, column=next_col, value=crf_status_map.get(test_name, ''))
+            wb.save(current_report)
+    else:
+        print('No CRF delta data found - skipping CRF delta.')
 
     print(f'Delta sheets appended to: {current_report}')
 

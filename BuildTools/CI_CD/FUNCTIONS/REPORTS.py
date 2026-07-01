@@ -8,6 +8,8 @@ import os
 import re
 import subprocess
 
+from FUNCTIONS.VECTO import get_vecto_git_root
+
 
 def get_vecto_version(vecto_root):
     """Return the VECTO version string by calling vectocmd -V."""
@@ -104,3 +106,79 @@ def get_next_report_number(report_base_dir):
         if m:
             numbers.append(int(m.group(1)))
     return f'{max(numbers) + 1:04d}' if numbers else '0001'
+
+
+def find_result_dirs(result_dir: str) -> list[str]:
+    """Return leaf directories containing runnable test cases (.xml or .vecto files).
+
+    Directories that contain a .vecto file are bus complete-step cases — they are
+    included directly via the .vecto file rather than via their child .xml files.
+    """
+    file_list_runable = [
+        os.path.join(root, f)
+        for root, _dirs, files in os.walk(result_dir)
+        for f in files
+        if (f.endswith('.xml') and 'RSLT' not in f and 'VIF' not in f)
+        or f.endswith('.vecto')
+    ]
+
+    dirs_with_vecto = {os.path.dirname(f) for f in file_list_runable if f.endswith('.vecto')}
+
+    file_list_torun = [
+        f for f in file_list_runable
+        if os.path.dirname(f) not in dirs_with_vecto or f.endswith('.vecto')
+    ]
+
+    return [os.path.dirname(f) for f in file_list_torun]
+
+
+def make_sheet_name(var: str) -> str:
+    """Convert a variable name to a valid Excel sheet name."""
+    for ch in ('/', '[', ']'):
+        var = var.replace(ch, ' ')
+    return var.strip().replace(' ', '_')
+
+
+def get_latest_release_report(reports_dir: str, vecto_root: str) -> str | None:
+    """Return the path of the OR summary report matching the latest VECTO release tag.
+
+    Tries the most recently published tag first (official, RC, or DEV). Falls back
+    through the latest official, RC, and DEV releases in order. Returns the matching
+    report with the highest NNNN, or None if no match is found for any release.
+    """
+    if not os.path.isdir(reports_dir):
+        return None
+
+    _report_re = re.compile(r'^OR_(.+)_\d{6}_(\d{4})_[0-9a-f]+\.xlsx$')
+
+    def _best_report_for_version(tag_version: str) -> str | None:
+        best_nnnn, best_path = -1, None
+        for fname in os.listdir(reports_dir):
+            m = _report_re.match(fname)
+            if not m or m.group(1) != tag_version:
+                continue
+            nnnn_val = int(m.group(2))
+            if nnnn_val > best_nnnn:
+                best_nnnn, best_path = nnnn_val, os.path.join(reports_dir, fname)
+        return best_path
+
+    git_root = get_vecto_git_root(vecto_root) or vecto_root
+
+    latest_tag = get_latest_vecto_release(git_root)
+    by_type    = get_latest_vecto_releases_by_type(git_root)
+
+    candidates = []
+    if latest_tag:
+        candidates.append(latest_tag)
+    for key in ('official', 'rc', 'dev'):
+        tag = by_type.get(key)
+        if tag and tag not in candidates:
+            candidates.append(tag)
+
+    for tag in candidates:
+        tag_version = tag.removeprefix('Release/v')
+        result = _best_report_for_version(tag_version)
+        if result:
+            return result
+
+    return None
