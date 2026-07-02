@@ -48,8 +48,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		{
 			try {
 				return Create(VectoCSVFile.ReadStream(stream));
-			} catch (Exception ex) {
-				throw new VectoException("ERROR while loading PTO Idle LossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+			} 
+			catch (Exception ex) 
+			{
+				if (ex is VectoException)
+                {
+                    throw;
+                }
+
+                throw new VectoException("ERROR while loading PTO Idle LossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 

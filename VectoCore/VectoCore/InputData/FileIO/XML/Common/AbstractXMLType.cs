@@ -149,8 +149,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Common {
 				if (entries != null && entries.Count > 0) {
 					return XMLHelper.ReadTableData(mapping, entries);
 				}
-			} catch (NullReferenceException) {
-				throw new VectoException($"Could not find element: {baseElement} {entryElement}", ErrorCodes.XML_MISSING_NODE);
+			} catch (Exception e) {
+				throw new VectoException($"Could not find element: {baseElement} {entryElement}.{Environment.NewLine}{e.Message}", ErrorCodes.XML_MISSING_NODE);
 			}
 			return null;
 		}

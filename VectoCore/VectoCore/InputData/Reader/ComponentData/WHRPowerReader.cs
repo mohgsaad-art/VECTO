@@ -17,7 +17,14 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data, type);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
+				if (e is VectoException)
+                {
+                    throw;
+                }
+
 				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}

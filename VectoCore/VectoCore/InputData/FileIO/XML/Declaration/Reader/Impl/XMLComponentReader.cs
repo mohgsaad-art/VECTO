@@ -134,6 +134,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{
+					throw ;
+				}
+
 				var gearNumber = gearNode.Attributes?.GetNamedItem(XMLNames.Gearbox_Gear_GearNumber_Attr).InnerText;
 				throw new VectoException($"Unsupported XML Version! Node: {gearNode.LocalName} Gear: {gearNumber} Version: {version}." +
 					$"{Environment.NewLine}{e.Message}", ErrorCodes.XML_UNSUPPORTED_VERSION);
@@ -149,6 +154,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+
 				throw new VectoException($"Unsupported XML version! Node: {auxNode.LocalName} version: {version}.{Environment.NewLine}{e.Message}", 
 					ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
@@ -165,6 +175,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+
 				var axleNumber = axleNode.Attributes?.GetNamedItem(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).InnerText;
 				throw new VectoException(
 					$"Unsupported XML Version! Node: {axleNode.LocalName} Axle: {axleNumber} Version: {version}.{Environment.NewLine}{e.Message}", 

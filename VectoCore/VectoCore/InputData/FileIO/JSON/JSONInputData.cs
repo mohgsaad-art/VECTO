@@ -99,11 +99,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (!EmptyOrInvalidFileName(filename) && File.Exists(Path.Combine(BasePath, filename))) {
 				try {
 					return VectoCSVFile.Read(Path.Combine(BasePath, filename), true);
-				} catch (Exception e) {
+				} 
+				catch (VectoException e) {
 					Log.Warn("Failed to read file {0} {1}", Path.Combine(BasePath, filename), tableType);
-					throw new VectoException($"Failed to read file for {tableType}: {filename}.{Environment.NewLine}{e.Message}", 
-						ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
-						"Make sure the file exists and is properly formatted.");
+					throw ;
 				}
 			}
 
@@ -201,8 +200,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				var vehicleFile = Body.GetEx(JsonKeys.Vehicle_VehicleFile).Value<string>();
 				return JSONInputDataFactory.ReadJsonVehicle(
 					Path.Combine(BasePath, vehicleFile), this);
-			} catch (Exception e) {
-				if (!TolerateMissing) {
+			} 
+			catch (Exception e) 
+			{
+				if (!TolerateMissing) 
+				{
+					if (e is VectoException)
+                    {
+                        throw ;
+                    }
+
 					throw new VectoException(
 						$"JobFile: Failed to read Vehicle file '{Body[JsonKeys.Vehicle_VehicleFile]}': {e.Message}", 
 						ErrorCodes.FILE_FAILED_TO_READ,
@@ -222,8 +229,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				var gearboxFile = Body.GetEx(JsonKeys.Vehicle_GearboxFile).Value<string>();
 
 				return JSONInputDataFactory.ReadGearbox(Path.Combine(BasePath, gearboxFile));
-			} catch (Exception e) {
-				if (!TolerateMissing) {
+			} 
+			catch (Exception e) 
+			{
+				if (!TolerateMissing) 
+				{
+					if (e is VectoException)
+                    {
+                        throw;
+                    }
+
 					throw new VectoException($"JobFile: Failed to read Gearbox file '{Body[JsonKeys.Vehicle_GearboxFile]}': {e.Message}", 
 						ErrorCodes.FILE_FAILED_TO_READ,
                         "Make sure the file exists, is properly formed, and its path is correct in the json field.");
@@ -240,8 +255,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			try {
 				return JSONInputDataFactory.ReadEngine(
 					Path.Combine(BasePath, Body.GetEx(JsonKeys.Vehicle_EngineFile).Value<string>()));
-			} catch (Exception e) {
-				if (!TolerateMissing) {
+			} 
+			catch (Exception e) 
+			{
+				if (!TolerateMissing) 
+				{
+					if (e is VectoException)
+                    {
+                        throw ;
+                    }
+
 					throw new VectoException(
 						$"JobFile: Failed to read Engine file '{Body[JsonKeys.Vehicle_EngineFile]}': {e.Message}", 
 						ErrorCodes.FILE_FAILED_TO_READ,
@@ -336,9 +359,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 							cycleData = VectoCSVFile.ReadStream(
 								RessourceHelper.ReadStream(resourceName),
 								source: resourceName);
-						} catch (Exception e) {
+						} 
+						catch (Exception e) 
+						{
 							Log.Debug("Driving Cycle could not be read: " + cycleFile);
-							if (!TolerateMissing) {
+							
+							if (!TolerateMissing) 
+							{
+								if (e is VectoException)
+                                {
+                                    throw;
+                                }
+
 								throw new VectoException(
 									$"Driving Cycle could not be read: {cycleFile}.{Environment.NewLine}{e.Message}",
 									ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
@@ -481,16 +513,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				var acceleration = Body[JsonKeys.DriverData_AccelerationCurve];
 				if (acceleration == null || EmptyOrInvalidFileName(acceleration.Value<string>())) {
 					return null;
-
-					//					throw new VectoException("AccelerationCurve (VACC) required");
 				}
 
 				try {
 					return new DriverAccelerationInputData() {
 						AccelerationCurve = ReadTableData(acceleration.Value<string>(), "DriverAccelerationCurve")
 					};
-				} catch (VectoException e) {
+				} 
+				catch (VectoException e) 
+				{
 					Log.Warn("Could not find file for acceleration curve. Trying lookup in declaration data.");
+				
 					try {
 						var resourceName = DeclarationData.DeclarationDataResourcePrefix + ".VACC." +
 											acceleration.Value<string>() +
@@ -498,11 +531,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						return new DriverAccelerationInputData() {
 							AccelerationCurve = VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceName), source: resourceName)
 						};
-					} catch (Exception) {
-						if (!TolerateMissing) {
-							throw new VectoException($"Failed to read Driver Acceleration Curve: {e.Message}", 
-								ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
-								"Make sure the file exists, and is properly formatted.");
+					} 
+					catch (Exception ex) 
+					{
+						if (!TolerateMissing) 
+						{
+							throw e;
 						}
 
 						return new DriverAccelerationInputData() {

@@ -146,7 +146,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 						? CreateIHPCVoltageLevelData(count, entry, fullLoadCurveCombined, gearList)
 						: CreateEmVoltageLevelData(count, entry, fullLoadCurveCombined);
 					voltageLevels.Add(vLevelData);
-				} catch (Exception ex) {
+				} 
+				catch (Exception ex) 
+				{
+					if (ex is VectoException)
+                    {
+                        throw;
+                    }
+
 					throw new VectoException(
 						$"Electric motor: Could not create Voltage Level data for {entry.VoltageLevel} at position {powertrainPosition}! " +
 						$"{ex.Message} {ex.InnerException?.Message?.Substring(0, Math.Min(256, ex.InnerException.Message.Length))}",
@@ -298,7 +305,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					// DragCurve = ElectricMotorDragCurveReader.Create(entry.DragCurve, count),
 					EfficiencyMap = ElectricMotorMapReader.Create(entry.PowerMap.First().PowerMap, count, ExecutionMode.Declaration), //PowerMap
 				};
-			} catch (Exception ex) {
+			} 
+			catch (Exception ex) 
+			{
+				if (ex is VectoException)
+                {
+                    throw;
+                }
+
 				throw new VectoException($"Invalid efficiency map at voltage level {entry.VoltageLevel}.{Environment.NewLine}{ex.Message}", 
 					ErrorCodes.ELECTRICMOTOR_INVALID_EFFICIENCY_MAP);
 			}

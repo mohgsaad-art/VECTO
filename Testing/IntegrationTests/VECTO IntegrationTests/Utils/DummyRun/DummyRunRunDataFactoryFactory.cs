@@ -49,7 +49,7 @@ public class DummyRunRunDataFactoryFactory : IVectoRunDataFactoryFactory
             default:
                 break;
         }
-        throw new VectoException("Unknown InputData for Declaration Mode!", ErrorCodes.VECTORUNDATAFACTORY_UNKNOWN_INPUT, "");
+        throw new VectoException("Unknown InputData for Declaration Mode!", ErrorCodes.VECTORUNDATAFACTORY_UNKNOWN_INPUT);
     }
 
     private IVectoRunDataFactory CreateRunDataReader(IMultistageVIFInputData multiStepVifInputData, IDeclarationReport report)

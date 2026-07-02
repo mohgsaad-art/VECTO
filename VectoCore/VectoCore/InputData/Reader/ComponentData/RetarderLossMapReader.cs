@@ -49,8 +49,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		{
 			try {
 				return Create(VectoCSVFile.Read(fileName));
-			} catch (Exception ex) {
-				throw new VectoException("ERROR while loading RetarderLossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+			} 
+			catch (Exception ex) 
+			{
+				if (ex is VectoException)
+                {
+                    throw;
+                }
+
+                throw new VectoException("ERROR while loading RetarderLossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}
 

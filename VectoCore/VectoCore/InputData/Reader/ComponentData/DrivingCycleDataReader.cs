@@ -135,7 +135,14 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		{
 			try {
 				return ReadFromDataTable(VectoCSVFile.ReadStream(stream), type, name, crossWindRequired);
-			} catch (Exception ex) {
+			} 
+			catch (Exception ex) 
+			{
+				if (ex is VectoException)
+                {
+                    throw;
+                }
+
 				throw new VectoException($"ERROR while reading DrivingCycle Stream: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_STREAM);
 			}
 		}

@@ -46,8 +46,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 								angledriveData.Angledrive.LossMap = TransmissionLossMapReader.Create(data.Efficiency,
 									data.Ratio, "Angledrive");
 							} else {
-								throw new VectoException($"Angledrive: LossMap not found.{Environment.NewLine}{ex.Message}", 
-									ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND);
+								throw;
 							}
 						}
 

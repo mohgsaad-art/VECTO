@@ -2008,7 +2008,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			catch (Exception e)
 			{
-				throw new VectoException($"Error while Reading Retarder Data: {e.Message}", ErrorCodes.RETARDER_BAD_DATA);
+				if (e is VectoException)
+                {
+                    throw;
+                }
+
+                throw new VectoException($"Error while Reading Retarder Data: {e.Message}", ErrorCodes.RETARDER_BAD_DATA);
 			}
 		}
 
@@ -2099,8 +2104,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							}
 							else
 							{
-								throw new VectoException($"Angledrive: LossMap not found.{Environment.NewLine}{ex.Message}", 
-									ErrorCodes.ANGLEDRIVE_LOSS_MAP_NOT_FOUND);
+								throw;
 							}
 						}
 						return angledriveData;
@@ -2110,6 +2114,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+                {
+                    throw;
+                }	
+
                 throw new VectoException($"Error while reading Angledrive data: {e.Message}", e.GetErrorCode());
 			}
 		}

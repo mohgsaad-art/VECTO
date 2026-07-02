@@ -55,7 +55,14 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data);
-			} catch (Exception ex) {
+			} 
+			catch (Exception ex) 
+			{
+				if (ex is VectoException)
+				{
+					throw;
+				}
+
 				throw new VectoException("ERROR while reading AccelerationCurve File: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
 			}
 		}

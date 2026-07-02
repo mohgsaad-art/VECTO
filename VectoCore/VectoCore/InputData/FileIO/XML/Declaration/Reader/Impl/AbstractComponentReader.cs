@@ -110,7 +110,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			if (createDummy) {
 				try {
 					return componentCreator(null, null, null);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
+					if (e is VectoException)
+					{
+						throw;
+					}
+
 					throw new VectoException($"failed to create dummy instance for component {component}.{Environment.NewLine}{e.Message}", 
 						ErrorCodes.XML_FAILED_TO_CREATE_COMPONENT);
 				}

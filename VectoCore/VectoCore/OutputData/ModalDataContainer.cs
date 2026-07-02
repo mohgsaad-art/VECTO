@@ -994,7 +994,7 @@ namespace TUGraz.VectoCore.OutputData
 			try {
 				return Data.FuelColumns[fuelData][mrf].ColumnName;
 			} catch (KeyNotFoundException e) {
-				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}.{Environment.NewLine}{e.Message}", 
+				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}.", 
 					ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 			}
 		}
@@ -1010,7 +1010,7 @@ namespace TUGraz.VectoCore.OutputData
 				try {
 					return CurrentRow[Data.FuelColumns[fuel][key]];
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.{Environment.NewLine}{e.Message}", 
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.", 
 						ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 				}
 			}
@@ -1018,7 +1018,7 @@ namespace TUGraz.VectoCore.OutputData
 				try {
 					CurrentRow[Data.FuelColumns[fuel][key]] = value;
 				} catch (KeyNotFoundException e) {
-					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.{Environment.NewLine}{e.Message}", 
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}.", 
 						ErrorCodes.SYSTEM_KEY_NOT_FOUND);
 				}
 			}
