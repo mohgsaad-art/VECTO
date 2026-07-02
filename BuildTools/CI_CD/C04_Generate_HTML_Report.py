@@ -24,10 +24,17 @@ import pandas as pd
 from FUNCTIONS.REPORTS import get_default_report_dir
 
 parser = argparse.ArgumentParser(description='Generate a static HTML dashboard from the C01 test report.')
-parser.add_argument('--report-dir', default=None,
-                    help='Directory inside which the Reports folder is located (default: D:/Reports or C:/Reports).')
-parser.add_argument('--interim-report', action='store_true', default=False,
-                    help='Read from and write to the Interim_Reports subfolder of the report directory.')
+parser.add_argument(
+    '--report-dir',
+    default=None,
+    help='Directory inside which the Reports folder is located (default: D:/Reports or C:/Reports).'
+)
+parser.add_argument(
+    '--interim-report',
+    action='store_true',
+    default=False,
+    help='Read from and write to the Interim_Reports subfolder of the report directory.'
+)
 args = parser.parse_args()
 
 _base = os.path.join(args.report_dir, 'Reports') if args.report_dir else get_default_report_dir()
@@ -104,10 +111,12 @@ def delta_cell(value) -> str:
 
 _has_delta      = 'Delta Status'      in df.columns
 _has_delta_mr   = 'Delta Status_MR'   in df.columns
+_has_delta_crf  = 'Delta CRF'         in df.columns
 _has_regression = 'Regression Status' in df.columns
-n_delta_warn    = df['Delta Status'].str.startswith('WARNING').sum()    if _has_delta      else 0
-n_delta_mr_warn = df['Delta Status_MR'].str.startswith('WARNING').sum() if _has_delta_mr   else 0
-n_regression_err = (df['Regression Status'] == 'ERROR').sum()           if _has_regression else 0
+n_delta_warn     = df['Delta Status'].str.startswith('WARNING').sum()    if _has_delta      else 0
+n_delta_mr_warn  = df['Delta Status_MR'].str.startswith('WARNING').sum() if _has_delta_mr   else 0
+n_delta_crf_warn = df['Delta CRF'].str.startswith('WARNING').sum()       if _has_delta_crf  else 0
+n_regression_err = (df['Regression Status'] == 'ERROR').sum()            if _has_regression else 0
 
 # build table rows
 rows_html = ''
@@ -121,13 +130,16 @@ for test_name, row in df.iterrows():
     )
     delta_col      = delta_cell(row.get('Delta Status',      float('nan'))) if _has_delta      else ''
     delta_mr_col   = delta_cell(row.get('Delta Status_MR',   float('nan'))) if _has_delta_mr   else ''
+    delta_crf_col  = delta_cell(row.get('Delta CRF',         float('nan'))) if _has_delta_crf  else ''
     regression_col = regression_cell(row.get('Regression Status', float('nan'))) if _has_regression else ''
     _delta_val      = row.get('Delta Status',      '') if _has_delta      else ''
     _delta_mr_val   = row.get('Delta Status_MR',   '') if _has_delta_mr   else ''
+    _delta_crf_val  = row.get('Delta CRF',         '') if _has_delta_crf  else ''
     _regression_val = row.get('Regression Status', '') if _has_regression else ''
     _warn_icon = ''
     if (isinstance(_delta_val, str) and _delta_val.startswith('WARNING')) or \
        (isinstance(_delta_mr_val, str) and _delta_mr_val.startswith('WARNING')) or \
+       (isinstance(_delta_crf_val, str) and _delta_crf_val.startswith('WARNING')) or \
        _regression_val == 'ERROR':
         _warn_icon = ' <span style="color:#856404" title="Delta warning">&#9888;</span>'
     rows_html += (
@@ -137,6 +149,7 @@ for test_name, row in df.iterrows():
         f'{criteria_cells}'
         f'{delta_col}'
         f'{delta_mr_col}'
+        f'{delta_crf_col}'
         f'{regression_col}'
         f'</tr>\n'
     )
@@ -198,6 +211,7 @@ html = f"""<!DOCTYPE html>
   <div class="card card-error"><span class="num">{n_error}</span>Failed</div>
   {'<div class="card card-warn"><span class="num">' + str(n_delta_warn) + '</span>Warnings</div>' if _has_delta else ''}
   {'<div class="card card-warn"><span class="num">' + str(n_delta_mr_warn) + '</span>Inter Warnings</div>' if _has_delta_mr else ''}
+  {'<div class="card card-warn"><span class="num">' + str(n_delta_crf_warn) + '</span>CRF Warnings</div>' if _has_delta_crf else ''}
   {'<div class="card card-error"><span class="num">' + str(n_regression_err) + '</span>Regressions</div>' if _has_regression else ''}
   <div class="card card-skip"><span class="num">{n_not_run}</span>Not run</div>
 </div>
@@ -214,8 +228,9 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(4)" title="True when the RSLT_MANUFACTURER file contains no Error entries">MRF &#8597;</th>
       <th onclick="sortTable(5)" title="True when the complete-step check passes (bus-specific; n/a for other vehicles)">Complete step &#8597;</th>
       {'<th onclick="sortTable(6)" title="WARNING when CO2/FC delta vs. reference version exceeds the defined threshold">Delta &#8597;</th>' if _has_delta else ''}
-      {'<th onclick="sortTable(' + str(7 if _has_delta else 6) + ')" title="WARNING when CO2/FC delta vs. MR version exceeds the defined threshold">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
-      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr)) + ')" title="ERROR when the previous run was OK and the current run is ERROR">Regression &#8597;</th>' if _has_regression else ''}
+      {'<th onclick="sortTable(' + str(6 + int(_has_delta)) + ')" title="WARNING when CO2/FC delta vs. MR version exceeds the defined threshold">Inter Delta &#8597;</th>' if _has_delta_mr else ''}
+      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr)) + ')" title="WARNING when CRF fuel consumption delta vs. reference version exceeds 0.3%">Delta CRF &#8597;</th>' if _has_delta_crf else ''}
+      {'<th onclick="sortTable(' + str(6 + int(_has_delta) + int(_has_delta_mr) + int(_has_delta_crf)) + ')" title="ERROR when the previous run was OK and the current run is ERROR">Regression &#8597;</th>' if _has_regression else ''}
     </tr>
   </thead>
   <tbody>

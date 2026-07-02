@@ -32,14 +32,14 @@ from lxml import etree
 
 from C44_Generate_Delta_Report import append_delta_to_report, generate_delta_report
 from FUNCTIONS.REPORTS import (
+    find_result_dirs,
     get_default_report_dir,
-    get_latest_vecto_release,
-    get_latest_vecto_releases_by_type,
+    get_latest_release_report,
     get_next_report_number,
     get_vecto_hash,
     get_vecto_version,
+    make_sheet_name,
 )
-from FUNCTIONS.VECTO import get_vecto_git_root
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -136,87 +136,9 @@ def get_latest_mr_report(mr_reports_dir: str) -> str | None:
     return candidates[0] if candidates else None
 
 
-def get_latest_release_report(reports_dir: str) -> str | None:
-    """Return the path of the summary report associated with the latest VECTO release.
-
-    Tries the most recently published tag first (official, RC, or DEV). If no
-    report matches that version, falls back through the latest official, RC, and
-    DEV releases in that order.  Returns the matching report with the highest
-    NNNN, or None if no match is found for any release.
-    """
-    _report_re = re.compile(r'^OR_(.+)_\d{6}_(\d{4})_[0-9a-f]+\.xlsx$')
-
-    def _best_report_for_version(tag_version: str) -> str | None:
-        best_nnnn, best_path = -1, None
-        for fname in os.listdir(reports_dir):
-            m = _report_re.match(fname)
-            if not m or m.group(1) != tag_version:
-                continue
-            nnnn_val = int(m.group(2))
-            if nnnn_val > best_nnnn:
-                best_nnnn, best_path = nnnn_val, os.path.join(reports_dir, fname)
-        return best_path
-
-    # Build candidate list: most-recently-published first, then by type
-    git_root = get_vecto_git_root(vecto_root) or vecto_root
-
-    latest_tag = get_latest_vecto_release(git_root)
-    by_type    = get_latest_vecto_releases_by_type(git_root)
-
-    candidates = []
-    if latest_tag:
-        candidates.append(latest_tag)
-    for key in ('official', 'rc', 'dev'):
-        tag = by_type.get(key)
-        if tag and tag not in candidates:
-            candidates.append(tag)
-
-    for tag in candidates:
-        tag_version = tag.removeprefix('Release/v')
-        result = _best_report_for_version(tag_version)
-        if result:
-            return result
-
-    return None
-
-
 # ---------------------------------------------------------------------------
 # Shared: discover result directories
 # ---------------------------------------------------------------------------
-
-def find_result_dirs(result_dir: str) -> list[str]:
-    """
-    Walk result_dir and return the list of leaf directories that contain
-    runnable test cases (.xml input files or .vecto files).
-
-    Directories that contain a .vecto file are 'bus complete step' cases -
-    they are included directly (via the .vecto file) rather than via their
-    child .xml files.
-    """
-    file_list_runable = [
-        os.path.join(root, f)
-        for root, _dirs, files in os.walk(result_dir)
-        for f in files
-        if (f.endswith('.xml') and 'RSLT' not in f and 'VIF' not in f)
-        or f.endswith('.vecto')
-    ]
-
-    dirs_with_vecto = {os.path.dirname(f) for f in file_list_runable if f.endswith('.vecto')}
-
-    file_list_torun = [
-        f for f in file_list_runable
-        if os.path.dirname(f) not in dirs_with_vecto or f.endswith('.vecto')
-    ]
-
-    return [os.path.dirname(f) for f in file_list_torun]
-
-
-def make_sheet_name(var: str) -> str:
-    """Convert a variable name to a valid Excel sheet name."""
-    for ch in ('/', '[', ']'):
-        var = var.replace(ch, ' ')
-    return var.strip().replace(' ', '_')
-
 
 # ---------------------------------------------------------------------------
 # Report 1: pass/fail summary
@@ -733,7 +655,7 @@ def main() -> None:
         print(f'Copying {len(failed_names)} failed vehicle(s) to: {dest}')
         copy_failed_outputs(failed_names, result_dir, dest)
 
-    ref_report = get_latest_release_report(_reports_cache)
+    ref_report = get_latest_release_report(_reports_cache, vecto_root)
     if ref_report and ref_report != output_path:
         generate_delta_report(ref_report, output_path)
         append_delta_to_report(ref_report, output_path)
