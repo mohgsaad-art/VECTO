@@ -57,7 +57,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
                     throw;
                 }
 
-                throw new VectoException("ERROR while loading RetarderLossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+                throw new VectoException("ERROR while loading RetarderLossMap: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the RetarderLossMap file is accessible and contains valid data.");
 			}
 		}
 
@@ -67,11 +68,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static RetarderLossMap Create(DataTable data)
 		{
 			if (data.Columns.Count != 2) {
-				throw new VectoException($"RetarderLossMap Data File must consist of 2 columns: {Fields.RetarderSpeed}, {Fields.TorqueLoss}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"RetarderLossMap Data File must consist of 2 columns: {Fields.RetarderSpeed}, {Fields.TorqueLoss}", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the RetarderLossMap Data File contains exactly 2 columns: {Fields.RetarderSpeed}, {Fields.TorqueLoss}.");
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("RetarderLossMap must contain at least 2 entries.", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("RetarderLossMap must contain at least 2 entries.", 
+					ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the RetarderLossMap contains at least 2 entries.");
 			}
 
 			if (!data.Columns.Contains(Fields.RetarderSpeed) || !data.Columns.Contains(Fields.TorqueLoss)) {

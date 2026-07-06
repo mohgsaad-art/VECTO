@@ -294,7 +294,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 				}
 
 				if (batteryData != null && superCapData != null) {
-					throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
+					throw new VectoException("REESS input: Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES, $"Make sure only one type of REESS is provided.");
 				}
 			}
 
@@ -390,7 +390,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 
                 if (batteryData != null && superCapData != null)
                 {
-                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
+                    throw new VectoException("REESS input: Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES, $"Make sure only one type of REESS is provided.");
                 }
             }
         }
@@ -437,13 +437,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 
 
 				if (batteryData == null) {
-					throw new VectoException("Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING);
+					throw new VectoException("REESS input: Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING, $"Make sure the BatterySystem is provided for PEV.");
 				}
 				setBatteryData(batteryData);
 
 
 				if (superCapData != null) {
-					throw new VectoException("Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
+					throw new VectoException("REESS input: Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED, $"Make sure that Supercaps are not included in a PEV.");
 				}
 			}
         }
@@ -612,12 +612,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 
                 if (batteryData == null)
                 {
-                    throw new VectoException($"Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING);
+                    throw new VectoException($"REESS input: Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING, $"Make sure the BatterySystem is provided.");
                 }
                 
                 if (superCapData != null)
                 {
-                    throw new VectoException($"Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
+                    throw new VectoException($"REESS input: Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED, $"Make sure that Supercaps are not included in a {jobType}.");
                 }
 
                 setBatteryData(batteryData);
@@ -649,7 +649,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 
                 if (batteryData != null && superCapData != null)
                 {
-                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
+                    throw new VectoException("REESS input: Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES, $"Make sure only one type of REESS is provided for {jobType}.");
                 }
 
                 if (batteryData != null)

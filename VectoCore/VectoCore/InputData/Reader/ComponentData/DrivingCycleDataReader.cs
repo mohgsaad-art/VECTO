@@ -86,7 +86,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				return CycleType.VTP;
 			}
 
-			throw new VectoException("CycleFile format is unknown.", ErrorCodes.CYCLE_UNSUPPORTED_TYPE);
+			throw new VectoException("CycleFile format is unknown.", ErrorCodes.CYCLE_UNSUPPORTED_TYPE,
+				$"Make sure the DrivingCycle file contains a valid format.");
 		}
 
 		private static ICycleDataParser GetDataParser(CycleType type)
@@ -119,7 +120,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var stream = File.OpenRead(fileName);
 				return ReadFromStream(stream, type, Path.GetFileNameWithoutExtension(fileName), crossWindRequired);
 			} catch (Exception ex) {
-				throw new VectoException($"ERROR while opening DrivingCycle File: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"ERROR while opening DrivingCycle File: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_FILE, ex.GetFix());
 			}
 		}
 
@@ -143,7 +144,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
                     throw;
                 }
 
-				throw new VectoException($"ERROR while reading DrivingCycle Stream: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_STREAM);
+				throw new VectoException($"ERROR while reading DrivingCycle Stream: {ex.Message}", ErrorCodes.CYCLE_FAILED_TO_READ_STREAM,
+					$"Make sure the DrivingCycle stream contains valid data.");
 			}
 		}
 
@@ -159,7 +161,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			if (data == null) {
 				LogManager.GetLogger(typeof(DrivingCycleDataReader).FullName)
 						.Warn("Invalid data for DrivingCycle -- dataTable is null");
-				throw new VectoException("Invalid data for DrivingCycle -- dataTable is null", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException("Invalid data for DrivingCycle -- dataTable is null", ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the DrivingCycle file contains valid data.");
 			}
 
 			return ReadFromDataTable(data, DetectCycleType(data), name, crossWindRequired);
@@ -178,7 +181,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			if (data == null) {
 				LogManager.GetLogger(typeof(DrivingCycleDataReader).FullName)
 						.Warn("Invalid data for DrivingCycle -- dataTable is null");
-				throw new VectoException("Invalid data for DrivingCycle -- dataTable is null", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException("Invalid data for DrivingCycle -- dataTable is null", ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the DrivingCycle file contains valid data.");
 			}
 
 			var entries = GetDataParser(type).Parse(data, crossWindRequired).ToList();
@@ -230,11 +234,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				}
 				if (!entry.StoppingTime.IsEqual(0) && !entry.VehicleTargetSpeed.IsEqual(0)) {
 					throw new VectoException(
-						$"Error in DrivingCycle: stop time specified but target-speed > 0! Distance: {entry.Distance}, stop-time: {entry.StoppingTime}, target speed: {entry.VehicleTargetSpeed}", ErrorCodes.DATATABLE_INVALID_DATA);
+						$"Error in DrivingCycle: stop time specified but target-speed > 0! Distance: {entry.Distance}, stop-time: {entry.StoppingTime}, target speed: {entry.VehicleTargetSpeed}", 
+						ErrorCodes.DATATABLE_INVALID_DATA,
+						$"Make sure the DrivingCycle file contains valid data. Target speed should be zero if stop time is greater than zero.");
 				}
 				if (entry.Distance < distance) {
 					throw new VectoException(
-						$"Error in DrivingCycle: distance entry is smaller than last distance! last distance: {distance}, current distance: {entry.Distance}", ErrorCodes.DATATABLE_INVALID_DATA);
+						$"Error in DrivingCycle: distance entry is smaller than last distance! last distance: {distance}, current distance: {entry.Distance}", 
+						ErrorCodes.DATATABLE_INVALID_DATA,
+						$"Make sure the DrivingCycle file contains valid data. Distance entry should be greater than or equal to the current distance.");
 				}
 
 				if (i > 0) {
@@ -414,7 +422,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var diff = headerStr.GroupBy(c => c).Where(g => g.Count() > 2).SelectMany(g => g).ToList();
 				if (diff.Any()) {
 					if (throwExceptions) {
-						throw new VectoException($"Column(s) defined more than once: {diff.OrderBy(x => x).Join()}", ErrorCodes.DATATABLE_DUPLICATE_COLUMN);
+						throw new VectoException($"Column(s) defined more than once: {diff.OrderBy(x => x).Join()}", ErrorCodes.DATATABLE_DUPLICATE_COLUMN,
+							$"Make sure there are no duplicate columns.");
 					}
 
 					return false;
@@ -427,7 +436,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				diff = headerStr.Except(allowedCols.Select(x => x.ToLowerInvariant())).ToList();
 				if (diff.Any()) {
 					if (throwExceptions) {
-						throw new VectoException($"Column(s) not allowed: {diff.Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+						throw new VectoException($"Column(s) not allowed: {diff.Join()}", 
+							ErrorCodes.DATATABLE_WRONG_COLUMNS,
+							$"Make sure to remove the disallowed columns.");
 					}
 
 					return false;
@@ -436,7 +447,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				diff = requiredCols.Select(x => x.ToLowerInvariant()).Except(headerStr).ToList();
 				if (diff.Any()) {
 					if (throwExceptions) {
-						throw new VectoException($"Column(s) required: {diff.Join()}", ErrorCodes.DATATABLE_MISSING_COLUMN);
+						throw new VectoException($"Column(s) required: {diff.Join()}", ErrorCodes.DATATABLE_MISSING_COLUMN,
+							$"Make sure the file contains all required columns.");
 					}
 
 					return false;
@@ -453,7 +465,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 				if (colCount != 0 && colCount != cols.Length) {
 					if (throwExceptions) {
-						throw new VectoException($"Either all columns have to be defined or none of them: {cols.Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+						throw new VectoException($"Either all columns have to be defined or none of them: {cols.Join()}", 
+							ErrorCodes.DATATABLE_WRONG_COLUMNS,
+							$"Make sure either all columns are defined or none of them.");
 					}
 
 					return false;
@@ -469,7 +483,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 				if (colCount != 1) {
 					if (throwExceptions) {
-						throw new VectoException($"Exactly one of these columns have to be defined: {string.Join(", ", cols)}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+						throw new VectoException($"Exactly one of these columns have to be defined: {string.Join(", ", cols)}", 
+							ErrorCodes.DATATABLE_WRONG_COLUMNS,
+							$"Make sure exactly one of these columns is defined.");
 					}
 
 					return false;
@@ -489,7 +505,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					
 					if (diff.Any()) {
 						if (throwExceptions) {
-							throw new VectoException("Column(s) required: " + string.Join(", ", diff), ErrorCodes.DATATABLE_MISSING_COLUMN);
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff), ErrorCodes.DATATABLE_MISSING_COLUMN,
+								$"Make sure the file contains all required columns.");
 						}
 
 						return false;
@@ -510,7 +527,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					
 					if (diff.Any()) {
 						if (throwExceptions) {
-							throw new VectoException("Column(s) required: " + string.Join(", ", diff), ErrorCodes.DATATABLE_MISSING_COLUMN);
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff), ErrorCodes.DATATABLE_MISSING_COLUMN,
+								$"Make sure the file contains all required columns.");
 						}
 
 						return false;
@@ -654,7 +672,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				if (containsNone) {
 					if (throwExceptions) {
 						throw new VectoException(
-							$"Column(s) missing: Either column '{Fields.EngineTorque}' or column '{Fields.EnginePower}' must be defined.", ErrorCodes.DATATABLE_MISSING_COLUMN);
+							$"Column(s) missing: Either column '{Fields.EngineTorque}' or column '{Fields.EnginePower}' must be defined.", 
+							ErrorCodes.DATATABLE_MISSING_COLUMN,
+							$"Make sure the file contains either column '{Fields.EngineTorque}' or column '{Fields.EnginePower}'.");
 					}
 
 					return false;

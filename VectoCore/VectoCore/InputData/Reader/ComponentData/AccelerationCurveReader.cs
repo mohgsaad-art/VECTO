@@ -63,18 +63,24 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					throw;
 				}
 
-				throw new VectoException("ERROR while reading AccelerationCurve File: " + ex.Message, ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException("ERROR while reading AccelerationCurve File: " + ex.Message, 
+					ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the file '{fileName}' exists and is properly formatted (CSV).");
 			}
 		}
 
 		internal static AccelerationCurveData Create(DataTable data)
 		{
 			if (data.Columns.Count != 3) {
-				throw new VectoException("Acceleration Limiting File must consist of 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Acceleration Limiting File must consist of 3 columns.", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the file contains exactly 3 columns.");
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Acceleration Limiting File must consist of at least two entries.", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Acceleration Limiting File must consist of at least two entries.", 
+					ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the file contains at least two entries.");
 			}
 
 			if (HeaderIsValid(data.Columns)) {

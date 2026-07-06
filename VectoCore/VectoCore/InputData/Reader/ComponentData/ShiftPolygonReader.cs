@@ -56,18 +56,24 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
                     throw;
                 }
 
-				throw new VectoException($"ERROR while reading ShiftPolygon: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"ERROR while reading ShiftPolygon: {ex.Message}", 
+					ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the ShiftPolygon file is accessible and contains valid data.");
 			}
 		}
 
 		public static ShiftPolygon Create(DataTable data)
 		{
 			if (data.Columns.Count != 3) {
-				throw new VectoException("ShiftPolygon Data File must contain exactly 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("ShiftPolygon Data File must contain exactly 3 columns.", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the ShiftPolygon Data File contains exactly 3 columns: {Fields.Torque}, {Fields.AngularSpeedUp}, {Fields.AngularSpeedDown}.");
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("ShiftPolygon must have at least two entries.", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("ShiftPolygon must have at least two entries.", 
+					ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the ShiftPolygon contains at least 2 entries.");
 			}
 
 			List<ShiftPolygon.ShiftPolygonEntry> entriesDown, entriesUp;

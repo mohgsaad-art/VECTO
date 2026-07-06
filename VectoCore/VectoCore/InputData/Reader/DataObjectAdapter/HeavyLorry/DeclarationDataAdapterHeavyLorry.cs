@@ -388,12 +388,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
                 if (batteryData == null)
                 {
-                    throw new VectoException($"Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING);
+                    throw new VectoException($"REESS input: Could not create BatterySystem for {jobType}", ErrorCodes.REESS_BATTERY_MISSING, $"Make sure the battery data exist and are valid.");
                 }
 
                 if (superCapData != null)
                 {
-                    throw new VectoException($"Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
+                    throw new VectoException($"REESS input: Supercaps are not allowed for {jobType}", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED, $"Make sure that Supercaps are not used for {jobType}.");
                 }
 
                 setBatteryData(batteryData);
@@ -421,7 +421,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
                 if (batteryData != null && superCapData != null)
                 {
-                    throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
+                    throw new VectoException("REESS input: Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES, 
+						$"Make sure to provide either battery or super cap data, but not both.");
                 }
 
                 if (batteryData != null)
@@ -485,7 +486,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 				}
 
 				if (batteryData != null && superCapData != null) {
-					throw new VectoException("Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES);
+					throw new VectoException("REESS input: Either battery or super cap must be provided", ErrorCodes.REESS_MULTIPLE_TYPES, 
+						$"Make sure to provide either battery or super cap data, but not both.");
 				}
 			}
 		}
@@ -564,13 +566,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 
 				
 				if (batteryData == null) {
-					throw new VectoException("Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING);
+					throw new VectoException("REESS input: Could not create BatterySystem for PEV", ErrorCodes.REESS_BATTERY_MISSING, $"Make sure the battery data exist and are valid.");
 				}
 				setBatteryData(batteryData);
 				
 				
 				if (superCapData != null) {
-					throw new VectoException("Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED);
+					throw new VectoException("REESS input: Supercaps are not allowed for PEVs", ErrorCodes.REESS_SUPERCAP_NOT_ALLOWED, $"Make sure that Supercaps are not used for PEVs.");
 				}
 
 			}

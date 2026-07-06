@@ -57,7 +57,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
                     throw;
                 }
 
-				throw new VectoException($"ERROR while reading TransmissionLossMap {gearName}: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"ERROR while reading TransmissionLossMap {gearName}: {ex.Message}", 
+					ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the file '{fileName}' exists and is properly formatted.");
 			}
 		}
 
@@ -73,11 +75,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static TransmissionLossMap Create(DataTable data, double gearRatio, string gearName, bool extendLossMap = false)
 		{
 			if (data == null || data.Columns.Count < 3) {
-				throw new VectoException($"TransmissionLossMap Data File for {gearName} must consist of 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"TransmissionLossMap Data File for {gearName} must consist of 3 columns.", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the TransmissionLossMap Data File has exactly 3 columns.");
 			}
 
 			if (data.Rows.Count < 4) {
-				throw new VectoException($"TransmissionLossMap for {gearName} must consist of at least four lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException($"TransmissionLossMap for {gearName} must consist of at least four lines with numeric values (below file header)", 
+					ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the TransmissionLossMap Data File has at least four lines with numeric values.");
 			}
 
 			List<TransmissionLossMap.GearLossMapEntry> entries;
@@ -100,11 +106,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static TransmissionLossMap CreateEmADCLossMap(DataTable data, double gearRatio, string gearName, bool extendLossMap)
 		{
 			if (data == null || data.Columns.Count < 3) {
-				throw new VectoException($"TransmissionLossMap Data File for {gearName} must consist of 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"TransmissionLossMap Data File for {gearName} must consist of 3 columns.", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the TransmissionLossMap Data File has exactly 3 columns.");
 			}
 
 			if (data.Rows.Count < 4) {
-				throw new VectoException($"TransmissionLossMap for {gearName} must consist of at least four lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException($"TransmissionLossMap for {gearName} must consist of at least four lines with numeric values (below file header)", 
+					ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the TransmissionLossMap Data File has at least four lines with numeric values.");
 			}
 
 			List<TransmissionLossMap.GearLossMapEntry> entries;
@@ -200,14 +210,20 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static TransmissionLossMap Create(double efficiency, double gearRatio, string gearName)
 		{
 			if (double.IsNaN(efficiency)) {
-				throw new VectoException("TransmissionLossMap: Efficiency is not a number.", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException("TransmissionLossMap: Efficiency is not a number.", 
+					ErrorCodes.DATATABLE_INVALID_DATA, 
+					$"Make sure the efficiency value for gear {gearName} is a valid number.");
 			}
 
 			if (efficiency <= 0) {
-				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must be greater than 0", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must be greater than 0", 
+					ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the efficiency value for gear {gearName} is greater than 0.");
 			}
 			if (efficiency > 1) {
-				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must not be greater than 1", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must not be greater than 1", 
+					ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the efficiency value for gear {gearName} is not greater than 1.");
 			}
 			var entries = new List<TransmissionLossMap.GearLossMapEntry> {
 				new TransmissionLossMap.GearLossMapEntry(0.RPMtoRad(), 1e5.SI<NewtonMeter>(),
@@ -227,14 +243,20 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static TransmissionLossMap CreateEmADCLossMap(double efficiency, double gearRatio, string gearName)
 		{
 			if (double.IsNaN(efficiency)) {
-				throw new VectoException("TransmissionLossMap: Efficiency is not a number.", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException("TransmissionLossMap: Efficiency is not a number.", 
+					ErrorCodes.DATATABLE_INVALID_DATA, 
+					$"Make sure the efficiency value for gear {gearName} is a valid number.");
 			}
 
 			if (efficiency <= 0) {
-				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must be greater than 0", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must be greater than 0", 
+					ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the efficiency value for gear {gearName} is greater than 0.");
 			}
 			if (efficiency > 1) {
-				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must not be greater than 1", ErrorCodes.DATATABLE_INVALID_DATA);
+				throw new VectoException($"TransmissionLossMap: Efficiency for gear {gearName} must not be greater than 1", 
+					ErrorCodes.DATATABLE_INVALID_DATA,
+					$"Make sure the efficiency value for gear {gearName} is not greater than 1.");
 			}
 			// different signs due to e-motor: negative torque means EM propels the vehicle, positive torque means the EM recuperates energy
 			// to use the same equations as for other components (i.e. lookup methods of TransmissionLossMap) set losses to negative values

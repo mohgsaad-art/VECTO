@@ -113,7 +113,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		{
 			var retVal = ReadXmlDoc(inputData, source, allowDeprecated) as IDeclarationInputDataProvider;
 			if (retVal == null) {
-				throw new VectoException("Input data is not in declaration mode!", ErrorCodes.XML_BAD_DATA);
+				throw new VectoException("Input data is not in declaration mode!", ErrorCodes.XML_BAD_DATA, $"Make sure the input data is in declaration mode.");
 			}
 
 			return retVal;
@@ -123,7 +123,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		{
 			var retVal = ReadXmlDoc(inputData, source, false) as IEngineeringInputDataProvider;
 			if (retVal == null) {
-				throw new VectoException("Input data is not in engineering mode!", ErrorCodes.XML_BAD_DATA);
+				throw new VectoException("Input data is not in engineering mode!", ErrorCodes.XML_BAD_DATA, $"Make sure the input data is in engineering mode.");
 			}
 
 			return retVal;
@@ -134,12 +134,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			var xmlDoc = new XmlDocument();
 			xmlDoc.Load(inputData);
 			if (xmlDoc.DocumentElement == null) {
-				throw new VectoException("empty xml document!", ErrorCodes.XML_EMPTY_DOCUMENT);
+				throw new VectoException("empty xml document!", ErrorCodes.XML_EMPTY_DOCUMENT, $"Make sure the XML document is not empty.");
 			}
 
 			var documentType = XMLHelper.GetDocumentTypeFromRootElement(xmlDoc.DocumentElement.LocalName);
 			if (documentType == null) {
-				throw new VectoException($"unknown xml file! {xmlDoc.DocumentElement.LocalName}", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE);
+				throw new VectoException($"unknown xml file! {xmlDoc.DocumentElement.LocalName}", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE, $"Make sure the XML document is of a supported type.");
+
 			}
 
 
@@ -156,7 +157,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				case XmlDocumentType.DeclarationComponentData:
 				case XmlDocumentType.ManufacturerReport:
 				case XmlDocumentType.CustomerReport:
-					throw new VectoException($"XML Document {documentType.Value} not supported as simulation input!", ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE);
+					throw new VectoException($"XML Document {documentType.Value} not supported as simulation input!", 
+						ErrorCodes.XML_UNSUPPORTED_DOCUMENT_TYPE,
+						$"Make sure the XML document is of a supported type ({XmlDocumentType.DeclarationJobData}, {XmlDocumentType.MultistepOutputData}).");
 				default: throw new ArgumentOutOfRangeException();
 			}
 		}
@@ -177,7 +180,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				}
 
 				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
-					ErrorCodes.XML_FAILED_TO_READ_FILE);
+					ErrorCodes.XML_FAILED_TO_READ_FILE,
+					$"Make sure the XML document is properly formatted and is of version {versionNumber}.");
 			}
 		}		
 
@@ -198,7 +202,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				}
 
 				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
-					ErrorCodes.XML_FAILED_TO_READ_FILE);
+					ErrorCodes.XML_FAILED_TO_READ_FILE,
+					$"Make sure the XML document is properly formatted and is of version {versionNumber}.");
 			}
 		}
 
@@ -212,7 +217,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			}
 			catch (Exception e) {
 				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
-					ErrorCodes.XML_FAILED_TO_READ_FILE);
+					ErrorCodes.XML_FAILED_TO_READ_FILE,
+					$"Make sure the XML document is properly formatted and is of version {versionNumber}.");
 			}
 		}
 
@@ -257,7 +263,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			var typedResult = result as TOut;
 			if (typedResult is null)
 			{
-				throw new VectoException($"Error creating XMLComponentInput {filename}", ErrorCodes.XML_BAD_DATA);
+				throw new VectoException($"Error creating XMLComponentInput {filename}", 
+					ErrorCodes.XML_BAD_DATA,
+					$"Make sure the file contains a valid XML component.");
 			}
 
 			return typedResult;
@@ -281,7 +289,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			xmlDoc.Load(inputData);
 			if (xmlDoc.DocumentElement == null)
 			{
-				throw new VectoException("empty xml document!", ErrorCodes.XML_EMPTY_DOCUMENT);
+				throw new VectoException($"{fileName} is an empty xml document!", ErrorCodes.XML_EMPTY_DOCUMENT, $"Make sure the XML document is not empty.");
 			}
 
 			var documentType = XmlDocumentType.DeclarationComponentData; //<- TODO HM 27.03.23: remove hardcoding
@@ -313,7 +321,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				}
 
 				throw new VectoException($"Failed to read Declaration job version {versionNumber}.{Environment.NewLine}{e.Message}", 
-					ErrorCodes.XML_FAILED_TO_READ_FILE);
+					ErrorCodes.XML_FAILED_TO_READ_FILE,
+					$"Make sure the XML document is properly formatted and is of version {versionNumber}.");
 			}
 		}
 

@@ -18,7 +18,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if ((VehicleCategory == VehicleCategory.Van) && !ElementExists(XMLNames.Vehicle_CargoVolume))
             {
-                throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!", ErrorCodes.XML_MISSING_NODE);
+                throw new VectoException(
+                    $"XML input: medium lorries with type Van require the input parameter {XMLNames.Vehicle_CargoVolume}.", 
+                    ErrorCodes.XML_MISSING_NODE,
+                    $"Make sure to provide the {XMLNames.Vehicle_CargoVolume} parameter in the XML file. Consult 'VectoDeclarationDefinitions.2.7.xsd' on where to add the parameter.");
             }
         }
 
@@ -55,7 +58,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC && BatteryOnlyMode)
             {
-                throw new VectoException("For PHEV vehicles, BatteryOnlyMode should be false if OVC is false.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML input: for PHEV vehicles, BatteryOnlyMode should be false if OVC is false.", 
+                    ErrorCodes.XML_BAD_DATA,
+                    $"Make sure to set BatteryOnlyMode to false since OVC is false in the XML file.");
             }
         }
 
@@ -118,12 +123,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC)
             {
-                throw new VectoException("OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML input: OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA,
+                    $"Make sure to set OVC to true in the XML file.");
             }
 
             if (!BatteryOnlyMode)
             {
-                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML input: BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA,
+                    $"Make sure to set BatteryOnlyMode to true in the XML file.");
             }
         }
 

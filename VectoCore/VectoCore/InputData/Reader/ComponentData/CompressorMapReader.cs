@@ -27,11 +27,13 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static IList<CompressorMapValues> Create(DataTable data, double dragCurveFactorClutch)
 		{
 			if (!HeaderIsValid(data.Columns)) {
-				throw new VectoException($"Invalid column header. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"Invalid column header. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Compressor Map contains the correct column headers.");
 			}
 
 			if (data.Rows.Count < 3) {
-				throw new VectoException("Insufficient rows in csv to build a usable map", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Insufficient rows in csv to build a usable map", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Compressor Map contains at least three rows.");
 			}
 
 			var entries = new List<CompressorMapValues>();

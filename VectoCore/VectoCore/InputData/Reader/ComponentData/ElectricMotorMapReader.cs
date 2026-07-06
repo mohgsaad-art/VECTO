@@ -38,7 +38,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var entries = (from DataRow row in data.Rows select CreateEntry(row)).ToList();
 			var duplicates = entries.GroupBy(x => Tuple.Create(x.MotorSpeed, x.Torque)).Where(g => g.Count() > 1).Select(x => x.Key).ToArray();
 			if (duplicates.Length > 0) {
-				throw new VectoException($"Duplicate entries in EM power map: {duplicates.Select(x => $"{x.Item1.AsRPM} rpm / {x.Item2}").Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
+				throw new VectoException($"Duplicate entries in EM power map: {duplicates.Select(x => $"{x.Item1.AsRPM} rpm / {x.Item2}").Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY,
+					$"Make sure the Electric Motor Power Map file does not contain duplicate entries for the same motor speed and torque.");
 			}
 
 			var highEff = entries.Where(x => !x.Torque.IsEqual(0) && !x.MotorSpeed.IsEqual(0))
@@ -90,7 +91,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						throw;
 					}
 
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY,
+						$"Make sure the Electric Motor Efficiency Map file contains valid data.");
 				}
 			}
 
@@ -108,7 +110,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						throw;
 					}
 
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY);
+					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.ELECTRICMOTOR_EFFICIENCY_MAP_BAD_ENTRY,
+						$"Make sure the Electric Motor Efficiency Map file contains valid data.");
 				}
 			}
 
@@ -130,7 +133,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 			if (speeds.Count <= 2) {
 				throw new VectoException(
-						"Failed to generate electric power map - at least three speed entries > 0 are required!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least three speed entries > 0 are required!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+						$"Make sure the Electric Motor Power Map file contains sufficient data.");
 			}
 			var lowerSpeed = speeds.First().RPMtoRad() / 2.0;
 			var upperSpeed = speeds.First().RPMtoRad() + (speeds[1] - speeds.First()).RPMtoRad() / 2.0;
@@ -140,7 +144,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			// entries at 0 rpm grid point
 			var torquesZeroRpm = entries.Where(x => x.MotorSpeed.IsEqual(0)).OrderBy(x => x.Torque).ToList();
 			if (torquesZeroRpm.Count == 0) {
-				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Electric Motor Power Map file contains entries at 0 rpm.");
 			}
 
 			var entriesZero = new List<EfficiencyMap.Entry>();
@@ -152,7 +157,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var negTorque = torquesMinRpm.Where(x => x.Torque <= 0).OrderBy(x => x.Torque).ToList();
 				if (negTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electric power map - at least two negative entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least two negative entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+						$"Make sure the Electric Motor Power Map file contains sufficient negative entries.");
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(negTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),
@@ -172,7 +178,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var posTorque = torquesMinRpm.Where(x => x.Torque >= 0).OrderBy(x => x.Torque).Reverse().ToList();
 				if (posTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electric power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+						$"Make sure the Electric Motor Power Map file contains sufficient positive entries.");
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(posTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),

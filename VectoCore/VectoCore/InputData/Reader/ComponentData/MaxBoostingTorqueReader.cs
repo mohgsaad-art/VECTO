@@ -18,10 +18,12 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static VehicleMaxPropulsionTorque Create(DataTable data)
 		{
 			if (data.Columns.Count < 2) {
-				throw new VectoException("Vehicle max. propulsion data must contain at least 2 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Vehicle max. propulsion data must contain at least 2 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Vehicle max. propulsion data contains at least 2 columns.");
 			}
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Vehicle max. propulsion data must contain at least 2 rows with numeric values", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Vehicle max. propulsion data must contain at least 2 rows with numeric values", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Vehicle max. propulsion data contains at least 2 rows with numeric values.");
 			}
 
 			if (!HeaderIsValid(data.Columns)) {

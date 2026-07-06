@@ -55,7 +55,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				{
 					throw;
 				}
-				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the Fuel Consumption Map file '{fileName}' exists and is correctly formatted.");
 			}
 		}
 
@@ -72,7 +73,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					throw;
 				}
 
-				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM);
+				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM,
+					$"Make sure the Fuel Consumption Map stream exists and is correctly formatted.");
 			}
 		}
 
@@ -103,7 +105,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						throw;
 					}
 
-					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA);
+					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA,
+						$"Make sure the Fuel Consumption Map file contains valid data at line {data.Rows.IndexOf(row)}.");
 				}
 			}
 

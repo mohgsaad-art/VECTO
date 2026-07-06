@@ -1025,7 +1025,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                throw new VectoException($"XML input: No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", 
+					ErrorCodes.XML_MISSING_NODE,
+					$"Make sure the {XMLNames.Vehicle_RetarderType} is defined correctly in the XML input for axle number: {axleNumber}.");
             }
 
             return RetarderTypeHelper.Parse(node.InnerText);
@@ -1044,7 +1046,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                throw new VectoException($"XML input: No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", 
+					ErrorCodes.XML_MISSING_NODE,
+					$"Make sure the {XMLNames.Vehicle_AngledriveType} is defined correctly in the XML input for axle number: {axleNumber}.");
             }
 
             return node.InnerText.ParseEnum<AngledriveType>();

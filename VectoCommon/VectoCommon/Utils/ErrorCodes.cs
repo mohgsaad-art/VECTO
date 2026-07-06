@@ -73,6 +73,7 @@ namespace TUGraz.VectoCommon.Utils
         public static readonly ErrorCode DECLARATIONDATA_INVALID_ITERATION = new ErrorCode(nameof(DECLARATIONDATA_INVALID_ITERATION));
         public static readonly ErrorCode DECLARATIONDATA_INVALID_FLOOR_TYPE = new ErrorCode(nameof(DECLARATIONDATA_INVALID_FLOOR_TYPE));
         public static readonly ErrorCode DECLARATIONDATA_INVALID_ICE_MODE = new ErrorCode(nameof(DECLARATIONDATA_INVALID_ICE_MODE));
+        public static readonly ErrorCode DECLARATIONDATA_UNSUPPORTED_OPERATION = new ErrorCode(nameof(DECLARATIONDATA_UNSUPPORTED_OPERATION));
 
         public static readonly ErrorCode DELAUNAY_TRIANGLE_POINT_MISMATCH = new ErrorCode(nameof(DELAUNAY_TRIANGLE_POINT_MISMATCH));
         public static readonly ErrorCode DELAUNAY_DUPLICATE_POINTS = new ErrorCode(nameof(DELAUNAY_DUPLICATE_POINTS));
@@ -123,6 +124,7 @@ namespace TUGraz.VectoCommon.Utils
         public static readonly ErrorCode FUELCELL_POWERMAP_GENERATION_FAILED = new ErrorCode(nameof(FUELCELL_POWERMAP_GENERATION_FAILED));
         public static readonly ErrorCode FUELCELL_SYSTEM_INVALID_STRING_COUNT = new ErrorCode(nameof(FUELCELL_SYSTEM_INVALID_STRING_COUNT));
         public static readonly ErrorCode FUELCELL_STRING_INSUFFICIENT_CELLS = new ErrorCode(nameof(FUELCELL_STRING_INSUFFICIENT_CELLS));
+        public static readonly ErrorCode FUELCELL_STRING_EXCESSIVE_CELLS = new ErrorCode(nameof(FUELCELL_STRING_EXCESSIVE_CELLS));
         public static readonly ErrorCode FUELCELL_LIMITS_EXCEED_MASS_FLOW_MAP = new ErrorCode(nameof(FUELCELL_LIMITS_EXCEED_MASS_FLOW_MAP));
         public static readonly ErrorCode FUELCELL_MAX_STRINGS_EXCEEDED = new ErrorCode(nameof(FUELCELL_MAX_STRINGS_EXCEEDED));
         public static readonly ErrorCode FUELCELL_MAX_CELLS_PER_STRING_EXCEEDED = new ErrorCode(nameof(FUELCELL_MAX_CELLS_PER_STRING_EXCEEDED));

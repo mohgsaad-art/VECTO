@@ -95,12 +95,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
             {
                 if (vehicle.H2StorageUsableCapacity == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.", ErrorCodes.XML_MISSING_NODE);
+                    throw new VectoException("XML input: Vehicle with hydrogen-powered engine must declare 'H2StorageUsableCapacity'.", 
+						ErrorCodes.XML_MISSING_NODE,
+						$"Make sure to declare 'H2StorageUsableCapacity' for hydrogen-powered engines. Consult the relevant XSD on where to add this node.");
                 }
 
 				if (vehicle.HydrogenStorageTechnology == null)
 				{
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.", ErrorCodes.XML_MISSING_NODE);
+                    throw new VectoException("XML input: Vehicle with hydrogen-powered engine must declare 'HydrogenStorageTechnology'.", 
+						ErrorCodes.XML_MISSING_NODE,
+						$"Make sure to declare 'HydrogenStorageTechnology' for hydrogen-powered engines. Consult the relevant XSD on where to add this node.");
                 }
             }
         }
@@ -237,12 +241,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
             {
                 if (vehicle.H2StorageUsableCapacity == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare H2StorageUsableCapacity.", ErrorCodes.XML_MISSING_NODE);
+                    throw new VectoException("XML input: Vehicle with hydrogen-powered engine must declare 'H2StorageUsableCapacity'.", 
+						ErrorCodes.XML_MISSING_NODE,
+						$"Make sure to declare 'H2StorageUsableCapacity' for hydrogen-powered engines. Consult the relevant XSD on where to declare this node.");
                 }
 
                 if (vehicle.HydrogenStorageTechnology == null)
                 {
-                    throw new VectoException("Vehicle with hydrogen-powered engine must declare HydrogenStorageTechnology.", ErrorCodes.XML_MISSING_NODE);
+                    throw new VectoException("XML input: Vehicle with hydrogen-powered engine must declare 'HydrogenStorageTechnology'.", 
+						ErrorCodes.XML_MISSING_NODE,
+						$"Make sure to declare 'HydrogenStorageTechnology' for hydrogen-powered engines. Consult the relevant XSD on where to declare this node.");
                 }
             }
         }

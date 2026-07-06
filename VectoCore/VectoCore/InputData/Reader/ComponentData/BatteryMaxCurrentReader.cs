@@ -14,11 +14,14 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static MaxCurrentMap Create(DataTable data)
 		{
 			if (data.Columns.Count != 3) {
-				throw new VectoException($"Max Current Map data must contain exactly three columns: {Fields.StateOfCharge}, {Fields.MaxChargeCurrent}, {Fields.MaxDischargeCurrent}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"Max Current Map data must contain exactly three columns: {Fields.StateOfCharge}, {Fields.MaxChargeCurrent}, {Fields.MaxDischargeCurrent}", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Max Current Map contains the correct number of columns.");
 			}
 
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Max Current  Map data must contain at least 2 entries!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Max Current  Map data must contain at least 2 entries!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Max Current Map contains at least two entries.");
 			}
 
 			if (!data.Columns.Contains(Fields.StateOfCharge) || !data.Columns.Contains(Fields.MaxDischargeCurrent) || !data.Columns.Contains(Fields.MaxChargeCurrent)) {

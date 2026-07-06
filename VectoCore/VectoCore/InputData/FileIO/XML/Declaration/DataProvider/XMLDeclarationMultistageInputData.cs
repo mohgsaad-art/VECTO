@@ -176,7 +176,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					(x.SimulationParameter.Payload - payload).IsEqual(0, 1) && x.Mission == mission 
 			).ToArray();
 			if (!matches.Any()) {
-				throw new VectoException($"No primary result found for {vehicleClass}, {mission}, {payload}", ErrorCodes.XML_MISSING_NODE);
+				throw new VectoException($"XML input: No primary result found for {vehicleClass}, {mission}, {payload}", ErrorCodes.XML_MISSING_NODE);
 			}
 			if (matches.Length == 1) {
 				return matches.First();

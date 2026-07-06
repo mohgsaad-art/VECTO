@@ -57,19 +57,22 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					throw;
 				}
 
-				throw new VectoException($"ERROR while reading FullLoadCurve File: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"ERROR while reading FullLoadCurve File: {ex.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the FullLoadCurve file '{fileName}' exists and is correctly formatted.");
 			}
 		}
 
 		public static EngineFullLoadCurve Create(DataTable data, bool declarationMode = false)
 		{
 			if (data.Columns.Count < 3) {
-				throw new VectoException("Engine FullLoadCurve Data File must consist of at least 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Engine FullLoadCurve Data File must consist of at least 3 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Engine FullLoadCurve file contains at least 3 columns.");
 			}
 
 			if (data.Rows.Count < 2) {
 				throw new VectoException(
-					"FullLoadCurve must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+					"FullLoadCurve must consist of at least two lines with numeric values (below file header)", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Engine FullLoadCurve file contains at least two lines with numeric values.");
 			}
 
 			List<EngineFullLoadCurve.FullLoadCurveEntry> entriesFld;
@@ -97,7 +100,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 										.Select(g => g.Key).ToList();
 			if (duplicates.Count > 0) {
 				throw new VectoException(
-					$"Error reading full-load curve: multiple entries for engine speeds {duplicates.Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
+					$"Error reading full-load curve: multiple entries for engine speeds {duplicates.Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY,
+					$"Make sure the Engine FullLoadCurve file does not contain duplicate entries for engine speeds.");
 			}
 			return new EngineFullLoadCurve(entriesFld, tmp);
 		}

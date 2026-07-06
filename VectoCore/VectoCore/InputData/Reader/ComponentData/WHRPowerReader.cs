@@ -25,7 +25,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
                     throw;
                 }
 
-				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+				throw new VectoException($"Cannot read WHR Power map file {fileName}: {e.Message}", 
+					ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the file {fileName} exists and properly formatted.");
 			}
 		}
 
@@ -55,7 +57,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 			// todo mk-2021-08-26 this check is redundant. Previous code would have thrown exception otherwise.
 			if (!headerValid && (type == WHRType.ElectricalOutput || type == WHRType.MechanicalOutputDrivetrain)) {
-				throw new VectoException($"expected column headers: {whrColumn}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"WHR Power Map: expected column headers: {whrColumn}", 
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the file contains the expected column headers.");
 			}
 
 			if (!headerValid) {
@@ -73,7 +77,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 					delaunayMap.AddPoint(torque.Value(), engineSpeed.Value(), electricPower.Value());
 				} catch (Exception e) {
-					throw new VectoException($"WHR Map - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.WHR_POWER_MAP_BAD_ENTRY);
+					throw new VectoException($"WHR PowerMap: Line {data.Rows.IndexOf(row)}: {e.Message}", 
+						ErrorCodes.WHR_POWER_MAP_BAD_ENTRY,
+						$"Make sure the values in line {data.Rows.IndexOf(row)} are valid.");
 				}
 			}
 

@@ -40,7 +40,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 			if (!HeaderIsValid(data.Columns)) {
 				throw new VectoException(
-					$"Invalid Header for environmental conditions. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+					$"Invalid Header for environmental conditions. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Environmental Conditions file contains all required columns.");
 			}
 
 			var heatpumps = new List<Tuple<string, HeatPumpType>>();

@@ -87,7 +87,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					return ptoTech;
 				}
 
-				throw new VectoException($"PTO Technology {ptoTech} invalid!", ErrorCodes.XML_BAD_DATA);
+				throw new VectoException($"XML input: PTO Technology '{ptoTech}' invalid!", 
+					ErrorCodes.XML_BAD_DATA, 
+					$"Make sure the PTO Technology '{ptoTech}' is defined correctly in the XML input.");
 			}
 		}
 

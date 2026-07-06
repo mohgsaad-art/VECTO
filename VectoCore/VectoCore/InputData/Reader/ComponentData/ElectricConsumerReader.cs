@@ -27,7 +27,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static ElectricalConsumerList Create(TableData data)
 		{
 			if (!HeaderValid(data.Columns)) {
-				throw new VectoException($"Invalid header. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"Invalid header. Expected: {Header.Join()}, Got: {data.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Join()}", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Electric Consumer file contains all required columns.");
 			}
 
 			var retVal = new List<ElectricalConsumer>();
