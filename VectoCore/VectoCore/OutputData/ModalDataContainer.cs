@@ -115,12 +115,12 @@ namespace TUGraz.VectoCore.OutputData
 			PostProcessingCorrection = postProcessorFactory.GetPostProcessor(runData.JobType, runData.BatteryOnlyHybridMode);
 		}
 
-		public void RegisterComponent(VectoSimulationComponent component)
+		public virtual void RegisterComponent(VectoSimulationComponent component)
 		{
 			Data.RegisterComponent(component, _runData);
 		}
 
-		public bool ContainsColumn(string modalResultField)
+		public virtual bool ContainsColumn(string modalResultField)
 		{
 			return Data.Columns.Contains(modalResultField);
 		}
@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.OutputData
 				: (SimException.StackTrace ?? SimException.InnerException?.StackTrace);
 
 
-		public void Reset(bool clearColumns = false)
+		public virtual void Reset(bool clearColumns = false)
 		{
 			Data.Rows.Clear();
 			if (clearColumns) {
@@ -278,13 +278,13 @@ namespace TUGraz.VectoCore.OutputData
 			VectoSimulationJobType.IEPC_S,
 			VectoSimulationJobType.Multiple_SHEV);
 			
-		public bool HasGearbox => _runData.GetGearboxData().Any();
+		public virtual bool HasGearbox => _runData.GetGearboxData().Any();
 
-		public bool HasAxlegear => _runData.GetAxlegearData().Any();
+		public virtual bool HasAxlegear => _runData.GetAxlegearData().Any();
 
-		public bool HasBattery => _runData.BatteryData != null;
+		public virtual bool HasBattery => _runData.BatteryData != null;
 
-		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var offField = emPos == PowertrainPosition.IEPC ? ModalResultField.IEPC_Off_ : ModalResultField.EM_Off_;
 			var mechField = emPos == PowertrainPosition.IEPC ? ModalResultField.P_IEPC_out_ : ModalResultField.P_EM_mech_;
@@ -305,7 +305,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber) =>
+		public virtual WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, AxleNumber axleNumber) =>
 			!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber)) 
 			|| emPos == PowertrainPosition.IEPC
 				? null
@@ -313,7 +313,7 @@ namespace TUGraz.VectoCore.OutputData
 					string.Format(ModalResultField.P_EM_electricMotor_em_mech_.GetCaption(), emPos.GetName(), axleNumber.FormatAxleNumber()),
 					x => x < 0));
 
-		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var offField = emPos == PowertrainPosition.IEPC ? ModalResultField.IEPC_Off_ : ModalResultField.EM_Off_;
 			var mechField = emPos == PowertrainPosition.IEPC ? ModalResultField.P_IEPC_out_ : ModalResultField.P_EM_mech_;
@@ -334,7 +334,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
-		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber) =>
+		public virtual WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, AxleNumber axleNumber) =>
 			!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))
 				? null
 				: _eEmRecuperateMot.GetOrAdd(emPos, _ => TimeIntegral<WattSecond>(
@@ -342,7 +342,7 @@ namespace TUGraz.VectoCore.OutputData
 					x => x > 0));
 
 
-		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -371,7 +371,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eMech.Value() / eEl.Value();
 		}
 
-		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -404,7 +404,7 @@ namespace TUGraz.VectoCore.OutputData
 		}
 
 
-		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -436,7 +436,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eff;
 		}
 
-		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return double.NaN;
@@ -467,7 +467,7 @@ namespace TUGraz.VectoCore.OutputData
 			return eff;
 		}
 
-		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (!Data.ElectricMotors.Any(x => (x.Item1 == emPos) && (x.Item2 == axleNumber))) {
 				return null;
@@ -488,7 +488,7 @@ namespace TUGraz.VectoCore.OutputData
 			return selected.Where(x => !x.EM_off.IsEqual(0)).Sum(x => x.E_mech) ?? 0.SI<WattSecond>();
 		}
 
-		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond ElectricMotorLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			var field = emPos == PowertrainPosition.IEPC
 				? ModalResultField.P_IEPC_electricMotorLoss_
@@ -500,7 +500,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (emPos == PowertrainPosition.IEPC) {
 				return null;
@@ -512,7 +512,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (emPos == PowertrainPosition.IEPC) {
 				return null;
@@ -524,7 +524,7 @@ namespace TUGraz.VectoCore.OutputData
 			});
 		}
 
-		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, AxleNumber axleNumber)
+		public virtual PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, AxleNumber axleNumber)
 		{
 			if (Duration == 0.SI<Second>()) {
 				return 0.SI<PerSecond>();
@@ -538,10 +538,10 @@ namespace TUGraz.VectoCore.OutputData
 			return (integral / Duration.Value()).SI<PerSecond>();
 		}
 
-        public ICorrectedModalData CorrectedModalData => _correctedModalData ?? (_correctedModalData = PostProcessingCorrection.ApplyCorrection(this, _runData));
+        public virtual ICorrectedModalData CorrectedModalData => _correctedModalData ?? (_correctedModalData = PostProcessingCorrection.ApplyCorrection(this, _runData));
 
 
-		public void CalculateAggregateValues()
+		public virtual void CalculateAggregateValues()
 		{
 			//var duration = Duration;
 			//var distance = _runData.JobType != VectoSimulationJobType.EngineOnlySimulation ? Distance : null;
@@ -607,14 +607,14 @@ namespace TUGraz.VectoCore.OutputData
 
 		}
 
-		//public void AddElectricMotor(PowertrainPosition pos)
-		//{
-			
-		//}
+        //public void AddElectricMotor(PowertrainPosition pos)
+        //{
 
-		public bool HasTorqueConverter => _runData.GearboxSinglePwt?.TorqueConverterData != null;
+        //}
 
-		public void CommitSimulationStep()
+        public virtual bool HasTorqueConverter => _runData.GearboxSinglePwt?.TorqueConverterData != null;
+
+		public virtual void CommitSimulationStep()
 		{
 			Data.Rows.Add(CurrentRow);
 			CurrentRow = Data.NewRow();
@@ -666,7 +666,7 @@ namespace TUGraz.VectoCore.OutputData
 
 		public IList<IFuelProperties> FuelData => Data.FuelColumns.Keys.ToList();
 
-		public void Finish(VectoRun.Status runStatus, Exception exception = null)
+		public virtual void Finish(VectoRun.Status runStatus, Exception exception = null)
 		{
 			RunStatus = runStatus;
 			SimException = exception;
