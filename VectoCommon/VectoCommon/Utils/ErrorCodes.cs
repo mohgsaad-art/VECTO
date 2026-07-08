@@ -375,7 +375,6 @@ namespace TUGraz.VectoCommon.Utils
         public static readonly ErrorCode VEHICLE_AIRDRAG_MODIFIED_NOT_SET = new ErrorCode(nameof(VEHICLE_AIRDRAG_MODIFIED_NOT_SET));
         public static readonly ErrorCode VEHICLE_MISSING_SLEEPERCAB = new ErrorCode(nameof(VEHICLE_MISSING_SLEEPERCAB));
         public static readonly ErrorCode VEHICLE_EXEMPTED = new ErrorCode(nameof(VEHICLE_EXEMPTED));
-        public static readonly ErrorCode VEHICLE_UNSUPPORTED_TYPE = new ErrorCode(nameof(VEHICLE_UNSUPPORTED_TYPE));
 
         public static readonly ErrorCode VTP_CYCLE_NOT_FOUND = new ErrorCode(nameof(VTP_CYCLE_NOT_FOUND));
         public static readonly ErrorCode VTP_CYCLE_INVALID = new ErrorCode(nameof(VTP_CYCLE_INVALID));
