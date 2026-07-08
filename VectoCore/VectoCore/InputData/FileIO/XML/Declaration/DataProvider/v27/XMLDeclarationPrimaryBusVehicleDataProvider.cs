@@ -120,12 +120,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         {
             if (!OVC)
             {
-                throw new VectoException("OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML input: OVC must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA,
+                    $"Make sure to set OVC to true in the XML file.");
             }
 
             if (!BatteryOnlyMode)
             {
-                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA);
+                throw new VectoException("XML input: BatteryOnlyMode must be set to true for PEVs.", ErrorCodes.XML_BAD_DATA,
+                    $"Make sure to set BatteryOnlyMode to true in the XML file.");
             }
         }
 
@@ -264,7 +266,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                throw new VectoException($"XML input: No {XMLNames.Vehicle_RetarderType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE,
+                    $"Make sure to provide a {XMLNames.Vehicle_RetarderType} for axle number: {axleNumber} in the XML file.");
             }
 
             return RetarderTypeHelper.Parse(node.InnerText);
@@ -283,7 +286,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
             if (node == null)
             {
-                throw new VectoException($"No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE);
+                throw new VectoException($"XML input: No {XMLNames.Vehicle_AngledriveType} found for axle number: {axleNumber}", ErrorCodes.XML_MISSING_NODE,
+                    $"Make sure to provide a {XMLNames.Vehicle_AngledriveType} for axle number: {axleNumber} in the XML file.");
             }
 
             return node.InnerText.ParseEnum<AngledriveType>();

@@ -80,9 +80,17 @@ namespace TUGraz.VectoCore.Utils
 					ReadCSV(retVal, fs, ignoreEmptyColumns, fullHeader);
 					return retVal;
 				}
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				LogManager.GetLogger(typeof(VectoCSVFile).FullName).Error(e);
-				throw new VectoException($"Error reading file {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+
+				if (e is VectoException)
+                {
+                    throw;
+                }	
+
+				throw new VectoException($"Error reading file {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE, "Make sure the file exists and is properly formatted.");
 			}
 		}
 

@@ -53,8 +53,16 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					delaunayMap.AddPoint(-entry.Torque.Value() * count,
 						0,
 						retVal.GetDelaunayZValue(entry) * count);
-				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.IEPC_EFFICIENCY_MAP_BAD_ENTRY);
+				} 
+				catch (Exception e) 
+				{
+					if (e is VectoException)
+                    {
+                        throw;
+                    }
+
+                    throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.IEPC_EFFICIENCY_MAP_BAD_ENTRY,
+						$"Make sure the EfficiencyMap contains valid data for the entry {entry}.");
 				}
 			}
 
@@ -64,8 +72,16 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					delaunayMap.AddPoint(-entry.Torque.Value() * count,
 						entry.MotorSpeed.Value(),
 						retVal.GetDelaunayZValue(entry) * count);
-				} catch (Exception e) {
-					throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.IEPC_EFFICIENCY_MAP_BAD_ENTRY);
+				} 
+				catch (Exception e) 
+				{
+					if (e is VectoException)
+                    {
+                        throw;
+                    }
+
+                    throw new VectoException($"EfficiencyMap - Entry {entry}: {e.Message}", ErrorCodes.IEPC_EFFICIENCY_MAP_BAD_ENTRY,
+						$"Make sure the EfficiencyMap contains valid data for the entry {entry}.");
 				}
 			}
 
@@ -90,7 +106,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			// entries at 0 rpm grid point
 			var torquesZeroRpm = entries.Where(x => x.MotorSpeed.IsEqual(0)).OrderBy(x => x.Torque).ToList();
 			if (torquesZeroRpm.Count == 0) {
-				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Electric Motor PowerMap contains no entries at 0 rpm!", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Electric Motor PowerMap contains entries at 0 rpm.");
 			}
 
 			var entriesZero = new List<EfficiencyMap.Entry>();
@@ -102,7 +119,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var negTorque = torquesMinRpm.Where(x => x.Torque <= 0).OrderBy(x => x.Torque).ToList();
 				if (negTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electric power map - at least two negative entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least two negative entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+						$"Make sure the Electric Motor PowerMap contains at least two negative entries.");
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(negTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),
@@ -122,7 +140,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var posTorque = torquesMinRpm.Where(x => x.Torque >= 0).OrderBy(x => x.Torque).Reverse().ToList();
 				if (posTorque.Count < 2) {
 					throw new VectoException(
-						"Failed to generate electric power map - at least two positive entries are required", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+						"Failed to generate electric power map - at least two positive entries are required", 
+						ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+						$"Make sure the Electric Motor PowerMap contains at least two positive entries.");
 				}
 
 				var (k, d) = VectoMath.LeastSquaresFitting(posTorque.Take(numEntriesExtrapolationFitting), x => x.Torque.Value(),
@@ -287,7 +307,9 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 
 			var duplicates = entries.GroupBy(x => Tuple.Create(x.MotorSpeed, x.Torque)).Where(g => g.Count() > 1).Select(x => x.Key).ToList();
 			if (duplicates.Count > 0) {
-				throw new VectoException($"Duplicate entries in IEPC power map: {duplicates.Select(x => $"{x.Item1.AsRPM / ratio} rpm / {x.Item2 * ratio}").Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
+				throw new VectoException($"Duplicate entries in IEPC power map: {duplicates.Select(x => $"{x.Item1.AsRPM / ratio} rpm / {x.Item2 * ratio}").Join()}", 
+					ErrorCodes.DATATABLE_DUPLICATE_ENTRY,
+					$"Make sure the IEPC PowerMap does not contain duplicate entries.");
 			}
 			var highEff = entries.Where(x => !x.Torque.IsEqual(0) && !x.MotorSpeed.IsEqual(0))
                 .Select(x => Tuple.Create(x,

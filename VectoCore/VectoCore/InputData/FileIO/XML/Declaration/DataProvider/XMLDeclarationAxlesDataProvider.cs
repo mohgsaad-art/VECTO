@@ -83,10 +83,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				foreach (XmlNode axlenode in axleNodes) {
 					var axleNumber = GetAttribute(axlenode, XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).ToInt();
 					if (axleNumber < 1 || axleNumber > _axles.Length) {
-						throw new VectoException($"Axle #{axleNumber} exceeds axle count", ErrorCodes.XML_BAD_DATA);
+						throw new VectoException($"XML input: Axle #{axleNumber} exceeds axle count", 
+							ErrorCodes.XML_BAD_DATA,
+							$"Make sure the '{XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr}' attribute's value  is within the valid range (1 to {_axles.Length}).");
 					}
 					if (_axles[axleNumber - 1] != null) {
-						throw new VectoException($"Axle #{axleNumber} defined multiple times!", ErrorCodes.XML_DUPLICATE_NODE);
+						throw new VectoException($"XML input: Axle #{axleNumber} defined multiple times!", 
+							ErrorCodes.XML_DUPLICATE_NODE,
+							$"Make sure the '{XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr}' attribute's value is unique for each axle.");
 					}
 
 					_axles[axleNumber - 1] = Reader.CreateAxle(axlenode);

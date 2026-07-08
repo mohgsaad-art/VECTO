@@ -158,7 +158,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 				return castedReport;
 			} else {
 				throw new VectoException("Error creating VectoRunDataFactory - wrong ReportType", ErrorCodes.VECTORUNDATAFACTORY_BAD_REPORT_TYPE);
-				//return null;
 			}
 		}
 	}

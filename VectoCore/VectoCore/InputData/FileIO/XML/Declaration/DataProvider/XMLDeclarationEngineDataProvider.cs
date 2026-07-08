@@ -311,17 +311,23 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				
 				if (correctionFactorNodes.Count > 0) {
 					if (!whrPwrNodes) {
-						throw new VectoException($"WHR correction factors provided but {fcMapAttr} missing for some entries.", ErrorCodes.XML_MISSING_ATTRIBUTE);
+						throw new VectoException($"XML input: WHR correction factors provided but {fcMapAttr} missing for some entries.", 
+							ErrorCodes.XML_MISSING_ATTRIBUTE,
+							$"Make sure the attribute '{fcMapAttr}' is provided for all entries in the engine's fuel consumption map.");
 					}
 				}
 
 				if (correctionFactorNodes.Count > 1) {
-					throw new VectoException("WHRData (correction factors) can only be defined for one fuel!", ErrorCodes.XML_BAD_DATA);
+					throw new VectoException("XML input: WHRData (correction factors) can only be defined for one fuel!", 
+						ErrorCodes.XML_BAD_DATA,
+						$"Make sure the WHRData (correction factors) is only defined in the engine data for one fuel.");
 				}
 
 				if (whrPwrNodes) {
 					if (correctionFactorNodes.Count == 0) {
-						throw new VectoException("WHR electric power provided but no correction factors found.", ErrorCodes.XML_MISSING_DATA);
+						throw new VectoException("XML input: WHR electric power provided but no correction factors found.", 
+							ErrorCodes.XML_MISSING_DATA,
+							"Make sure the correction factors are provided in the engine data when WHR electric power is defined.");
 					}
 				}
 
@@ -333,7 +339,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 						if (GetNodes(XMLNames.Engine_FuelConsumptionMap_Entry, fuel).Cast<XmlNode>()
 																					.Any(x => x.Attributes?[fcMapAttr] != null)) {
 							if (whrFuelNode != null) {
-								throw new VectoException($"WHRData ({fcMapAttr}) can only be defined for one fuel!", ErrorCodes.XML_BAD_DATA);
+								throw new VectoException($"XML input: WHRData ({fcMapAttr}) can only be defined for one fuel!", 
+									ErrorCodes.XML_BAD_DATA,
+									$"Make sure the WHRData ({fcMapAttr}) is only defined in the engine data for one fuel.");
 							}
 
 							whrFuelNode = fuel;
@@ -352,11 +360,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					var data = missing.Select(x => $"n: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr]?.Value}, " +
 												   $"T: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_Torque_Attr]?.Value}").Join("; ");
 
-                    throw new VectoException($"WHRData has to be provided for every entry in the FC-Map! {data}", ErrorCodes.XML_MISSING_ATTRIBUTE);
+                    throw new VectoException($"XML input: WHRData has to be provided for every entry in the FC-Map! {data}", 
+						ErrorCodes.XML_MISSING_ATTRIBUTE,
+						$"Make sure the WHRData is provided for every entry in the engine's fuel consumption map.");
 				}
 
 				if (correctionFactorNodes[0].ParentNode.ParentNode != whrFuelNode) {
-					throw new VectoException("Correction Factors and WHR-Map have to be defined for the same fuel!", ErrorCodes.XML_BAD_DATA);
+					throw new VectoException("XML input: Correction Factors and WHR-Map have to be defined for the same fuel!", 
+						ErrorCodes.XML_BAD_DATA,
+						"Make sure the Correction Factors and WHR-Map are defined in the engine data for the same fuel.");
 				}
 
 				return new XMLDeclarationWHRData(whrFuelNode, correctionFactorNodes[0]);

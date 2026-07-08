@@ -179,7 +179,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			if (vehicle.OVC && !EngineStopStart)
 			{
-				throw new VectoException("EngineStopStart must be set to true for OVC-HEV vehicles.", ErrorCodes.XML_BAD_DATA);
+				throw new VectoException("XML input: EngineStopStart must be set to true for OVC-HEV vehicles.", ErrorCodes.XML_BAD_DATA,
+					$"Make sure to set EngineStopStart to true in the XML file.");
 			}
 		}
 

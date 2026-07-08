@@ -48,8 +48,15 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				var data = VectoCSVFile.Read(fileName);
 				return Create(data);
-			} catch (Exception e) {
-				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE);
+			} 
+			catch (Exception e) 
+			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+				throw new VectoException($"File {fileName}: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
+					$"Make sure the Fuel Consumption Map file '{fileName}' exists and is correctly formatted.");
 			}
 		}
 
@@ -58,8 +65,16 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			try {
 				var data = VectoCSVFile.ReadStream(stream);
 				return Create(data);
-			} catch (Exception e) {
-				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM);
+			} 
+			catch (Exception e) 
+			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+
+				throw new VectoException($"Failed reading stream: {e.Message}", ErrorCodes.DATATABLE_FAILED_TO_READ_STREAM,
+					$"Make sure the Fuel Consumption Map stream exists and is correctly formatted.");
 			}
 		}
 
@@ -82,8 +97,16 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					delaunayMap.AddPoint(entry.Torque.Value(),
 						(headerValid ? row.ParseDouble(Fields.EngineSpeed) : row.ParseDouble(0)).RPMtoRad().Value(),
 						entry.FuelConsumption.Value());
-				} catch (Exception e) {
-					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA);
+				} 
+				catch (Exception e) 
+				{
+					if (e is VectoException)
+					{
+						throw;
+					}
+
+					throw new VectoException($"FuelConsumptionMap - Line {data.Rows.IndexOf(row)}: {e.Message}", ErrorCodes.DATATABLE_INVALID_DATA,
+						$"Make sure the Fuel Consumption Map file contains valid data at line {data.Rows.IndexOf(row)}.");
 				}
 			}
 

@@ -31,14 +31,17 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		{
 			if (!HeaderIsValid(data.Columns)) {
 				throw new VectoException($"Invalid header for pneumatic actuations. expected: {Header.Join()}, got: {data.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Join()}",
-					ErrorCodes.DATATABLE_WRONG_COLUMNS);
+					ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the file contains the correct headers.");
 			}
 
 			var retVal = new Dictionary<MissionType, IActuations>();
 			foreach (DataRow row in data.Rows) {
 				var key = row.Field<string>(Fields.CycleName).ParseEnum<MissionType>();
 				if (retVal.ContainsKey(key)) {
-					throw new VectoException($"Duplicate entries in actuations map! {key.GetLabel()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
+					throw new VectoException($"Duplicate entries in actuations map! {key.GetLabel()}", 
+						ErrorCodes.DATATABLE_DUPLICATE_ENTRY,
+						$"Make sure the file does not contain duplicate entries for the same mission type.");
 				}
 
 				var entry = new Actuations {

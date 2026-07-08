@@ -73,10 +73,12 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static List<AirDragBetaEntry> ReadCdxABetaTable(DataTable betaTable)
 		{
 			if (betaTable.Columns.Count != 2) {
-				throw new VectoException("VAir/Beta Crosswind Correction must consist of 2 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("VAir/Beta Crosswind Correction must consist of 2 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the VAir/Beta Crosswind Correction contains the correct number of columns.");
 			}
 			if (betaTable.Rows.Count < 2) {
-				throw new VectoException("VAir/Beta Crosswind Correction must consist of at least 2 rows", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("VAir/Beta Crosswind Correction must consist of at least 2 rows", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the VAir/Beta Crosswind Correction contains at least two rows.");
 			}
 			if (HeaderIsValid(betaTable.Columns)) {
 				return ParseCdxABetaFromColumnNames(betaTable);
@@ -89,10 +91,12 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		private static List<CrossWindCorrectionEntry> ParseSpeedDependent(DataTable data, SquareMeter aerodynamicDragArea)
 		{
 			if (data.Columns.Count != 2) {
-				throw new VectoException("Crosswind correction file must consist of 2 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Crosswind correction file must consist of 2 columns.", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Crosswind Correction file contains the correct number of columns.");
 			}
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Crosswind correction file must consist of at least 2 rows", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Crosswind correction file must consist of at least 2 rows", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Crosswind Correction file contains at least two rows.");
 			}
 
 			if (SpeedDependentHeaderIsValid(data.Columns)) {

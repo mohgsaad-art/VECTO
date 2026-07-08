@@ -18,10 +18,12 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 		public static ElectricMotorFullLoadCurve Create(DataTable data, int count)
 		{
 			if (data.Columns.Count < 3) {
-				throw new VectoException("Motor FullLoadCurve Data must contain at least 3 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Motor FullLoadCurve Data must contain at least 3 columns", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Motor FullLoadCurve file contains all required columns.");
 			}
 			if (data.Rows.Count < 2) {
-				throw new VectoException("Motor FullLoadCurve Data must contain at least 2 rows with numeric values", ErrorCodes.DATATABLE_INSUFFICIENT_DATA);
+				throw new VectoException("Motor FullLoadCurve Data must contain at least 2 rows with numeric values", ErrorCodes.DATATABLE_INSUFFICIENT_DATA,
+					$"Make sure the Motor FullLoadCurve file contains sufficient data.");
 			}
 
 			if (!HeaderIsValid(data.Columns)) {
@@ -42,7 +44,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
             var duplicates = entries.GroupBy(x => x.MotorSpeed).Where(g => g.Count() > 1).Select(x => x.Key.AsRPM).ToList();
 			if (duplicates.Any()) {
 				throw new VectoException(
-					$"EM full-load curve contains multiple entries for a single motor speed: {duplicates.Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY);
+					$"EM full-load curve contains multiple entries for a single motor speed: {duplicates.Join()}", ErrorCodes.DATATABLE_DUPLICATE_ENTRY,
+					$"Make sure the Motor FullLoadCurve file does not contain duplicate entries for the same motor speed.");
 			}
             return new ElectricMotorFullLoadCurve(entries);
 		}

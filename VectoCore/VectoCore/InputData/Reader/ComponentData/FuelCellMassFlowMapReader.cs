@@ -17,7 +17,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			}
 
 			if (data.Columns.Count != 2) {
-				throw new VectoException($"Mass Flow Map must contain exactly two columns: {Fields.ElectricPower}, {Fields.m_H2}", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException($"Mass Flow Map must contain exactly two columns: {Fields.ElectricPower}, {Fields.m_H2}", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Mass Flow Map file contains exactly two columns: {Fields.ElectricPower}, {Fields.m_H2}.");
 			}
 			if (!data.Columns.Contains(Fields.ElectricPower) || !data.Columns.Contains(Fields.m_H2))
 			{

@@ -151,6 +151,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{ 
+					throw ;
+				}
+
 				throw new VectoException($"JobFile: Failed to read TCU file '{tcuFile}': {e.Message}", 
 					ErrorCodes.FILE_FAILED_TO_READ,
                     "Make sure the file exists, is properly formed, and its path is correct in the json field.");
@@ -173,6 +178,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+
 				throw new VectoException($"JobFile: Failed to read Gearbox file '{gearboxFile}': {e.Message}", 
 					ErrorCodes.FILE_FAILED_TO_READ,
                     "Make sure the file exists, is properly formed, and its path is correct in the json field.");
@@ -195,6 +205,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 			catch (Exception e)
 			{
+				if (e is VectoException)
+				{
+					throw;
+				}
+
 				throw new VectoException($"JobFile: Failed to read IEPC file '{iepcFile}': {e.Message}", 
 					ErrorCodes.FILE_FAILED_TO_READ,
                     "Make sure the file exists, is properly formed, and its path is correct in the json field.");
@@ -311,7 +326,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				}
 				catch (Exception e)
 				{
-					Log.Warn("Failed to read file {0} {1}", Path.Combine(_basePath, filename), tableType);
+                    Log.Warn("Failed to read file {0} {1}", Path.Combine(_basePath, filename), tableType);
+
+                    if (e is VectoException)
+					{
+						throw;
+					}
+
 					throw new VectoException($"Failed to read file for {tableType}: {filename}.{Environment.NewLine}{e.Message}", 
 						ErrorCodes.DATATABLE_FAILED_TO_READ_FILE,
 						"Make sure the file exists and is properly formatted.");

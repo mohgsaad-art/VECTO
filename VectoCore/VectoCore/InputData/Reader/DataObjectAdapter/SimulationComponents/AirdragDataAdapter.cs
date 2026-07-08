@@ -152,7 +152,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (!CheckAllowedIMCConfiguration(vehicleClass, vehicle.InMotionCharging)) {
 				throw new VectoException(
-					$"Dynamic charging technology {vehicle.InMotionCharging.Technology.ToString()} is not allowed for vehicle group {vehicleClass}", ErrorCodes.IMC_NOT_ALLOWED);
+					$"Dynamic charging technology {vehicle.InMotionCharging.Technology.ToString()} is not allowed for vehicle group {vehicleClass}", 
+					ErrorCodes.IMC_NOT_ALLOWED,
+					$"Make sure to provide a valid IMC configuration for the vehicle group {vehicleClass}.");
 			}
 			var deltaCdxAIMC = 0.SI<SquareMeter>();
 			if (vehicle.ArchitectureID == ArchitectureID.UNKNOWN) {

@@ -37,7 +37,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var requiredHeatPumps = EnumHelper.GetValues<HeatPumpType>()
 				.Where(x => !x.IsOneOf(HeatPumpType.none, HeatPumpType.not_applicable)).ToList();
 			if (!HeaderIsValid(data.Columns, requiredHeatPumps)) {
-				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Heating Distribution Map file contains the required columns: {string.Join(", ", requiredHeatPumps.Select(x => x.GetLabel()))}.");
 			}
 
 			var map = new Dictionary<Tuple<HeatingDistributionCase, int>, HeatingDistributionMap.Entry>();
@@ -101,7 +102,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 			var requiredHeatPumps = EnumHelper.GetValues<HeatPumpType>()
 				.Where(x => !x.IsOneOf(HeatPumpType.none, HeatPumpType.not_applicable)).ToList();
 			if (!HeaderIsValid(data.Columns, requiredHeatPumps)) {
-				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS);
+				throw new VectoException("Invalid Header vor heating distribution map", ErrorCodes.DATATABLE_WRONG_COLUMNS,
+					$"Make sure the Heating Distribution Map file contains the required columns: {string.Join(", ", requiredHeatPumps.Select(x => x.GetLabel()))}.");
 			}
 
 			var map = new List<HeatingDistributionCasesMap.Entry>();
@@ -115,7 +117,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				}
 
 				if (allowedHeatPumps.Count > 1) {
-					throw new VectoException("One row shall not contain multiple heatpump technologies!", ErrorCodes.DATATABLE_INVALID_DATA);
+					throw new VectoException("One row shall not contain multiple heatpump technologies!", ErrorCodes.DATATABLE_INVALID_DATA,
+						$"Make sure the Heating Distribution Map file does not contain multiple heatpump technologies in a single row.");
 				}
 
 				if (allowedHeatPumps.Count == 0) {
