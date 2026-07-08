@@ -27,18 +27,18 @@ public class MeasuredSpeedDrivingCycleReaderTests
 
     }
 
-    [TestCase("<t>,<v>,<grad>,<Padd>", "0, 0, 0, 3.2018", true, true, "ERROR while reading DrivingCycle Stream: Column vair_res was not found in DataRow.")] // vair required, but not there: error
-    [TestCase("<t>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 3.2018, 0, 0, 0.504", false, false, "ERROR while reading DrivingCycle Stream: Column(s) required: v")] // missing columns
-    [TestCase("<t>,<v>,<wrong>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 0, 3.2018, 0, 0, 0.504, 0", false, false, "ERROR while reading DrivingCycle Stream: Column(s) not allowed: wrong")] // not allowed columns
-	[TestCase("<t>,<v>,<wrong>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 0, 3.2018, 0, 0, 0.504, 0", false, true, "CycleFile format is unknown.")] // auto find cycle
-    [TestCase("<t>,<v>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0", false, true, "Line 1: The number of values is not correct. Expected 7 Columns, Got 2 Columns")] // wrong data
+    [TestCase("<t>,<v>,<grad>,<Padd>", "0, 0, 0, 3.2018", true, true, "CYCLE_FAILED_TO_READ_STREAM")] // vair required, but not there: error
+    [TestCase("<t>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 3.2018, 0, 0, 0.504", false, false, "DATATABLE_MISSING_COLUMN")] // missing columns
+    [TestCase("<t>,<v>,<wrong>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 0, 3.2018, 0, 0, 0.504, 0", false, false, "DATATABLE_WRONG_COLUMNS")] // not allowed columns
+	[TestCase("<t>,<v>,<wrong>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0, 0, 3.2018, 0, 0, 0.504, 0", false, true, "CYCLE_UNSUPPORTED_TYPE")] // auto find cycle
+    [TestCase("<t>,<v>,<grad>,<Padd>,<vair_res>,<vair_beta>,<Aux_Alt>", "0, 0", false, true, "DATATABLE_WRONG_COLUMNS")] // wrong data
 
-    public void MeasuredSpeed_ReadCycle_Error(string hdr, string data, bool crosswindReq, bool autoCycle, string expectedErrorMsg)
+    public void MeasuredSpeed_ReadCycle_Error(string hdr, string data, bool crosswindReq, bool autoCycle, string expectedErrorCodeTxt)
 	{
 		var inputData = $"{hdr}\n{data}";
-		AssertHelper.Exception<VectoException>(
+		AssertHelper.Exception(
 			() => TestCycleRead(inputData, CycleType.MeasuredSpeed, autoCycle, crosswindReq),
-			expectedErrorMsg);
+			new ErrorCode(expectedErrorCodeTxt));
 	}
 
 	/// <summary>
@@ -57,18 +57,18 @@ public class MeasuredSpeedDrivingCycleReaderTests
         
 	}
 
-    [TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>", "0, 0, 0, 3.2018, 595.75, 0", true, true, "ERROR while reading DrivingCycle Stream: Column vair_res was not found in DataRow.")] // vair required, but not there: error
-    [TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0, 3.2018, 595.75, 0", false, false, "ERROR while reading DrivingCycle Stream: Column(s) required: v")] // missing columns
-	[TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0, 3.2018, 595.75, 0", false, true, "CycleFile format is unknown.")] // missing columns
-    [TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>,<wrong>", "0, 0, 0, 3.2018, 595.75, 0, 0.504", false, false, "ERROR while reading DrivingCycle Stream: Column(s) not allowed: wrong")] // not allowed columns
-	[TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>,<wrong>", "0, 0, 0, 3.2018, 595.75, 0, 0.504", false, true, "CycleFile format is unknown.")] // not allowed columns
-    [TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0", false, true, "Line 1: The number of values is not correct. Expected 5 Columns, Got 2 Columns")]  // wrong data
-    public void MeasuredSpeed_ReadCycle_Gear_Error(string hdr, string data, bool crosswindReq, bool autoCycle, string expectedErrorMsg)
+    [TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>", "0, 0, 0, 3.2018, 595.75, 0", true, true, "CYCLE_FAILED_TO_READ_STREAM")] // vair required, but not there: error
+    [TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0, 3.2018, 595.75, 0", false, false, "DATATABLE_MISSING_COLUMN")] // missing columns
+	[TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0, 3.2018, 595.75, 0", false, true, "CYCLE_UNSUPPORTED_TYPE")] // missing columns
+    [TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>,<wrong>", "0, 0, 0, 3.2018, 595.75, 0, 0.504", false, false, "DATATABLE_WRONG_COLUMNS")] // not allowed columns
+	[TestCase("<t>,<v>,<grad>,<Padd>,<n>   ,<gear>,<wrong>", "0, 0, 0, 3.2018, 595.75, 0, 0.504", false, true, "CYCLE_UNSUPPORTED_TYPE")] // not allowed columns
+    [TestCase("<t>,<grad>,<Padd>,<n>,<gear>", "0, 0", false, true, "DATATABLE_WRONG_COLUMNS")]  // wrong data
+    public void MeasuredSpeed_ReadCycle_Gear_Error(string hdr, string data, bool crosswindReq, bool autoCycle, string expectedErrorCodeTxt)
 	{
 		var inputData = $"{hdr}\n{data}";
-		AssertHelper.Exception<VectoException>(
+		AssertHelper.Exception(
 			() => TestCycleRead(inputData, CycleType.MeasuredSpeedGear, autoCycle, crosswindReq),
-			expectedErrorMsg);
+            new ErrorCode(expectedErrorCodeTxt));
 	}
 
     private static void TestCycleRead(string inputData, CycleType cycleType, bool autoCycle = true,
