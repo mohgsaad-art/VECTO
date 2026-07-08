@@ -38,10 +38,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override Dictionary<ITnOutPort, double> ConfigureTorqueRatio(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
-            var bestTorqueRatio = (_torqueRatioCombinations.Count() == 1)
-                ? _torqueRatioCombinations.First()
-                : DataBus.DriverInfo.DrivingAction.IsOneOf(DrivingAction.Coast, DrivingAction.Roll)
-                    ? GetTorqueRatio(CalculateCoastingTorqueForFirstAxlePowertrain(_testPowertrain, absTime, dt, outTorque, outAngularVelocity), outTorque)
+            var bestTorqueRatio = DataBus.DriverInfo.DrivingAction.IsOneOf(DrivingAction.Coast, DrivingAction.Roll)
+                ? GetTorqueRatio(CalculateCoastingTorqueForFirstAxlePowertrain(_testPowertrain, absTime, dt, outTorque, outAngularVelocity), outTorque)
+                : (_torqueRatioCombinations.Count() == 1)
+                    ? _torqueRatioCombinations.First()
                     : SelectBestTorqueRatio(PerformRequestOnTestPowertrainForEachTorqueRatioCombination(absTime, dt, outTorque, outAngularVelocity, dryRun), dryRun);
 
             return _nextComponents.Select((x, i) => new { item = x, index = i }).ToDictionary(x => x.item, x => bestTorqueRatio[x.index]);
