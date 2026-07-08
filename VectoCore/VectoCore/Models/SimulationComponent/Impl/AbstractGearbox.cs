@@ -108,6 +108,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Watt GearboxLoss()
 		{
+			if (PreviousState.Gear == null)
+            {
+                return null;
+            }
+
 			var ratio = ModelData.Gears[PreviousState.Gear.Gear].HasLockedGear
 				? ModelData.Gears[PreviousState.Gear.Gear].Ratio
 				: ModelData.Gears[PreviousState.Gear.Gear].TorqueConverterRatio;
