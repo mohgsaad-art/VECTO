@@ -1143,20 +1143,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			
 			ComponentFactory.CreateDummyEngineInfo(container);
 
-#if !DEBUG
-			if ((data.AxlePowertrains.Count == 2) && (data.AxlePowertrains[0] != data.AxlePowertrains[1]))
-			{
-				var ve =  new VectoException("XML input: vehicles with non-identical axle powertrains are not supported for now.", 
-					ErrorCodes.VEHICLE_UNSUPPORTED_TYPE, 
-					"Please, wait for a future version of VECTO that will support this feature.");
-
-				ve.Data[ExceptionData.RunName] = data.VehicleData.VIN;
-
-				throw ve;
-            }
-#endif
-
-			var powertrains = new List<IPowerTrainComponent>();
+            var powertrains = new List<IPowerTrainComponent>();
 			foreach (var axlePt in data.AxlePowertrains)
 			{
 				var powertrainContainer = ComponentFactory.CreatePowertrainContainer(container, axlePt.AxleNumber);
