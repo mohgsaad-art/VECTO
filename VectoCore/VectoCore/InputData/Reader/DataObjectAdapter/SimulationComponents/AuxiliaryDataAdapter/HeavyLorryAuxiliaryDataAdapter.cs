@@ -210,14 +210,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (!DeclarationData.SteeringPump.IsApplicable(auxData.Technology, jobType)) {
 				throw new VectoException(
-					$"At least one steering pump technology of '{string.Join(",", auxData.Technology)}' is not applicable for '{jobType}'", 
+					$"Auxiliaries input: At least one steering pump technology of '{string.Join(",", auxData.Technology)}' is not applicable for '{jobType}'", 
 					ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
 					$"Make sure to provide a valid steering pump configuration for the job type '{jobType}'.");
 			}
 
 			if (numSteeredAxles.HasValue && auxData.Technology.Count != numSteeredAxles.Value) {
 				throw new VectoException(
-					$"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					$"Auxiliaries input: Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})", 
+					ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+					$"Make sure to provide a valid number of steering pump technologies for the number of steered axles ({numSteeredAxles.Value}).");
 			}
 
 			var powerDemand = DeclarationData.SteeringPump.Lookup(mission, hdvClass, auxData.Technology);

@@ -57,9 +57,9 @@ public class SanityCheckTests
 			}
 		};
 
-        AssertHelper.Exception<VectoException>(() => {
+        AssertHelper.Exception(() => {
             var runs = dataAdapter.CreateBusAuxiliariesData(runData.Mission, primary, completed, runData);
-        }, messageContains: "Input parameter 'separate air distribution ducts' has to be set to 'true' for vehicle group ");
+        }, ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
     }
 
 	[

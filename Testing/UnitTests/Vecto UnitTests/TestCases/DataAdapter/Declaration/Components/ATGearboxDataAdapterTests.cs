@@ -52,11 +52,11 @@ public class ATGearboxDataAdapterTests
 
         var dao = new GearboxDataAdapter(new TorqueConverterDataAdapter());
 
-        AssertHelper.Exception<VectoException>(
+        AssertHelper.Exception(
             () =>
             {
                 var gbx = dao.CreateGearboxData(inputData, runData, null, GbxTypes);
-            }, "Only the last 1 or 2 gears can be disabled. Disabling gear 7 for a 8-speed gearbox is not allowed.");
+            }, ErrorCodes.GEARBOX_CANNOT_DISABLE_GEARS);
 
     }
 

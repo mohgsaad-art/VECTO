@@ -102,7 +102,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (hvacConfiguration.IsOneOf(BusHVACSystemConfiguration.Configuration0, BusHVACSystemConfiguration.Unknown)) {
 				throw new VectoException(
-					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
+					$"Bus auxiliaries input: HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", 
+					ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION,
+					$"Make sure the HVAC configuration for the final step is not {BusHVACSystemConfiguration.Configuration0} or {BusHVACSystemConfiguration.Unknown}.");
 			}
 
 			var correctionLengthDrivetrainVolume = DeclarationData.BusAuxiliaries.CorrectionLengthDrivetrainVolume(
@@ -132,7 +134,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (hvacConfiguration.IsOneOf(BusHVACSystemConfiguration.Configuration0, BusHVACSystemConfiguration.Unknown))
 			{
 				throw new VectoException(
-					$"HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
+					$"Bus auxiliaries input: HVAC Configuration {hvacConfiguration.ToXmlFormat()} is invalid for final step", 
+					ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION,
+					$"Make sure the HVAC configuration for the final step is not {BusHVACSystemConfiguration.Configuration0} or {BusHVACSystemConfiguration.Unknown}.");
 			}
 
 			var correctionLengthDrivetrainVolume = DeclarationData.BusAuxiliaries.CorrectionLengthDrivetrainVolume(
@@ -223,45 +227,65 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var busAux = completedVehicle.Components.BusAuxiliaries.HVACAux;
 
             if (hvacConfiguration == null || hvacConfiguration.Value == BusHVACSystemConfiguration.Configuration0) {
-				throw new VectoException("HVAC Configuration has to be set for completed stage!", ErrorCodes.AUXILIARIES_MISSING_HVAC_CONFIGURATION);
+				throw new VectoException("Bus auxiliaries input: HVAC Configuration has to be set for completed stage!", 
+					ErrorCodes.AUXILIARIES_MISSING_HVAC_CONFIGURATION,
+					$"Make sure the HVAC configuration for the completed stage is provided and it is not {BusHVACSystemConfiguration.Configuration0}.");
 			}
 
 			if (mission.BusParameter.SeparateAirDistributionDuctsHVACCfg.Contains(hvacConfiguration.Value) &&
 				(busAux.SeparateAirDistributionDucts == null || !busAux.SeparateAirDistributionDucts.Value)) {
 				throw new VectoException(
-					$"Input parameter 'separate air distribution ducts' has to be set to 'true' for vehicle group '{mission.BusParameter.BusGroup.GetClassNumber()}' and HVAC configuration '{hvacConfiguration.GetName()}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					$"Bus auxiliaries input: 'separate air distribution ducts' has to be set to 'true' for vehicle group '{mission.BusParameter.BusGroup.GetClassNumber()}' and HVAC configuration '{hvacConfiguration.GetName()}'", 
+					ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+					$"Make sure to set the 'separate air distribution ducts' parameter to 'true'.");
 			}
 
 			if (completedVehicle.NumberPassengerSeatsLowerDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
+				throw new VectoException("Bus input: NumberOfPassengerSeatsLowerDeck input parameter is required", 
+					ErrorCodes.VEHICLE_MISSING_PARAMETER,
+					$"Make sure to provide the number of passenger seats for the lower deck.");
 			}
 
 			if (completedVehicle.NumberPassengerSeatsUpperDeck == null) {
-				throw new VectoException("NumberOfPassengerSeatsUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
+				throw new VectoException("Bus input: NumberOfPassengerSeatsUpperDeck input parameter is required", 
+					ErrorCodes.VEHICLE_MISSING_PARAMETER,
+					$"Make sure to provide the number of passenger seats for the upper deck.");
 			}
 
 			if (completedVehicle.NumberPassengersStandingLowerDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingLowerDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
+				throw new VectoException("Bus input: NumberOfPassengersStandingLowerDeck input parameter is required", 
+					ErrorCodes.VEHICLE_MISSING_PARAMETER,
+					$"Make sure to provide the number of standing passengers for the lower deck.");
 			}
 
 			if (completedVehicle.NumberPassengersStandingUpperDeck == null) {
-				throw new VectoException("NumberOfPassengersStandingUpperDeck input parameter is required", ErrorCodes.VEHICLE_MISSING_PARAMETER);
+				throw new VectoException("Bus input: NumberOfPassengersStandingUpperDeck input parameter is required", 
+					ErrorCodes.VEHICLE_MISSING_PARAMETER,
+					$"Make sure to provide the number of standing passengers for the upper deck.");
 			}
 
 			if (busAux.HeatPumpTypeCoolingDriverCompartment == null) {
-				throw new VectoException("HeatPumpTypeDriverCompartment Cooling input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: HeatPumpTypeDriverCompartment Cooling input parameter is required", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the heat pump type for the driver compartment cooling.");
 			}
 
 			if (busAux.HeatPumpTypeHeatingDriverCompartment == null) {
-				throw new VectoException("HeatPumpTypeDriverCompartment Heating input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: HeatPumpTypeDriverCompartment Heating input parameter is required", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the heat pump type for the driver compartment heating.");
 			}
 
 			if (busAux.HeatPumpTypeCoolingPassengerCompartment == null) {
-				throw new VectoException("HeatPumpTypePassengerCompartment Cooling input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: HeatPumpTypePassengerCompartment Cooling input parameter is required", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the heat pump type for the passenger compartment cooling.");
 			}
 
 			if (busAux.HeatPumpTypeHeatingPassengerCompartment == null) {
-				throw new VectoException("HeatPumpTypePassengerCompartment Heating input parameter is required", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: HeatPumpTypePassengerCompartment Heating input parameter is required", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the heat pump type for the passenger compartment heating.");
 			}
 
 			var hvacConfigCooling = DeclarationData.BusAuxiliaries.GetHVACConfig(hvacConfiguration.Value,
@@ -271,18 +295,26 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (hvacConfigHeating != hvacConfiguration && hvacConfigCooling != hvacConfiguration) {
 				throw new VectoException(
-					$"The HVAC System Configuration must be either matched for the case heating or cooling input: {hvacConfiguration.GetName()},  h:{hvacConfigHeating.GetName()}/c:{hvacConfigCooling.GetName()}", ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION);
+					$"Bus auxiliaries input: The HVAC System Configuration must be either matched for the case heating or cooling input: {hvacConfiguration.GetName()},  h:{hvacConfigHeating.GetName()}/c:{hvacConfigCooling.GetName()}", 
+					ErrorCodes.AUXILIARIES_INVALID_HVAC_CONFIGURATION,
+					$"Make sure to provide a valid HVAC system configuration.");
 			}
 
 			var xEVBus = primaryVehicle.ArchitectureID.IsHybridVehicle() || primaryVehicle.ArchitectureID.IsBatteryElectricVehicle();
 			if (xEVBus && busAux.WaterElectricHeater == null) {
-				throw new VectoException("WaterElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: WaterElectricHeater input parameter is required for xEV vehicles", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the input parameter 'WaterElectricHeater'.");
 			}
 			if (xEVBus && busAux.AirElectricHeater == null) {
-				throw new VectoException("AirElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: AirElectricHeater input parameter is required for xEV vehicles", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the input parameter 'AirElectricHeater'.");
 			}
 			if (xEVBus && busAux.OtherHeatingTechnology == null) {
-				throw new VectoException("OtherElectricHeater input parameter is required for xEV vehicles", ErrorCodes.AUXILIARIES_MISSING_PARAMETER);
+				throw new VectoException("Bus auxiliaries input: OtherElectricHeater input parameter is required for xEV vehicles", 
+					ErrorCodes.AUXILIARIES_MISSING_PARAMETER,
+					$"Make sure to provide the input parameter 'OtherElectricHeater'.");
 			}
 
 			if (primaryVehicle.ArchitectureID.IsBatteryElectricVehicle() ||
@@ -301,7 +333,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				}
 
 				if (errors.Count > 0) {
-					throw new VectoException(errors.Join(Environment.NewLine), ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					throw new VectoException($"Bus input: " + errors.Join(Environment.NewLine), 
+						ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+						"Pay attention to the error message.");
 				}
 			}
         }
@@ -524,9 +558,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			switch (retVal.AlternatorType)
 			{
 				case AlternatorType.Smart when primaryBusAuxiliaries.ElectricSupply.Alternators.Count == 0:
-					throw new VectoException("at least one alternator is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					throw new VectoException("Bus auxiliaries input: at least one alternator is required when specifying smart electrics!", 
+						ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+						$"Make sure to provide at least one alternator when specifying smart electrics.");
 				case AlternatorType.Smart when primaryBusAuxiliaries.ElectricSupply.ElectricStorage.Count == 0:
-					throw new VectoException("at least one electric storage (battery or capacitor) is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					throw new VectoException("Bus auxiliaries input: at least one electric storage (battery or capacitor) is required when specifying smart electrics!", 
+						ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+						$"Make sure to provide at least one electric storage (battery or capacitor) when specifying smart electrics.");
 			}
 
 			retVal.MaxAlternatorPower = CalculateMaxAlternatorPower(primaryBusAuxiliaries);

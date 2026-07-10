@@ -101,7 +101,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			ArchitectureID architecture, IIEPCDeclarationInputData iepcDeclarationInputData)
 		{
 			if (!TypeValid(retarderInputData.Type, architecture, iepcDeclarationInputData, out var errorMsg)) {
-				throw new VectoException($"Error while Reading Retarder Data: {errorMsg}", ErrorCodes.RETARDER_BAD_DATA);
+				throw new VectoException($"Retarder input: Error while Reading Retarder Data: {errorMsg}", 
+					ErrorCodes.RETARDER_BAD_DATA,
+					$"Make sure to provide valid retarder data.");
             }
 
 

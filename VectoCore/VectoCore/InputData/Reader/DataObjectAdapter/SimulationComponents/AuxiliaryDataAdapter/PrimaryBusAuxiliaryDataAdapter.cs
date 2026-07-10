@@ -279,9 +279,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			switch (retVal.AlternatorType)
 			{
 				case AlternatorType.Smart when busAux.ElectricSupply.Alternators.Count == 0:
-					throw new VectoException("at least one alternator is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					throw new VectoException("Bus auxiliaries input: at least one alternator is required when specifying smart electrics!", 
+						ErrorCodes.AUXILIARIES_INVALID_COMBINATION, 
+						"Make sure to provide at least one alternator when specifying smart electrics.");
 				case AlternatorType.Smart when busAux.ElectricSupply.ElectricStorage.Count == 0:
-					throw new VectoException("at least one electric storage (battery or capacitor) is required when specifying smart electrics!", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					throw new VectoException("Bus auxiliaries input: at least one electric storage (battery or capacitor) is required when specifying smart electrics!", 
+						ErrorCodes.AUXILIARIES_INVALID_COMBINATION, 
+						"Make sure to provide at least one electric storage (battery or capacitor) when specifying smart electrics.");
 			}
 
 			retVal.ElectricStorageCapacity = CalculateBatteryCapacity(busAux.ElectricSupply.ElectricStorage);
@@ -640,12 +644,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 			if (auxInputData != null)
 			{
-				throw new VectoException("Only BusAuxiliaries can be provided as input!", ErrorCodes.AUXILIARIES_WRONG_VEHICLE_TYPE);
+				throw new VectoException("Bus auxiliaries input: Only bus auxiliaries can be provided as input!", 
+					ErrorCodes.AUXILIARIES_WRONG_VEHICLE_TYPE,
+					$"Make sure to provide only bus auxiliaries, not truck auxiliaries, as input.");
 			}
 
 			if (numSteeredAxles.HasValue && busAuxData.SteeringPumpTechnology.Count != numSteeredAxles.Value)
 			{
-				throw new VectoException($"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {busAuxData.SteeringPumpTechnology.Count})", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+				throw new VectoException($"Bus auxiliaries input: Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {busAuxData.SteeringPumpTechnology.Count})", 
+					ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+					$"Make sure to provide a valid number of steering pump technologies for the number of steered axles ({numSteeredAxles.Value}).");
 			}
 			var retVal = new List<VectoRunData.AuxData>();
 
@@ -703,7 +711,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			if (!DeclarationData.Fan.IsApplicable(hdvClass, jobType, auxData.FanTechnology))
 			{
 				throw new VectoException(
-					$"Fan technology '{auxData.FanTechnology}' is not applicable for '{jobType}'", ErrorCodes.AUXILIARIES_INVALID_COMBINATION);
+					$"Fan technology '{auxData.FanTechnology}' is not applicable for '{jobType}'", 
+					ErrorCodes.AUXILIARIES_INVALID_COMBINATION,
+					$"Make sure to provide a valid fan technology for the job type '{jobType}'.");
 			}
 
 			aux.PowerDemandMech = DeclarationData.Fan.LookupPowerDemand(hdvClass, mission, auxData.FanTechnology);

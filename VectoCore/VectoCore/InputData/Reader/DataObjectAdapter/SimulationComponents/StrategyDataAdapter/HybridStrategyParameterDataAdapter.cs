@@ -241,7 +241,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			}
 
 			if (batterySystemData != null && superCap != null) {
-				throw new VectoException("Supercap AND Batteries not supported", ErrorCodes.REESS_MULTIPLE_TYPES);
+				throw new VectoException("REESS input: Supercap AND Batteries in the same vehicle are not supported", 
+					ErrorCodes.REESS_MULTIPLE_TYPES,
+					$"Make sure to provide either Supercap or Batteries, but not both.");
 			}
 
 			var result = new HybridStrategyParameters();
@@ -316,7 +318,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			SuperCapData superCapData, Kilogram vehicleMass, OvcHevMode ovcMode)
 		{
 			if (batterySystemData == null && superCapData == null) {
-				throw new VectoException("Either Battery or SuperCap must be set", ErrorCodes.REESS_MISSING);
+				throw new VectoException("REESS input: Either Battery or SuperCap must be set", 
+					ErrorCodes.REESS_MISSING,
+					$"Make sure to provide either Battery or SuperCap data.");
 			}
 
 			
@@ -354,7 +358,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			}
 
 			if (result.MinSoC >= result.TargetSoC || result.TargetSoC >= 1) {
-				throw new VectoException("SSupercap: Min SOC higher than Target SOC", ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC);
+				throw new VectoException("Hybrid strategy parameters input: Min SOC higher than Target SOC", 
+					ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC,
+					$"Make sure to provide valid SOC values.");
 			}
 		}
 
@@ -405,7 +411,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				result.TargetSoC = reessMaxSoc - 1 * deltaSoc;
 				result.MinSoC = reessMinSoc + 2 * deltaSoc;
 				if (reessMinSoc >= result.TargetSoC) {
-					throw new VectoException("Min SOC higher than Target SOC - probably the battery capacity is too small", ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC);
+					throw new VectoException("Hybrid strategy parameters input: Min SOC higher than Target SOC - probably the battery capacity is too small", 
+						ErrorCodes.HYBRIDSTRATEGY_INVALID_MINSOC,
+						$"Make sure to provide valid SOC values.");
 				}
 			}
 
