@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCore.Tests</RootNamespace>
     <AssemblyName>VectoCoreTest</AssemblyName>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
 
 	<!--uncomment to add windows forms an enable plotting of diagrams in some testcases-->
 	<!--<DefineConstants>$(DefineConstants);TRACE</DefineConstants>-->
