@@ -27,7 +27,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			}
 
 			if (electricMachines.Entries.Select(x => x.Position).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
-				throw new VectoException("multiple electric propulsion motors are not supported at the moment", ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED);
+				throw new VectoException("Electric Motor input: multiple electric propulsion motors are not supported at the moment", 
+					ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED,
+					$"Make sure to provide only one electric propulsion motor.");
 			}
 
 			CheckTorqueLimitVoltageLevels(electricMachines, torqueLimits);
@@ -87,9 +89,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
                 if (em.ElectricMachine.VoltageLevels.All(vl => vl.VoltageLevel != torqueLimitVoltageLevel))
                 {
                     throw new VectoException(
-                        $"EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}" +
+                        $"Electric Motor input: EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}" +
 						((axleNumber != AxleNumber.NOT_IN_AXLE_POWERTRAIN) ? $", axle {torqueLimit.Key.AxleNumber}" : ""), 
-						ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL);
+						ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL,
+						$"Make sure to provide a valid voltage level for the electric motor.");
                 }
             }
         }
@@ -108,8 +111,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					foreach (var torqueLimitVoltageLevel in torqueLimit.Value.Select(tl => tl.Item1)) {
 						if (eMachine.VoltageLevels.All(vl => vl.VoltageLevel != torqueLimitVoltageLevel)) {
 							throw new VectoException(
-								$"EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}", 
-								ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL);
+								$"Electric Motor input: EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}", 
+								ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL,
+								$"Make sure to provide a valid voltage level for the electric motor.");
 						}
 					}
 				}
@@ -195,7 +199,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			}
 
 			if (maxTorqueCurve.MaxSpeed.IsSmaller(fullLoadCurve.MaxSpeed)) {
-				throw new VectoException("EM Torque limitation has to cover the whole speed range", ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_INSUFFICIENT);
+				throw new VectoException("Electric Motor input: EM Torque limitation has to cover the whole speed range", 
+					ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_INSUFFICIENT,
+					"Make sure the torque limitation covers the entire speed range of the electric motor.");
 			}
 
 			var motorSpeeds = fullLoadCurve.FullLoadEntries.Select(x => x.MotorSpeed)
@@ -276,12 +282,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		private ElectricMotorVoltageLevelData CreateIHPCVoltageLevelData(int count, IElectricMotorVoltageLevel entry, ElectricMotorFullLoadCurve fullLoadCurveCombined, GearList gearList)
 		{
 			if (gearList == null) {
-				throw new VectoException("no gears provided for IHPC EM", ErrorCodes.ELECTRICMOTOR_IHPC_NO_GEARS_PROVIDED);
+				throw new VectoException("Electric Motor input: no gears provided for IHPC EM", 
+					ErrorCodes.ELECTRICMOTOR_IHPC_NO_GEARS_PROVIDED,
+					$"Make sure to provide valid gears for the IHPC electric motor.");
 			}
 
 			if (gearList.Count() != entry.PowerMap.Count) {
 				throw new VectoException(
-					$"number of gears in transmission does not match gears in electric motor (IHPC) - {gearList.Count()}/{entry.PowerMap.Count}", ErrorCodes.ELECTRICMOTOR_IHPC_GEARS_MISMATCH);
+					$"Electric Motor input: number of gears in transmission does not match gears in electric motor (IHPC) - {gearList.Count()}/{entry.PowerMap.Count}", 
+					ErrorCodes.ELECTRICMOTOR_IHPC_GEARS_MISMATCH,
+					$"Make sure the number of gears in the transmission matches the number of gears in the IHPC electric motor.");
 			}
 			var effMap = new Dictionary<uint, EfficiencyMap>();
 			foreach (var gear in gearList) {
@@ -313,8 +323,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
                     throw;
                 }
 
-				throw new VectoException($"Invalid efficiency map at voltage level {entry.VoltageLevel}.{Environment.NewLine}{ex.Message}", 
-					ErrorCodes.ELECTRICMOTOR_INVALID_EFFICIENCY_MAP);
+				throw new VectoException($"Electric Motor input: Invalid efficiency map at voltage level {entry.VoltageLevel}.{Environment.NewLine}{ex.Message}", 
+					ErrorCodes.ELECTRICMOTOR_INVALID_EFFICIENCY_MAP,
+					$"Make sure to provide a valid efficiency map for the electric motor at voltage level {entry.VoltageLevel}.");
 			}
 		}
 
@@ -589,7 +600,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 
             if (overloadTestSpeed.IsEqual(0)) {
-				throw new VectoException("Invalid model parameters for EM overload", ErrorCodes.ELECTRICMOTOR_OVERLOAD_INVALID_DATA);
+				throw new VectoException("Electric Motor input: Invalid model parameters for EM overload", 
+					ErrorCodes.ELECTRICMOTOR_OVERLOAD_INVALID_DATA,
+					$"Make sure to provide valid valid model parameters for EM overload.");
 			}
 
             var overloadPwr = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count *
@@ -618,8 +631,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
             if (ovlElPwr == null)
             {
                 throw new VectoException(
-                    $"Overloadbuffer calculation: failed to lookup electric power for overload point {continuousTorqueSpeed.AsRPM} [rpm] {overloadTorqueContSpeed / count}", 
-					ErrorCodes.ELECTRICMOTOR_OVERLOAD_NO_POWER);
+                    $"Electric Motor input: Overloadbuffer calculation: failed to lookup electric power for overload point {continuousTorqueSpeed.AsRPM} [rpm] {overloadTorqueContSpeed / count}", 
+					ErrorCodes.ELECTRICMOTOR_OVERLOAD_NO_POWER,
+					$"Make sure to provide electric power for this overload point.");
             }
 
             var etaOvl = continuousTorqueSpeed * overloadTorqueContSpeed / -ovlElPwr;
@@ -742,7 +756,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 			if (electricMachines.Entries.Select(x => x.Position)
 					.Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
-				throw new VectoException("multiple electric propulsion motors are not supported at the moment", ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED);
+				throw new VectoException("Electric Motor input: multiple electric propulsion motors are not supported at the moment", 
+					ErrorCodes.ELECTRICMOTOR_MULTIPLES_UNSUPPORTED,
+					$"Make sure to provide only one electric propulsion motor.");
 			}
 
 			CheckTorqueLimitVoltageLevels(electricMachines, torqueLimits);
@@ -824,7 +840,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 						if (eMachine.VoltageLevels.All(vl => vl.VoltageLevel != torqueLimitVoltageLevel)) {
 							throw new VectoException(
 								$"EM Torque Limit: Voltage level {torqueLimitVoltageLevel} not found for EM at position {torqueLimit.Key.Position}", 
-								ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL);
+								ErrorCodes.ELECTRICMOTOR_TORQUELIMIT_MISSING_VOLTAGE_LEVEL,
+								$"Make sure to provide a valid voltage level for the electric motor at position {torqueLimit.Key.Position}.");
 						}
 					}
 				}

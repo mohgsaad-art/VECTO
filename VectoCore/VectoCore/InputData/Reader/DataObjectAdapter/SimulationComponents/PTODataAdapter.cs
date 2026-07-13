@@ -70,7 +70,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		{
 
 			if (gbx == null && pto != null && (pto.PTOTransmissionType != "None")) {
-				throw new VectoException("PTO specified but the vehicle has no gearbox", ErrorCodes.PTO_MISSING_GEARBOX);
+				throw new VectoException("PTO input: PTO specified but the vehicle has no gearbox", 
+					ErrorCodes.PTO_MISSING_GEARBOX,
+					$"Make sure to provide a gearbox when specifying a PTO.");
 			} 
 				
 			if ((gbx != null) && (pto != null) && (pto.PTOTransmissionType != "None"))

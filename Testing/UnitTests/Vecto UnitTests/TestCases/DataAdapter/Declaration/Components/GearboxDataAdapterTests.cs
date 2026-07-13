@@ -23,10 +23,10 @@ public class GearboxDataAdapterTests
         var inputData = GetMockInputData();
         var runData = GetDummyRunData();
         var shiftPolygonCalc = new Mock<IShiftPolygonCalculator>();
-        AssertHelper.Exception<VectoException>(
+        AssertHelper.Exception(
             //() => MockSimulationDataFactory.CreateGearboxDataFromFile(wrongFile, EngineDataFile),
             () => dataAdapter.CreateGearboxData(inputData, runData, shiftPolygonCalc.Object, gbxTypes),
-            "At least one Gear-Entry must be defined in Gearbox!");
+            ErrorCodes.GEARBOX_NO_GEARS_DEFINED);
     }
 
 

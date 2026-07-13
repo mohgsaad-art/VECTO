@@ -38,9 +38,6 @@ using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Exceptions
 {
-	/// <summary>
-	/// Base Exception for all Exception in VECTO.
-	/// </summary>
 	[Serializable]
 	public class VectoException : Exception
 	{
