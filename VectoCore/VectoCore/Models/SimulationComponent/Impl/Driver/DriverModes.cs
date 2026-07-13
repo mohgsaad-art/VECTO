@@ -752,7 +752,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                                     break;
                                 case ResponseUnderload _:
                                     if (gear.Gear != PowertrainContainer.GearboxInfo.Gear.Gear ||
-                                        absTime.IsEqual(PowertrainContainer.GearboxInfo.LastDownshift))
+                                        absTime.IsEqual(PowertrainContainer.GearboxInfo.LastDownshift) ||
+                                        (absTime.IsEqual(PowertrainContainer.GearboxInfo.LastShift) && gear.Gear==1.0))
                                     {
                                         // AT Gearbox switched gears, shift losses are no longer applied, try once more...
                                         response = Driver.DrivingActionAccelerate(absTime, ds,
