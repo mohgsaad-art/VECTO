@@ -275,7 +275,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public XMLBatteryPackDeclarationInputDataStandardV23(XmlNode componentNode, string sourceFile) : base(componentNode, sourceFile) 
 		{
 #if PROHIBIT_OLD_XML
-			throw new VectoException($"{XSD_TYPE} v2.3 is no longer supported. Use newer version instead.");
+			throw new VectoException($"{XSD_TYPE} v2.3 is no longer supported. Use newer version instead.", ErrorCodes.XML_UNSUPPORTED_VERSION);
 #endif
 		}
 
@@ -504,7 +504,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 #if PROHIBIT_OLD_XML
 			if (disallowed && CertificationMethod == CertificationMethod.StandardValues)
 			{
-				throw new VectoException($"Capacitor v2.3 is no longer supported. Use newer version instead.");
+				throw new VectoException($"Capacitor v2.3 is no longer supported. Use newer version instead.", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
 		}

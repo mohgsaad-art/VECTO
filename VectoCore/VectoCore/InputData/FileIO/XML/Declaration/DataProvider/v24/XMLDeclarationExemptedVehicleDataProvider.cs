@@ -32,7 +32,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 #if PROHIBIT_OLD_XML
             if (!allowDeprecated)
             {
-                throw new VectoException("XML Jobs in version 2.4 are no longer supported!");
+                throw new VectoException("XML Jobs in version 2.4 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
             }
 #endif
 		}

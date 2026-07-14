@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 #if PROHIBIT_OLD_XML
 			if (!allowDeprecated) {
-				throw new VectoException("XML Jobs in version 1.0 are no longer supported!");
+				throw new VectoException("XML Jobs in version 1.0 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
         }
@@ -321,7 +321,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 #if PROHIBIT_OLD_XML
 			if (!allowDeprecated) {
-				throw new VectoException("XML Jobs in version 2.0 are no longer supported!");
+				throw new VectoException("XML Jobs in version 2.0 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
         }
@@ -384,7 +384,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 #if PROHIBIT_OLD_XML
 			if (!allowDeprecated) {
-				throw new VectoException("XML Jobs in version 2.1 are no longer supported!");
+				throw new VectoException("XML Jobs in version 2.1 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
         }
@@ -428,7 +428,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 #if PROHIBIT_OLD_XML
 			if (!allowDeprecated) {
-				throw new VectoException("XML Jobs in version 2.2 are no longer supported!");
+				throw new VectoException("XML Jobs in version 2.2 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
         }
@@ -510,7 +510,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 #if PROHIBIT_OLD_XML
 			if (!allowDeprecated) {
-				throw new VectoException("XML Jobs in version 2.2.1 are no longer supported!");
+				throw new VectoException("XML Jobs in version 2.2.1 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
 			}
 #endif
         }
@@ -1161,7 +1161,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 #if PROHIBIT_OLD_XML
             if (!allowDeprecated)
             {
-                throw new VectoException("XML Jobs in version 2.4 are no longer supported!");
+                throw new VectoException("XML Jobs in version 2.4 are no longer supported!", ErrorCodes.XML_UNSUPPORTED_VERSION);
             }
 #endif
         }
