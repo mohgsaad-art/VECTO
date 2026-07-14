@@ -261,7 +261,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 #if PROHIBIT_NEW_XML
                     if ((axlePtData.IEPCInputData != null) && axlePtData.IEPCInputData.Gears.Count > 1)
                     {
-                        throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!");
+                        throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!", ErrorCodes.VEHICLE_UNSUPPORTED_TYPE);
                     }
 #endif
 

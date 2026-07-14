@@ -206,12 +206,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 #if PROHIBIT_NEW_XML
             if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
             {
-                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
+                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!", ErrorCodes.VEHICLE_UNSUPPORTED_TYPE);
             }
 
             if (ArchitectureIDPwt2.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
             {
-                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
+                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!", ErrorCodes.VEHICLE_UNSUPPORTED_TYPE);
             }
 #endif
         }
@@ -316,7 +316,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             : base(jobData, xmlNode, sourceFile)
         {
 #if PROHIBIT_NEW_XML
-            throw new VectoException("XML Jobs for SHEV with multiple powertrains are not yet supported!");
+            throw new VectoException("XML Jobs for SHEV with multiple powertrains are not yet supported!", ErrorCodes.VEHICLE_UNSUPPORTED_TYPE);
 #endif
         }
 
