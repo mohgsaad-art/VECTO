@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -13,6 +14,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 {
 	internal class DeclarationFuelCellIterativeStrategy
 	{
+		private static readonly Dictionary<MissionType?, int> _fallbackVariantCounters = new Dictionary<MissionType?, int>();
+
 		/// <summary>
 		/// Sets up the <see cref="FCHEVIterativeRunStrategy"/>.
 		/// </summary>
@@ -42,7 +45,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					.ToList();
 
 				iterationRunData.JobType = fuelCellJobType;
-				iterationRunData.ModFileSuffix = string.Empty;
 				iterationRunData.FuelCellSystemData = fuelCellSystemData;
 				iterationRunData.OVCMode = runData.OVCMode == OvcHevMode.NotApplicable
 					? OvcHevMode.NotApplicable : OvcHevMode.ChargeSustaining;
@@ -56,7 +58,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 				/// Comment from [1]: In the real run we don't use a charge sustaining battery
 				runData.BatteryData.ChargeSustainingBatterySystem = false;
-				runData.ModFileSuffix = $"_{runData.Loading}";
+				iterationRunData.ModFileSuffix =
+					$"{GetClassCodeOrCounterFallback(iterationRunData.Mission?.BusParameter?.BusGroup, iterationRunData.Mission?.MissionType)}_{iterationRunData.Loading}";
 				runData.Iteration++;
 			};
 
@@ -94,7 +97,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					.ToList();
 
 				iterationRunData.JobType = fuelCellJobType;
-				iterationRunData.ModFileSuffix = string.Empty;
 				iterationRunData.FuelCellSystemData = fuelCellData;
 				iterationRunData.OVCMode = runData.OVCMode == OvcHevMode.NotApplicable ? OvcHevMode.NotApplicable : OvcHevMode.ChargeSustaining;
 				modData.PostProcessingCorrection = new FCHVPostProcessingCorrection();
@@ -110,7 +112,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 				/// Comment from [1]: In the real run we don't use a charge sustaining battery
 				runData.BatteryData.ChargeSustainingBatterySystem = false;
-				runData.ModFileSuffix = $"_{runData.Loading}";
+				iterationRunData.ModFileSuffix =
+					$"{GetClassCodeOrCounterFallback(iterationRunData.VehicleData?.VehicleClass, iterationRunData.Mission?.MissionType)}_{iterationRunData.Loading}";
 				runData.Iteration++;
 			};
 
@@ -138,6 +141,24 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 								WriteModAndSumData = true
 							}
 					});
+		}
+
+		private static string GetClassCodeOrCounterFallback(VehicleClass? vehicleClass, MissionType? missionType)
+		{
+			if (!vehicleClass?.IsBus() ?? true)
+			{
+				return string.Empty;
+			}
+
+			if (vehicleClass.HasValue && vehicleClass.Value != VehicleClass.Unknown) {
+				return $"_{vehicleClass.Value.GetClassNumber()}";
+			}
+
+			_fallbackVariantCounters.TryGetValue(missionType, out var counter);
+			counter++;
+			_fallbackVariantCounters[missionType] = counter;
+
+			return $"_{counter}";
 		}
 
 	}
