@@ -198,7 +198,16 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             continue
 
         vsum = vsums[0]
-        df_vsum = pd.read_csv(vsum, skiprows=[0])[:-1]
+        try:
+            df_vsum = pd.read_csv(vsum, skiprows=[0])[:-1]
+        except pd.errors.EmptyDataError:
+            success_list.append('ERROR empty vsum')
+            vsum_ok_list.append(False)
+            log_ok_list.append(False)
+            rslt_mfr_ok_list.append(False)
+            complete_step_ok_list.append(False)
+            cpu_time.append(0.0)
+            continue
         _valid_statuses = {'Success', 'PrimaryBusSimulationIgnore'}
         vsum_ok = len(df_vsum) > 0 and df_vsum['Status'].isin(_valid_statuses).all()
 
