@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Watt GearboxLoss()
 		{
-			if (PreviousState.Gear == null)
+			if ((PreviousState.Gear == null) || (PreviousState.Gear.Gear == 0))
             {
                 return null;
             }
