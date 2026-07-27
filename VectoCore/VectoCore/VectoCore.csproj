@@ -6,7 +6,7 @@
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCore</RootNamespace>
     <AssemblyName>VectoCore</AssemblyName>
-    <TargetFrameworks>net48;net6.0;net8.0;net8.0-windows;net10.0;net10.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0;net10.0</TargetFrameworks>
     <DefineConstants>FCOutput</DefineConstants>
     <Description>Provides Vecto Core functionality.</Description>
     <Configurations>Debug;Release;MockupDebug</Configurations>
@@ -16,80 +16,6 @@
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net6.0|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0-windows|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-	<PropertyGroup Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-windows|AnyCPU'">
-	  <DebugType>none</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net48|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net6.0|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net8.0|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net8.0-windows|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0|AnyCPU'" />
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-windows|AnyCPU'" />
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
-		<DefineConstants>MOCKUP</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net6.0|AnyCPU'">
-		<DefineConstants>MOCKUP</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0|AnyCPU'">
-		<DefineConstants>MOCKUP</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0-windows|AnyCPU'">
-		<DefineConstants>MOCKUP</DefineConstants>
-	</PropertyGroup>
-	<ItemGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>VectoMockup</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net6.0|AnyCPU'">
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>VectoMockup</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0|AnyCPU'">
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>VectoMockup</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0-windows|AnyCPU'">
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>VectoMockup</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
 
 	<!--<Choose>
 		<When Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(DefineConstants), '^(.*;)*MOCKUP(;.*)*$'))">

@@ -106,7 +106,7 @@ function Update-BuildPropsSymbols([switch]$includeSymbols){
 
     $BuildPropsFile = "Directory.Build.props"
     $IncludeRgx = "<IncludeSymbols>(?:tru|fals)e<\/IncludeSymbols>"
-    $IncludeNode = "<IncludeSymbols>true</IncludeSymbols>"
+    $IncludeNode = "<IncludeSymbols>true</IncludeSymbols><EmbedAllSources>true</EmbedAllSources>"
 
 
     (Get-Content -Path $BuildPropsFile) |
@@ -114,7 +114,7 @@ function Update-BuildPropsSymbols([switch]$includeSymbols){
             Set-Content -Path $BuildPropsFile
 
     $DebugTypeRgx = "<DebugType>*<\/DebugType>"
-    $DebugTypeNode = "<DebugType>full</DebugType>"
+    $DebugTypeNode = "<DebugType>embedded</DebugType>"
 
     (Get-Content -Path $BuildPropsFile) |
         ForEach-Object {$_ -Replace $DebugTypeRgx, $DebugTypeNode} |
