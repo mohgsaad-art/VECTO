@@ -24,6 +24,7 @@ Usage:
 import argparse
 import logging
 import os
+import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -40,6 +41,20 @@ from FUNCTIONS.utils_pool import EXTRACT_VERBOSITY
 logging.getLogger('patool').setLevel(logging.WARNING)
 
 TARGET_ELEMENTS = ('Manufacturer', 'VIN', 'CertificationNumber')
+
+# Values that are placeholders/non-values rather than real data, and should
+# never appear in the output .txt files. Matched case-insensitively, ignoring
+# '.' and '/' (so "N/A", "n.a.", "NA" etc. all match).
+BLACKLISTED_VALUES = {'na', 'none', 'void', 'token'}
+PLACEHOLDER_RE = re.compile(r'^##.*##$')  # e.g. ##TYRE_2_MANUFACTURER##
+
+
+def is_blacklisted(value: str) -> bool:
+    """Return True if value is a known placeholder/non-value that should be
+    excluded from the output (NA/N.A./N/A/None/void/token, or a ##...##
+    template placeholder)."""
+    normalized = value.strip().lower().replace('.', '').replace('/', '')
+    return normalized in BLACKLISTED_VALUES or bool(PLACEHOLDER_RE.match(value.strip()))
 
 # ---------------------------------------------------------------------------
 # Core logic
@@ -96,7 +111,7 @@ def scan_xml_files(xml_files: list[Path]) -> dict[str, set[str]]:
             continue
         for name in TARGET_ELEMENTS:
             for el in tree.findall(f'.//{{*}}{name}'):
-                if el.text and el.text.strip():
+                if el.text and el.text.strip() and not is_blacklisted(el.text):
                     values[name].add(el.text.strip())
     return values
 
