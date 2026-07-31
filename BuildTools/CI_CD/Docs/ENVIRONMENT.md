@@ -103,6 +103,19 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 - Produces a `Vehicles_found_<timestamp>.xlsx` diagnostic report in the current working directory (only the most recent is kept).
 - **Override mechanism (`A02_OTHERS`):** files placed under `A02_OTHERS` replace the corresponding inputs from `A00_RAW`. To override a file, mirror its path under `A02_OTHERS` — the sorting algorithm picks the `A02_OTHERS` copy instead of the original. For example, to override `A00_RAW/555/uploads/23d4ert546tfcb45mnbd3/original_input.xml`, place the replacement at `A02_OTHERS/555/uploads/23d4ert546tfcb45mnbd3/modified_input.xml`.
 
+### A03 — Scan extracted pool XML metadata
+```bash
+python A03_Scan_XML_Metadata.py <extract_root> [--output-dir <path>] [--copy-only] [--force]
+```
+- `extract_root`: root directory to scan (typically `A01_EXTRACT`). Nested subfolders and `.zip`/`.7z`/`.rar` archives are included.
+- `--output-dir`: directory to write output into (default: current directory).
+- `--copy-only`: copy every XML file found into `<output-dir>/A03XMLs` instead of parsing them — no `Manufacturer`/`VIN`/`CertificationNumber` extraction is performed in this mode. Copied filenames are prefixed with an incrementing counter to avoid collisions between same-named files from different source folders.
+- `--force`: before running, delete this script's own previous outputs already present in `--output-dir` (`Manufacturer.txt`, `VIN.txt`, `CertificationNumber.txt`, `A03XMLs/`). Other, unrelated content in `--output-dir` is left untouched.
+- Walks `extract_root` for `.xml` files. Any archive encountered is extracted to a temporary directory (one level deep only — archives nested inside another archive's extracted output are not followed) and scanned for `.xml` files as well.
+- Without `--copy-only`: every XML file is parsed for `Manufacturer`, `VIN`, and `CertificationNumber` elements (namespace-agnostic match) — all occurrences are collected, since these elements can repeat per file (once per vehicle plus once per component/stage). Produces `Manufacturer.txt`, `VIN.txt`, and `CertificationNumber.txt` in `--output-dir`, each a sorted, deduplicated list of the values found, one per line.
+- Temporary extraction directories (for archives found while walking) are not cleaned up automatically.
+- If an XML file fails to parse, a `WARNING: failed to parse ...` line is printed to stdout. To avoid leaking local filesystem paths into CI logs, only the file's immediate parent folder name is printed (not the full path), and the trailing `(path/URI, line N)` segment embedded in the underlying lxml error message is stripped entirely.
+
 ### C04 — Generate HTML dashboard
 ```bash
 python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
