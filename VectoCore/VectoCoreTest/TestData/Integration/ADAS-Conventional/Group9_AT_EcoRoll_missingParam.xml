@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
   <Vehicle id="VEH-class9_AT_EcoRoll">
-    <Manufacturer>TUG Generic</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
     <Model>N.A.</Model>
     <VIN>N.A.</VIN>
@@ -30,9 +30,9 @@
     <Components>
       <Engine>
         <Data id="ENG-Generic220kW7.7lEngine">
-          <Manufacturer>TUG Generic</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>Generic 220kW 7.7l Engine</Model>
-          <CertificationNumber>ENG-Generic 220kW 7.7l Engine</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2019-02-27T09:39:05.3241256Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <Displacement>7700</Displacement>
@@ -234,9 +234,9 @@
       </Engine>
       <Gearbox>
         <Data id="GBX-APT-SGenericTqMax1200">
-          <Manufacturer>TUG Generic</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>APT-S Generic TqMax1200</Model>
-          <CertificationNumber>GBX-APT-S Generic TqMax1200</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2019-02-27T09:39:05.3400867Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>APT-S</TransmissionType>
@@ -1162,9 +1162,9 @@
         </Signature>
         <TorqueConverter>
           <Data id="TC-APT-SGenericTqMax1200">
-            <Manufacturer>TUG Generic</Manufacturer>
+            <Manufacturer>manufacturer_name</Manufacturer>
             <Model>APT-S Generic TqMax1200</Model>
-            <CertificationNumber>N/A</CertificationNumber>
+            <CertificationNumber>certification_number</CertificationNumber>
             <Date>2019-02-27T09:39:05.3410801Z</Date>
             <AppVersion>VectoCore</AppVersion>
             <CertificationMethod>Standard values</CertificationMethod>
@@ -1212,9 +1212,9 @@
       </Gearbox>
       <Axlegear>
         <Data id="AXLGEAR-6.500">
-          <Manufacturer>TUG Generic</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>AXLGEAR-6.500</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2019-02-27T09:39:05.3410801Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <LineType>Single portal axle</LineType>
@@ -2013,9 +2013,9 @@
               <Steered>true</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R22.5">
-                  <Manufacturer>TUG Generic</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2019-02-27T09:39:05.3510849Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -2040,9 +2040,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R22.5">
-                  <Manufacturer>TUG Generic</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2019-02-27T09:39:05.3510849Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -2067,9 +2067,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R22.5">
-                  <Manufacturer>TUG Generic</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2019-02-27T09:39:05.3510849Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -2112,9 +2112,9 @@
       </Auxiliaries>
       <AirDrag>
         <Data id="Airdrag-N.A.">
-          <Manufacturer>TUG Generic</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2019-02-27T09:39:05.3510849Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CdxA_0>5.80</CdxA_0>

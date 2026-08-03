@@ -5,7 +5,7 @@ xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xsi:schemaLocation="urn:tu
   <mrf:Data xsi:type="VectoOutputDataType" id="RESULT-05da3904a69f4a3a810c">
     <Vehicle xsi:type="VehicleTruckType">
       <Model>Generic Model</Model>
-      <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
       <VIN>VEH-1234567890</VIN>
       <LegislativeClass>N3</LegislativeClass>
@@ -34,7 +34,7 @@ xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xsi:schemaLocation="urn:tu
       <Components xsi:type="ComponentsTruckType">
         <Engine>
           <Model>Generic 40t Long Haul Truck Engine</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</DigestValue>
           <RatedPower unit="kW">380</RatedPower>
           <IdlingSpeed unit="rpm">600</IdlingSpeed>
@@ -70,7 +70,7 @@ xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xsi:schemaLocation="urn:tu
         <AirDrag>
           <Model>Generic Model</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</DigestValue>
           <CdxA>6.34</CdxA>
         </AirDrag>

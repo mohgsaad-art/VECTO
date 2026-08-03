@@ -3,7 +3,7 @@
   <PrimaryVehicle xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
     <Data id="VEH-4cb168560c0d4b3d886d" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="Exempted_VehicleVIFType">
-        <Manufacturer>Some Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
         <Model>Sample Bus Model</Model>
         <VIN>VEH-1234567890</VIN>
@@ -70,7 +70,7 @@
         </di:Reference>
       </HashPreviousStep>
       <vif0.1:Vehicle id="VEH-4e462a2a8acc408eb908" xsi:type="Vehicle_Exempted_CompletedBusDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
-        <Manufacturer>Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Address </ManufacturerAddress>
         <VIN>123456789</VIN>
         <Date>2021-08-23T22:00:00Z</Date>

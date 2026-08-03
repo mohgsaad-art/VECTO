@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tns:VectoOutputMultistage xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" xmlns:v2.10.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1 V:\VectoCore\VectoCore\Resources\XSD/VectoOutputMultistage.0.1.xsd" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
   <tns:PrimaryVehicle>
     <Data id="VEH-287da6b1275749ac832d" xsi:type="PrimaryVehicleDataType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
@@ -32,9 +32,9 @@
         <Components xsi:type="Vehicle_Conventional_ComponentsVIFType">
           <Engine>
             <Data xsi:type="EngineDataVIFType">
-              <Manufacturer>Generic Engine Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Engine</Model>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-02-15T11:00:00Z</Date>
               <AppVersion>VectoEngine x.y</AppVersion>
               <Displacement>12730</Displacement>
@@ -68,7 +68,7 @@
           </Engine>
           <Transmission>
             <Data xsi:type="TransmissionDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Gearbox</Model>
               <MainCertificationMethod>Standard values</MainCertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -129,7 +129,7 @@
           </Transmission>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -147,9 +147,9 @@
                   <v2.0:Steered>true</v2.0:Steered>
                   <v2.0:Tyre>
                     <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
-                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
                       <v2.0:Model>Generic Wheel</v2.0:Model>
-                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
                       <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
                       <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
                       <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
@@ -174,9 +174,9 @@
                   <v2.0:Steered>false</v2.0:Steered>
                   <v2.0:Tyre>
                     <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
-                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
                       <v2.0:Model>Generic Wheel</v2.0:Model>
-                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
                       <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
                       <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
                       <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
@@ -587,7 +587,7 @@
         </di:Reference>
       </HashPreviousStage>
       <tns:Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-48bd60d263ab40b19387" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
-        <Manufacturer>aaa</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>aaaa</ManufacturerAddress>
         <VIN>123456789</VIN>
         <Date>2022-01-18T23:00:00Z</Date>
@@ -677,7 +677,7 @@
         </di:Reference>
       </HashPreviousStage>
       <tns:Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-afaecc21a42f4cc79d58" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
-        <Manufacturer>bbbb</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>bbb</ManufacturerAddress>
         <VIN>assssss</VIN>
         <Date>2022-01-18T23:00:00Z</Date>

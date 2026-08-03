@@ -4,7 +4,7 @@
   <mrf:Data xsi:type="VectoOutputDataType" id="RESULT-8a1c4eb391614a73b113">
     <Vehicle xsi:type="VehicleTruckType">
       <Model>ML2r</Model>
-      <Manufacturer>Generic Vendor</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>N.A.</ManufacturerAddress>
       <VIN>standard values</VIN>
       <LegislativeClass>N2</LegislativeClass>
@@ -27,7 +27,7 @@
       <Components xsi:type="ComponentsTruckFWDType">
         <Engine>
           <Model>130kW engine</Model>
-          <CertificationNumber>ENG-130kW_IVT_3l</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>KftUzK5FhNC46W/dX26TBdIvMQxDF/f6oBOa68fs8A8=</DigestValue>
           <RatedPower unit="kW">130</RatedPower>
           <IdlingSpeed unit="rpm">800</IdlingSpeed>
@@ -53,7 +53,7 @@
         <AirDrag>
           <Model>N.A.</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>generic cabin</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>KftUzK5FhNC46W/dX26TBdIvMQxDF/f6oBOa68fs8A8=</DigestValue>
           <CdxA>5.80</CdxA>
         </AirDrag>

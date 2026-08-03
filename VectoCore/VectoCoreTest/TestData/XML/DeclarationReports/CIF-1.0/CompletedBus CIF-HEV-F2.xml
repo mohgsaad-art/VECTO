@@ -11,11 +11,11 @@
 			<VehicleGroupCO2>String</VehicleGroupCO2>
 			<Manufacturers>
 				<Step stepCount="0">
-					<Manufacturer>text</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>text</ManufacturerAddress>
 				</Step>
 				<Step stepCount="1">
-					<Manufacturer>text</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>text</ManufacturerAddress>
 				</Step>
 			</Manufacturers>

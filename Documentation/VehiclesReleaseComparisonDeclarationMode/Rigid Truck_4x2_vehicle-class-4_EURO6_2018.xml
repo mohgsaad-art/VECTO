@@ -10,7 +10,7 @@ xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
 xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"  
 xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
   <v2.0:Vehicle id="VEH-class4" xsi:type="Vehicle_Conventional_HeavyLorryDeclarationType">
-    <Manufacturer>Generic Vendor</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
     <Model>N.A.</Model>
     <VIN>N/A</VIN>
@@ -40,9 +40,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
     <Components xsi:type="Components_Conventional_LorryType">
       <Engine>
         <Data id="ENG-N.A." xsi:type="EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>ENG-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2543609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <Displacement>12742</Displacement>
@@ -191,9 +191,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
       </Engine>
       <Gearbox>
         <Data id="GBX-N.A." xsi:type="GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>GBX-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2603609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
@@ -394,9 +394,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
       </Gearbox>
       <Retarder>
         <Data id="RET-N.A." xsi:type="RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>N/A</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2603609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CertificationMethod>Standard values</CertificationMethod>
@@ -447,9 +447,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
       </Retarder>
       <Axlegear>
         <Data id="AXLGEAR-2.640" xsi:type="AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>AXLGEAR-2.640</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2603609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <LineType>Single portal axle</LineType>
@@ -488,9 +488,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
               <Steered>true</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R22.5" xsi:type="TyreDataDeclarationType">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.2613609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -515,9 +515,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R22.5" xsi:type="TyreDataDeclarationType">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.2613609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -560,9 +560,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
       </Auxiliaries>
       <AirDrag>
         <Data id="Airdrag-N.A." xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2613609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CdxA_0>5.95</CdxA_0>

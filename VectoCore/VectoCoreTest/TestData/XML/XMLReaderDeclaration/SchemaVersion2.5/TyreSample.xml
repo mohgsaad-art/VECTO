@@ -8,9 +8,9 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
 	<tns:Tyre>
 		<v2.0:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType">
-			<Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic Tyre Model</Model>
-			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>DemoTyreApp 1.0</AppVersion>
 			<Dimension>315/45 R22.5</Dimension>

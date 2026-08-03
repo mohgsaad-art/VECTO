@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="2.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob x:/VectoDeclarationJob.xsd" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 	<Vehicle xsi:type="Vehicle_Multiple_SHEV_PrimaryBusDeclarationType" id="A">
-		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
 		<Model>Generic Model</Model>
 		<VIN>VEH-1234567890</VIN>
@@ -86,9 +86,9 @@
 		<Components>
 			<Engine>
 				<v2.0:Data xsi:type="EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Engine</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<AppVersion>VectoEngine x.y</AppVersion>
 					<Displacement>12700</Displacement>
@@ -264,9 +264,9 @@
 				<Count>1</Count>
 				<ElectricMachineSystem>
 					<v2.3:Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-						<Manufacturer>a</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>a</Model>
-						<CertificationNumber>token</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<Date>2017-01-01T00:00:00Z</Date>
 						<AppVersion>aaaaa</AppVersion>
 						<ElectricMachineType>ASM</ElectricMachineType>
@@ -1105,9 +1105,9 @@
 					<StringID>0</StringID>
 					<REESS>
 						<v2.3:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
@@ -1159,9 +1159,9 @@
 					<Count>2</Count>
 					<ElectricMachineSystem>
 						<v2.3:Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<ElectricMachineType>ASM</ElectricMachineType>
@@ -3129,9 +3129,9 @@
 				<Retarder>
 					<!-- optional -->
 					<v2.0:Data id="RET-Shai9imi" xsi:type="RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-						<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Retarder</Model>
-						<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<Date>2017-01-11T11:00:00Z</Date>
 						<AppVersion>3.0.1</AppVersion>
 						<CertificationMethod>Standard values</CertificationMethod>
@@ -3182,9 +3182,9 @@
 				</Retarder>
 				<Axlegear>
 					<v2.0:Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-						<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic 40t Long Haul Truck AxleGear</Model>
-						<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<Date>2017-01-11T11:00:00Z</Date>
 						<AppVersion>3.0.1</AppVersion>
 						<LineType>Single portal axle</LineType>
@@ -3221,9 +3221,9 @@
 					<Count>2</Count>
 					<ElectricMachineSystem>
 						<v2.3:Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<ElectricMachineType>ASM</ElectricMachineType>
@@ -5198,9 +5198,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>275/70 R22.5</Dimension>
@@ -5225,9 +5225,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>275/70 R22.5</Dimension>
@@ -5283,7 +5283,7 @@
 				<Make>##VEHICLE_MAKE##</Make>
 			</Vehicle>
 			<Engine>
-				<Manufacturer>##ENGINE_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##ENGINE_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##ENGINE_MAKE##</Make>
 				<WHTC>
@@ -5299,30 +5299,30 @@
 				<TypeApprovalNumber>##TYPE_APPROVAL_NUMBER##</TypeApprovalNumber>
 			</Engine>
 			<ElectricMachineGEN>
-				<Manufacturer>##ELECTRIC_MACHINE_GEN_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##ELECTRIC_MACHINE_GEN_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##ELECTRIC_MACHINE_GEN_MAKE##</Make>
 			</ElectricMachineGEN>
 			<ElectricEnergyStorage>
-				<Manufacturer>##ELECTRIC_ENERGY_STORAGE_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##ELECTRIC_ENERGY_STORAGE_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##ELECTRIC_ENERGY_STORAGE_MAKE##</Make>
 			</ElectricEnergyStorage>
 			<Powertrain axleNumber="1" xsi:type="xEV_EM3_Powertrain_DataType">
 				<ElectricMachine>
-					<Manufacturer>##ELECTRIC_MACHINE_MANUFACTURER##</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>##ELECTRIC_MACHINE_MANUFACTURERADDRESS##</ManufacturerAddress>
 					<Make>##ELECTRIC_MACHINE_MAKE##</Make>
 				</ElectricMachine>
 				<Axlegear>
-					<Manufacturer>##AXLEGEAR_MANUFACTURER##</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>##AXLEGEAR_MANUFACTURERADDRESS##</ManufacturerAddress>
 					<Make>##AXLEGEAR_MAKE##</Make>
 				</Axlegear>
 			</Powertrain>
 			<Powertrain axleNumber="2" xsi:type="xEV_EM4_Powertrain_DataType">
 				<ElectricMachine>
-					<Manufacturer>##ELECTRIC_MACHINE_MANUFACTURER##</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>##ELECTRIC_MACHINE_MANUFACTURERADDRESS##</ManufacturerAddress>
 					<Make>##ELECTRIC_MACHINE_MAKE##</Make>
 				</ElectricMachine>
@@ -5330,14 +5330,14 @@
 			<AxleWheels>
 				<Axle axleNumber="1">
 					<Tyre>
-						<Manufacturer>##TYRE_1_MANUFACTURER##</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<ManufacturerAddress>##TYRE_1_MANUFACTURERADDRESS##</ManufacturerAddress>
 						<Make>##TYRE_1_MAKE##</Make>
 					</Tyre>
 				</Axle>
 				<Axle axleNumber="2">
 					<Tyre>
-						<Manufacturer>##TYRE_2_MANUFACTURER##</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<ManufacturerAddress>##TYRE_2_MANUFACTURERADDRESS##</ManufacturerAddress>
 						<Make>##TYRE_2_MAKE##</Make>
 					</Tyre>

@@ -10,7 +10,7 @@
   <PrimaryVehicle>
     <Data id="VEH-dda89003b1894b738e01" xsi:type="PrimaryVehicleDataType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
       <Vehicle xsi:type="ConventionalVehicleVIFType">
-        <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
         <Model>Generic Model Primary</Model>
         <VIN>VEH-1234567890_SmartPS</VIN>
@@ -39,9 +39,9 @@
         <Components xsi:type="Vehicle_Conventional_ComponentsVIFType">
           <Engine>
             <Data xsi:type="EngineDataVIFType">
-              <Manufacturer>Generic Engine Manufacturer Primary</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Bus 6x2 Engine</Model>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-02-15T11:00:00Z</Date>
               <AppVersion>VectoEngine x.y</AppVersion>
               <Displacement>12730</Displacement>
@@ -75,7 +75,7 @@
           </Engine>
           <Transmission>
             <Data xsi:type="TransmissionDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer Primary</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Gearbox Primary</Model>
               <MainCertificationMethod>Standard values</MainCertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -136,7 +136,7 @@
           </Transmission>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear Primary</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -154,9 +154,9 @@
                   <v2.0:Steered>true</v2.0:Steered>
                   <v2.0:Tyre>
                     <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
-                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
                       <v2.0:Model>Generic Wheel</v2.0:Model>
-                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
                       <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
                       <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
                       <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
@@ -181,9 +181,9 @@
                   <v2.0:Steered>false</v2.0:Steered>
                   <v2.0:Tyre>
                     <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
-                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
                       <v2.0:Model>Generic Wheel</v2.0:Model>
-                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
                       <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
                       <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
                       <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
@@ -208,9 +208,9 @@
                   <v2.0:Steered>false</v2.0:Steered>
                   <v2.0:Tyre>
                     <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
-                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
                       <v2.0:Model>Generic Wheel</v2.0:Model>
-                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
                       <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
                       <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
                       <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>

@@ -8,7 +8,7 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringComponent https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoEngineeringComponent.xsd"
 	xsi:type="VectoComponentEngineeringType">
 	<Vehicle id="VEH-1234567890" xsi:type="VehicleEngineeringType">
-			<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>somewhere</ManufacturerAddress>
 			<Model>Generic LongHaul Truck</Model>
 			<VIN>xyz</VIN>
@@ -47,7 +47,7 @@
 				</TorqueConverter>
 				<Angledrive>
 					<Data xsi:type="AngledriveDataEngineeringType" id="ANGL-asdf">
-						<Manufacturer>Generic Angledrive Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Angledrive</Model>
 						<Date>2017-01-11T11:00:00Z</Date>
 						<Ratio>1.200</Ratio>
@@ -58,7 +58,7 @@
 				</Angledrive>
 				<Retarder>
 					<Data xsi:type="RetarderDataEngineeringType" id="RET-adsf">
-						<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Retarder</Model>
 						<Date>2017-01-11T11:00:00Z</Date>
 						<AppVersion>3.0.1</AppVersion>
@@ -80,7 +80,7 @@
 								<WeightShare>0.4</WeightShare>
 								<Tyre xsi:type="TyreComponentEngineeringType">
 									<Data xsi:type="TyreDataEngineeringType">
-										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Manufacturer>manufacturer_name</Manufacturer>
 										<Model>Generic Wheel</Model>
 										<Date>2017-01-11T14:00:00Z</Date>
 										<Dimension>315/70 R22.5</Dimension>
@@ -96,7 +96,7 @@
 								<WeightShare>0.6</WeightShare>
 								<Tyre>
 									<Data xsi:type="TyreDataEngineeringType">
-										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Manufacturer>manufacturer_name</Manufacturer>
 										<Model>Generic Wheel</Model>
 										<Date>2017-01-11T14:00:00Z</Date>
 										<Dimension>315/70 R22.5</Dimension>
@@ -255,7 +255,7 @@
 				</Auxiliaries>
 				<AirDrag>
 					<Data xsi:type="AirDragDataEngineeringType">
-						<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic 40t Long Haul Truck Gearbox</Model>
 						<Date>2017-01-11T11:00:00Z</Date>
 						<AppVersion>3.0.1</AppVersion>

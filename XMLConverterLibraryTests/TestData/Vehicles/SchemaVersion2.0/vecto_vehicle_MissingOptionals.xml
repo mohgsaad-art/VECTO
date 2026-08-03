@@ -7,7 +7,7 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd"
 	>
 	<Vehicle id="VEH-1234567890" xsi:type="VehicleDeclarationType">
-		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
 		<Model>Generic Model</Model>
 		<VIN>VEH-1234567890</VIN>
@@ -27,9 +27,9 @@
 		<Components xsi:type="VehicleComponentsType">
 			<Engine>
 				<Data id="ENG-gooZah3D" xsi:type="EngineDataDeclarationType">
-					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Engine</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<AppVersion>VectoEngine x.y</AppVersion>
 					<Displacement>12730</Displacement>
@@ -184,9 +184,9 @@
 			</Engine>
 			<Gearbox>
 				<Data id="gbx-vi2Oak2N" xsi:type="GearboxDataDeclarationType">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<TransmissionType>AMT</TransmissionType>
@@ -2571,9 +2571,9 @@
 				</Gearbox>
 			<Axlegear>
 				<Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataDeclarationType">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck AxleGear</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<LineType>Single portal axle</LineType>
@@ -3094,9 +3094,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -3121,9 +3121,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>

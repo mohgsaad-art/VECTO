@@ -4,7 +4,7 @@
   <Data id="RESULT-db205f616a0b4ccc9fed">
     <Vehicle>
       <Model>Tabelle1_Class-5_Genericvehicle</Model>
-      <Manufacturer>Generic Vendor</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>N.A.</ManufacturerAddress>
       <VIN>standard values</VIN>
       <LegislativeClass>N3</LegislativeClass>
@@ -27,7 +27,7 @@
       <Components>
         <Engine>
           <Model>Generic Engine</Model>
-          <CertificationNumber>ENG-Generic Engine</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>UxwXPq/SM3L4WIYOBWlMy1KbUowxU670gdh+B1MXDpo=</DigestValue>
           <RatedPower unit="kW">325</RatedPower>
           <IdlingSpeed unit="rpm">590</IdlingSpeed>
@@ -59,7 +59,7 @@
         <AirDrag>
           <Model>N.A.</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>generic cabin</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>xbCnjthzGoDH8oiydVX5eQmUoaeZ4aXpKwHtvd3ZkNQ=</DigestValue>
           <CdxA>5.50</CdxA>
         </AirDrag>

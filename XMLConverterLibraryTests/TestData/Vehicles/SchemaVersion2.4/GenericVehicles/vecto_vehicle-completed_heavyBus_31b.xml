@@ -8,7 +8,7 @@ xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
 xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
 xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD//VectoDeclarationJob.xsd">
 	<v2.0:Vehicle id="VEH-1234567890" xsi:type="v2.4:Vehicle_Conventional_CompletedBusDeclarationType">
-		<Manufacturer>Some Manufacturer</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
 		<VIN>VEH-1234567890</VIN>
 		<Date>2020-01-09T11:00:00Z</Date>
@@ -41,9 +41,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCor
 		<Components xsi:type="Components_Conventional_CompletedBusType">
 			<AirDrag>
 				<Data id="CabinX23h" xsi:type="AirDragDataDeclarationType"  xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic Model</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-03-24T15:00:00Z</Date>
 					<AppVersion>Vecto AirDrag x.y</AppVersion>
 					<CdxA_0>4.90</CdxA_0>

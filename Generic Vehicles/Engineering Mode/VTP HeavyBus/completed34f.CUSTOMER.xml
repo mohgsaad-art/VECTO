@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cif:VectoCustomerInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cif="urn:tugraz:ivt:VectoAPI:CustomerOutput" xmlns="urn:tugraz:ivt:VectoAPI:CustomerOutput:v1.0">
   <cif:Data xsi:type="Conventional_CompletedBusOutputType" id="CIF-02442fe3243a47a793fe">
     <Vehicle xsi:type="Conventional_CompletedBusVehicleType">
@@ -11,11 +11,11 @@
       <VehicleGroupCO2>34-DD</VehicleGroupCO2>
       <Manufacturers>
         <Step stepCount="1">
-          <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
         </Step>
         <Step stepCount="2">
-          <Manufacturer>Some Manufacturer</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
         </Step>
       </Manufacturers>

@@ -13,7 +13,7 @@
       <Components>
         <Engine>
           <Model>Generic Engine</Model>
-          <CertificationNumber>ENG-Generic Engine</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>UxwXPq/SM3L4WIYOBWlMy1KbUowxU670gdh+B1MXDpo=</DigestValue>
           <RatedPower>325032</RatedPower>
           <IdlingSpeed>600</IdlingSpeed>
@@ -45,7 +45,7 @@
         <AirDrag>
           <Model>N.A.</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>generic cabin</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>xbCnjthzGoDH8oiydVX5eQmUoaeZ4aXpKwHtvd3ZkNQ=</DigestValue>
           <CdxA>5.50</CdxA>
         </AirDrag>

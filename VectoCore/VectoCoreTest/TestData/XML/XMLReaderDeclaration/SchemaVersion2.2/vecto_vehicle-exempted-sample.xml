@@ -7,7 +7,7 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd
 urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1 E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoDeclarationDefinitions.2.1.xsd">
 	<v2.0:Vehicle id="VEH-1234567890" xsi:type="ExemptedVehicleDeclarationType">
-		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
 		<Model>Generic Model</Model>
 		<VIN>VEH-1234567890</VIN>

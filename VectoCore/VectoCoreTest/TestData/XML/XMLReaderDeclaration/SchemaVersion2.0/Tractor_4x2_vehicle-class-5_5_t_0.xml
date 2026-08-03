@@ -5,7 +5,7 @@
 	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" 
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
   <Vehicle id="VEH-class5_Class-5_5t0" xsi:type="VehicleDeclarationType">
-    <Manufacturer>Generic Vendor</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
     <Model>class 5_Class-5_5t0</Model>
     <VIN>standard values</VIN>
@@ -26,9 +26,9 @@
 	<Components xsi:type="VehicleComponentsType">
       <Engine>
         <Data id="ENG-350kW_IVT_12l" xsi:type="EngineDataDeclarationType">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>350kW_IVT_12l</Model>
-          <CertificationNumber>ENG-350kW_IVT_12l</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-09-26T15:33:45.0954248Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <Displacement>12700</Displacement>
@@ -191,9 +191,9 @@
       </Engine>
       <Gearbox>
         <Data id="GBX-GB_12-gear" xsi:type="GearboxDataDeclarationType">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>GB_12-gear</Model>
-          <CertificationNumber>GBX-GB_12-gear</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-09-26T15:33:45.0954248Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
@@ -394,9 +394,9 @@
       </Gearbox>
       <Retarder>
         <Data id="RET-RET-generic" xsi:type="RetarderDataDeclarationType">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>RET-generic</Model>
-          <CertificationNumber>standard values</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-09-26T15:33:45.0954248Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CertificationMethod>Standard values</CertificationMethod>
@@ -447,9 +447,9 @@
       </Retarder>
       <Axlegear>
         <Data id="AXLGEAR-2640" xsi:type="AxlegearDataDeclarationType">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>AXLGEAR-2640</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-09-26T15:33:45.0954248Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <LineType>Single portal axle</LineType>
@@ -488,9 +488,9 @@
               <Steered>true</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R225" xsi:type="TyreDataDeclarationType">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-09-26T15:33:45.1110278Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -515,9 +515,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_70R225" xsi:type="TyreDataDeclarationType">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-09-26T15:33:45.1110278Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -560,9 +560,9 @@
       </Auxiliaries>
       <AirDrag>
         <Data id="Airdrag-genericcabin" xsi:type="AirDragDataDeclarationType">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>generic cabin</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-09-26T15:33:45.1110278Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CdxA_0>5.57</CdxA_0>

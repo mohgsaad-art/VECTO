@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:VectoComponentEngineering xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v0.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v0.7" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v0.6" schemaVersion="0.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput:v0.7 E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoEngineeringInput.0.7.xsd">
 	<Vehicle id="VEH-1234567890">
-			<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic LongHaul Truck</Model>
 			<Creator>Markus Quaritsch, TUG IVT</Creator>
 			<Date>2017-02-15T11:00:00Z</Date>
@@ -38,7 +38,7 @@
 				</TorqueConverter>
 				<Angledrive>
 					<Data>
-						<Manufacturer>Generic Angledrive Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Angledrive</Model>
 						<Creator>Markus Quaritsch, TUG ITI</Creator>
 						<Date>2017-01-11T11:00:00Z</Date>
@@ -50,7 +50,7 @@
 				</Angledrive>
 				<Retarder>
 					<Data>
-						<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Retarder</Model>
 						<Creator>Markus Quaritsch, TUG ITI</Creator>
 						<Date>2017-01-11T11:00:00Z</Date>
@@ -67,7 +67,7 @@
 					<Data id="WHL-mi3ooviM">
 						<Axles>
 							<Axle axleNumber="1">
-								<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+								<Manufacturer>manufacturer_name</Manufacturer>
 								<Model>Generic Wheel</Model>
 								<Creator>Markus Quaritsch, TUG ITI</Creator>
 								<Date>2017-01-11T14:00:00Z</Date>
@@ -81,7 +81,7 @@
 								<Inertia>0</Inertia>
 							</Axle>
 							<Axle axleNumber="2">
-								<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+								<Manufacturer>manufacturer_name</Manufacturer>
 								<Model>Generic Wheel</Model>
 								<Creator>Markus Quaritsch, TUG ITI</Creator>
 								<Date>2017-01-11T14:00:00Z</Date>
@@ -245,7 +245,7 @@
 				</Auxiliaries>
 				<AirDrag>
 					<Data>
-						<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic 40t Long Haul Truck Gearbox</Model>
 						<Creator>Markus Quaritsch, TUG IVT</Creator>
 						<Date>2017-01-11T11:00:00Z</Date>

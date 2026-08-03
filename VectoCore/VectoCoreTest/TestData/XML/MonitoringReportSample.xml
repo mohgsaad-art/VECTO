@@ -4,7 +4,7 @@
 		<Data id="RESULT-df37a37ded8847a4aecd">
 			<Vehicle>
 				<Model>Rigid Truck_4x2_vehicle-class-4</Model>
-				<Manufacturer>TUG IVT EM</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>Inffeldgasse 16, 8010 Graz</ManufacturerAddress>
 				<VIN>standard values</VIN>
 				<LegislativeClass>N3</LegislativeClass>
@@ -17,7 +17,7 @@
 				<Components>
 					<Engine>
 						<Model>350kW_IVT_12l</Model>
-						<CertificationNumber>ENG-350kW_IVT_12l</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<DigestValue>
 						</DigestValue>
 						<RatedPower unit="W">325032</RatedPower>
@@ -53,7 +53,7 @@
 					<AirDrag>
 						<Model>N.A.</Model>
 						<CertificationMethod>Measured</CertificationMethod>
-						<CertificationNumber>generic cabin</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<DigestValue>
 						</DigestValue>
 						<CdxA>5.40</CdxA>
@@ -340,26 +340,26 @@
 			</WHSC>
 		</Engine>
 		<Gearbox>
-			<Manufacturer>##GEARBOX_MANUFACTURER##</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>##GEARBOX_MANUFACTURER_ADDRESS##</ManufacturerAddress>
 			<Make>##GEARBOX_MAKE##</Make>
 		</Gearbox>
 		<Axlegear>
-			<Manufacturer>##AXLEGEAR_MANUFACTURER##</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>##AXLEGEAR_MANUFACTURER_ADDRESS##</ManufacturerAddress>
 			<Make>##AXLEGEAR_MAKE##</Make>
 		</Axlegear>
 		<AxleWheels>
 			<Axle axleNumber="1">
 				<Tyre>
-					<Manufacturer>##TYRE1_MANUFACTURER##</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>##TYRE1_MANUFACTURER_ADDRESS##</ManufacturerAddress>
 					<Make>##TYRE1_MAKE##</Make>
 				</Tyre>
 			</Axle>
 			<Axle axleNumber="2">
 				<Tyre>
-					<Manufacturer>##TYRE2_MANUFACTURER##</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>##TYRE2_MANUFACTURER_ADDRESS##</ManufacturerAddress>
 					<Make>##TYRE2_MAKE##</Make>
 				</Tyre>

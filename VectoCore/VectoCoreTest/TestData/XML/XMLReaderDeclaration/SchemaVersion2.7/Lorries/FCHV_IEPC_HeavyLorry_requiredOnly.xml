@@ -10,7 +10,7 @@
 	xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6"
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
 	<Vehicle xsi:type="Vehicle_FCHV_IEPC_HeavyLorryDeclarationType" id="FCHV_IEPC">
-		<Manufacturer>TU Graz</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
 		<Model>FCHV Heavy Lorry IEPC</Model>
 		<VIN>1234</VIN>
@@ -41,9 +41,9 @@
 					<Count>1</Count>
 					<FuelCell>
 						<Data xsi:type="FuelCellDataDeclarationType" id="FuelCell" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
@@ -75,9 +75,9 @@
 					<StringID>0</StringID>
 					<REESS>
 						<v2.3:Data xsi:type="BatterySystemDataType" id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
@@ -125,9 +125,9 @@
 			</ElectricEnergyStorage>
 			<IEPC>
 				<v2.3:Data xsi:type="v2.3:IEPCMeasuredDataDeclarationType" id="iepc">
-					<v2.3:Manufacturer>IEPC</v2.3:Manufacturer>
+					<v2.3:Manufacturer>manufacturer_name</v2.3:Manufacturer>
 					<v2.3:Model>IEPC_Model</v2.3:Model>
-					<v2.3:CertificationNumber>12345</v2.3:CertificationNumber>
+					<v2.3:CertificationNumber>certification_number</v2.3:CertificationNumber>
 					<v2.3:Date>2020-01-01T00:00:00Z</v2.3:Date>
 					<v2.3:AppVersion>asdfa</v2.3:AppVersion>
 					<v2.3:ElectricMachineType>ASM</v2.3:ElectricMachineType>
@@ -5856,9 +5856,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>265/70 R19.5</Dimension>
@@ -5883,9 +5883,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>265/70 R19.5</Dimension>

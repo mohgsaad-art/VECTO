@@ -3,7 +3,7 @@
   <PrimaryVehicle>
     <Data id="VIF_P-c15b1005764d4741ae98" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="PEV_Ex_VehicleVIFType">
-        <Manufacturer>TU Graz</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
         <Model>PEV Heavy Lorry E2</Model>
         <VIN>123467890</VIN>
@@ -27,10 +27,10 @@
             <Count>2</Count>
             <ElectricMachineSystem>
               <Data xsi:type="ElectricMachineSystemDataDeclarationType">
-                <Manufacturer>a</Manufacturer>
+                <Manufacturer>manufacturer_name</Manufacturer>
                 <Model>a</Model>
                 <CertificationMethod>Measured</CertificationMethod>
-                <CertificationNumber>token</CertificationNumber>
+                <CertificationNumber>certification_number</CertificationNumber>
                 <Date>2017-01-01T00:00:00Z</Date>
                 <AppVersion>aaaaa</AppVersion>
                 <ElectricMachineType>ASM</ElectricMachineType>
@@ -219,10 +219,10 @@
               <StringID>0</StringID>
               <REESS>
                 <Data xsi:type="BatterySystemDataType">
-                  <Manufacturer>a</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>a</Model>
                   <CertificationMethod>Measured</CertificationMethod>
-                  <CertificationNumber>token</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-01-01T00:00:00Z</Date>
                   <AppVersion>aaaaa</AppVersion>
                   <BatteryType>HPBS</BatteryType>
@@ -245,10 +245,10 @@
               <StringID>1</StringID>
               <REESS>
                 <Data xsi:type="BatterySystemDataType">
-                  <Manufacturer>a</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>a</Model>
                   <CertificationMethod>Measured</CertificationMethod>
-                  <CertificationNumber>token</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-01-01T00:00:00Z</Date>
                   <AppVersion>aaaaa</AppVersion>
                   <BatteryType>HPBS</BatteryType>
@@ -270,7 +270,7 @@
           </ElectricEnergyStorage>
           <Transmission>
             <Data xsi:type="TransmissionDataVIFType">
-              <Manufacturer>N/A</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>tractor_12gear_example</Model>
               <MainCertificationMethod>Standard values</MainCertificationMethod>
               <Date>2022-09-16T12:47:03.1869453Z</Date>
@@ -342,7 +342,7 @@
           </Transmission>
           <TorqueConverter>
             <Data xsi:type="TorqueConverterDataVIFType">
-              <Manufacturer>Some Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Some Model</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-02-15T11:00:00Z</Date>
@@ -351,7 +351,7 @@
           </TorqueConverter>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -369,9 +369,9 @@
                   <Steered>true</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -396,9 +396,9 @@
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>

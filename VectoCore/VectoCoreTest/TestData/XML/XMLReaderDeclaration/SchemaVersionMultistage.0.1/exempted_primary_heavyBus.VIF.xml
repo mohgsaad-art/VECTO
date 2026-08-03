@@ -10,7 +10,7 @@ xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xsi:schemaLocat
   <PrimaryVehicle xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
     <Data id="VEH-4cb168560c0d4b3d886d" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="Exempted_VehicleVIFType">
-        <Manufacturer>Some Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
         <Model>Sample Bus Model</Model>
         <VIN>VEH-1234567890</VIN>

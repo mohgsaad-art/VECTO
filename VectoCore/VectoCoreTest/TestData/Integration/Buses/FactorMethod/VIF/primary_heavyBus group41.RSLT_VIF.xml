@@ -9,7 +9,7 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 	<PrimaryVehicle>
 		<Data xsi:type="PrimaryVehicleDataType" id="PIF-4121ae4751874cefa376">
 			<Vehicle xsi:type="ConventionalVehicleVIFType">
-				<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
 				<Model>Generic Model</Model>
 				<VIN>VEH-1234567890_nonSmart</VIN>
@@ -37,9 +37,9 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 				<Components xsi:type="Vehicle_Conventional_ComponentsVIFType">
 					<Engine>
 						<Data xsi:type="EngineDataVIFType">
-							<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>Generic primary bus 41 Engine</Model>
-							<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-02-15T11:00:00Z</Date>
 							<AppVersion>VectoEngine x.y</AppVersion>
 							<Displacement>7700</Displacement>
@@ -75,7 +75,7 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 					</Engine>
 					<Transmission>
 						<Data xsi:type="TransmissionDataVIFType">
-							<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>AT 6 Gear</Model>
 							<MainCertificationMethod>Standard values</MainCertificationMethod>
 							<Date>2017-01-11T11:00:00Z</Date>
@@ -113,7 +113,7 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 					</Transmission>
 					<TorqueConverter>
 						<Data xsi:type="vif0.1:TorqueConverterDataVIFType">
-							<Manufacturer>some manufacturer</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>some model</Model>
 							<CertificationMethod>Standard values</CertificationMethod>
 							<Date>2017-02-15T11:00:00Z</Date>
@@ -122,7 +122,7 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 					</TorqueConverter>
 					<Axlegear>
 						<Data xsi:type="AxlegearDataVIFType">
-							<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>Generic primary bus 41 AxleGear</Model>
 							<CertificationMethod>Standard values</CertificationMethod>
 							<Date>2017-01-11T11:00:00Z</Date>
@@ -140,9 +140,9 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 									<Steered>true</Steered>
 									<Tyre>
 										<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-											<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+											<Manufacturer>manufacturer_name</Manufacturer>
 											<Model>Generic Wheel</Model>
-											<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+											<CertificationNumber>certification_number</CertificationNumber>
 											<Date>2017-01-11T14:00:00Z</Date>
 											<AppVersion>Tyre Generation App 1.0</AppVersion>
 											<Dimension>315/70 R22.5</Dimension>
@@ -167,9 +167,9 @@ xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1"
 									<Steered>false</Steered>
 									<Tyre>
 										<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-											<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+											<Manufacturer>manufacturer_name</Manufacturer>
 											<Model>Generic Wheel</Model>
-											<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+											<CertificationNumber>certification_number</CertificationNumber>
 											<Date>2017-01-11T14:00:00Z</Date>
 											<AppVersion>Tyre Generation App 1.0</AppVersion>
 											<Dimension>315/70 R22.5</Dimension>

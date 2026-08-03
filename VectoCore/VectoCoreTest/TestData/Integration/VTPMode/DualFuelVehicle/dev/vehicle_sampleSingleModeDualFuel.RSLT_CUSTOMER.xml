@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css"?>
 <tns:VectoCustomerInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:CustomerOutput:v0.8" xmlns:tns="urn:tugraz:ivt:VectoAPI:CustomerOutput" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:CustomerOutput https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/DEV/VectoOutputCustomer.xsd">
   <tns:Data xsi:type="VectoOutputDataType" id="COC-90ffc1d4ceab432997a5">
     <Vehicle xsi:type="VehicleType">
       <Model>Generic Model</Model>
-      <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
       <VIN>VEH-1234567890</VIN>
       <LegislativeClass>N3</LegislativeClass>

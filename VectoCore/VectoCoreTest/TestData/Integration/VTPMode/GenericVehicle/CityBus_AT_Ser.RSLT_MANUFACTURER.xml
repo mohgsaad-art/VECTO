@@ -13,7 +13,7 @@
       <Components>
         <Engine>
           <Model>175kW 6.8l Engine</Model>
-          <CertificationNumber>1234</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>JZmOioDqDbJWb3SWfxl/wSaxs9/WN5mLPh8vtJjs8Vs=</DigestValue>
           <RatedPower unit="kW">10</RatedPower>
           <IdlingSpeed unit="rpm">650</IdlingSpeed>
@@ -47,7 +47,7 @@
         <AirDrag>
           <Model>N.A.</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>1234</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>IkK48GO1AjmbFybyld4/BYI0ymwJTnaglLqwALludTw=</DigestValue>
           <CdxA>4.83</CdxA>
         </AirDrag>

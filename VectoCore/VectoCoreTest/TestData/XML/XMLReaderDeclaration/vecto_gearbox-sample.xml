@@ -7,9 +7,9 @@
 													xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0 https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoComponent.xsd">
 	<tns:Gearbox>
 		<Data id="gbx-vi2Oak2N">
-			<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic 40t Long Haul Truck Gearbox</Model>
-			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-01-11T11:00:00Z</Date>
 			<AppVersion>3.0.1</AppVersion>
 			<TransmissionType>AMT</TransmissionType>

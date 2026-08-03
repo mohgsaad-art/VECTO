@@ -10,9 +10,9 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoDeclarationComponent.xsd">
 	<tns:Tyre xsi:type="v2.0:TyreComponentDeclarationType">
 		<v2.0:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
-			<Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic Tyre Model</Model>
-			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>DemoTyreApp 1.0</AppVersion>
 			<Dimension>235/60 R17C</Dimension><!--- New tyre dimension added in version 2.2 -->

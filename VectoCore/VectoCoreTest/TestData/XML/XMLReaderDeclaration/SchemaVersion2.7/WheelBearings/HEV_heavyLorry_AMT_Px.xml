@@ -14,7 +14,7 @@
 	xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7"
 	>
 	<v2.0:Vehicle xsi:type="Vehicle_HEV-Px_HeavyLorryDeclarationType" id="a">
-		<Manufacturer>TU Graz</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
 		<Model>HEV Heavy Lorry Px</Model>
 		<VIN>1234</VIN>
@@ -75,9 +75,9 @@
 		<Components xsi:type="Components_HEV-Px_LorryType">
 			<Engine>
 				<v2.0:Data xsi:type="v1.0:EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Engine</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<AppVersion>VectoEngine x.y</AppVersion>
 					<Displacement>12730</Displacement>
@@ -120,9 +120,9 @@
 				<Count>1</Count>
 				<ElectricMachineSystem>
 					<v2.3:Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-						<Manufacturer>a</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>a</Model>
-						<CertificationNumber>N/A</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<Date>2017-01-01T00:00:00Z</Date>
 						<AppVersion>aaaaa</AppVersion>
 						<ElectricMachineType>ASM</ElectricMachineType>
@@ -205,9 +205,9 @@
 					<StringID>0</StringID>
 					<REESS>
 						<v2.4:Data xsi:type="BatterySystemDataType" id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-							<Manufacturer>a</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>a</Model>
-							<CertificationNumber>tokena</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-01-01T00:00:00Z</Date>
 							<AppVersion>aaaaa</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
@@ -247,9 +247,9 @@
 					<StringID>1</StringID>
 					<REESS>
 						<v2.4:Data xsi:type="BatterySystemDataType" id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-							<Manufacturer>b</Manufacturer>
+							<Manufacturer>manufacturer_name</Manufacturer>
 							<Model>b</Model>
-							<CertificationNumber>tokenb</CertificationNumber>
+							<CertificationNumber>certification_number</CertificationNumber>
 							<Date>2017-02-02T00:00:00Z</Date>
 							<AppVersion>bbbbb</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
@@ -286,9 +286,9 @@
 			</ElectricEnergyStorage>
 			<Gearbox>
 				<v2.0:Data id="gbx-vi2Oak2N" xsi:type="v2.0:GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<TransmissionType>AMT</TransmissionType>
@@ -336,9 +336,9 @@
 			<TorqueConverter>
 				<!-- optional -->
 				<v2.0:Data xsi:type="v1.0:TorqueConverterDataDeclarationType" id="TQ-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-					<Manufacturer>Some Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Some Model</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<AppVersion>TC CalcApp 123</AppVersion>
 					<CertificationMethod>Standard values</CertificationMethod>
@@ -362,9 +362,9 @@
 			<Angledrive>
 				<!-- optional -->
 				<v2.0:Data id="agl-vi2Oak2N" xsi:type="v2.0:AngledriveDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<Ratio>2.345</Ratio>
@@ -392,9 +392,9 @@
 			<Retarder>
 				<!-- optional -->
 				<v2.0:Data id="RET-Shai9imi" xsi:type="v2.0:RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic Retarder</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<CertificationMethod>Standard values</CertificationMethod>
@@ -416,9 +416,9 @@
 			</Retarder>
 			<Axlegear>
 				<v2.0:Data id="AXL-EC3ohnoh" xsi:type="v2.0:AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck AxleGear</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<LineType>Single portal axle</LineType>
@@ -453,9 +453,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -475,7 +475,7 @@
 							</Tyre>
 							<WheelEnd>
 								<WheelEndFriction>3.1</WheelEndFriction>
-								<CertificationNumber>ASDF</CertificationNumber>
+								<CertificationNumber>certification_number</CertificationNumber>
 							</WheelEnd>
 						</Axle>
 						<Axle axleNumber="2" xsi:type="AxleDataDeclarationType">
@@ -484,9 +484,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -530,9 +530,9 @@
 			<AirDrag>
 				<!-- optional -->
 				<Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic Model</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-03-24T15:00:00Z</Date>
 					<AppVersion>Vecto AirDrag x.y</AppVersion>
 					<CdxA_0>6.31</CdxA_0>

@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <mrf:VectoOutput xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v1.0">
   <mrf:Data xsi:type="ConventionalPrimaryBusManufacturerOutputDataType" id="MRF-d606deb66096465fac12">
     <Vehicle>
-      <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
       <Model>Generic Model</Model>
       <VIN>VEH-1234567890_SmartPS</VIN>
@@ -29,7 +29,7 @@
       <Components>
         <Engine>
           <Model>Bus 6x2</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>UkPdSVc1IstCjskGE9abIAQ2nPaKhfMHIJlc/fsdtkA=</DigestValue>
           <RatedPower>325</RatedPower>
           <IdlingSpeed>600</IdlingSpeed>
@@ -42,7 +42,7 @@
         </Engine>
         <Transmission>
           <Model>Generic 40t Long Haul Truck Gearbox</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>h40w9F01Evf4Y0qFVPNBze76qhd8atmw6Zsj1Mzu6Vg=</DigestValue>
           <CertificationMethod>Standard values</CertificationMethod>
           <Type>AMT</Type>
@@ -51,13 +51,13 @@
         </Transmission>
         <TorqueConverter>
           <Model>Some Model</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>BpqbVEM5dAFXyIeZfvKBUhv+Oj4OU5R85aK9M4ylV+4=</DigestValue>
           <CertificationMethod>Standard values</CertificationMethod>
         </TorqueConverter>
         <Angledrive>
           <Model>Generic 40t Long Haul Truck Gearbox</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>EKapsTZq6W1Z1inTHXNcc4xAt93juchlWro31ZtiVrY=</DigestValue>
           <CertificationMethod>Standard values</CertificationMethod>
           <AngledriveRatio>1.000</AngledriveRatio>
@@ -65,13 +65,13 @@
         <Retarder>
           <RetarderType>Transmission Output Retarder</RetarderType>
           <Model>RET-generic</Model>
-          <CertificationNumber>standard values</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>gO/IdNo3sHx+uRNEtOYo2XBmZlleIBQUn16ee46G5P4=</DigestValue>
           <CertificationMethod>Standard values</CertificationMethod>
         </Retarder>
         <Axlegear>
           <Model>Generic 40t Long Haul Truck AxleGear</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>4zNNxDHUsN32kPYIi5NuHkZIzYFgptEjv8Z9eFCDKrU=</DigestValue>
           <CertificationMethod>Standard values</CertificationMethod>
           <AxleType>Single portal axle</AxleType>
@@ -81,7 +81,7 @@
           <Axle axleNumber="1">
             <Tyre>
               <TyreDimension>315/70 R22.5</TyreDimension>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <SpecificRRC>0.0055</SpecificRRC>
               <DigestValue>A/sq1ng4cqeOyauDUqUEnonRSPch3VCqZDX9Pf3tW1Q=</DigestValue>
             </Tyre>
@@ -90,7 +90,7 @@
             <TwinTyres>true</TwinTyres>
             <Tyre>
               <TyreDimension>315/70 R22.5</TyreDimension>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <SpecificRRC>0.0063</SpecificRRC>
               <DigestValue>z+KDXmc5MIezM6RVgfYax5J9Efi0ghciG2/wLLmWaBk=</DigestValue>
             </Tyre>
@@ -99,7 +99,7 @@
             <TwinTyres>false</TwinTyres>
             <Tyre>
               <TyreDimension>315/70 R22.5</TyreDimension>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <SpecificRRC>0.0055</SpecificRRC>
               <DigestValue>A/sq1ng4cqeOyauDUqUEnonRSPch3VCqZDX9Pf3tW1Q=</DigestValue>
             </Tyre>

@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--Created by the VECTO XML Converter tool-->
 <tns:VectoInputDeclaration schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
   <Vehicle id="VEH-NA_WHR" xsi:type="Vehicle_Conventional_HeavyLorryDeclarationType">
-    <Manufacturer>TU Graz, IVT</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N/A</ManufacturerAddress>
     <Model>N/A</Model>
     <VIN>N/A</VIN>
@@ -33,9 +33,9 @@
     <Components>
       <Engine>
         <v2.0:Data id="ENG-gooZah3D" xsi:type="v2.3:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-          <v2.3:Manufacturer>TU Graz, IVT</v2.3:Manufacturer>
+          <v2.3:Manufacturer>manufacturer_name</v2.3:Manufacturer>
           <v2.3:Model>325kW 12.7l Engine</v2.3:Model>
-          <v2.3:CertificationNumber>ENG-325kW 12.7l Engine</v2.3:CertificationNumber>
+          <v2.3:CertificationNumber>certification_number</v2.3:CertificationNumber>
           <v2.3:Date>2019-12-03T08:33:49.5491703Z</v2.3:Date>
           <v2.3:AppVersion>VectoCore</v2.3:AppVersion>
           <v2.3:Displacement>12740</v2.3:Displacement>
@@ -436,9 +436,9 @@
       </Engine>
       <Gearbox>
         <v2.0:Data id="GBX-tractor_12gear_example" xsi:type="v1.0:GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-          <v1.0:Manufacturer>TU Graz, IVT</v1.0:Manufacturer>
+          <v1.0:Manufacturer>manufacturer_name</v1.0:Manufacturer>
           <v1.0:Model>tractor_12gear_example</v1.0:Model>
-          <v1.0:CertificationNumber>GBX-tractor_12gear_example</v1.0:CertificationNumber>
+          <v1.0:CertificationNumber>certification_number</v1.0:CertificationNumber>
           <v1.0:Date>2019-12-03T08:33:49.612971Z</v1.0:Date>
           <v1.0:AppVersion>VectoCore</v1.0:AppVersion>
           <v1.0:TransmissionType>AMT</v1.0:TransmissionType>
@@ -3303,9 +3303,9 @@
       </Gearbox>
       <Retarder>
         <v2.0:Data id="RET-NA" xsi:type="v1.0:RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-          <v1.0:Manufacturer>TU Graz, IVT</v1.0:Manufacturer>
+          <v1.0:Manufacturer>manufacturer_name</v1.0:Manufacturer>
           <v1.0:Model>N/A</v1.0:Model>
-          <v1.0:CertificationNumber>N/A</v1.0:CertificationNumber>
+          <v1.0:CertificationNumber>certification_number</v1.0:CertificationNumber>
           <v1.0:Date>2019-12-03T08:33:49.6139684Z</v1.0:Date>
           <v1.0:AppVersion>VectoCore</v1.0:AppVersion>
           <v1.0:CertificationMethod>Standard values</v1.0:CertificationMethod>
@@ -3339,9 +3339,9 @@
       </Retarder>
       <Axlegear>
         <v2.0:Data id="AXLGEAR-2.640" xsi:type="v1.0:AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-          <v1.0:Manufacturer>TU Graz, IVT</v1.0:Manufacturer>
+          <v1.0:Manufacturer>manufacturer_name</v1.0:Manufacturer>
           <v1.0:Model>N/A</v1.0:Model>
-          <v1.0:CertificationNumber>AXLGEAR-2.640</v1.0:CertificationNumber>
+          <v1.0:CertificationNumber>certification_number</v1.0:CertificationNumber>
           <v1.0:Date>2019-12-03T08:33:49.6149658Z</v1.0:Date>
           <v1.0:AppVersion>VectoCore</v1.0:AppVersion>
           <v1.0:LineType>Single portal axle</v1.0:LineType>
@@ -4203,9 +4203,9 @@
               <v2.0:Steered>true</v2.0:Steered>
               <v2.0:Tyre>
                 <v2.0:Data id="TYRE-315_70R22.5" xsi:type="v1.0:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-                  <Manufacturer>TU Graz, IVT</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2019-12-03T08:33:49.6319201Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -4230,9 +4230,9 @@
               <v2.0:Steered>false</v2.0:Steered>
               <v2.0:Tyre>
                 <v2.0:Data id="TYRE-315_70R22.5" xsi:type="v1.0:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-                  <Manufacturer>TU Graz, IVT</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/70 R22.5</Model>
-                  <CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2019-12-03T08:33:49.6329175Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
@@ -4275,9 +4275,9 @@
       </Auxiliaries>
       <AirDrag>
         <v2.0:Data id="Airdrag-NA" xsi:type="v2.0:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <v2.0:Manufacturer>TU Graz, IVT</v2.0:Manufacturer>
+          <v2.0:Manufacturer>manufacturer_name</v2.0:Manufacturer>
           <v2.0:Model>N/A</v2.0:Model>
-          <v2.0:CertificationNumber>N/A</v2.0:CertificationNumber>
+          <v2.0:CertificationNumber>certification_number</v2.0:CertificationNumber>
           <v2.0:Date>2019-12-03T08:33:49.6349124Z</v2.0:Date>
           <v2.0:AppVersion>VectoCore</v2.0:AppVersion>
           <v2.0:CdxA_0>5.30</v2.0:CdxA_0>

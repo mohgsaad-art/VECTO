@@ -7,9 +7,9 @@
 													xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0 E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoComponent.1.0.xsd">
 	<tns:Engine>
 		<Data id="ENG-gooZah3D">
-			<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic 40t Long Haul Truck Engine</Model>
-			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>VectoEngine x.y</AppVersion>
 			<Displacement>12730</Displacement>
