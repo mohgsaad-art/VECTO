@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.32414.318
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12023.21 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "VECTO", "VECTO\VECTO.vbproj", "{AAC0F132-0A9F-45B3-B682-77AC9B24B352}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -123,6 +123,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{F72C8B95
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassXmlEditor", "Tools\MassXmlEditor\MassXmlEditor.csproj", "{46FF8DE0-149F-4858-8CB9-5EA7716007FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -310,6 +312,12 @@ Global
 		{765E8BAF-EEEC-46D3-B04F-A918BE77617A}.Deploy|Any CPU.Build.0 = Debug|Any CPU
 		{765E8BAF-EEEC-46D3-B04F-A918BE77617A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{765E8BAF-EEEC-46D3-B04F-A918BE77617A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Deploy|Any CPU.ActiveCfg = Release|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Deploy|Any CPU.Build.0 = Release|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -339,6 +347,7 @@ Global
 		{1F146056-ADCE-4845-80F6-9BA7F3EAC449} = {C1DAC201-B65B-4C48-8520-A366B5736830}
 		{DE50CAEF-6282-476D-A09B-AD16D6F2476F} = {351FF7E8-B56B-445E-8E98-A61E07C990DA}
 		{765E8BAF-EEEC-46D3-B04F-A918BE77617A} = {BE8CBCC8-8638-45D0-9045-003FE2FA64CB}
+		{46FF8DE0-149F-4858-8CB9-5EA7716007FD} = {351FF7E8-B56B-445E-8E98-A61E07C990DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B38F3172-132E-43F7-9C4B-5FDC3A28C051}
