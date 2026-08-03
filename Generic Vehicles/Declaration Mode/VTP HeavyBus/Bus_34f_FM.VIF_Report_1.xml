@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <VectoOutputMultistep xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vif="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1 V:\VectoCore\VectoCore\Resources\XSD/VectoOutputMultistep.0.1.xsd" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
   <PrimaryVehicle>
     <Data id="VIF_P-94e2b23e68dc49d59608" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="ConventionalVehicleVIFType">
-        <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
         <Model>Generic Model</Model>
         <VIN>VEH-1234567890_SmartPS</VIN>
@@ -32,9 +32,9 @@
         <Components xsi:type="Vehicle_Conventional_ComponentsVIFType">
           <Engine>
             <Data xsi:type="EngineDataVIFType">
-              <Manufacturer>Generic Engine Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Bus 6x2</Model>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-02-15T11:00:00Z</Date>
               <AppVersion>VectoEngine x.y</AppVersion>
               <Displacement>12730</Displacement>
@@ -68,7 +68,7 @@
           </Engine>
           <Transmission>
             <Data xsi:type="TransmissionDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Gearbox</Model>
               <MainCertificationMethod>Standard values</MainCertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -129,7 +129,7 @@
           </Transmission>
           <TorqueConverter>
             <Data xsi:type="TorqueConverterDataVIFType">
-              <Manufacturer>Some Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Some Model</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-02-15T11:00:00Z</Date>
@@ -138,7 +138,7 @@
           </TorqueConverter>
           <Angledrive>
             <Data xsi:type="AngledriveDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Gearbox</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -148,7 +148,7 @@
           </Angledrive>
           <Retarder>
             <Data xsi:type="RetarderDataVIFType">
-              <Manufacturer>Generic Vendor</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>RET-generic</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2018-02-02T13:38:22.424664Z</Date>
@@ -158,7 +158,7 @@
           </Retarder>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -176,9 +176,9 @@
                   <Steered>true</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -203,9 +203,9 @@
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -230,9 +230,9 @@
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -384,7 +384,7 @@
         </di:Reference>
       </HashPreviousStep>
       <vif:Vehicle id="VEH-db3918330b82417787c5" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
-        <Manufacturer>Some Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
         <VIN>VEH-1234567890</VIN>
         <Date>2020-01-09T11:00:00Z</Date>

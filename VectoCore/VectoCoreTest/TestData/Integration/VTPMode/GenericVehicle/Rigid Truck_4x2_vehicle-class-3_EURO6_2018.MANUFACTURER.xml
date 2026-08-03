@@ -4,7 +4,7 @@
   <Data id="RESULT-6e1bc850c57f40569c4c">
     <Vehicle>
       <Model>N.A.</Model>
-      <Manufacturer>Generic Vendor</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>N.A.</ManufacturerAddress>
       <VIN>N/A</VIN>
       <LegislativeClass>N3</LegislativeClass>
@@ -27,7 +27,7 @@
       <Components>
         <Engine>
           <Model>N.A.</Model>
-          <CertificationNumber>ENG-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>
           </DigestValue>
           <RatedPower unit="kW">200</RatedPower>
@@ -59,7 +59,7 @@
         <AirDrag>
           <Model>N.A.</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>
           </DigestValue>
           <CdxA>5.15</CdxA>

@@ -8,7 +8,7 @@
 	<EngineOnlyMode>false</EngineOnlyMode>
 	<Engine>
 		<Data id="ENG-gooZah3D">
-			<Manufacturer>Generic Engine Vendor</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic 40t Long Haul Truck Engine</Model>
 			<Creator>Markus Quaritsch, TUG IVT</Creator>
 			<Date>2017-02-15T11:00:00Z</Date>

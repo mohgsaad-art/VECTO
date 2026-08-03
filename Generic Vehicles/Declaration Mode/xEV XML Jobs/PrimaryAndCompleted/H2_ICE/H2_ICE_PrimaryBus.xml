@@ -8,7 +8,7 @@
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob ..\..\..\..\..\VectoCore\Resources\XSD\VectoDeclarationJob.xsd">
 	<Vehicle id="H2-ICE_bus" xsi:type="Vehicle_Conventional_PrimaryBusDeclarationType">
-		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
 		<Model>Generic Model</Model>
 		<VIN>VEH-1234567890_nonSmart</VIN>
@@ -40,9 +40,9 @@
 		<Components>
 			<Engine>
 				<v2.0:Data xsi:type="EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
-					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Engine</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<AppVersion>VectoEngine x.y</AppVersion>
 					<Displacement>12700</Displacement>
@@ -262,9 +262,9 @@
 			</Engine>
 			<Gearbox>
 				<v2.0:Data id="gbx-vi2Oak2N" xsi:type="v2.0:GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<TransmissionType>AMT</TransmissionType>
@@ -465,9 +465,9 @@
 			</Gearbox>
 			<Angledrive>
 				<v2.0:Data id="agl-vi2Oak2N" xsi:type="AngledriveDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic primary bus 41 Gearbox</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<Ratio>2.345</Ratio>
@@ -494,9 +494,9 @@
 			</Angledrive>
 			<Retarder>
 				<v2.0:Data id="RET-Shai9imi" xsi:type="RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic Retarder</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<CertificationMethod>Standard values</CertificationMethod>
@@ -541,9 +541,9 @@
 			</Retarder>
 			<Axlegear>
 				<v2.0:Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic primary bus 41 AxleGear</Model>
-					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<LineType>Single portal axle</LineType>
@@ -1342,9 +1342,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -1369,9 +1369,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>Generic Wheel</Model>
-									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -1427,7 +1427,7 @@
 				<Make>##VEHICLE_MAKE##</Make>
 			</Vehicle>
 			<Engine>
-				<Manufacturer>##ENGINE_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##ENGINE_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##ENGINE_MAKE##</Make>
 				<WHTC>
@@ -1443,26 +1443,26 @@
 				<TypeApprovalNumber>##TYPE_APPROVAL_NUMBER##</TypeApprovalNumber>
 			</Engine>
 			<Gearbox>
-				<Manufacturer>##GEARBOX_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##GEARBOX_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##GEARBOX_MAKE##</Make>
 			</Gearbox>
 			<Axlegear>
-				<Manufacturer>##AXLEGEAR_MANUFACTURER##</Manufacturer>
+				<Manufacturer>manufacturer_name</Manufacturer>
 				<ManufacturerAddress>##AXLEGEAR_MANUFACTURERADDRESS##</ManufacturerAddress>
 				<Make>##AXLEGEAR_MAKE##</Make>
 			</Axlegear>
 			<AxleWheels>
 				<Axle axleNumber="1">
 					<Tyre>
-						<Manufacturer>##TYRE_1_MANUFACTURER##</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<ManufacturerAddress>##TYRE_1_MANUFACTURERADDRESS##</ManufacturerAddress>
 						<Make>##TYRE_1_MAKE##</Make>
 					</Tyre>
 				</Axle>
 				<Axle axleNumber="2">
 					<Tyre>
-						<Manufacturer>##TYRE_2_MANUFACTURER##</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<ManufacturerAddress>##TYRE_2_MANUFACTURERADDRESS##</ManufacturerAddress>
 						<Make>##TYRE_2_MAKE##</Make>
 					</Tyre>

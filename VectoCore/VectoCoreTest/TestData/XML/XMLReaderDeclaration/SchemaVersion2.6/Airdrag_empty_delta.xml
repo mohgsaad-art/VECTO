@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <AirDrag>
         <v2.0:Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
-            <Manufacturer>Generic Manufacturer</Manufacturer>
+            <Manufacturer>manufacturer_name</Manufacturer>
             <Model>Generic Model</Model>
-            <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+            <CertificationNumber>certification_number</CertificationNumber>
             <Date>2025-05-30T14:48:27.386167Z</Date>
             <AppVersion>Vecto AirDrag x.y</AppVersion>
             <CdxA_0>4.00</CdxA_0>

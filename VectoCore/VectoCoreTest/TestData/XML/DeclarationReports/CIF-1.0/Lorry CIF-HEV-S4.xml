@@ -9,7 +9,7 @@
 			<TotalPropulsionPower unit="kW">0</TotalPropulsionPower>
 			<VehicleGroup>String</VehicleGroup>
 			<VehicleGroupCO2>String</VehicleGroupCO2>
-			<Manufacturer>a</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>token</ManufacturerAddress>
 			<Model>a</Model>
 			<CorrectedActualMass unit="kg">500</CorrectedActualMass>

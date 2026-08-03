@@ -3,7 +3,7 @@
   <PrimaryVehicle>
     <Data id="VIF_P-f6219114ce4248989b7f" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="PEV_Ex_VehicleVIFType">
-        <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
         <Model>Generic Model</Model>
         <VIN>VEH-1234567890</VIN>
@@ -27,10 +27,10 @@
             <Count>2</Count>
             <ElectricMachineSystem>
               <Data xsi:type="ElectricMachineSystemDataDeclarationType">
-                <Manufacturer>a</Manufacturer>
+                <Manufacturer>manufacturer_name</Manufacturer>
                 <Model>a</Model>
                 <CertificationMethod>Measured</CertificationMethod>
-                <CertificationNumber>token</CertificationNumber>
+                <CertificationNumber>certification_number</CertificationNumber>
                 <Date>2017-01-01T00:00:00Z</Date>
                 <AppVersion>aaaaa</AppVersion>
                 <ElectricMachineType>ASM</ElectricMachineType>
@@ -137,10 +137,10 @@
               <StringID>0</StringID>
               <REESS>
                 <Data xsi:type="BatterySystemDataType">
-                  <Manufacturer>a</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>a</Model>
                   <CertificationMethod>Measured</CertificationMethod>
-                  <CertificationNumber>token</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-01-01T00:00:00Z</Date>
                   <AppVersion>aaaaa</AppVersion>
                   <BatteryType>HPBS</BatteryType>
@@ -173,7 +173,7 @@
           </ElectricEnergyStorage>
           <Transmission>
             <Data xsi:type="TransmissionDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck Gearbox</Model>
               <MainCertificationMethod>Standard values</MainCertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -194,7 +194,7 @@
           </Transmission>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -212,9 +212,9 @@
                   <Steered>true</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>275/70 R22.5</Dimension>
@@ -239,9 +239,9 @@
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>275/70 R22.5</Dimension>

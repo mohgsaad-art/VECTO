@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css"?>
 <VectoOutput schemaVersion="0.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.7.2" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.7.2 https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoOutputManufacturer.0.7.2.xsd">
   <Data id="RESULT-abc1a6f2b9a14fe8b33f">
     <Vehicle>
       <Model>N/A</Model>
-      <Manufacturer>bla</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <ManufacturerAddress>N/A</ManufacturerAddress>
       <VIN>N/A</VIN>
       <LegislativeClass>N3</LegislativeClass>
@@ -28,7 +28,7 @@
       <Components>
         <Engine>
           <Model>175kW 6.8l Engine</Model>
-          <CertificationNumber>ENG-175kW 6.8l Engine</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>
           </DigestValue>
           <RatedPower unit="kW">175</RatedPower>
@@ -63,7 +63,7 @@
         <AirDrag>
           <Model>N/A</Model>
           <CertificationMethod>Measured</CertificationMethod>
-          <CertificationNumber>N/A</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <DigestValue>
           </DigestValue>
           <CdxA>4.83</CdxA>

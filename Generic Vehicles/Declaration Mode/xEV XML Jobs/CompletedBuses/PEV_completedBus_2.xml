@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--Created by the VECTO XML Converter tool-->
 <tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
   <Vehicle id="VEH-1234567890" xsi:type="Vehicle_PEV_CompletedBusDeclarationType">
-    <Manufacturer>Some Manufacturer</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>Some Manufacturer Address</ManufacturerAddress>
     <VIN>VEH-1234567890</VIN>
     <Date>2021-06-30T22:00:00Z</Date>
@@ -31,9 +31,9 @@
     <Components>
       <AirDrag>
         <Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-          <Manufacturer>Generic Manufacturer</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>Generic Model</Model>
-          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-03-24T15:00:00Z</Date>
           <AppVersion>Vecto AirDrag x.y</AppVersion>
           <CdxA_0>6.31</CdxA_0>

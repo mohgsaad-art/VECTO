@@ -3,7 +3,7 @@
   <PrimaryVehicle>
     <Data id="VIF_P-7198abf5d8364942a4ef" xsi:type="PrimaryVehicleDataType">
       <Vehicle xsi:type="IEPC_VehicleVIFType">
-        <Manufacturer>Generic Truck Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
         <Model>Generic Model</Model>
         <VIN>VEH-1234567890</VIN>
@@ -25,9 +25,9 @@
         <Components xsi:type="Vehicle_PEV-IEPC_ComponentsVIFType">
           <IEPC>
             <Data xsi:type="IEPCDataDeclarationType">
-              <Manufacturer>a</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>a</Model>
-              <CertificationNumber>token</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-01-01T00:00:00Z</Date>
               <AppVersion>aaaaa</AppVersion>
               <ElectricMachineType>ASM</ElectricMachineType>
@@ -91,10 +91,10 @@
               <StringID>0</StringID>
               <REESS>
                 <Data xsi:type="BatterySystemDataType">
-                  <Manufacturer>a</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>a</Model>
                   <CertificationMethod>Measured</CertificationMethod>
-                  <CertificationNumber>token</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-01-01T00:00:00Z</Date>
                   <AppVersion>aaaaa</AppVersion>
                   <BatteryType>HPBS</BatteryType>
@@ -119,10 +119,10 @@
               <StringID>1</StringID>
               <REESS>
                 <Data xsi:type="BatterySystemDataType">
-                  <Manufacturer>a</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>a</Model>
                   <CertificationMethod>Measured</CertificationMethod>
-                  <CertificationNumber>token</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-01-01T00:00:00Z</Date>
                   <AppVersion>aaaaa</AppVersion>
                   <BatteryType>HPBS</BatteryType>
@@ -146,7 +146,7 @@
           </ElectricEnergyStorage>
           <Retarder>
             <Data xsi:type="RetarderDataVIFType">
-              <Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic Retarder</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -156,7 +156,7 @@
           </Retarder>
           <Axlegear>
             <Data xsi:type="AxlegearDataVIFType">
-              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic 40t Long Haul Truck AxleGear</Model>
               <CertificationMethod>Standard values</CertificationMethod>
               <Date>2017-01-11T11:00:00Z</Date>
@@ -174,9 +174,9 @@
                   <Steered>true</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -201,9 +201,9 @@
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -559,7 +559,7 @@
         </di:Reference>
       </HashPreviousStep>
       <vif:Vehicle id="VEH-86bdddb68ffb41719f3a" xsi:type="Vehicle_IEPC_CompletedBusDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
-        <Manufacturer>Some Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Some Manufacturer Address</ManufacturerAddress>
         <VIN>VEH-1234567890</VIN>
         <Date>2021-06-30T22:00:00Z</Date>
@@ -586,9 +586,9 @@
         <Components xsi:type="Components_xEV_CompletedBusType">
           <v2.4:AirDrag xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
             <Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType">
-              <Manufacturer>Generic Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic Model</Model>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-03-24T15:00:00Z</Date>
               <AppVersion>Vecto AirDrag x.y</AppVersion>
               <CdxA_0>6.31</CdxA_0>

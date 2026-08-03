@@ -10,9 +10,9 @@
 	>
 	<tns:Engine xsi:type="v2.0:EngineComponentDeclarationType">
 		<v2.0:Data id="ENG-gooZah3D" xsi:type="v2.1:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1">
-			<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Generic 40t Long Haul Truck Engine</Model>
-			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>VectoEngine x.y</AppVersion>
 			<Displacement>12730</Displacement>

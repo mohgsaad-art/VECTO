@@ -4,11 +4,11 @@
 		<Vehicle>
 			<Manufacturers>
 				<Step Count="1">
-					<Manufacturer>a</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>token</ManufacturerAddress>
 				</Step>
 				<Step Count="2">
-					<Manufacturer>b</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<ManufacturerAddress>c</ManufacturerAddress>
 				</Step>
 			</Manufacturers>
@@ -40,7 +40,7 @@
 			<Components>
 				<AirDrag>
 					<CertificationMethod>measured</CertificationMethod>
-					<CertificationNumber>asdf</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<CFDMethodLicenseNumber>xxx</CFDMethodLicenseNumber>
 					<DeltaCdxACFD>0.00</DeltaCdxACFD>
 					<CdxA>1.00</CdxA>

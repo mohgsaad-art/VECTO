@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
   <Vehicle id="VEH-class3">
-    <Manufacturer>Generic Vendor</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
     <Model>N.A.</Model>
     <VIN>N/A</VIN>
@@ -30,9 +30,9 @@
     <Components>
       <Engine>
         <Data id="ENG-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>ENG-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.1953609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <Displacement>7698</Displacement>
@@ -223,9 +223,9 @@
       </Engine>
       <Gearbox>
         <Data id="GBX-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>GBX-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2023609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
@@ -336,9 +336,9 @@
       </Gearbox>
       <Axlegear>
         <Data id="AXLGEAR-4.000">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>AXLGEAR-4.000</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2023609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <LineType>Single portal axle</LineType>
@@ -377,9 +377,9 @@
               <Steered>true</Steered>
               <Tyre>
                 <Data id="TYRE-285_70R19.5">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>285/70 R19.5</Model>
-                  <CertificationNumber>TYRE-285/70 R19.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.2023609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>285/70 R19.5</Dimension>
@@ -404,9 +404,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-285_70R19.5">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>285/70 R19.5</Model>
-                  <CertificationNumber>TYRE-285/70 R19.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.2023609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>285/70 R19.5</Dimension>
@@ -449,9 +449,9 @@
       </Auxiliaries>
       <AirDrag>
         <Data id="Airdrag-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.2023609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CdxA_0>5.15</CdxA_0>

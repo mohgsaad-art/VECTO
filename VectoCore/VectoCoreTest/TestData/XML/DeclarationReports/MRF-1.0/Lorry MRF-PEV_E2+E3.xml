@@ -2,7 +2,7 @@
 <mrf:VectoOutput xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v1.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns:mrf0.8="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.8" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput file:///W:/VectoCore/VectoCore/Resources/XSD/VectoOutputManufacturer.xsd">
 	<mrf:Data xsi:type="PEV-Ex-IEPC_LorryManufacturerOutputDataType" id="MRF-Lorry_E2_E3">
 		<Vehicle>
-			<Manufacturer>a</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>token</ManufacturerAddress>
 			<Model>a</Model>
 			<VIN>a</VIN>
@@ -26,7 +26,7 @@
 				<REESSSpecifications>
 					<Battery stringId="1">
 						<Model>a</Model>
-						<CertificationNumber>token</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<CertificationMethod>String</CertificationMethod>
 						<NominalVoltage>0</NominalVoltage>
 						<TotalStorageCapacity unit="kWh">0</TotalStorageCapacity>
@@ -39,43 +39,7 @@
 						<CountAtPosition>1</CountAtPosition>
 						<ElectricMachineSystem>
 							<Model>a</Model>
-							<CertificationNumber/>
-							<ElectricMachineType/>
-							<CertificationMethod/>
-							<RatedPower>120000</RatedPower>
-							<VoltageLevels>
-								<VoltageLevel>
-									<MaxContinuousPower>100000</MaxContinuousPower>
-								</VoltageLevel>
-							</VoltageLevels>
-						</ElectricMachineSystem>
-					</ElectricMachine>
-					<Transmission>
-						<Model>b</Model>
-						<CertificationNumber/>
-						<CertificationMethod/>
-						<Type>AMT</Type>
-						<NrOfGears>3</NrOfGears>
-						<FinalGearRatio>1.000</FinalGearRatio>
-					</Transmission>
-					<Retarder>
-						<RetarderType/>
-					</Retarder>
-					<Axlegear>
-						<Model>c</Model>
-						<CertificationNumber/>
-						<CertificationMethod>Measured</CertificationMethod>
-						<AxleType>Single portal axle</AxleType>
-						<Ratio>3.000	</Ratio>
-					</Axlegear>
-				</Powertrain>
-				<Powertrain axleNumber="2" xsi:type="PowertrainEM3Type">
-					<ElectricMachine>
-						<Position>3</Position>
-						<CountAtPosition>1</CountAtPosition>
-						<ElectricMachineSystem>
-							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
+							<CertificationNumber/>certification_number</CertificationNumber>
 							<ElectricMachineType>String</ElectricMachineType>
 							<CertificationMethod>String</CertificationMethod>
 							<RatedPower>0</RatedPower>
@@ -91,7 +55,7 @@
 					</Retarder>
 					<Axlegear>
 						<Model>a</Model>
-						<CertificationNumber>token</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<CertificationMethod>Measured</CertificationMethod>
 						<AxleType>Single reduction axle</AxleType>
 						<Ratio>3.000</Ratio>

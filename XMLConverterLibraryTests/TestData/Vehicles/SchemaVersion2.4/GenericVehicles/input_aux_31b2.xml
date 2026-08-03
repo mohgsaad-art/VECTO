@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" schemaVersion="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD\VectoDeclarationJob.xsd">
 	<v2.0:Vehicle id="TODO_ADDIDENTIFIER" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType">
-		<Manufacturer>IVT</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
 		<VIN>VIN-1234</VIN>
 		<Date>2021-06-06T22:00:00Z</Date>

@@ -11,7 +11,7 @@
 	xsi:type="VectoComponentEngineeringType">
 	<Engine>
 		<ve1.0:Data id="ENG-gooZah3D" xsi:type="ve1.1:EngineDataEngineeringType" xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1">
-			<ve1.0:Manufacturer>Generic Engine Vendor</ve1.0:Manufacturer>
+			<ve1.0:Manufacturer>manufacturer_name</ve1.0:Manufacturer>
 			<ve1.0:Model>Generic 40t Long Haul Truck Engine</ve1.0:Model>
 			<ve1.0:Date>2017-02-15T11:00:00Z</ve1.0:Date>
 			<ve1.0:AppVersion>XMLSpy</ve1.0:AppVersion>

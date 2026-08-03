@@ -8,7 +8,7 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoEngineeringJob.xsd">
 	<EngineOnlyMode>false</EngineOnlyMode>
 	<Vehicle xsi:type="ve1.0:VehicleEngineeringType">
-			<Manufacturer>Generic Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress/>
 			<Model>Generic Truck</Model>
 			<VIN>N.A.</VIN>
@@ -29,7 +29,7 @@
 			<Components xsi:type="ve1.0:VehicleComponentsType">
 				<Engine>
 					<Data xsi:type="ve1.0:EngineDataEngineeringType">
-						<Manufacturer>Generic Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Eninge</Model>
 						<Date>2018-06-14T14:00:00Z</Date>
 						<Displacement>12750</Displacement>
@@ -50,7 +50,7 @@
 				</Engine>
 				<Gearbox>
 					<Data xsi:type="ve1.0:GearboxDataEngineeringType">
-						<Manufacturer>Generic Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Gearbox</Model>
 						<Date>2018-06-14T14:00:00Z</Date>
 						<TransmissionType>AMT</TransmissionType>
@@ -73,7 +73,7 @@
 				</Gearbox>
 				<Axlegear>
 					<Data xsi:type="ve1.0:AxlegearDataEngineeringType">
-						<Manufacturer>Generic Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Axlegear</Model>
 						<Date>2018-06-14T14:00:00Z</Date>
 						<Ratio>1.000</Ratio>
@@ -97,7 +97,7 @@
 								<WeightShare>0.4</WeightShare>
 								<Tyre>
 									<Data xsi:type="ve1.0:TyreDataEngineeringType">
-										<Manufacturer>Generic Manufacturer</Manufacturer>
+										<Manufacturer>manufacturer_name</Manufacturer>
 										<Model>Generic Tyre</Model>
 										<Date>2018-06-14T14:00:00Z</Date>
 										<Dimension>245/70 R17.5</Dimension>
@@ -113,7 +113,7 @@
 								<WeightShare>0.6</WeightShare>
 								<Tyre>
 									<Data xsi:type="ve1.0:TyreDataEngineeringType">
-										<Manufacturer>Generic Manufacturer</Manufacturer>
+										<Manufacturer>manufacturer_name</Manufacturer>
 										<Model>Generic Tyre</Model>
 										<Date>2018-06-14T14:00:00Z</Date>
 										<DynamicTyreRadius>452</DynamicTyreRadius>
@@ -131,7 +131,7 @@
 				</Auxiliaries>
 				<AirDrag>
 					<Data xsi:type="ve1.0:AirDragDataEngineeringType">
-						<Manufacturer>Generic Manufacturer</Manufacturer>
+						<Manufacturer>manufacturer_name</Manufacturer>
 						<Model>Generic Model</Model>
 						<Date>2018-06-14T14:00:00Z</Date>
 						<CrossWindCorrectionMode>Declaration Mode Correction</CrossWindCorrectionMode>

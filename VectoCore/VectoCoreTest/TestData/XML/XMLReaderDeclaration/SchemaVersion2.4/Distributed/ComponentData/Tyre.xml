@@ -5,9 +5,9 @@ xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="htt
 xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationComponent.xsd">
     <tns:Tyre xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
         <v2.0:Data xsi:type="TyreDataDeclarationType" id="TYR-123" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
-            <Manufacturer>Generic Vendor</Manufacturer>
+            <Manufacturer>manufacturer_name</Manufacturer>
             <Model>ADC 20</Model>
-            <CertificationNumber>xyz-abc-def</CertificationNumber>
+            <CertificationNumber>certification_number</CertificationNumber>
             <Date>2021-11-18T14:09:17.2810263Z</Date>
             <AppVersion>Some Application v1.0</AppVersion>
             <Dimension>295/75 R22.5</Dimension>

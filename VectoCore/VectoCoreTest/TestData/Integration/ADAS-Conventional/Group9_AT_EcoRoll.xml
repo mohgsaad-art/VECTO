@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd">
 	<v2.0:Vehicle id="VEH-class9_AT_EcoRoll" xsi:type="VehicleDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1">
-		<Manufacturer>TUG Generic</Manufacturer>
+		<Manufacturer>manufacturer_name</Manufacturer>
 		<ManufacturerAddress>N.A.</ManufacturerAddress>
 		<Model>N.A.</Model>
 		<VIN>N.A.</VIN>
@@ -31,9 +31,9 @@
 		<Components xsi:type="v2.0:VehicleComponentsType">
 			<Engine xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="EngineComponentDeclarationType">
 				<Data id="ENG-Generic220kW7.7lEngine" xsi:type="EngineDataDeclarationType">
-					<Manufacturer>TUG Generic</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>Generic 220kW 7.7l Engine</Model>
-					<CertificationNumber>ENG-Generic 220kW 7.7l Engine</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2019-02-27T09:39:05.3241256Z</Date>
 					<AppVersion>VectoCore</AppVersion>
 					<Displacement>7700</Displacement>
@@ -236,9 +236,9 @@
 			</Engine>
 			<Gearbox xsi:type="GearboxComponentDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 				<Data id="GBX-APT-SGenericTqMax1200" xsi:type="v2.0:GearboxDataDeclarationType">
-					<Manufacturer>TUG Generic</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>APT-S Generic TqMax1200</Model>
-					<CertificationNumber>GBX-APT-S Generic TqMax1200</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2019-02-27T09:39:05.3400867Z</Date>
 					<AppVersion>VectoCore</AppVersion>
 					<TransmissionType>APT-S</TransmissionType>
@@ -1165,9 +1165,9 @@
 			</Gearbox>
 			<TorqueConverter xsi:type="TorqueConverterComponentDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 				<Data id="TC-APT-SGenericTqMax1200" xsi:type="v2.0:TorqueConverterDataDeclarationType">
-					<Manufacturer>TUG Generic</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>APT-S Generic TqMax1200</Model>
-					<CertificationNumber>N/A</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2019-02-27T09:39:05.3410801Z</Date>
 					<AppVersion>VectoCore</AppVersion>
 					<CertificationMethod>Standard values</CertificationMethod>
@@ -1214,9 +1214,9 @@
 			</TorqueConverter>
 			<Axlegear xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="AxlegearComponentDeclarationType">
 				<v2.0:Data id="AXLGEAR-6.500" xsi:type="v1.0:AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-					<Manufacturer>TUG Generic</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>N.A.</Model>
-					<CertificationNumber>AXLGEAR-6.500</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2019-02-27T09:39:05.3410801Z</Date>
 					<AppVersion>VectoCore</AppVersion>
 					<LineType>Single portal axle</LineType>
@@ -2015,9 +2015,9 @@
 							<Steered>true</Steered>
 							<Tyre>
 								<Data id="TYRE-315_70R22.5" xsi:type="v2.0:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-									<Manufacturer>TUG Generic</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>315/70 R22.5</Model>
-									<CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2019-02-27T09:39:05.3510849Z</Date>
 									<AppVersion>VectoCore</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -2042,9 +2042,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<v2.0:Data id="TYRE-315_70R22.5" xsi:type="v1.0:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-									<Manufacturer>TUG Generic</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>315/70 R22.5</Model>
-									<CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2019-02-27T09:39:05.3510849Z</Date>
 									<AppVersion>VectoCore</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -2069,9 +2069,9 @@
 							<Steered>false</Steered>
 							<Tyre>
 								<v2.0:Data id="TYRE-315_70R22.5" xsi:type="v1.0:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
-									<Manufacturer>TUG Generic</Manufacturer>
+									<Manufacturer>manufacturer_name</Manufacturer>
 									<Model>315/70 R22.5</Model>
-									<CertificationNumber>TYRE-315/70 R22.5</CertificationNumber>
+									<CertificationNumber>certification_number</CertificationNumber>
 									<Date>2019-02-27T09:39:05.3510849Z</Date>
 									<AppVersion>VectoCore</AppVersion>
 									<Dimension>315/70 R22.5</Dimension>
@@ -2114,9 +2114,9 @@
 			</Auxiliaries>
 			<AirDrag xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="AirDragComponentDeclarationType">
 				<Data id="Airdrag-N.A." xsi:type="AirDragDataDeclarationType">
-					<Manufacturer>TUG Generic</Manufacturer>
+					<Manufacturer>manufacturer_name</Manufacturer>
 					<Model>N.A.</Model>
-					<CertificationNumber>N.A.</CertificationNumber>
+					<CertificationNumber>certification_number</CertificationNumber>
 					<Date>2019-02-27T09:39:05.3510849Z</Date>
 					<AppVersion>VectoCore</AppVersion>
 					<CdxA_0>5.80</CdxA_0>

@@ -2,7 +2,7 @@
 <mrf:VectoOutput xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v1.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns:mrf0.8="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.8" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput file:///W:/VectoCore/VectoCore/Resources/XSD/VectoOutputManufacturer.xsd">
 	<mrf:Data xsi:type="PEV-Ex-IEPC_LorryManufacturerOutputDataType" id="MRF-Lorry_E2_E3">
 		<Vehicle>
-			<Manufacturer>a</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<ManufacturerAddress>token</ManufacturerAddress>
 			<Model>a</Model>
 			<VIN>a</VIN>
@@ -26,7 +26,7 @@
 				<REESSSpecifications>
 					<Battery stringId="1">
 						<Model>a</Model>
-						<CertificationNumber>token</CertificationNumber>
+						<CertificationNumber>certification_number</CertificationNumber>
 						<CertificationMethod>String</CertificationMethod>
 						<NominalVoltage>0</NominalVoltage>
 						<TotalStorageCapacity unit="kWh">0</TotalStorageCapacity>

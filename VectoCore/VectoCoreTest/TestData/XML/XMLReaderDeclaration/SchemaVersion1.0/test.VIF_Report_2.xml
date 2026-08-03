@@ -40,9 +40,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
         <vif0.1:Components xsi:type="Vehicle_Conventional_ComponentsVIFType">
           <vif0.1:Engine>
             <vif0.1:Data xsi:type="EngineDataPIFType">
-              <vif0.1:Manufacturer>Generic Engine Manufacturer</vif0.1:Manufacturer>
+              <vif0.1:Manufacturer>manufacturer_name</vif0.1:Manufacturer>
               <vif0.1:Model>Generic primary bus 41 Engine</vif0.1:Model>
-              <vif0.1:CertificationNumber>e12*0815/8051*2017/05E0000*00</vif0.1:CertificationNumber>
+              <vif0.1:CertificationNumber>certification_number</vif0.1:CertificationNumber>
               <vif0.1:Date>2017-02-15T11:00:00Z</vif0.1:Date>
               <vif0.1:AppVersion>VectoEngine x.y</vif0.1:AppVersion>
               <vif0.1:Displacement>7700</vif0.1:Displacement>
@@ -78,7 +78,7 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
           </vif0.1:Engine>
           <vif0.1:Transmission>
             <vif0.1:Data xsi:type="TransmissionDataPIFType">
-              <vif0.1:Manufacturer>Generic Gearbox Manufacturer</vif0.1:Manufacturer>
+              <vif0.1:Manufacturer>manufacturer_name</vif0.1:Manufacturer>
               <vif0.1:Model>AT 6 Gear</vif0.1:Model>
               <vif0.1:MainCertificationMethod>Standard values</vif0.1:MainCertificationMethod>
               <vif0.1:Date>2017-01-11T11:00:00Z</vif0.1:Date>
@@ -116,7 +116,7 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
           </vif0.1:Transmission>
           <vif0.1:Axlegear>
             <vif0.1:Data xsi:type="AxlegearDataPIFType">
-              <vif0.1:Manufacturer>Generic Gearbox Manufacturer</vif0.1:Manufacturer>
+              <vif0.1:Manufacturer>manufacturer_name</vif0.1:Manufacturer>
               <vif0.1:Model>Generic primary bus 41 AxleGear</vif0.1:Model>
               <vif0.1:CertificationMethod>Standard values</vif0.1:CertificationMethod>
               <vif0.1:Date>2017-01-11T11:00:00Z</vif0.1:Date>
@@ -134,9 +134,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
                   <Steered>true</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -161,9 +161,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
                   <Steered>false</Steered>
                   <Tyre>
                     <Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
-                      <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                      <Manufacturer>manufacturer_name</Manufacturer>
                       <Model>Generic Wheel</Model>
-                      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                      <CertificationNumber>certification_number</CertificationNumber>
                       <Date>2017-01-11T14:00:00Z</Date>
                       <AppVersion>Tyre Generation App 1.0</AppVersion>
                       <Dimension>315/70 R22.5</Dimension>
@@ -575,7 +575,7 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
         </di:Reference>
       </vif0.1:HashPreviousStep>
       <vif0.1:Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-a00526e499f144139792" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
-        <Manufacturer>Some Manufacturer</Manufacturer>
+        <Manufacturer>manufacturer_name</Manufacturer>
         <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
         <VIN>VEH-1234567890</VIN>
         <Date>2021-05-23T22:00:00Z</Date>
@@ -600,9 +600,9 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile
         <Components xsi:type="Components_Conventional_CompletedBusType">
           <AirDrag>
             <Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
-              <Manufacturer>Generic Manufacturer</Manufacturer>
+              <Manufacturer>manufacturer_name</Manufacturer>
               <Model>Generic Model</Model>
-              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <CertificationNumber>certification_number</CertificationNumber>
               <Date>2017-03-24T15:00:00Z</Date>
               <AppVersion>Vecto AirDrag x.y</AppVersion>
               <CdxA_0>6.31</CdxA_0>

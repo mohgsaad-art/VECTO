@@ -2,9 +2,9 @@
 <tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationComponent.xsd">
   <tns:Gearbox>
     <Data id="GBX-12gear_Hugo">
-      <Manufacturer>N.A.</Manufacturer>
+      <Manufacturer>manufacturer_name</Manufacturer>
       <Model>12gear_Hugo</Model>
-      <CertificationNumber>GBX-12gear_Hugo</CertificationNumber>
+      <CertificationNumber>certification_number</CertificationNumber>
       <Date>2017-09-14T13:50:46.3654718Z</Date>
       <AppVersion>VectoCore</AppVersion>
       <TransmissionType>AMT</TransmissionType>

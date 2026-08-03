@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoInput.xsd">
   <Vehicle id="VEH-class11">
-    <Manufacturer>Generic Vendor</Manufacturer>
+    <Manufacturer>manufacturer_name</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
     <Model>N.A.</Model>
     <VIN>N/A</VIN>
@@ -30,9 +30,9 @@
     <Components>
       <Engine>
         <Data id="ENG-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>ENG-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.6513609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <Displacement>12777</Displacement>
@@ -181,9 +181,9 @@
       </Engine>
       <Gearbox>
         <Data id="GBX-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>GBX-N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.6543609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
@@ -384,9 +384,9 @@
       </Gearbox>
       <Axlegear>
         <Data id="AXLGEAR-3.500">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>AXLGEAR-3.500</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.6543609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <LineType>Single portal axle</LineType>
@@ -425,9 +425,9 @@
               <Steered>true</Steered>
               <Tyre>
                 <Data id="TYRE-315_80R22.5">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/80 R22.5</Model>
-                  <CertificationNumber>TYRE-315/80 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.6553609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/80 R22.5</Dimension>
@@ -452,9 +452,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_80R22.5">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/80 R22.5</Model>
-                  <CertificationNumber>TYRE-315/80 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.6553609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/80 R22.5</Dimension>
@@ -479,9 +479,9 @@
               <Steered>false</Steered>
               <Tyre>
                 <Data id="TYRE-315_80R22.5">
-                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Manufacturer>manufacturer_name</Manufacturer>
                   <Model>315/80 R22.5</Model>
-                  <CertificationNumber>TYRE-315/80 R22.5</CertificationNumber>
+                  <CertificationNumber>certification_number</CertificationNumber>
                   <Date>2017-07-06T15:06:08.6553609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/80 R22.5</Dimension>
@@ -524,9 +524,9 @@
       </Auxiliaries>
       <AirDrag>
         <Data id="Airdrag-N.A.">
-          <Manufacturer>Generic Vendor</Manufacturer>
+          <Manufacturer>manufacturer_name</Manufacturer>
           <Model>N.A.</Model>
-          <CertificationNumber>N.A.</CertificationNumber>
+          <CertificationNumber>certification_number</CertificationNumber>
           <Date>2017-07-06T15:06:08.6553609Z</Date>
           <AppVersion>VectoCore</AppVersion>
           <CdxA_0>8.08</CdxA_0>

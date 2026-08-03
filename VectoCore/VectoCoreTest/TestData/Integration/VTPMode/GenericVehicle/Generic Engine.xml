@@ -2,9 +2,9 @@
 <tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationComponent.xsd">
 	<tns:Engine>
 		<Data id="ENG-gooZah3D">
-			<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+			<Manufacturer>manufacturer_name</Manufacturer>
 			<Model>Baseline Truck Engine</Model>
-			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+			<CertificationNumber>certification_number</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>VectoEngine x.y</AppVersion>
 			<Displacement>13000</Displacement>
