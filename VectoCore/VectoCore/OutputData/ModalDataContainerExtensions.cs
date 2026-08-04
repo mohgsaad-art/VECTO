@@ -6,6 +6,7 @@ using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
@@ -136,7 +137,7 @@ namespace TUGraz.VectoCore.OutputData
 		public static WattSecond PowerAccelerations(this IModalDataContainer data)
 		{
 			var paEngine = data.TimeIntegral<WattSecond>(ModalResultField.P_ice_inertia) ?? 0.SI<WattSecond>();
-			var paGearbox = data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_inertia) ?? 0.SI<WattSecond>();
+			var paGearbox = data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_inertia, axleNumber: Constants.NOT_IN_AXLE_POWERTRAIN) ?? 0.SI<WattSecond>();
 			return paEngine + paGearbox;
 		}
 
@@ -146,14 +147,14 @@ namespace TUGraz.VectoCore.OutputData
 			return data.TimeIntegral<WattSecond>(ModalResultField.P_clutch_loss);
 		}
 
-		public static WattSecond WorkGearshift(this IModalDataContainer data)
+		public static WattSecond WorkGearshift(this IModalDataContainer data, int axleNumber)
 		{
-			return data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_shift_loss);
+			return data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_shift_loss, axleNumber);
 		}
 
-		public static WattSecond WorkGearbox(this IModalDataContainer data)
+		public static WattSecond WorkGearbox(this IModalDataContainer data, int axleNumber)
 		{
-			return data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_loss);
+			return data.TimeIntegral<WattSecond>(ModalResultField.P_gbx_loss, axleNumber);
 		}
 
 		public static WattSecond WorkWheels(this IModalDataContainer data)
@@ -181,9 +182,9 @@ namespace TUGraz.VectoCore.OutputData
 			return data.TimeIntegral<WattSecond>(ModalResultField.P_angle_loss, axleNumber: axleNumber);
 		}
 
-		public static WattSecond WorkTorqueConverter(this IModalDataContainer data)
+		public static WattSecond WorkTorqueConverter(this IModalDataContainer data, int axleNumber)
 		{
-			return data.TimeIntegral<WattSecond>(ModalResultField.P_TC_loss);
+			return data.TimeIntegral<WattSecond>(ModalResultField.P_TC_loss, axleNumber: axleNumber);
 		}
 
 		public static WattSecond WorkWheelEnd(this IModalDataContainer data)
@@ -504,21 +505,21 @@ namespace TUGraz.VectoCore.OutputData
 		/// <summary>
 		/// The following logic applies:
 		/// - shifting from gear A to gear B counts as gearshift (with or without traction interruption)
-		/// - shifting from gear A to neutral couts as gearshift if the vehicle stopped
+		/// - shifting from gear A to neutral counts as gearshift if the vehicle stopped
 		/// </summary>
 		/// <param name="data"></param>
 		/// <returns></returns>
-		public static Scalar GearshiftCount(this IModalDataContainer data)
+		public static Scalar GearshiftCount(this IModalDataContainer data, int axleNumber)
 		{
 			if (!data.HasGearbox) {
 				return 0.SI<Scalar>();
 			}
-			var prevGear = data.GetValues<uint>(ModalResultField.Gear).First();
+			var prevGear = data.GetValues<uint>(ModalResultField.Gear, axleNumber.FormatAxleNumber())?.FirstOrDefault() ?? 0;
 			var lastGear = prevGear;
 			var gearCount = 0;
 
 			var shifts = data.GetValues(x => new {
-				Gear = x.Field<uint>(ModalResultField.Gear.GetName()),
+				Gear = x.Field<uint>(string.Format(ModalResultField.Gear.GetCaption(), axleNumber.FormatAxleNumber())),
 				Speed = x.Field<MeterPerSecond>(ModalResultField.v_act.GetName())
 			});
 			foreach (var entry in shifts) {
@@ -566,18 +567,18 @@ namespace TUGraz.VectoCore.OutputData
 			return 100 * sum / data.Duration;
 		}
 
-		public static Dictionary<uint, Scalar> TimeSharePerGear(this IModalDataContainer data, uint gearCount)
+		public static Dictionary<uint, Scalar> TimeSharePerGear(this IModalDataContainer data, uint gearCount, int axleNumber)
 		{
 			var retVal = new Dictionary<uint, Scalar>();
 			for (uint i = 0; i <= gearCount; i++) {
 				retVal[i] = 0.SI<Scalar>();
 			}
 
-			if (!data.ContainsColumn(ModalResultField.Gear.GetName())) {
+			if (!data.ContainsColumn(data.GetColumnName(ModalResultField.Gear, axleNumber.FormatAxleNumber()))) {
 				return retVal;
 			}
 			var gearData = data.GetValues(x => new {
-				Gear = x.Field<uint>(ModalResultField.Gear.GetName()),
+				Gear = x.Field<uint>(string.Format(ModalResultField.Gear.GetCaption(), axleNumber.FormatAxleNumber())),
 				dt = x.Field<Second>(ModalResultField.simulationInterval.GetName())
 			});
 
@@ -591,7 +592,10 @@ namespace TUGraz.VectoCore.OutputData
 				{
 					retVal[i] = null;
 				}
-                retVal[i] = 100 * retVal[i] / duration;
+				else
+				{
+					retVal[i] = 100 * retVal[i] / duration;
+				}
 			}
 			return retVal;
 		}

@@ -42,8 +42,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		protected IMultistageVehicleViewModel _vehicleViewModel;
 		protected IMultiStageViewModelFactory _viewModelFactory;
 		private IViewModelBase _currentview;
-		private ICommand _switchComponentViewCommand;
-
+		
 		[Inject]
 		public IMultistageDependencies MultistageDependencies
 		{
@@ -90,8 +89,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		{
 			get
 			{
-				return _switchComponentViewCommand ??
-						new RelayCommand<string>(SwitchViewExecute, (string s) => SwitchViewCanExecute(s));
+				return new RelayCommand<string>(SwitchViewExecute, (string s) => SwitchViewCanExecute(s));
 			}
 		}
 
@@ -110,25 +108,21 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			return found && vm != null;
 		}
 
-		private IRelayCommand _saveInputDataCommand;
-		private ICommand _saveInputDataAsCommand;
 		private IMultistageDependencies _multistageDependencies;
 		private IXMLInputDataReader _inputDataReader;
 
 		public IRelayCommand SaveInputDataCommand =>
-			_saveInputDataCommand ??
 			new RelayCommand(() => { SaveInputDataExecute(filename: _vehicleInputDataFilePath); },
 				() => _vehicleInputDataFilePath != null);
 
 		public ICommand SaveInputDataAsCommand =>
-			_saveInputDataAsCommand ?? new RelayCommand(() => { SaveInputDataExecute(filename: null); }, () => true);
+			new RelayCommand(() => { SaveInputDataExecute(filename: null); }, () => true);
 
-        private ICommand _loadVehicleDataCommand;
-		private string _vehicleInputDataFilePath;
+        private string _vehicleInputDataFilePath;
 
 		public ICommand LoadVehicleDataCommand
 		{
-			get { return _loadVehicleDataCommand ?? new RelayCommand(LoadVehicleDataExecute, () => true); }
+			get { return new RelayCommand(LoadVehicleDataExecute, () => true); }
 		}
 
 		#endregion Commands
@@ -249,7 +243,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 				_multistageDependencies.DialogHelper.ShowMessageBox(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return false;
 			}
-			return true;
 		}
 
 		protected virtual void LoadStageInputDataFollowUp(IDeclarationInputDataProvider loadedInputData)
@@ -263,7 +256,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			set
 			{
 				SetProperty(ref _vehicleInputDataFilePath, value);
-				_saveInputDataCommand?.NotifyCanExecuteChanged();
 			}
 		}
 

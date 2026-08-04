@@ -17,6 +17,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		public BatterySystemData CreateBatteryData(IElectricStorageSystemDeclarationInputData batteryInputData,
 			VectoSimulationJobType jobType,
 			bool ovc,
+			bool batteryOnlyMode,
 			double deterioration = DeclarationData.Battery.GenericDeterioration)
 		{
 			if (batteryInputData == null) {
@@ -49,8 +50,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					addConnectorSystemResistance = true;
 				}
 
-				var minSoc = b.MinSOC.HasValue ? b.MinSOC.Value : genericSOC.SOCMin;
-				var maxSoc = b.MaxSOC.HasValue ? b.MaxSOC.Value : genericSOC.SOCMax;
+				var windowEqualOrSmallerThanDefault = !ovc || !batteryOnlyMode;
+
+                var minSoc = b.MinSOC.HasValue 
+					? ((windowEqualOrSmallerThanDefault && (b.MinSOC.Value < genericSOC.SOCMin)) ? genericSOC.SOCMin : b.MinSOC.Value) 
+					: genericSOC.SOCMin;
+				
+				var maxSoc = b.MaxSOC.HasValue 
+					? ((windowEqualOrSmallerThanDefault && (b.MaxSOC.Value > genericSOC.SOCMax)) ? genericSOC.SOCMax : b.MaxSOC.Value) 
+					: genericSOC.SOCMax;
 				
 				if (maxSoc <= minSoc)
 				{
@@ -144,12 +152,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 		#region Implementation of IElectricStorageAdapter
 
 		public BatterySystemData CreateBatteryData(IElectricStorageSystemDeclarationInputData batteryInputData,
-			VectoSimulationJobType jobType, bool ovc, double deterioration)
+			VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, double deterioration)
 		{
 			if (batteryInputData == null) {
 				return null;
 			}
-            return busBattery.CreateBatteryData(batteryInputData, jobType, ovc);
+            return busBattery.CreateBatteryData(batteryInputData, jobType, ovc, batteryOnlyMode);
 		}
 
 		public SuperCapData CreateSuperCapData(IElectricStorageSystemDeclarationInputData reessInputData)

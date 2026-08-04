@@ -533,7 +533,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
                 new XElement(_tns + XMLNames.MonitoringEngine, GetEngineData())    
             );
 
-            if (_modelData.AxleGearData != null) {
+            if (_modelData.AxleGearSinglePwt != null) {
                 _additionalFields.Add(
                     new XElement(_tns + XMLNames.MonitoringAxlegear, GetStandardFields(PlaceHolder.AXLEGEAR.ToString()))
                 );
@@ -546,7 +546,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.MonitoringReport
 
         protected void WriteOptionalAxlegearConventionalComponents()
         {
-            if (_modelData.AxleGearData != null) {
+            if (_modelData.AxleGearSinglePwt != null) {
                 _additionalFields.Add(
                     new XElement(_tns + XMLNames.MonitoringAxlegear, GetStandardFields(PlaceHolder.AXLEGEAR.ToString()))
                 );

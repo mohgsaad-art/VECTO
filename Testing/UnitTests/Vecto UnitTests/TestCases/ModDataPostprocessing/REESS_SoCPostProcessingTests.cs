@@ -7,6 +7,7 @@ using TUGraz.VectoCore;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
@@ -44,7 +45,7 @@ public class REESS_SoCPostProcessingTests
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.First().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.First().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         //modData.AddElectricMotor(emPos);
 
         var fuel = runData.EngineData.Fuels[0];

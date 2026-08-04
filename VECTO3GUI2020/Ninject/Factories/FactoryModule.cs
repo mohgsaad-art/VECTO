@@ -1,5 +1,6 @@
 ﻿using Ninject.Extensions.Factory;
 using TUGraz.VectoCore;
+using TUGraz.VectoCore.Ninject;
 using VECTO3GUI2020.Ninject.Util;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit;
 using VECTO3GUI2020.ViewModel.MultiStage.Interfaces;

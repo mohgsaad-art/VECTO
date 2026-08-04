@@ -13,6 +13,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.A
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.InputData.RunDataFactory;
 
 namespace TUGraz.VectoCore.Tests.InputData.DeclarationDataAdapterTest

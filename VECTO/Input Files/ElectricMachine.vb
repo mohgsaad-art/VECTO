@@ -106,7 +106,7 @@ Public Class ElectricMachine
 
 
     Public Shared Function ValidateEngine(engine As ElectricMachine, validationContext As ValidationContext) As ValidationResult
-        Dim engineData As ElectricMotorData
+        'Dim engineData As ElectricMotorData
 
 
         Dim modeService As VectoValidationModeServiceContainer =
@@ -174,7 +174,7 @@ Public Class ElectricMachine
 
     Public ReadOnly Property Manufacturer As String Implements IComponentInputData.Manufacturer
         Get
-
+            Return Nothing
         End Get
     End Property
 

@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 {
 	public class EngineOnlyVectoRunDataFactory : EngineeringModeVectoRunDataFactory
 	{
-		public const string Name = "EngineOnlyRunDataFactory";
+		public new const string Name = "EngineOnlyRunDataFactory";
 
 
         internal EngineOnlyVectoRunDataFactory(IEngineeringInputDataProvider dataProvider, IPowertrainBuilder ptBuilder, IEngineeringDataAdapter dataAdapter) : base(dataProvider, dataAdapter) {}
@@ -68,7 +68,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						ExecutionMode = ExecutionMode.Engineering,
 						SimulationType = SimulationType.EngineOnly,
 						JobType = VectoSimulationJobType.EngineOnlySimulation,
-						ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+						ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 						DriverData = CreateDummyDriverData(),
 					};
 					yield return simulationRunData;

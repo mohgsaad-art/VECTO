@@ -5,6 +5,7 @@
 	<AssemblyName>XMLConverterCmdLine</AssemblyName>
 	<RootNamespace>TUGraz.VECTO</RootNamespace>
     <TargetFramework>net48</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
     
   </PropertyGroup>
 

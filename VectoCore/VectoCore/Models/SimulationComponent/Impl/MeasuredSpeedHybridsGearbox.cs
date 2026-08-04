@@ -13,8 +13,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TestPowertrainMeasuredSpeedHybridsGearbox : MeasuredSpeedHybridsGearbox, ITestPowertrainTransmission
     {
-		public TestPowertrainMeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(
-			container, strategy, false)
+		public TestPowertrainMeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) 
+			: base(container, strategy, false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");
@@ -48,7 +48,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
     public class MeasuredSpeedHybridsGearbox : AbstractAMTGearbox
     {
-		public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : this(container, strategy, false)
+		public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) 
+			: this(container, strategy, false, axleNumber)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -56,7 +57,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        protected MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy) : base(container, strategy, false) 
+        protected MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) 
+			: base(container, strategy, false, axleNumber) 
         {}
 
         protected override void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)

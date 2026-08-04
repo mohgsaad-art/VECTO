@@ -32,7 +32,7 @@ public class GearboxLossMapExtrapolationTests
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
             ExecutionMode = ExecutionMode.Declaration,
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -43,7 +43,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -96,7 +96,7 @@ public class GearboxLossMapExtrapolationTests
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
             ExecutionMode = ExecutionMode.Engineering,
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -107,7 +107,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -164,7 +164,7 @@ public class GearboxLossMapExtrapolationTests
     {
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -175,7 +175,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;

@@ -12,7 +12,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		public static bool IsBatteryElectric(this VectoSimulationJobType jobType)
 		{
-			return jobType == VectoSimulationJobType.BatteryElectricVehicle || jobType == VectoSimulationJobType.IEPC_E;
+			return jobType == VectoSimulationJobType.BatteryElectricVehicle || jobType == VectoSimulationJobType.IEPC_E || jobType == VectoSimulationJobType.Multiple_PEV;
 		}
 
 		public static bool IsIEPC(this VectoSimulationJobType jobType)

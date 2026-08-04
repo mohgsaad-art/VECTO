@@ -62,8 +62,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected internal readonly TorqueConverterWrapper TorqueConverter;
 
-		public CycleGearbox(IVehicleContainer container)
-			: base(container)
+		public CycleGearbox(IVehicleContainer container, int axleNumber)
+			: base(container, axleNumber)
 		{
 			if (!ModelData.Type.AutomaticTransmission()) {
 				return;
@@ -443,19 +443,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] = DisengagedTstmp != null ? 0 : Gear.Gear;
-			container[ModalResultField.P_gbx_loss] = inPower - outPower;
-			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
-			container[ModalResultField.P_gbx_in] = inPower;
-			container[ModalResultField.n_gbx_out_avg] = (PreviousState.OutAngularVelocity +
+			container[ModalResultField.Gear, AxleNumber.FormatAxleNumber()] = DisengagedTstmp != null ? 0 : Gear.Gear;
+			container[ModalResultField.P_gbx_loss, AxleNumber.FormatAxleNumber()] = inPower - outPower;
+			container[ModalResultField.P_gbx_inertia, AxleNumber.FormatAxleNumber()] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
+			container[ModalResultField.P_gbx_in, AxleNumber.FormatAxleNumber()] = inPower;
+			container[ModalResultField.n_gbx_out_avg, AxleNumber.FormatAxleNumber()] = (PreviousState.OutAngularVelocity +
 														CurrentState.OutAngularVelocity) / 2.0;
-			container[ModalResultField.n_gbx_in_avg] = avgInAngularSpeed;
-			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
-			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
+			container[ModalResultField.n_gbx_in_avg, AxleNumber.FormatAxleNumber()] = avgInAngularSpeed;
+			container[ModalResultField.T_gbx_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
+			container[ModalResultField.T_gbx_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
 
 			if (ModelData.Type.AutomaticTransmission()) {
-				container[ModalResultField.TC_Locked] = !CurrentState.TorqueConverterActive;
-				container[ModalResultField.P_gbx_shift_loss] = CurrentState.PowershiftLosses == null
+				container[ModalResultField.TC_Locked, AxleNumber.FormatAxleNumber()] = !CurrentState.TorqueConverterActive;
+				container[ModalResultField.P_gbx_shift_loss, AxleNumber.FormatAxleNumber()] = CurrentState.PowershiftLosses == null
 					? 0.SI<Watt>()
 					: CurrentState.PowershiftLosses * avgInAngularSpeed;
 			}

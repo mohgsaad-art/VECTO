@@ -76,7 +76,12 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<T> GetValues<T>(DataColumn col)
+        public IEnumerable<T> GetValues<T>(ModalResultField field, string arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> GetValues<T>(DataColumn col)
 		{
 			throw new NotImplementedException();
 		}

@@ -342,8 +342,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				{
 					JobType = input.JobInputData.JobType,
 					VehicleData = CreateVehicleData(input.JobInputData.Vehicle),
-					AxleGearData = axlegearData,
-					ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { emData },
+					AxleGearSinglePwt = axlegearData,
+					ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { emData },
 					Cycle = cycle
 				};
 
@@ -575,7 +575,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var gearshiftData = inputData.DriverInputData.GearshiftInputData;
 
 			var engineData = runData.EngineData;
-			var axlegearRatio = runData.AxleGearData.AxleGear.Ratio;
+			var axlegearRatio = runData.AxleGearSinglePwt.AxleGear.Ratio;
 			var dynamicTyreRadius = runData.VehicleData.DynamicTyreRadius;
 			var vehicleCategory = runData.VehicleData.VehicleCategory;
 
@@ -646,7 +646,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				VectoSimulationJobType.SerialHybridVehicle);
 
             retVal.ShiftStrategy = ShiftStrategyFactory?.GetShiftStrategyName(gearbox.Type, vehicle.VehicleType, false);
-			var shiftPolygonCalc = ShiftStrategyFactory?.CreateShiftPolygonCalculator(retVal.ShiftStrategy, runData.GearshiftParameters);
+			var shiftPolygonCalc = ShiftStrategyFactory?.CreateShiftPolygonCalculator(retVal.ShiftStrategy, runData.GearshiftParametersSinglePwt);
 
             for (uint i = 0; i < gearsInput.Count; i++)
 			{
@@ -662,13 +662,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				{
 					shiftPolygon = shiftPolygonCalc.ComputeDeclarationShiftPolygon(gearbox.Type, (int)i,
 						engineData?.FullLoadCurves[i + 1], gearsInput, engineData, axlegearRatio,
-						dynamicTyreRadius, runData.ElectricMachinesData?.FirstOrDefault()?.Item2);
+						dynamicTyreRadius, runData.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item2);
 				}
 				else
 				{
 					shiftPolygon = DeclarationData.Gearbox.ComputeShiftPolygon(gearbox.Type, (int)i,
 						engineData?.FullLoadCurves[i + 1], gearsInput, engineData, axlegearRatio,
-						dynamicTyreRadius, runData.ElectricMachinesData?.FirstOrDefault()?.Item2);
+						dynamicTyreRadius, runData.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item2);
 				}
 
 				ShiftPolygon extendedShiftPolygon = null;
@@ -677,7 +677,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					extendedShiftPolygon = shiftPolygonCalc != null
 						? shiftPolygonCalc.ComputeDeclarationExtendedShiftPolygon(
 							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearbox.Gears, engineData, axlegearRatio,
-							dynamicTyreRadius, runData.ElectricMachinesData?.FirstOrDefault()?.Item2)
+							dynamicTyreRadius, runData.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item2)
 						: DeclarationData.Gearbox.ComputeManualTransmissionShiftPolygonExtended(
 							(int)i, engineData?.FullLoadCurves[i + 1],
 							gearsInput,
@@ -775,8 +775,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			IShiftPolygonCalculator shiftPolygonCalculator, IGearboxDeclarationInputData gearbox, uint i, double axlegearRatio,
 			Meter dynamicTyreRadius)
 		{
-			var em = runData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item2;
-			var shiftStrategyParameters = runData.GearshiftParameters;
+			var em = runData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item2;
+			var shiftStrategyParameters = runData.GearshiftParametersSinglePwt;
 			var emFld = em.EfficiencyData.VoltageLevels.First().FullLoadCurve;
 			var contTq = em.Overload.ContinuousTorque;
 			var limitedFld = DeclarationData.Gearbox.LimitElectricMotorFullLoadCurve(emFld, contTq);
@@ -1296,7 +1296,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var fuelCellSystemData = new FuelCellSystemData();
 			fuelCellSystemData.MaxWindowSize = fuelCellSystemInputData.MaxWindowSize;
 			fuelCellSystemData.FuelCellStrings = new List<FuelCellStringData>();
-			var id = 0;
+			
 			foreach (var fcC in fuelCellSystemInputData.FuelCellStrings) {
 				fuelCellSystemData.FuelCellStrings.Add(CreateFuelCellStringData(fcC.FuelCellComponent, fcC.Count));
 			}
@@ -1849,7 +1849,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public GearboxData CreateIEPCGearboxData(IIEPCEngineeringInputData iepc, VectoRunData runData)
 		{
-			var axlegearRatio = runData.AxleGearData?.AxleGear.Ratio ?? 1.0; 
+			var axlegearRatio = runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0; 
 			var dynamicTyreRadius = runData.VehicleData.DynamicTyreRadius;
 
 
@@ -1870,7 +1870,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			retVal.ShiftStrategy =
 				ShiftStrategyFactory?.GetShiftStrategyName(GearboxType.APTN, runData.JobType, false);
-			var shiftPolygonCalc = ShiftStrategyFactory?.CreateShiftPolygonCalculator(retVal.ShiftStrategy, runData.GearshiftParameters);
+			var shiftPolygonCalc = ShiftStrategyFactory?.CreateShiftPolygonCalculator(retVal.ShiftStrategy, runData.GearshiftParametersSinglePwt);
 
 			for (uint i = 0; i < iepc.Gears.Count; i++) {
 				var gear = iepc.Gears[(int)i];
@@ -1881,11 +1881,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					if (shiftPolygonCalc != null) {
 						shiftPolygon = shiftPolygonCalc.ComputeDeclarationShiftPolygon(GearboxType.APTN, (int)i,
 							null, gearInput, null, axlegearRatio,
-							dynamicTyreRadius, runData.ElectricMachinesData?.FirstOrDefault()?.Item2);
+							dynamicTyreRadius, runData.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item2);
 					} else {
 						shiftPolygon = DeclarationData.Gearbox.ComputeShiftPolygon(GearboxType.APTN, (int)i,
 							null, gearInput, null, axlegearRatio,
-							dynamicTyreRadius, runData.ElectricMachinesData?.FirstOrDefault()?.Item2);
+							dynamicTyreRadius, runData.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item2);
 					}
 				}
 				var gearData = new GearData {

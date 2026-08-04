@@ -6,9 +6,12 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.OutputData;
 
@@ -77,9 +80,14 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
             case VectoSimulationJobType.SerialHybridVehicle:
             case VectoSimulationJobType.IEPC_S:
             case VectoSimulationJobType.IHPC:
+			case VectoSimulationJobType.Multiple_SHEV:
                 return VectoRunDataConventionalTruckNonExempted();
             case VectoSimulationJobType.BatteryElectricVehicle:
             case VectoSimulationJobType.IEPC_E:
+			case VectoSimulationJobType.FCHV:
+			case VectoSimulationJobType.FCHV_IEPC:
+			case VectoSimulationJobType.Multiple_FCHV:
+			case VectoSimulationJobType.Multiple_PEV:
                 return VectoRunDataBatteryElectricVehicle();
             case VectoSimulationJobType.EngineOnlySimulation:
                 break;
@@ -98,6 +106,25 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
             foreach (var loading in mission.Loadings)
             {
                 var simulationRunData = CreateVectoRunData(vehicle, 0, mission, loading);
+				simulationRunData.OVCMode = OvcHevMode.NotApplicable;
+				if (vehicle.ArchitectureID.IsFuelCellVehicle()) {
+					
+					simulationRunData.OVCMode = vehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
+					simulationRunData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+					simulationRunData.FuelCellSystemData = new FuelCellSystemData() {
+						Fuel = { FuelData.H2 }
+					};
+                    var fchviterativeStrategy =
+						new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+					fchviterativeStrategy.Update = (modData, iterationRunData) => {
+						iterationRunData.OVCMode = simulationRunData.OVCMode == OvcHevMode.NotApplicable
+							? OvcHevMode.NotApplicable
+							: OvcHevMode.ChargeSustaining;
+						simulationRunData.Iteration++;
+					};
+
+					simulationRunData.IterativeRunStrategy = fchviterativeStrategy;
+				}
                 yield return simulationRunData;
             }
 
@@ -131,6 +158,10 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
                         simulationRunData = CreateVectoRunData(vehicle, modeIdx, mission, loading);
                         simulationRunData.OVCMode = OvcHevMode.ChargeSustaining;
                     }
+
+					if (engine.EngineModes[modeIdx].Fuels.Any(x => x.FuelType.IsOneOf(FuelType.H2CI, FuelType.H2PI))) {
+						simulationRunData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+					}
                     yield return simulationRunData;
                 }
             }
@@ -167,19 +198,23 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
                 SimulationType = SimulationType.DistanceCycle,
                 VehicleData = CreateDummyVehicleData(vehicle),
                 EngineData = CreateDummyEngineData(vehicle, modeIdx),
-                GearboxData = CreateDummyGearboxData(vehicle),
-                AxleGearData = CreateDummyAxleGearData(vehicle),
+                GearboxSinglePwt = CreateDummyGearboxData(vehicle),
+                AxleGearSinglePwt = CreateDummyAxleGearData(vehicle),
 
                 JobType = InputDataProvider.JobInputData.JobType,
 
             };
 
             if (vehicle.ArchitectureID.IsBatteryElectricVehicle() ||
-                vehicle.ArchitectureID.IsHybridVehicle())
+                vehicle.ArchitectureID.IsHybridVehicle() ||
+				vehicle.ArchitectureID.IsFuelCellVehicle())
             {
                 runData.BatteryData = CreateBatteryData();
             }
 
+            runData.ElectricMachinesSinglePwt = runData.JobType.IsIEPC()
+                ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+                : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(Vehicle.Components.ElectricMachines);
         }
 
         if (!vehicle.ExemptedVehicle)

@@ -29,11 +29,14 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
@@ -42,14 +45,14 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class WheelsTest
 	{
-		private const string VehicleDataFile = @"TestData/Components/24t Coach.vveh";
+        private const string VehicleDataFile = @"TestData/Components/24t Coach.vveh";
 
 		[TestCase,
 		Category(Definitions.TESTCASE_MIGRATED)]
 		public void WheelsRequestTest()
 		{
-			var container = VehicleContainer.CreateVehicleContainer(null, null, null);
-			//var reader = new EngineeringModeSimulationDataReader();
+            var kernel = new StandardKernel(new VectoNinjectModule());
+            var container = kernel.Get<IPowertrainBuilder>().Build(null, null, null);
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFile);
 
 			IWheels wheels = new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia);

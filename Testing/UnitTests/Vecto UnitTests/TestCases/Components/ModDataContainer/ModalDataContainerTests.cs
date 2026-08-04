@@ -1,9 +1,9 @@
 ﻿using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using Assert = NUnit.Framework.Assert;
 

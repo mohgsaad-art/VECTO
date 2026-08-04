@@ -366,16 +366,16 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		protected internal List<int> Axlegears = new List<int>();
 		protected internal List<int> Retarders = new List<int>();
 		protected internal List<int> Angledrives = new List<int>();
+        protected internal List<int> Gearboxes = new List<int>();
+        protected internal List<int> TorqueConverters = new List<int>();
 
-		protected internal List<string> FuelCellStringColumns = new List<string>();
+        protected internal List<string> FuelCellStringColumns = new List<string>();
 		protected internal List<string> FuelCellColumns = new List<string>(); //contains fuel cell ids as string
 		protected internal List<string> FuelCellComponentIds = new List<string>();
 
 
 		protected internal Dictionary<int, Dictionary<ModalResultField, DataColumn>> BatteryColumns =
 			new Dictionary<int, Dictionary<ModalResultField, DataColumn>>();
-
-		protected ModalResults(SerializationInfo info, StreamingContext context) : base(info, context) {}
 
 		public ModalResults()
 		{
@@ -426,27 +426,53 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 				case IClutch _:
 					CreateColumns(ClutchSignals);
 					break;
-				case IGearbox g when runData.JobType != VectoSimulationJobType.FCHV_IEPC
-						&& runData.JobType != VectoSimulationJobType.IEPC_E 
-						&& runData.JobType != VectoSimulationJobType.IEPC_S:
+				case IGearbox g:
+                    Gearboxes.Add(component.AxleNumber);
 					
-					CreateColumns(runData.GearboxData?.Type.IsOneOf(GearboxType.ATPowerSplit, GearboxType.ATSerial, GearboxType.IHPC) ?? false
-						? GearboxSignals_AT
-						: GearboxSignals);
-					if (g is MeasuredSpeedHybridsCycleGearbox && runData.GearboxData.Type == GearboxType.IHPC) {
-						CreateColumns(TorqueConverterSignals);
+					var axlePt = runData.AxlePowertrains.FirstOrDefault(x => x.AxleNumber == component.AxleNumber);
+					ModalResultField[] gbSignals = null;
+
+					if (((axlePt == null) && !runData.JobType.IsIEPC()) || ((axlePt != null) && !axlePt.Architecture.IsIEPC()))
+					{
+						var gbType = runData.GetGearboxData().First(x => x.Item1 == component.AxleNumber).Item2.Type;
+						gbSignals = gbType.IsOneOf(GearboxType.ATPowerSplit, GearboxType.ATSerial, GearboxType.IHPC) ? GearboxSignals_AT : GearboxSignals;
+
+						if ((g is MeasuredSpeedHybridsCycleGearbox) && (gbType == GearboxType.IHPC))
+						{
+                            CreateColumns(
+								TorqueConverterSignals,
+								nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+								captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()));
+                        }
+					}
+					else if (((axlePt == null) && runData.JobType.IsIEPC()) || ((axlePt != null) && axlePt.Architecture.IsIEPC()))
+					{
+						gbSignals = IEPCTransmissionSignals;
+
+						if (g is BEVCycleGearbox)
+						{
+                            gbSignals = GearboxSignals_AT;
+                            CreateColumns(
+								TorqueConverterSignals,
+								nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+								captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()));
+                        }
                     }
-					break;
-				case IGearbox g when g is BEVCycleGearbox && runData.JobType == VectoSimulationJobType.IEPC_E:
-					CreateColumns(GearboxSignals_AT);
-					CreateColumns(TorqueConverterSignals);
-					break;
-				case IGearbox _ when runData.JobType == VectoSimulationJobType.IEPC_E:
-				case IGearbox _ when runData.JobType == VectoSimulationJobType.IEPC_S:
-				case IGearbox _ when runData.JobType == VectoSimulationJobType.FCHV_IEPC:
-					CreateColumns(IEPCTransmissionSignals);
-					break;
-				case ITorqueConverter _: CreateColumns(TorqueConverterSignals);
+
+					CreateColumns(
+						gbSignals,
+						nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+						captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber())
+						);
+
+                    break;
+				case ITorqueConverter _: 
+					TorqueConverters.Add(component.AxleNumber);
+					CreateColumns(
+						TorqueConverterSignals,
+                        nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+                        captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber())
+                        );
 					break;
 				case IAngledrive _: 
 					Angledrives.Add(component.AxleNumber);
@@ -471,7 +497,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 					break;
 				case IWheels _: CreateColumns(WheelSignals); break;
 				case IBrakes _: CreateColumns(BrakeSignals); break;
-				case WheelEnd _: CreateColumns(WheelEndSignals); break;	
+				case IWheelEnd _: CreateColumns(WheelEndSignals); break;	
 				case IDriverInfo _: CreateColumns(DriverSignals); break;
 				case IVehicle _: CreateColumns(VehicleSignals); break;
 				case IElectricMotor c3 when c3.Position == PowertrainPosition.IEPC: 
@@ -605,7 +631,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			}
 		}
 
-		public void Reset()
+		public new void Reset()
 		{
 			FuelColumns.Clear();
 			ElectricMotors.Clear();
@@ -613,6 +639,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			Axlegears.Clear();
 			Retarders.Clear();
 			Angledrives.Clear();
+			TorqueConverters.Clear();
 		}
 	}
 }

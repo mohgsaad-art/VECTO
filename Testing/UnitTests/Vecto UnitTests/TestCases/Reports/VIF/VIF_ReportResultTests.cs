@@ -5,6 +5,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1.ResultWriter;
@@ -39,12 +40,11 @@ public class VIF_ReportResultTests
     public void Test_VIF_ReportResultInstance(VehicleCategory vehicleCategory, VectoSimulationJobType jobType, int amdm, bool ovc,
         bool exempted, Type expectedResultWriterType)
     {
-        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
+        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
 
         Assert.AreEqual(expectedResultWriterType, resultsWriter.GetType());
     }
 
-    [Ignore("Temporary workaround for pipeline. Hard to add job input data for DoCalculateElectricRangesWithDeterioration")]
     [
         TestCase(VectoSimulationJobType.ConventionalVehicle, 2, false, false, true, TestName = "VIF_ReportResult_WritingResults: PrimaryBus Conv SUCCESS"),
         TestCase(VectoSimulationJobType.ConventionalVehicle, 2, false, false, true, FuelType.NGCI, FuelType.DieselCI, TestName = "VIF_ReportResult_WritingResults: PrimaryBus Conv DualFuel SUCCESS"),
@@ -86,7 +86,7 @@ public class VIF_ReportResultTests
             resultEntries.Add(res2);
         }
 
-        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm),
+        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc),
             runData.VehicleData.VehicleCategory.GetVehicleType(),
             runData.JobType, runData.VehicleData.OffVehicleCharging, runData.Exempted);
 

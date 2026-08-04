@@ -17,8 +17,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 {
     public class StageInputViewModel : StageViewModelBase, IDocumentViewModel, IJobEditViewModel
     {
-		private bool _canBeEdited;
-        private DataSource _dataSource;
+		private DataSource _dataSource;
         private readonly XmlDocumentType _documentType;
         private string _documentName;
         private bool _selected;

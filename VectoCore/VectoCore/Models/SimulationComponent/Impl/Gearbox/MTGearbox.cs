@@ -4,9 +4,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 {
 	public class MTGearbox : AbstractAMTGearbox, IMTGearbox
 	{
-		public MTGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy) { }
+		public MTGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : base(container, strategy, axleNumber) { }
 
-		protected MTGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy) : base(container, strategy, false) { }
+		protected MTGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) : base(container, strategy, false, axleNumber) { }
 
 	}
 }

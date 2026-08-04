@@ -95,7 +95,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		/// <summary>
 		/// Super caps are not allowed for ovc hevs or pevs
 		/// </summary>
-		protected void CheckSuperCap(IVehicleDeclarationInputData vehicle)
+		protected virtual void CheckSuperCap(IVehicleDeclarationInputData vehicle)
 		{
 			if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OVC) {
 				if (vehicle.Components.ElectricStorage.ElectricStorageElements.Any(e =>

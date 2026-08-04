@@ -16,6 +16,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
+using TUGraz.VectoCore.Utils;
 using Assert = NUnit.Framework.Assert;
 using IIdleController = TUGraz.VectoCore.Models.SimulationComponent.IIdleController;
 
@@ -51,7 +52,7 @@ public class ATGearboxTests
 		var idleCtl = new Mock<IIdleController>();
 
 		// Setup DUT:
-        var gbx = new APTGearbox(container.Object, shiftStrategy.Object);
+        var gbx = new APTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 		gbx.Connect(port.Object);
 		gbx.IdleController = idleCtl.Object;
 
@@ -105,7 +106,7 @@ public class ATGearboxTests
         if (!double.IsNaN(expectedShiftLossEnergy)) {
             var modData = new MockModalDataContainer();
             gbx.CommitSimulationStep(absTime, dt, modData);
-            var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
+            var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
             Assert.AreEqual(expectedShiftLossEnergy, shiftLossE.Value(), 1e-3);
         }
     }
@@ -138,7 +139,7 @@ public class ATGearboxTests
 		var idleCtl = new Mock<IIdleController>();
 
 		// Setup DUT:
-		var gbx = new APTGearbox(container.Object, shiftStrategy.Object);
+		var gbx = new APTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 		gbx.Connect(port.Object);
 		gbx.IdleController = idleCtl.Object;
 
@@ -195,7 +196,7 @@ public class ATGearboxTests
         Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear.Gear);
 
 		gbx.CommitSimulationStep(absTime, dt, modData);
-        var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
+        var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
         Assert.AreEqual(expectedShiftLossEnergy * splitFactor, shiftLoss1.Value(), 1e-3);
         gbx.Request(absTime, dt, 0.SI<NewtonMeter>(), preShiftRpm.RPMtoRad(), false);
 
@@ -208,7 +209,7 @@ public class ATGearboxTests
 
         Assert.IsInstanceOf<ResponseSuccess>(response);
         gbx.CommitSimulationStep(absTime, dt, modData);
-        var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
+        var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()] * dt;
         Console.WriteLine("expected shiftloss energy: {0}, sum of shift loss energy: {1} ({2} + {3})", expectedShiftLossEnergy, shiftLoss1 + shiftLoss2, shiftLoss1, shiftLoss2);
         Assert.AreEqual(expectedShiftLossEnergy * (1 - splitFactor), shiftLoss2.Value(), 1e-3);
 
@@ -222,7 +223,7 @@ public class ATGearboxTests
 				IdleSpeed = 600.RPMtoRad(),
 				//Inertia = 5.SI<KilogramSquareMeter>()
 			},
-			GearboxData = new GearboxData() {
+			GearboxSinglePwt = new GearboxData() {
 				Type = GearboxType.ATSerial,
 				Gears = ratios.Select((ratio, i) =>
 						Tuple.Create((uint)i,
@@ -251,7 +252,7 @@ public class ATGearboxTests
 					ExecutionMode.Declaration, 1, DeclarationData.Gearbox.UpshiftMinAcceleration,
 					DeclarationData.Gearbox.UpshiftMinAcceleration)
 			},
-			GearshiftParameters = new ShiftStrategyParameters() {
+			GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 				TimeBetweenGearshifts = 1.SI<Second>(),
 				StartSpeed = 2.SI<MeterPerSecond>(),
 				StartAcceleration = 0.6.SI<MeterPerSquareSecond>(),

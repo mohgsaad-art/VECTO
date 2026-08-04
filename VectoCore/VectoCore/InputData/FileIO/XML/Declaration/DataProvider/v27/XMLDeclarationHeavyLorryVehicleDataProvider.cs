@@ -192,13 +192,21 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
     }
 
-    public class XMLDeclaration_Multiple_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
+    public abstract class XMLDeclaration_Multiple_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
     {
         public XMLDeclaration_Multiple_HeavyLorry_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
 #if PROHIBIT_NEW_XML
-            throw new VectoException("XML Jobs for multiple powertrain vehicles are not yet supported!");
+            if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
+            }
+
+            if (ArchitectureIDPwt2.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
+            }
 #endif
         }
 
@@ -216,7 +224,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = -1)
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
         {
             return PTOReader.GetPTOInputData(axleNumber);
         }
@@ -290,7 +298,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public XMLDeclaration_Multiple_SHEV_HeavyLorry_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
-        { }
+        {
+#if PROHIBIT_NEW_XML
+            throw new VectoException("XML Jobs for SHEV with multiple powertrains are not yet supported!");
+#endif
+        }
 
         public override bool HybridElectricHDV => true;
 

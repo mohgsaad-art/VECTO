@@ -70,17 +70,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected virtual void InitializeCycleData()
 		{
 			FirstRun = false;
-			var gearRatios = (RunData.GearboxData != null) 
-				? RunData.GearboxData.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio)
+			var gearRatios = (RunData.GearboxSinglePwt != null) 
+				? RunData.GearboxSinglePwt.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio)
 				: new System.Collections.Generic.Dictionary<uint, double>() { { 0, 1 } };
 
 			// just to ensure that null-gear has ratio 1
 			gearRatios[0] = 1;
-			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
+			var axleRatio = (RunData.AxleGearSinglePwt != null) ? RunData.AxleGearSinglePwt.AxleGear.Ratio : 1;
 
 			/* For BEVs, ratioADC must participate in the calculation of the wheel angular velocity. */
-			var emData = ((RunData.ElectricMachinesData != null) && (RunData.ElectricMachinesData.Count > 0)) 
-				? RunData.ElectricMachinesData.First().Item2 
+			var emData = ((RunData.ElectricMachinesSinglePwt != null) && (RunData.ElectricMachinesSinglePwt.Count > 0)) 
+				? RunData.ElectricMachinesSinglePwt.First().Item2 
 				: null;
 
 			var ratioADC = (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;

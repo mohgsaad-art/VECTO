@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
@@ -13,7 +15,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 	{
 		protected IGearbox _impl;
 
-		public IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory) : this(container, strategy, gbxFactory, false)
+		public IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) 
+			: this(container, strategy, gbxFactory, false, axleNumber)
 		{
 			if (container.IsTestPowertrain) {
 				throw new VectoException(
@@ -21,9 +24,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			}
         }
 
-		protected IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, bool dummy)
+		protected IEPCGearbox(IVehicleContainer container, IShiftStrategy strategy, IIEPCGearboxFactory gbxFactory, bool dummy, int axleNumber)
 		{
-			_impl = gbxFactory.CreateIEPCGearbox(container.RunData.GearboxData.Gears.Count == 1, container, strategy);
+			var gearboxData = container.RunData.GetGearboxData().First(x => x.Item1 == axleNumber).Item2;
+
+			_impl = gbxFactory.CreateIEPCGearbox(gearboxData.Gears.Count == 1, container, strategy);
 		}
 
 		#region Implementation of ITnInProvider
@@ -106,7 +111,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 		public IShiftStrategy Strategy => _impl.Strategy;
 
-		public int AxleNumber => _impl.AxleNumber;
+		public int AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
 
 		#endregion
 

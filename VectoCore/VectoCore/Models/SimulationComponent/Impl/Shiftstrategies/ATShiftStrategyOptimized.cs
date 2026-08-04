@@ -126,7 +126,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			TestPowertrain = Container.SimplePowertrainBuilder.CreateTestPowertrain(Container, false);
 
 			// initialize vehicle so that vehicleStopped of the testcontainer is false (required for test-runs)
-			TestPowertrain.Gearbox.SetGear = new GearshiftPosition(2u, true);
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = new GearshiftPosition(2u, true);
 			TestPowertrain.Vehicle.Initialize(10.KMPHtoMeterPerSecond(), 0.SI<Radian>());
 
 			if (runData.Cycle.CycleType == CycleType.MeasuredSpeed) {
@@ -886,8 +886,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected ResponseDryRun RequestDryRunWithGear(
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition gear, bool updateComponents = false)
 		{
-			TestPowertrain.Gearbox.SetDisengaged = false;
-			TestPowertrain.Gearbox.SetGear = gear;
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetDisengaged = false;
+			TestPowertrain.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).SetGear = gear;
 
 			TestPowertrain.Container.GearboxOutPort.Initialize(outTorque, outAngularVelocity);
 			if (updateComponents)

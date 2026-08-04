@@ -45,7 +45,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 		}
 
-        public Tuple<PowertrainPosition, ElectricMotorData> CreateElectricMachine(
+        public virtual Tuple<PowertrainPosition, ElectricMotorData> CreateElectricMachine(
             ElectricMachineEntry<IElectricMotorDeclarationInputData> em,
             IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> torqueLimits,
             Volt averageVoltage,
@@ -65,7 +65,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					torqueLimits: torqueLimits?.FirstOrDefault(t => (t.Key.Position == em.Position) && (t.Key.AxleNumber == axleNumber)).Value, averageVoltage, null));
         }
 
-        private void CheckTorqueLimitVoltageLevels(
+        protected void CheckTorqueLimitVoltageLevels(
 			ElectricMachineEntry<IElectricMotorDeclarationInputData> em,
             IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> torqueLimits,
 			int axleNumber)
@@ -734,7 +734,28 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 
 		}
 
-		public override List<Tuple<PowertrainPosition, ElectricMotorData>> CreateIEPCElectricMachines(IIEPCDeclarationInputData iepc, Volt averageVoltage)
+		public override Tuple<PowertrainPosition, ElectricMotorData> CreateElectricMachine(
+			ElectricMachineEntry<IElectricMotorDeclarationInputData> em, 
+			IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> torqueLimits,
+            Volt averageVoltage,
+			int axleNumber)
+		{
+			if (em == null) 
+			{ 
+				return null; 
+			}
+
+			CheckTorqueLimitVoltageLevels(em, torqueLimits, axleNumber);
+
+            return Tuple.Create(
+				em.Position, 
+				_genericEMotorData.CreateGenericElectricMotorData(
+					em, 
+					torqueLimits?.FirstOrDefault(t => (t.Key.Position == em.Position) && (t.Key.AxleNumber == axleNumber)).Value,
+                averageVoltage));
+		}
+
+        public override List<Tuple<PowertrainPosition, ElectricMotorData>> CreateIEPCElectricMachines(IIEPCDeclarationInputData iepc, Volt averageVoltage)
 		{
 			if (iepc == null) {
 				return null;

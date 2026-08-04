@@ -14,15 +14,21 @@ namespace TUGraz.VectoCommon.Utils
 		};
 
 		public static bool IsVersion(string text)
-		{ 
+		{
+			if (string.IsNullOrEmpty(text))
+			{
+				return false;
+			}
+
 			var parts = text.Split('-')[0].Split('.');
-        
-			return (parts.Length == Enum.GetNames(typeof(VersionPart)).Length) 
+			var allPartsCount = Enum.GetNames(typeof(VersionPart)).Length;
+
+            return ((parts.Length == allPartsCount) || (parts.Length == allPartsCount - 1))
 				&& int.TryParse(parts[(int)VersionPart.Major], out _)
 				&& int.TryParse(parts[(int)VersionPart.Minor], out _)
 				&& int.TryParse(parts[(int)VersionPart.Patch], out _)
-				&& int.TryParse(parts[(int)VersionPart.Build], out _);
-		}
+				&& ((parts.Length == allPartsCount - 1) || int.TryParse(parts[(int)VersionPart.Build], out _));
+        }
 
 		public static int CompareVersions(string a, string b, VersionPart bound = VersionPart.Build)
 		{ 

@@ -6,6 +6,7 @@ using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Utils.Ninject;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle;

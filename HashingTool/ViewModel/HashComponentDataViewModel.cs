@@ -42,6 +42,7 @@ using System.Xml.Schema;
 using HashingTool.Helper;
 using HashingTool.Util;
 using HashingTool.ViewModel.UserControl;
+using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoHashing;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -143,9 +144,13 @@ namespace HashingTool.ViewModel
 				var h = VectoHash.Load(_xmlFile.Document);
 
 				_result = h.AddHash();
-				Date = h.GetCertificationDate(h.GetContainigComponents().First(), 0);
-				// validate generated component file
-				using (MemoryStream ms = new MemoryStream()) {
+                
+				var component = h.GetContainigComponents().First();
+                var index = (component == VectoComponents.FuelCell) ? 1 : 0;
+                Date = h.GetCertificationDate(component, index);
+
+                // validate generated component file
+                using (MemoryStream ms = new MemoryStream()) {
 					using (XmlWriter xw = XmlWriter.Create(ms, new XmlWriterSettings { Indent = true })) {
 						_result.WriteTo(xw);
 						xw.Flush();

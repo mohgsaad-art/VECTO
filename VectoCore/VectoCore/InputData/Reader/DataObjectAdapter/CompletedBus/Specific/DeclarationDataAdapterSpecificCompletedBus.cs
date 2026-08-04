@@ -52,9 +52,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 				return AirdragDataAdapter.CreateAirdragData(completedVehicle, mission, segment, ovcMode);
 			}
 
-			
-			#endregion
-		}
+            #endregion
+        }
 
 
         public class Conventional : CompletedBusDeclarationBase { }
@@ -108,6 +107,23 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
         public class FCHV_F4 : FCHV { }
 
         public class FCHV_IEPC : FCHV { }
+
+		public abstract class MultiplePowertrains : CompletedBusDeclarationBase
+		{
+			protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter => null;
+        }
+
+		public class MultiplePEV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedPEVBusAuxiliaryDataAdapter();
+        }
+
+		public class MultipleFCHV : MultiplePEV { }
+
+		public class MultipleSHEV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedBusAuxiliaryDataAdapter();
+        }
 
         public class Exempted : CompletedBusDeclarationBase
 		{

@@ -142,9 +142,6 @@
     <None Update="TestData\Integration\IMC\PrimaryCoach_P2_HEV_AMT_OVC.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\Integration\IMC\PrimaryCoach_S2_Base_AMT.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S3_ovc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -168,6 +165,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestData\Integration\DeclarationMode\2nd_AmendmDeclMode\PrimaryBus\S-HEV\" />
     <Folder Include="TestData\Integration\IMC\" />
     <Folder Include="TestData\XML\XMLVIFBusReport\" />
   </ItemGroup>

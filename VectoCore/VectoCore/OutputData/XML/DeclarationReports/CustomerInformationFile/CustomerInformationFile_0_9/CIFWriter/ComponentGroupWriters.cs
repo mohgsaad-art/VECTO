@@ -284,7 +284,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			var batUsableCap = 0.SI<WattSecond>();
 			if (reess.ElectricStorageElements.Any(x => x.REESSPack.StorageType == REESSType.Battery)) {
 				var eletricStorageAdapter = new ElectricStorageAdapter();
-				var batData = eletricStorageAdapter.CreateBatteryData(reess, vehicle.VehicleType, vehicle.OVC);
+				var batData = eletricStorageAdapter.CreateBatteryData(reess, vehicle.VehicleType, vehicle.OVC, vehicle.BatteryOnlyMode);
 				batUsableCap = batData.UseableStoredEnergy;
 				batTotalCap = batData.TotalStoredEnergy;
 			}

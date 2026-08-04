@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		bool HasGearbox { get; }
 
-		VectoSimulationJobType VehicleArchitecutre { get; }
+		VectoSimulationJobType VehicleArchitecture { get; }
 
 		Dictionary<PowertrainPosition, IElectricMotorInfo> ElectricMotors { get; }
 		

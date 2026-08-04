@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
@@ -16,7 +17,7 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 	public class GenericBusBatteryData
 	{
 		public BatterySystemData CreateBatteryData(IElectricStorageSystemDeclarationInputData batteryData, VectoSimulationJobType jobType,
-			bool ovc)
+			bool ovc, bool batteryOnlyMode)
 		{
 			var currentBatteryData = batteryData.ElectricStorageElements
 				.Where(x => x.REESSPack.StorageType == REESSType.Battery).ToList();
@@ -25,7 +26,7 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 				return null;
 
 			var retVal = new BatterySystemData {
-				Batteries = GetBatteries(currentBatteryData, jobType, ovc),
+				Batteries = GetBatteries(currentBatteryData, jobType, ovc, batteryOnlyMode),
 				ConnectionSystemResistance = 0.SI<Ohm>()
 			};
 			var limits = retVal.GetSocLimits();
@@ -34,13 +35,13 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 		}
 
 		private List<Tuple<int, BatteryData>> GetBatteries(List<IElectricStorageDeclarationInputData> currentBatteries, VectoSimulationJobType jobType,
-			bool ovc)
+			bool ovc, bool batteryOnlyMode)
 		{
 			var result = new List<Tuple<int, BatteryData>>();
 
 			foreach (var currentBattery in currentBatteries) {
 				var entry = new Tuple<int, BatteryData>(currentBattery.StringId,
-					GetBatteryData(currentBattery.REESSPack as IBatteryPackDeclarationInputData, jobType, ovc));
+					GetBatteryData(currentBattery.REESSPack as IBatteryPackDeclarationInputData, jobType, ovc, batteryOnlyMode));
 				result.Add(entry);
 			}
 			
@@ -48,18 +49,25 @@ namespace TUGraz.VectoCore.Models.GenericModelData
 		}
 		
 		private BatteryData GetBatteryData(IBatteryPackDeclarationInputData battery, VectoSimulationJobType jobType,
-			bool ovc)
+			bool ovc, bool batteryOnlyMode)
 		{
 			var genericSOC = DeclarationData.Battery.GenericSOC.Lookup(jobType, ovc);
-            var minSoc = genericSOC.SOCMin;
-			if (battery.MinSOC != null && battery.MinSOC > minSoc) {
-				minSoc = battery.MinSOC.Value;
-			}
 
-			var maxSoc = genericSOC.SOCMax;
-			if (battery.MaxSOC != null && battery.MaxSOC < maxSoc && battery.MaxSOC > battery.MinSOC) {
-				maxSoc = battery.MaxSOC.Value;
-			}
+            var windowEqualOrSmallerThanDefault = !ovc || !batteryOnlyMode;
+
+            var minSoc = battery.MinSOC.HasValue
+                ? ((windowEqualOrSmallerThanDefault && (battery.MinSOC.Value < genericSOC.SOCMin)) ? genericSOC.SOCMin : battery.MinSOC.Value)
+                : genericSOC.SOCMin;
+
+            var maxSoc = battery.MaxSOC.HasValue
+                ? ((windowEqualOrSmallerThanDefault && (battery.MaxSOC.Value > genericSOC.SOCMax)) ? genericSOC.SOCMax : battery.MaxSOC.Value)
+                : genericSOC.SOCMax;
+
+            if (maxSoc <= minSoc)
+            {
+                throw new VectoException($"Battery: min SoC ({minSoc}) must be less than max SoC ({maxSoc}).");
+            }
+
             return new BatteryData {
 				MinSOC = maxSoc * ((1d / 2) * DeclarationData.Battery.GenericDeterioration)
 						+ minSoc * (1 - (1d / 2) * DeclarationData.Battery.GenericDeterioration),

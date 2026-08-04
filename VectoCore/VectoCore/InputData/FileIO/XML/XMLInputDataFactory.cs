@@ -46,7 +46,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		[Inject]
 		public IDeclarationInjectFactory DeclarationFactory { protected get; set; }
 
-		
+		public XMLInputDataFactory()
+		{
+		}
+
+		internal XMLInputDataFactory(IDeclarationInjectFactory declarationFactory)
+		{
+			DeclarationFactory = declarationFactory ?? throw new ArgumentNullException(nameof(declarationFactory));
+		}
+
 		public IInputDataProvider Create(string filename)
 		{
 			using (var reader = XmlReader.Create(filename)) {
@@ -156,7 +164,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		{
 			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
 			try {
-				var input = DeclarationFactory.CreateMultistageInputProvider(versionNumber, xmlDoc, source, allowDeprecated);
+				var input = DeclarationFactory.CreateMultistageInputProvider(versionNumber, xmlDoc, source);
 				input.Reader = DeclarationFactory.CreateMultistageInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			} catch (Exception e) {
@@ -177,12 +185,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			}
 		}
 
-		private IPrimaryVehicleInformationInputDataProvider ReadPrimaryVehicleDeclarationJob(XmlDocument xmlDoc, string source)
+		private IPrimaryVehicleInformationInputDataProvider ReadPrimaryVehicleDeclarationJob(XmlDocument xmlDoc, string source, bool allowDeprecated)
 		{
 			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
 			try {
 				var input = DeclarationFactory.CreatePrimaryVehicleBusInputProvider(versionNumber, xmlDoc, source);
-				input.Reader = DeclarationFactory.CreatePrimaryVehicleBusInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				input.Reader = DeclarationFactory.CreatePrimaryVehicleBusInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			}
 			catch (Exception e) {
@@ -283,12 +291,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			{
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
-
-
-
-
-
-            return null;
 		}
 
 	}

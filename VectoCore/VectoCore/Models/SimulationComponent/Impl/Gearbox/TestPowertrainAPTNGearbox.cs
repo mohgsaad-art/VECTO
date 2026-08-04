@@ -7,8 +7,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 {
 	public class TestPowertrainAPTNGearbox : APTNGearbox, ITestPowertrainTransmission
 	{
-		public TestPowertrainAPTNGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container,
-			strategy, false)
+		public TestPowertrainAPTNGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) 
+			: base(container, strategy, false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");

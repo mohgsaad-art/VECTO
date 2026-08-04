@@ -9,9 +9,11 @@
     <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
     <DefineConstants>FCOutput</DefineConstants>
     <Description>Provides Vecto Core functionality.</Description>
-    <Configurations>Debug;Release;MockupDebug;MockupRelease</Configurations>
+    <Configurations>Debug;Release;MockupDebug</Configurations>
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	  <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
@@ -23,7 +25,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net8.0|AnyCPU'">
     <DebugType>full</DebugType>
   </PropertyGroup>
-	<PropertyGroup Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')"/>
+	<PropertyGroup Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')" />
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
 	  <DebugType>none</DebugType>
 	</PropertyGroup>
@@ -33,12 +35,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
 	  <DebugType>none</DebugType>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net48|AnyCPU'"/>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'"/>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net6.0|AnyCPU'"/>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'"/>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net8.0|AnyCPU'"/>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'"/>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net48|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net6.0|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupRelease|net8.0|AnyCPU'" />
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
 		<DefineConstants>MOCKUP</DefineConstants>
@@ -79,27 +81,6 @@
 	</Choose>-->
 
 	<ItemGroup>
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_Conv_Bus.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_Conv_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_non-OVC-HEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_OVC-HEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_PEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\CIF_MockupResults_PEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_Conv_Bus.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_Conv_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_Error.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_non-OVC-HEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_OVC-HEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_PEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\MRF_MockupResults_PEV_Lorry.xml" />
-    <None Remove="Mockup\MockupResults\VIF_MockupResults_Conv_Bus.xml" />
-    <None Remove="Mockup\MockupResults\VIF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\VIF_MockupResults_OVC-HEV_Bus.xml" />
-    <None Remove="Mockup\MockupResults\VIF_MockupResults_PEV_Bus.xml" />
     <None Remove="Resources\Declaration\Buses\DefaultActuationsMap.apac" />
     <None Remove="Resources\Declaration\Buses\HeatingDistribution.csv" />
     <None Remove="Resources\Declaration\Buses\HeatingDistributionCases.csv" />
@@ -130,6 +111,7 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -169,30 +151,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<EmbeddedResource Include="Mockup\MockupResults">
-        <LogicalName>TUGraz.VectoMockup.MockupResults</LogicalName>
-	</EmbeddedResource>-->
-	<EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_Conv_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_Conv_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_non-OVC-HEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_OVC-HEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_PEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\CIF_MockupResults_PEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_Conv_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_Conv_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_Error.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_non-OVC-HEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_OVC-HEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_PEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\MRF_MockupResults_PEV_Lorry.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\VIF_MockupResults_Conv_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\VIF_MockupResults_non-OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\VIF_MockupResults_OVC-HEV_Bus.xml" />
-    <EmbeddedResource Include="Mockup\MockupResults\VIF_MockupResults_PEV_Bus.xml" />
+    <Compile Remove="Mockup\**" />
+    <EmbeddedResource Remove="Mockup\**" />
+    <None Remove="Mockup\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -216,10 +177,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Conidition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')" Include="Mockup\" />
-  </ItemGroup>
-
-
+	<ItemGroup>
+      <None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

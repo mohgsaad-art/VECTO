@@ -16,8 +16,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation.Common
     /// 
     public class ViewModelBase : ObservableObject, IViewModelBase
 	{
-		private string _error;
-
 		#region Size And Window position
 		private double? _width = 800;
 		private double? _height = 600;
@@ -72,12 +70,11 @@ namespace VECTO3GUI2020.ViewModel.Implementation.Common
 
 #region Commands
 		protected bool AskForConfirmationOnClose { get; set; } = false;
-		private ICommand _closeWindowCommand;
 		public ICommand CloseWindowCommand
 		{
 			get
 			{
-				return _closeWindowCommand ?? new RelayCommand<Window>(window => CloseWindow(window, DialogHelper, AskForConfirmationOnClose), window => true);
+				return new RelayCommand<Window>(window => CloseWindow(window, DialogHelper, AskForConfirmationOnClose), window => true);
 			}
 		}
 

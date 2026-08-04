@@ -22,6 +22,7 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
@@ -427,7 +428,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				BusAuxiliaries = busAux
 			};
 			return runData;
@@ -466,7 +467,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 					Tuple.Create(PowertrainPosition.HybridP2, emData.Object)
 				},
 				BatteryData = new BatterySystemData() {
@@ -490,7 +491,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				BusAuxiliaries = busAux
 			};
 			if (jobType == VectoSimulationJobType.SerialHybridVehicle) {
-				runData.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.GEN, emData.Object));
+				runData.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.GEN, emData.Object));
 			}
 			return runData;
 		}
@@ -520,7 +521,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 				Tuple.Create(PowertrainPosition.GEN, genData.Object),
 			},
@@ -553,7 +554,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				//		ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				//	}}.ToList(),
 				//},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 					Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 				},
 				BusAuxiliaries = busAux,

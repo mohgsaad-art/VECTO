@@ -107,7 +107,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.Common
 
 			try {
 				_equalityComparers[propertyName] = CreateEqualityComparer(propertyType);
-			} catch (Exception ex) {
+			} catch (Exception) {
 				// TODO;
 			}
 			

@@ -5,8 +5,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 {
 	internal abstract class VehicleInformationFile_PrimaryStep : AbstractVehicleInformationFile
 	{
-		private string _outputDataType;
-
 		public VehicleInformationFile_PrimaryStep(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory)
 		{
 			_tns = VIF;
@@ -14,9 +12,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 		#region Overrides of AbstractVIFReport
 
-		public override string OutputDataType => _outputDataType;
-
-		
+		public override string OutputDataType => null;
 
 		#endregion
 	}

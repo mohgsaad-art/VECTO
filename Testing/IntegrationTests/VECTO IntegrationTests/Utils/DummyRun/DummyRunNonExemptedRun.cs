@@ -12,7 +12,7 @@ public class DummyRunNonExemptedRun : VectoRun
 {
     private IVehicleContainer _vehicleContainer;
 
-    public DummyRunNonExemptedRun(IVehicleContainer container, IPostMortemAnalyzer postMortem = null) : base(container, postMortem: postMortem)
+    public DummyRunNonExemptedRun(IVehicleContainer container, IFollowUpRunCreator followUpRunCreator, IPostMortemAnalyzer postMortem = null) : base(container, followUpRunCreator, postMortem: postMortem)
     {
         _vehicleContainer = container;
         if (postMortem != null)

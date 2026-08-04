@@ -31,8 +31,10 @@
 
 using System;
 using System.Data;
+using System.Collections.Generic;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.OutputData.ModFilter
 {
@@ -49,9 +51,14 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 			var v_act = init.Field<MeterPerSecond>(ModalResultField.v_act.GetName());
 			var n_engine = init.Field<PerSecond>(ModalResultField.n_ice_avg.GetName());
 			var dist = init.Field<Meter>(ModalResultField.dist.GetName());
-			var n_gbx_out = init.Field<PerSecond>(ModalResultField.n_gbx_out_avg.GetName());
+			var n_gbx_out = new Dictionary<int, PerSecond>();
 
-			for (var i = 1; i < data.Rows.Count; i++) {
+            foreach (var gb in data.Gearboxes)
+			{
+				n_gbx_out[gb] = init.Field<PerSecond>(string.Format(ModalResultField.n_gbx_out_avg.GetCaption(), gb.FormatAxleNumber()));
+            }
+
+            for (var i = 1; i < data.Rows.Count; i++) {
 				//var prev = data.Rows[i - 1];
 				var current = data.Rows[i];
 				var start = results.NewRow();
@@ -66,9 +73,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.simulationInterval,
 					ModalResultField.simulationDistance,
 					ModalResultField.acc,
-					ModalResultField.grad,
-					ModalResultField.Gear,
-					ModalResultField.TC_Locked);
+					ModalResultField.grad);
 
 				start[ModalResultField.v_act.GetName()] = v_act;
 				v_act = 2 * current.Field<MeterPerSecond>(ModalResultField.v_act.GetName()) - v_act;
@@ -84,19 +89,76 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				n_engine = 2 * current.Field<PerSecond>(ModalResultField.n_ice_avg.GetName()) - n_engine;
 				end[ModalResultField.n_ice_avg.GetName()] = n_engine;
 
-				start[ModalResultField.n_gbx_out_avg.GetName()] = n_gbx_out;
-				n_gbx_out = 2 * current.Field<PerSecond>(ModalResultField.n_gbx_out_avg.GetName()) - n_gbx_out;
-				end[ModalResultField.n_gbx_out_avg.GetName()] = n_gbx_out;
+				foreach (var gb in data.Gearboxes)
+				{
+					var fieldName = string.Format(ModalResultField.n_gbx_out_avg.GetCaption(), gb.FormatAxleNumber());
+
+                    start[fieldName] = n_gbx_out[gb];
+					n_gbx_out[gb] = 2 * current.Field<PerSecond>(fieldName) - n_gbx_out[gb];
+					end[fieldName] = n_gbx_out;
+				}
 
 				SetConstantValues(current, start, end,
 					ModalResultField.T_ice_fcmap,
 					ModalResultField.T_ice_full,
-					ModalResultField.T_ice_drag,
-					ModalResultField.T_gbx_out,
-					ModalResultField.T_gbx_in
+					ModalResultField.T_ice_drag
 					);
 
-				SetConstantValues(current, start, end,
+                foreach (var gb in data.Gearboxes)
+                {
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.Gear.GetCaption(), gb.FormatAxleNumber()), ModalResultField.Gear.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_gbx_in.GetCaption(), gb.FormatAxleNumber()), ModalResultField.P_gbx_in.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_gbx_inertia.GetCaption(), gb.FormatAxleNumber()), ModalResultField.P_gbx_inertia.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_gbx_loss.GetCaption(), gb.FormatAxleNumber()), ModalResultField.P_gbx_loss.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.T_gbx_in.GetCaption(), gb.FormatAxleNumber()), ModalResultField.T_gbx_in.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.T_gbx_out.GetCaption(), gb.FormatAxleNumber()), ModalResultField.T_gbx_out.GetDataType());
+                }
+
+				foreach (var tc in data.TorqueConverters)
+				{
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.TC_Locked.GetCaption(), tc.FormatAxleNumber()), ModalResultField.TC_Locked.GetDataType());
+                }
+
+				foreach (var rt in data.Retarders)
+				{
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_retarder_in.GetCaption(), rt.FormatAxleNumber()), ModalResultField.P_retarder_in.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_ret_loss.GetCaption(), rt.FormatAxleNumber()), ModalResultField.P_ret_loss.GetDataType());
+                }
+
+				foreach (var ag in data.Axlegears)
+				{
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_axle_in.GetCaption(), ag.FormatAxleNumber()), ModalResultField.P_axle_in.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_axle_loss.GetCaption(), ag.FormatAxleNumber()), ModalResultField.P_axle_loss.GetDataType());
+                }
+
+				foreach (var ad in data.Angledrives)
+				{
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_angle_in.GetCaption(), ad.FormatAxleNumber()), ModalResultField.P_angle_in.GetDataType());
+
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.P_angle_loss.GetCaption(), ad.FormatAxleNumber()), ModalResultField.P_angle_loss.GetDataType());
+                }
+
+                SetConstantValues(current, start, end,
 					ModalResultField.P_ice_full,
 					ModalResultField.P_ice_full_stat,
 					ModalResultField.P_ice_out,
@@ -106,12 +168,6 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.P_clutch_loss,
 					ModalResultField.P_aux_mech,
 					ModalResultField.P_ice_inertia,
-					ModalResultField.P_gbx_in,
-					ModalResultField.P_gbx_inertia,
-					ModalResultField.P_gbx_loss,
-					ModalResultField.P_angle_loss,
-					ModalResultField.P_retarder_in,
-					ModalResultField.P_ret_loss,
 					ModalResultField.P_veh_inertia,
 					ModalResultField.P_roll,
 					ModalResultField.P_air,
@@ -122,10 +178,6 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.P_brake_in,
 					ModalResultField.P_brake_loss,
 					ModalResultField.P_wheel_inertia,
-					ModalResultField.P_axle_in,
-					ModalResultField.P_axle_loss,
-					ModalResultField.P_angle_in,
-					ModalResultField.P_angle_loss,
 					ModalResultField.P_trac);
 
 				SetConstantValues(current, start, end,
@@ -166,6 +218,35 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 			}
 		}
 
-		public string ID => "sim";
+		private void SetConstantValues(DataRow current, DataRow start, DataRow end, string fieldName, Type fieldType)
+		{
+            if (!current.Table.Columns.Contains(fieldName) || current[fieldName] == DBNull.Value)
+            {
+                return;
+            }
+
+            if (fieldType == typeof(SI))
+            {
+                start[fieldName] = current.Field<SI>(fieldName);
+                end[fieldName] = current.Field<SI>(fieldName);
+            }
+            else if (fieldType == typeof(double))
+            {
+                start[fieldName] = current.Field<double>(fieldName);
+                end[fieldName] = current.Field<double>(fieldName);
+            }
+            else if (fieldType == typeof(int))
+            {
+                start[fieldName] = current.Field<int>(fieldName);
+                end[fieldName] = current.Field<int>(fieldName);
+            }
+            else if (fieldType == typeof(uint))
+            {
+                start[fieldName] = current.Field<uint>(fieldName);
+                end[fieldName] = current.Field<uint>(fieldName);
+            }
+        }
+
+        public string ID => "sim";
 	}
 }

@@ -3,6 +3,7 @@
     <RootNamespace>VectoHashingTest</RootNamespace>
     <AssemblyName>VectoHashingTest</AssemblyName>
     <TargetFrameworks>net8.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
 
   </PropertyGroup>
 

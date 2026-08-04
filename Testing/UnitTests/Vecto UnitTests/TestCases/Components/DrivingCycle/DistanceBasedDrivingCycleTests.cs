@@ -250,7 +250,7 @@ public class DistanceBasedDrivingCycleTests
 	private static IVehicleContainer GetMockVehicleContainer()
 	{
 		var runData = new VectoRunData() {
-			GearshiftParameters = new ShiftStrategyParameters() {
+			GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 				StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 				StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 			}

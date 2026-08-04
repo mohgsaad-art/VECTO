@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual void SetMaxVehicleSpeed()
 		{
-			if (!DataBus.PowertrainInfo.VehicleArchitecutre.IsOneOf(
+			if (!DataBus.PowertrainInfo.VehicleArchitecture.IsOneOf(
 					VectoSimulationJobType.SerialHybridVehicle, 
 					VectoSimulationJobType.Multiple_FCHV,
 					VectoSimulationJobType.Multiple_PEV,
@@ -131,7 +131,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
 			}
 
-			if (DataBus.PowertrainInfo.VehicleArchitecutre.IsMultiplePowertrains())
+			if (DataBus.PowertrainInfo.VehicleArchitecture.IsMultiplePowertrains())
 			{
 				var ems = DataBus.ElectricMotorsInfo.Where(x => x.Position != PowertrainPosition.GEN);
 
@@ -153,9 +153,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								(DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0) *
 								(DataBus.AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0);
 						
-						maxEMSpeed = VectoMath.Min(
-							em.MaxSpeedDt,
-							gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
+						maxEMSpeed = VectoMath.Min(em.MaxSpeedDt, gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
 					}
 
 					return maxEMSpeed / ratio * DataBus.WheelsInfo.DynamicTyreRadius * 0.995;

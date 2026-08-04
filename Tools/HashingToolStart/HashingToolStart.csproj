@@ -6,6 +6,7 @@
     <ApplicationIcon>HashingIcon.ico</ApplicationIcon>
     <RootNamespace>TUGraz.VECTO</RootNamespace>
     <TargetFrameworks>net48</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
      
   </PropertyGroup>
 

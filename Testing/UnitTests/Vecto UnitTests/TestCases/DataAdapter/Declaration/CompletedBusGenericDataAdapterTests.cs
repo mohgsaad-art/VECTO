@@ -174,7 +174,7 @@ public class CompletedBusGenericDataAdapterTests
                     Assert.IsNotNull(componentDao, component);
                     Assert.IsInstanceOf(expectedType, componentDao);
                 }
-            } catch (Exception ex) {
+            } catch (Exception) {
                 if (expectedType != null) {
                     throw;
                 }

@@ -88,7 +88,7 @@ public class DummyRunDeclarationSimulatorFactory : SimulatorFactoryDeclaration
         vi.Setup(m => m.VehicleSpeed).Returns(0.KMPHtoMeterPerSecond());
         mock.Setup(c => c.MileageCounter).Returns(milage.Object);
         mock.Setup(c => c.VehicleInfo).Returns(vi.Object);
-        return new DummyRunNonExemptedRun(mock.Object, new DummyRunPostMortemAnalyzer());
+        return new DummyRunNonExemptedRun(mock.Object, new FollowUpRunCreator(data.IterativeRunStrategy, PowertrainBuilder), new DummyRunPostMortemAnalyzer());
 
     }
     protected new static Action<IModalDataContainer> PrepareReport(VectoRunData data)

@@ -61,8 +61,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			VelocityDropData = new VelocityRollingLookup();
 			Container = container;
 			RunData = container.RunData;
-			GearboxModelData = container.RunData.GearboxData;
-			GearshiftParams = container.RunData.GearshiftParameters;
+			GearboxModelData = container.RunData.GearboxSinglePwt;
+			GearshiftParams = container.RunData.GearshiftParametersSinglePwt;
 			
 			Gears = GearboxModelData.GearList;
 		}

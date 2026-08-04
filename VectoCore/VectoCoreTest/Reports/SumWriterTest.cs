@@ -34,22 +34,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Ninject;
+using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Utils;
-using NUnit.Framework;
-using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.Models.Declaration;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Tests.Reports
 {
@@ -89,7 +91,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					RatedSpeedDeclared = 2000.RPMtoRad(),
 					Displacement = 7.SI(Unit.SI.Liter).Cast<CubicMeter>()
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				Cycle = new DrivingCycleData() {
 					Name = "MockCycle",
 					CycleType = CycleType.DistanceBased
@@ -105,7 +107,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					}
 				}
 			};
-			var modData = new ModalDataContainer(rundata, writer, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, writer, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(rundata);
 			modData.Data.CreateColumns(ModalResults.VehicleSignals);
@@ -114,7 +116,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.AddAuxiliary("FAN");
 			sumWriter.AddAuxiliary("FAN");
-			sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+			sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
 			sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
 			sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -189,7 +191,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					RatedSpeedDeclared = 2000.RPMtoRad(),
 					Displacement = 7.SI(Unit.SI.Liter).Cast<CubicMeter>()
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				Cycle = new DrivingCycleData() {
 					Name = "MockCycle",
 					CycleType = CycleType.DistanceBased
@@ -205,7 +207,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					}
 				}
 			};
-			var modData = new ModalDataContainer(rundata, writer, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, writer, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(rundata);
 			modData.Data.CreateColumns(ModalResults.VehicleSignals);
@@ -214,7 +216,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.AddAuxiliary("FAN");
 			sumWriter.AddAuxiliary("FAN");
-			sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+			sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
 			sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
 			sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -279,8 +281,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 				File.Delete(writer.SumFileName);
 			}
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, writer, xmlReport);
-			runsFactory.WriteModalResults = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, writer, xmlReport, null, false);
+            runsFactory.WriteModalResults = false;
 			runsFactory.Validate = false;
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
@@ -337,8 +339,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			var writer = new FileOutputWriter(jobFile);
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.ActualModalData = true;
 			var sumWriter = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumWriter);
@@ -368,7 +370,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			var writer = new FileOutputWriter(jobFile);
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			factory.ActualModalData = true;
 			var sumWriter = new SummaryDataContainer(writer);

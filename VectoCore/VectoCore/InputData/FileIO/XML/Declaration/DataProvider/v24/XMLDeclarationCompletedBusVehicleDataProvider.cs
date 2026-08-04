@@ -271,6 +271,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override VectoSimulationJobType VehicleType => VectoSimulationJobType.BatteryElectricVehicle;
 		public override bool OVC => true;
 
+        public override bool BatteryOnlyMode => true;
+
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -286,6 +288,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 		public override bool OVC => true;
+
+        public override bool BatteryOnlyMode => true;
 
 		public override bool HybridElectricHDV => false;
 		public override VectoSimulationJobType VehicleType => VectoSimulationJobType.IEPC_E;

@@ -8,6 +8,8 @@
 	<OptionStrict>On</OptionStrict>
 	<UseWindowsForms>true</UseWindowsForms>
 	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	<MyType>WindowsForms</MyType>
 		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<TargetFrameworks Condition="'$(Configuration)' == 'Release'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
@@ -15,7 +17,7 @@
 		<TargetFrameworks Condition="'$(Configuration)' == 'MockupDeploy'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<DefineTrace>false</DefineTrace>
 
-		<Configurations>Debug;Release;MockupDebug;MockupRelease</Configurations>
+		<Configurations>Debug;Release;MockupDebug</Configurations>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
@@ -48,7 +50,7 @@
 		<PackageReference Include="Ninject.Extensions.Factory" Version="3.3.3" />
 		<PackageReference Include="NLog" Version="4.7.13" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 		<Reference Include="System.ComponentModel.DataAnnotations" />

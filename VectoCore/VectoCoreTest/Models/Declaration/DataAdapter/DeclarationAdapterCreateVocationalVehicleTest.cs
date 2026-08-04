@@ -6,8 +6,10 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
@@ -60,8 +62,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration.DataAdapter
 			var xmlReport = _kernel.Get<IXMLDeclarationReportFactory>().CreateReport(dataProvider, writer);
 			var sumData = new SummaryDataContainer(null);
 			var jobContainer = new JobContainer(sumData);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null, xmlReport);
-			runsFactory.WriteModalResults = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, xmlReport, null, false);
+            runsFactory.WriteModalResults = false;
 			runsFactory.Validate = false;
 			jobContainer.AddRuns(runsFactory);
 

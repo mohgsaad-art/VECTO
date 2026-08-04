@@ -13,6 +13,10 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
+using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VTPReport;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 

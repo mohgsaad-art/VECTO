@@ -318,10 +318,10 @@ public class MTShiftStrategyTests
 
 
 		return new VectoRunData() {
-			GearboxData = gearboxData,
-			GearshiftParameters = gearShiftParameters,
+			GearboxSinglePwt = gearboxData,
+			GearshiftParametersSinglePwt = gearShiftParameters,
 			EngineData = engineData,
-			AxleGearData = axleGearData,
+			AxleGearSinglePwt = axleGearData,
 			VehicleData = vehicleData,
 			Cycle = mockCycle.Object,
 		};
@@ -496,7 +496,7 @@ public class MTShiftStrategyTests
 		var simplePt = GetSimplePowertrain(runData, out var gbx);
 
 		testPt.Setup(c => c.Container).Returns(simplePt.Object);
-		testPt.Setup(c => c.Gearbox).Returns(gbx.Object);
+		testPt.Setup(c => c.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		testPt.Setup(c => c.UpdateComponents());
 		
 		
@@ -524,8 +524,8 @@ public class MTShiftStrategyTests
 		simplePt.Setup(s => s.AddComponent(It.IsAny<VectoSimulationComponent>()));
 		simplePt.Setup(s => s.PowertrainInfo).Returns(GetPowertrainInfo().Object);
 
-		testGearbox = GetMockTestGearbox(runData.GearboxData.Gears);
-		simplePt.Setup(s => s.GearboxCtl).Returns(testGearbox.Object);
+		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears);
+		simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 
 		//Vehicle Info

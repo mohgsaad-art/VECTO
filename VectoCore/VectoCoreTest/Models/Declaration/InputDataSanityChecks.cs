@@ -7,7 +7,9 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 
@@ -21,13 +23,14 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		public const string PrimaryBusConventional = @"TestData/XML/XMLReaderDeclaration/SchemaVersion2.4/Distributed/PrimaryBus/Conventional_primaryBus_AMT.xml";
 
 		private IXMLInputDataReader _xmlInputReader;
+        private StandardKernel _kernel;
 
-		[OneTimeSetUp]
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			_xmlInputReader = kernel.Get<IXMLInputDataReader>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			_xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
 		[
@@ -53,8 +56,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 			var writer = new FileOutputWriter("SanityCheckTest");
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, modified, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, modified, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 
 			var runs = factory.RunDataFactory.NextRun().ToList();
@@ -85,8 +88,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 			var writer = new FileOutputWriter("SanityCheckTest");
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, modified, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, modified, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 
 			AssertHelper.Exception<VectoException>(() => {

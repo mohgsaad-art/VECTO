@@ -744,8 +744,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				} else {
 					return (EngineInputData as IEngineModeDeclarationInputData)?.IdleSpeed;
 				}
-
-				return null;
 			}
 		}
 

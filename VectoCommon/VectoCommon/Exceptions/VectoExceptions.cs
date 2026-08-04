@@ -41,8 +41,6 @@ namespace TUGraz.VectoCommon.Exceptions
 	[Serializable]
 	public class VectoException : Exception
 	{
-		protected VectoException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-
 		public VectoException(string message) : base(message)
 		{
 			LogManager.Flush();
@@ -66,9 +64,9 @@ namespace TUGraz.VectoCommon.Exceptions
 		}
 	}
 
-	public class VectoXMLException : VectoException
+    [Serializable]
+    public class VectoXMLException : VectoException
 	{
-		protected VectoXMLException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		public VectoXMLException(string message) : base(message) { }
 		public VectoXMLException(string message, Exception innerException) : base(message, innerException) { }
 		public VectoXMLException(string message, params object[] args) : base(message, args) { }

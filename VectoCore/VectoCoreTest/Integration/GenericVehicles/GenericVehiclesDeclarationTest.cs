@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -35,8 +38,10 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		private const string GROUP_9_AT     = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2/Class_9_RigidTruck_AT_Decl.vecto";
 		private const string GROUP_9_AT_ECOROLL = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2_EcoRoll/Class_9_RigidTruck_AT_Decl_EcoRoll.vecto";
 
-		// BUS
-		private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
+		private const string GROUP_5_WHEEL_BEARINGS = $"{DeclarationBasePath}/ICE/Wheel_Bearings/Conventional_heavyLorry_AMT.xml";
+
+        // BUS
+        private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
 		private const string PRIMARYBUS_P33_34 = @$"{DeclarationBasePath}ICE/Group P33_34_xml/primary_heavyBus_group_P33_34_SmartPS.xml";
 		private const string PRIMARYBUS_P35_36 = @$"{DeclarationBasePath}ICE/Group P35_36_xml/primary_heavyBus_group_P35_36_nonSmart.xml";
 		private const string PRIMARYBUS_P37_38 = @$"{DeclarationBasePath}ICE/Group P37_38_xml/primary_heavyBus_group_P37_38_SmartES_PS.xml";
@@ -68,6 +73,11 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		private const string IEPC_GBX3_AXLE = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed+Axle/IEPC__Gbx3Axl.vecto";
 		private const string IEPC_GBX3_WHL1 = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed-Whl1/IEPC__Gbx3Whl1.vecto";
 		private const string IEPC_GBX3_WHL2 = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed-Whl2/IEPC__Gbx3Whl2.vecto";
+
+		// FCHV
+		private const string PRIMARYCOACH_F2_AMT = @$"{DeclarationBasePath}FCHV/Buses/PrimaryCoach_F2_Base_AMT.xml";
+		private const string FCHV_F2 = @$"{DeclarationBasePath}FCHV/Lorries/FCHV_F2_HeavyLorry.xml";
+		private const string FCHV_IEPC = @$"{DeclarationBasePath}FCHV/Lorries/FCHV_IEPC_HeavyLorry.xml";
 
 		[OneTimeSetUp]
 		public void TestInitialize()
@@ -109,6 +119,8 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			TestCase(GROUP_9_WHR, "LongHaul", 938.0763),
 			TestCase(GROUP_9_WHR, "RegionalDelivery", 677.2773),
 
+			TestCase(GROUP_5_WHEEL_BEARINGS, "LongHaul", 2503.0173)
+
 			//TestCase(GROUP_9_AT, "LongHaul", 1136.1705),
 			//TestCase(GROUP_9_AT, "RegionalDelivery", 845.8791),
 
@@ -122,7 +134,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 				{ SumDataFields.CO2_KM, expectedCO2_KM }
 			};
 
-			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad, metrics);
+			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad.ToString(), metrics);
 		}
 
 		[Category("Integration")]
@@ -182,7 +194,27 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 				{ SumDataFields.EC_el_final, expectedECFinal }
 			};
 
-			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad, metrics);
+			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad.ToString(), metrics);
+		}
+
+		[Category("Integration")]
+		[
+			TestCase(FCHV_F2, "LongHaul", 72.3926),
+			TestCase(FCHV_F2, "RegionalDelivery", 40.6012),
+			TestCase(FCHV_F2, "UrbanDelivery", 37.6119),
+
+			TestCase(FCHV_IEPC, "LongHaul", 96.8397),
+			TestCase(FCHV_IEPC, "RegionalDelivery", 70.388),
+			TestCase(FCHV_IEPC, "UrbanDelivery", 48.7774),
+		]
+		public void FCHV_DistanceRun(string jobFile, string cycleName, double expectedECFinal)
+		{
+			Dictionary<string, double> metrics = new Dictionary<string, double>()
+			{
+				{ string.Format(SumDataFields.FCFINAL_KM, string.Empty), expectedECFinal }
+			};
+
+			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad + "_pre", metrics, true);
 		}
 
 
@@ -203,18 +235,24 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 				{ SumDataFields.CO2_KM, expectedECFinal }
 			};
 
-			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad, metrics);
+			RunDistanceCycle(jobFile, cycleName, LoadingType.ReferenceLoad.ToString(), metrics);
 		}
 
 		public void RunDistanceCycle(
 			string jobFile,
 			string cycleName,
-			LoadingType loading,
-			Dictionary<string, double> metrics)
+			string loading,
+			Dictionary<string, double> metrics,
+			bool isFCHV = false)
 		{
 			// Arrange.
+
+			IKernel kernel = new StandardKernel(new VectoNinjectModule());
+			IXMLInputDataReader xmlInputReader = kernel.Get<IXMLInputDataReader>();
+			IDeclarationInjectFactory declarationFactory = kernel.Get<IDeclarationInjectFactory>();
+
 			var inputProvider = Path.GetExtension(jobFile) == ".xml" ?
-				new XMLInputDataFactory().Create(jobFile) :
+				xmlInputReader.Create(jobFile) :
 				JSONInputDataFactory.ReadJsonJob(jobFile);
 
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
@@ -249,7 +287,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			// Assert.
 			Assert.IsTrue(cycleToRun.FinishedWithoutErrors);
 
-			AssertHelper.AssertMetrics(factory, metrics);
+			AssertHelper.AssertMetrics(factory, metrics, DoubleExtensionMethods.ToleranceFactor, isFCHV);
 
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
 		}

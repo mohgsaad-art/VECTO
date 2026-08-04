@@ -31,17 +31,20 @@
 
 using System.IO;
 using System.Linq;
+using Ninject;
+using NUnit.Framework;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
-using TUGraz.VectoCore.OutputData.FileIO;
-using NUnit.Framework;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using TUGraz.VectoCore.Tests.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
+using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
@@ -52,13 +55,15 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public const string DeclarationJobFile = @"TestData/Jobs/12t Delivery Truck.vecto";
 
 		public const string EngineeringJobFile = @"TestData/Jobs/24t Coach.vecto";
-		
 
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase]
 		public void CreateDeclarationSimulationRun()
@@ -66,11 +71,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(DeclarationJobFile);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeclarationJobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            //factory.DataReader.SetJobFile(DeclarationJobFile);
 
-			//factory.DataReader.SetJobFile(DeclarationJobFile);
-
-			var run = factory.SimulationRuns().First();
+            var run = factory.SimulationRuns().First();
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 
 			Assert.AreEqual(10, vehicleContainer.SimulationComponents().Count);
@@ -117,9 +121,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(EngineeringJobFile);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(EngineeringJobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-
-			var run = factory.SimulationRuns().First();
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            var run = factory.SimulationRuns().First();
 
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 			Assert.AreEqual(12, vehicleContainer.SimulationComponents().Count);
@@ -134,9 +137,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void TestDistanceCycleInVTPEngineering()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/VTPModeWithDistanceCycle.vecto");
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
-
-			AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "first cycle is not a VTP cycle!");
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, null, null, null, false);
+            AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "first cycle is not a VTP cycle!");
 		}
 
 		[Category("LongRunning")]
@@ -144,16 +146,15 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void TestDistanceCycleInEngineOnly()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/EngineOnlyJobWithDistanceCycle.vecto");
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
-
-			AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "Distance-based cycle can not be simulated in EngineOnly mode");
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, null, null, null, false);
+            AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "Distance-based cycle can not be simulated in EngineOnly mode");
 		}
 
 		[TestCase]
 		public void TestMeasuredSpeedCycleInEngineOnly()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData/Jobs/EngineOnlyJobWithMeasuredCycle.vecto");
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, null, null, null, false);
 
 			AssertHelper.Exception<VectoException>(() => {
 				var container = new JobContainer(null);

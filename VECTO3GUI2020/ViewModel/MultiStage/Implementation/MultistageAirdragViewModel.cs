@@ -94,25 +94,18 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		#region Commands
+        #region Commands
 
+        private Dictionary<string, string> _validationErrors = new Dictionary<string, string>();
 
-
-		private ICommand _loadAirdragFileCommand;
-		private ICommand _removeAirdragDataCommand;
-
-
-
-		private Dictionary<string, string> _validationErrors;
-
-		private IAirdragDeclarationInputData _consolidatedAirdragInputData;
+        private IAirdragDeclarationInputData _consolidatedAirdragInputData;
 		private string _airdragFilePath;
 		private readonly IMultistageDependencies _dependencies;
 		private bool _showConsolidatedData = true;
 
 		public ICommand LoadAirdragFileCommand
 		{
-			get => _loadAirdragFileCommand ?? new RelayCommand(LoadAirdragFileCommandExecute, () => true);
+			get => new RelayCommand(LoadAirdragFileCommandExecute, () => true);
 		}
 
 		public void LoadAirdragFileCommandExecute()
@@ -205,7 +198,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 		public ICommand RemoveAirdragDataCommand{
-			get => _removeAirdragDataCommand ?? new RelayCommand(() => {
+			get => new RelayCommand(() => {
 				RemoveAirdragComponent();
 				OnPropertyChanged(nameof(AirdragFilePath));
 			},  () => AirDragViewModel != null);

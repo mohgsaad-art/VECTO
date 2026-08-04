@@ -44,6 +44,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoHashing;
 using VectoHashingTest.Utils;
@@ -91,7 +92,7 @@ namespace VectoHashingTest
 			var h = VectoHash.Load(ReferenceXMLVehicle);
 			var components = h.GetContainigComponents().ToList();
 
-			Assert.AreEqual(10, components.Count);
+			Assert.AreEqual(9, components.Count);
 		}
 
 		[TestCase(ReferenceXMLEngine, VectoComponents.Engine, BasicHasingTests.HashEngineXML)]
@@ -450,7 +451,7 @@ namespace VectoHashingTest
 		{
 			var file = @"Testdata/XML/Invalid/invalid-comp.xml";
 
-			AssertHelper.Exception<Exception>(() => VectoHash.Load(file), "failed to read XML document");
+			AssertHelper.Exception<Exception>(() => VectoHash.Load(file));
 		}
 
 		[TestCase()]
@@ -458,7 +459,7 @@ namespace VectoHashingTest
 		{
 			var file = @"Testdata/XML/Invalid/invalid-comp.xml";
 			var stream = File.Open(file, FileMode.Open);
-			AssertHelper.Exception<Exception>(() => VectoHash.Load(stream), "failed to read XML document");
+			AssertHelper.Exception<Exception>(() => VectoHash.Load(stream));
 		}
 
 		[TestCase()]

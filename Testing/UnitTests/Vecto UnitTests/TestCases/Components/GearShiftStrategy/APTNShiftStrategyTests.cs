@@ -260,7 +260,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			-500,
 			200,
 			4,
-			2, 
+			3, 
 			40, TestName = "APTNShiftStrategy EarlyDownshift")]
 		public void EarlyDownshift(double init_outTorque_Nm, double init_outSpeed_rpm, double outTorque_Nm,
 			double outSpeed_rpm, int currentGear, int expectedGear, int speedKmh=1)
@@ -286,7 +286,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		private void DisableEffshift(VectoRunData runData)
 		{
 			TestContext.WriteLine("EffShift Disabled");
-			runData.GearshiftParameters.AllowedGearRangeFC = 0;
+			runData.GearshiftParametersSinglePwt.AllowedGearRangeFC = 0;
 		}
 
 		private void DisableEffshift(Mock<IVehicleContainer> vehicleContainer)
@@ -401,7 +401,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			container.Setup(r => r.RunData).Returns(runData);
 
 			//EmInfo
-			var em = GetElectricMotor(container.Object, runData.ElectricMachinesData.Single().Item2);
+			var em = GetElectricMotor(container.Object, runData.ElectricMachinesSinglePwt.Single().Item2);
 			container.Setup(c => c.ElectricMotorInfo(PowertrainPosition.BatteryElectricE2, Constants.NOT_IN_AXLE_POWERTRAIN))
 				.Returns(em);
 			
@@ -473,20 +473,20 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			simplePt = GetSimplePowertrain(ratios, container, out var gbx);
 			var simplePtObj = simplePt.Object;
 			testPt.Setup(t => t.ElectricMotors).Returns(() => {
-				var dict = new Dictionary<PowertrainPosition, ITestpowertrainElectricMotor>();
+				var list = new List<ITestpowertrainElectricMotor>();
 				foreach (var (k, v) in simplePtObj.ElectricMotors) {
 					if (v is ITestpowertrainElectricMotor testEm) {
-						dict[k] = testEm;
+						list.Add(testEm);
 					} else {
 						throw new Exception("Expected TestElectricMotor in simple powertrain");
 					}
 				}
-				return dict;
+				return list;
 			});
 
 			testPt.Setup(t => t.Container).Returns(simplePt.Object);
 			
-			testPt.Setup(t => t.Gearbox).Returns(gbx.Object);
+			testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 			return testPt;
 		}
 		
@@ -509,6 +509,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 					response
 						.Setup(mr => mr.RESSPowerDemand).Returns(powerDemand);
 					var reessResponse = new Mock<IRESSResponse>();
+					reessResponse.SetupGet(r => r.MaxChargePower).Returns(0.SI<Watt>());
 					reessResponse.SetupGet(r => r.MaxDischargePower).Returns(0.SI<Watt>());
 					reessResponse.SetupGet(r => r.PowerDemand).Returns(0.SI<Watt>());
 					response.Setup(r => r.RESSResponse).Returns(reessResponse.Object);
@@ -546,7 +547,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			var components = new List<VectoSimulationComponent>();
 			
 			var runData = container.Object.RunData;
-			var em = GetTestPowertrainElectricMotor(simplePt.Object, runData.ElectricMachinesData.Single().Item2);
+			var em = GetTestPowertrainElectricMotor(simplePt.Object, runData.ElectricMachinesSinglePwt.Single().Item2);
 			var emDict = new Dictionary<PowertrainPosition, IElectricMotorInfo>() {
 				{ PowertrainPosition.BatteryElectricE2, em },
 			};
@@ -562,9 +563,9 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			
 			simplePt.Setup(s => s.RunData).Returns(runData);
 
-			testGbx = GetTestGearbox(simplePt.Object, em, runData.GearboxData.Gears);
+			testGbx = GetTestGearbox(simplePt.Object, em, runData.GearboxSinglePwt.Gears);
 			
-			simplePt.Setup(s => s.GearboxCtl).Returns(testGbx.Object);
+			simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
 			simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
 			simplePt.Setup(s => s.GearboxOutPort).Returns(testGbx.Object);
 			
@@ -685,10 +686,10 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 				AllowedGearRangeFC = 2,
 				MinEngineSpeedPostUpshift = 0.RPMtoRad(),
 			};
-			runData.GearshiftParameters = gearshiftParameters;
+			runData.GearshiftParametersSinglePwt = gearshiftParameters;
 
-			runData.ElectricMachinesData = GetElectricMachinesData();
-			var emData = runData.ElectricMachinesData.Single(i => i.Item1 == PowertrainPosition.BatteryElectricE2)
+			runData.ElectricMachinesSinglePwt = GetElectricMachinesData();
+			var emData = runData.ElectricMachinesSinglePwt.Single(i => i.Item1 == PowertrainPosition.BatteryElectricE2)
 				.Item2;
 			//VehicleData
 			var vehicleData = new VehicleData() {
@@ -730,7 +731,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 
 			
-			runData.GearboxData = gearboxData;
+			runData.GearboxSinglePwt = gearboxData;
 			for (uint i = 1; i < ratios.Length; i++) {
 				gearboxData.Gears[i] = new GearData
 				{
@@ -739,7 +740,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 				};
 			}
-			var axlRatio = 3.240355;
+			
 			var gearsInput = gearboxData.Gears.Select(x => {
 				var r = new Mock<ITransmissionInputData>();
 				r.Setup(g => g.Ratio).Returns(x.Value.Ratio);
@@ -849,7 +850,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		}
 
 
-		private new List<IElectricMotorLoadCurve> GetFullLoadCurveData()
+		private List<IElectricMotorLoadCurve> GetFullLoadCurveData()
 		{
 			var data = new[] {
 				#region data

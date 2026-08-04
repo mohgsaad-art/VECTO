@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLPrimaryVehicleBusInputData CreatePrimaryVehicleBusInputProvider(string version, XmlDocument xmlDoc, string fileName);
 
 		IXMLMultistageInputDataProvider CreateMultistageInputProvider(string version, XmlDocument xmlDoc,
-			string fileName, bool allowDeprecated);
+			string fileName);
 
 		IXMLDeclarationJobInputData CreateJobData(
 			string version, XmlNode node, IXMLDeclarationInputData inputProvider, string fileName);
@@ -167,7 +167,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationPrimaryVehicleBusInputDataReader CreatePrimaryVehicleBusInputReader(
-			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode);
+			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationMultistageVehicleInputDataReader CreateMultistageInputReader(string version,
 			IXMLMultistageInputDataProvider inputData, XmlNode baseNode, bool allowDeprecated);
@@ -177,7 +177,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationJobInputData jobData, XmlNode jobNode, bool allowDeprecated);
 		
 		IXMLMultistageJobReader CreateMultistageJobReader(
-			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode);
+			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLJobDataReader CreatePrimaryVehicleJobReader(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode);
@@ -202,7 +202,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLResultsInputData CreateResultsInputDataReader(string version, XmlNode resultsNode);
 
-		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node);
+		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node, bool allowDeprecated);
 
 		IXMLFuelCellDeclarationInputData CreateFuelCellInputData(string version, XmlNode componentNode, string sourceFile);
 

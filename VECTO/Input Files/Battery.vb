@@ -73,8 +73,6 @@ Public Class Battery
     End Function
 
     Public Shared Function ValidateBattery(battery As Battery, validationContext As ValidationContext) As ValidationResult
-        Dim batterData As BatteryData
-
         Dim modeService As VectoValidationModeServiceContainer =
                 TryCast(validationContext.GetService(GetType(VectoValidationModeServiceContainer)),
                         VectoValidationModeServiceContainer)
@@ -174,7 +172,7 @@ Public Class Battery
 
     Public ReadOnly Property Manufacturer As String Implements IComponentInputData.Manufacturer
         Get
-
+            Return Nothing
         End Get
     End Property
 

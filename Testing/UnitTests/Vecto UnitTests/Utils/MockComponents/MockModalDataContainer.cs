@@ -30,11 +30,13 @@
 */
 
 using System.Data;
+using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
@@ -61,7 +63,11 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 			Data = new ModalResults();
 
 			foreach (var value in EnumHelper.GetValues<ModalResultField>()) {
-				if (ModalResults.FuelConsumptionSignals.Contains(value) || Data.Columns.Contains(value.GetName())) {
+				if (ModalResults.FuelConsumptionSignals.Contains(value) 
+					|| ModalResults.RetarderSignals.Contains(value)
+					|| ModalResults.GearboxSignals_AT.Contains(value)
+                    || Data.Columns.Contains(value.GetName())) 
+				{
 					continue;
 				}
 
@@ -76,7 +82,24 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 			Auxiliaries = new Dictionary<string, DataColumn>();
 
 			AddFuels(new IFuelProperties[] { VectoCore.Models.Declaration.FuelData.Diesel }.ToList());
-		}
+
+			AddColumnsWithAxlenumber(ModalResults.RetarderSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
+            AddColumnsWithAxlenumber(ModalResults.GearboxSignals_AT, Constants.NOT_IN_AXLE_POWERTRAIN);
+            AddColumnsWithAxlenumber(ModalResults.TorqueConverterSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
+        }
+
+		private void AddColumnsWithAxlenumber(ModalResultField[] signals, int axleNumber)
+		{
+            foreach (var signal in signals)
+			{
+                var col = new DataColumn(string.Format(signal.GetCaption(), axleNumber.FormatAxleNumber()), signal.GetAttribute().DataType) { Caption = signal.GetCaption() };
+                col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] = signal.GetAttribute().Decimals;
+                col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] = signal.GetAttribute().OutputFactor;
+                col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] = signal.GetAttribute().ShowUnit;
+
+                Data.Columns.Add(col);
+			}
+        }
 
 		protected void AddFuels(List<IFuelProperties> fuels)
 		{
@@ -160,8 +183,8 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 		}
 
 		public object this[ModalResultField key, string arg] {
-			get => null;
-			set { }
+			get => CurrentRow[GetColumnName(key, arg)];
+			set => CurrentRow[GetColumnName(key, arg)] = value;
         }
 
         public object this[string auxId]
@@ -200,6 +223,11 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 
 		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc) => 
 			throw new NotImplementedException();
+
+        public IEnumerable<T> GetValues<T>(ModalResultField field, string arg)
+        {
+            throw new NotImplementedException();
+        }
 
         public T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T> =>
             throw new NotImplementedException();
@@ -397,5 +425,5 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 			CurrentRow[ModalResultField.simulationInterval.GetName()] = simulationInterval;
 			CommitSimulationStep();
 		}
-	}
+    }
 }

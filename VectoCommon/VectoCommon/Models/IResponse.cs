@@ -109,8 +109,14 @@ namespace TUGraz.VectoCommon.Models
 		public NewtonMeter TorqueConverterTorqueDemand { get; set; }
 
 	}
+	
+	public class RetarderResponse : AbstractPowertrainComponentResponse
+    {
+        public NewtonMeter RetarderTorqueLoss { get; set; }
 
-	[DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
+    }
+
+    [DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
 	public class AxlegearResponse : AbstractPowertrainComponentResponse
 	{
 		public NewtonMeter CardanTorque { get; set; }
@@ -191,7 +197,9 @@ namespace TUGraz.VectoCommon.Models
 
 		TorqueConverterResponse TorqueConverter { get; }
 
-		AxlegearResponse Axlegear { get; }
+        RetarderResponse Retarder { get; }
+
+        AxlegearResponse Axlegear { get; }
 
 		AngledriveResponse Angledrive { get; }
 		WheelsResponse Wheels { get; }

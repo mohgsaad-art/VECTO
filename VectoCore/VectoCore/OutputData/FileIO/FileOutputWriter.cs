@@ -207,17 +207,15 @@ namespace TUGraz.VectoCore.OutputData.FileIO
 
 		public virtual void WriteReport(ReportType type, Stream data)
 		{
-			Stream stream = null;
-			switch (type) {
-				case ReportType.DeclarationReportPdf:
-					stream = new FileStream(PDFReportName, FileMode.Create);
-					break;
-				default:
+			if (type != ReportType.DeclarationReportPdf)
+			{
+                throw new ArgumentOutOfRangeException($"ReportType is {type}, but {ReportType.DeclarationReportPdf} is expected.");
+            }
 
-					throw new ArgumentOutOfRangeException("type");
-			}
-			data.CopyToAsync(stream);
-			//stream.Write(data);
+			using (Stream stream = new FileStream(PDFReportName, FileMode.Create))
+			{
+                data.CopyToAsync(stream);
+            }
 		}
 	}
 }

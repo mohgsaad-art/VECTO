@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
@@ -14,9 +15,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
 		ITestPowertrainVehicle Vehicle { get; }
 
-        ITestPowertrainTransmission Gearbox { get; }
+        IList<ITestPowertrainTransmission> Gearboxes { get; }
 
-		ITestpowertrainCombustionEngine CombustionEngine { get; }
+        ITestPowertrainTransmission GetGearbox(int axleNumber);
+
+        ITestpowertrainCombustionEngine CombustionEngine { get; }
 
         ISimpleVehicleContainer Container { get; }
 
@@ -28,12 +31,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
         IBrakes Brakes { get; }
 
-		ITestpowertrainElectricMotor ElectricMotor { get; }
-		//ITestPowertrainElectricMotorControl ElectricMotorControl { get; }
-		Dictionary<PowertrainPosition, ITestpowertrainElectricMotor> ElectricMotors { get; } 
-		Dictionary<PowertrainPosition, IElectricMotor> ElectricMotorsUpstreamTransmission { get; }
+        ITestpowertrainElectricMotor GetElectricMotor(int axleNumber);
+		IList<ITestpowertrainElectricMotor> ElectricMotors { get; } 
+		IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; }
         IDCDCConverter DCDCConverter { get; }
-        ITorqueConverter TorqueConverter { get; }
+        IList<ITorqueConverter> TorqueConverters { get; }
 		ITestpowertrainGensetChargerAdapter Charger { get; }
 		IRESSInfo BatterySystem { get; }
 

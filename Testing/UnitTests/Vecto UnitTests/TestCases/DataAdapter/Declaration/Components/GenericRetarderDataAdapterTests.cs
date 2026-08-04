@@ -40,7 +40,7 @@ public class GenericRetarderDataAdapterTests
             };
             var applicableRatio = ratio / (!retarderType.IsOneOf(RetarderType.TransmissionOutputRetarder, RetarderType.AxlegearInputRetarder)
                 ? 1.0
-				: vehicleData.GearboxData.Gears[(uint)vehicleData.GearboxData.Gears.Count].Ratio);
+				: vehicleData.GearboxSinglePwt.Gears[(uint)vehicleData.GearboxSinglePwt.Gears.Count].Ratio);
 
             var maxEngineSpeed = Math.Max(GenericBusRetarderData.DEFAULT_ENGINE_SPEED, vehicleData.EngineData.FullLoadCurves[0].MaxSpeed.AsRPM);
 
@@ -85,7 +85,7 @@ public class GenericRetarderDataAdapterTests
             };
             var applicableRatio = ratio / (!retarderType.IsOneOf(RetarderType.TransmissionOutputRetarder, RetarderType.AxlegearInputRetarder)
                 ? 1.0
-				: vehicleData.GearboxData.Gears[(uint)vehicleData.GearboxData.Gears.Count].Ratio);
+				: vehicleData.GearboxSinglePwt.Gears[(uint)vehicleData.GearboxSinglePwt.Gears.Count].Ratio);
 
             var maxEngineSpeed = Math.Max(GenericBusRetarderData.DEFAULT_ENGINE_SPEED, vehicleData.EngineData.FullLoadCurves[0].MaxSpeed.AsRPM);
 
@@ -130,11 +130,11 @@ public class GenericRetarderDataAdapterTests
             };
             var applicableRatio = ratio / (!retarderType.IsOneOf(RetarderType.TransmissionOutputRetarder, RetarderType.AxlegearInputRetarder)
 				? 1.0
-				: vehicleData.GearboxData.Gears[(uint)vehicleData.GearboxData.Gears.Count].Ratio);
+				: vehicleData.GearboxSinglePwt.Gears[(uint)vehicleData.GearboxSinglePwt.Gears.Count].Ratio);
 
             var maxEngineSpeed = Math.Max(
                 GenericBusRetarderData.DEFAULT_ENGINE_SPEED,
-                vehicleData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed.AsRPM);
+                vehicleData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed.AsRPM);
 
             var expectedLossMap = expectedRetarderSpeeds.Zip(expectedLoss)
 				.Where(x => x.First < applicableRatio * maxEngineSpeed)
@@ -177,11 +177,11 @@ public class GenericRetarderDataAdapterTests
 			};
 			var applicableRatio = ratio / (!retarderType.IsOneOf(RetarderType.TransmissionOutputRetarder, RetarderType.AxlegearInputRetarder)
 				? 1.0
-				: vehicleData.GearboxData.Gears[(uint)vehicleData.GearboxData.Gears.Count].Ratio);
+				: vehicleData.GearboxSinglePwt.Gears[(uint)vehicleData.GearboxSinglePwt.Gears.Count].Ratio);
 
 			var maxEngineSpeed = Math.Max(
 				GenericBusRetarderData.DEFAULT_ENGINE_SPEED, 
-				vehicleData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed.AsRPM);
+				vehicleData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed.AsRPM);
 
             var expectedLossMap = expectedRetarderSpeeds.Zip(expectedLoss)
 				.Where(x => x.First < applicableRatio * maxEngineSpeed)
@@ -205,7 +205,7 @@ public class GenericRetarderDataAdapterTests
 		var runData = new VectoRunData() {
 			JobType = jobType,
 			
-			GearboxData = new GearboxData() {
+			GearboxSinglePwt = new GearboxData() {
 				Gears = new Dictionary<uint, GearData>() {
 					{ 1u, new GearData() { Ratio = 6 } },
 					{ 2u, new GearData() { Ratio = 4 } },
@@ -213,7 +213,7 @@ public class GenericRetarderDataAdapterTests
 					{ 4u, new GearData() { Ratio = 1.2 } },
 				}
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
         };
 		if (jobType != VectoSimulationJobType.BatteryElectricVehicle) {
 			runData.EngineData = new CombustionEngineData() {
@@ -227,11 +227,11 @@ public class GenericRetarderDataAdapterTests
 		}
 
 		if (jobType == VectoSimulationJobType.SerialHybridVehicle) {
-			runData.ElectricMachinesData.Add(
+			runData.ElectricMachinesSinglePwt.Add(
 				Tuple.Create(PowertrainPosition.GEN, new ElectricMotorData()));
 		}
 		if (jobType != VectoSimulationJobType.ConventionalVehicle) {
-			runData.ElectricMachinesData.Add(
+			runData.ElectricMachinesSinglePwt.Add(
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, new ElectricMotorData() {
 					EfficiencyData = new VoltageLevelData() {
 						VoltageLevels = new List<ElectricMotorVoltageLevelData>() {

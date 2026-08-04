@@ -258,7 +258,7 @@ Public Class Gearbox
                                                            With {.GearboxInputData = gearbox,
                                                            .TorqueConverterInputData = gearbox}},
                         New VectoRunData() _
-                                                           With {.AxleGearData = axlegearData, .EngineData = engine,
+                                                           With {.AxleGearSinglePwt = axlegearData, .EngineData = engine,
                                                            .VehicleData =
                                                            New VehicleData() _
                                                            With {.DynamicTyreRadius = rdyn,
@@ -290,7 +290,7 @@ Public Class Gearbox
                                                        .VehicleType = jobType }
                                                        }},
                                                     New VectoRunData() _
-                                                       With {.AxleGearData = axlegearData, .EngineData = engine,
+                                                       With {.AxleGearSinglePwt = axlegearData, .EngineData = engine,
                                                        .VehicleData =
                                                        New VehicleData() _
                                                        With { .DynamicTyreRadius = rdyn,

@@ -185,6 +185,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		public override bool OVC => true;
 
+        public override bool BatteryOnlyMode => true;
+
 		#endregion
 	}
 
@@ -217,6 +219,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		public override bool OVC => true;
 
+        public override bool BatteryOnlyMode => true;
 
 		#endregion
 	}

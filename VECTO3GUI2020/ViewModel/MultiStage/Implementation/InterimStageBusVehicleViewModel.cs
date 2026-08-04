@@ -591,7 +591,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			set => throw new NotImplementedException();
 		}
 
-		public Meter Height
+		public new Meter Height
 		{
 			get => HeightInMm?.ConvertToMeter();
 			set => HeightInMm = value?.ConvertToMilliMeter();
@@ -629,7 +629,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		public Meter Width
+		public new Meter Width
 		{
 			get => WidthInMm?.ConvertToMeter();
 			set => WidthInMm = value?.ConvertToMilliMeter();
@@ -734,8 +734,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
         #region AirdragModified
 
-		private AIRDRAGMODIFIED _airdragmodifiedEnum;
-        public AIRDRAGMODIFIED? AirdragModifiedEnum
+		public AIRDRAGMODIFIED? AirdragModifiedEnum
 		{
 			get
 			{
@@ -921,10 +920,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 		#region implementation of IAdvancedDriverAssistantSystemDeclarationInputData
 
-		private PredictiveCruiseControlType _predictiveCruiseControl;
 		private bool? _atEcoRollReleaseLockupClutch;
-		private EcoRollType _ecoRoll;
-		private bool _engineStopStart;
 		private bool _adasEditingEnabled;
 		private bool? _engineStopStartNullable;
 		private EcoRollType? _ecoRollTypeNullable;

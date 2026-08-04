@@ -55,6 +55,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 			ElectricMotor = new ElectricMotorResponse();
 			//ElectricSystem = new
 			TorqueConverter = new TorqueConverterResponse();
+			Retarder = new RetarderResponse();
 			HybridController = new HybridControllerResponse();
 		}
 
@@ -76,6 +77,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 			ElectricMotor = subResponse.ElectricMotor;
 			ElectricSystem = subResponse.ElectricSystem;
 			TorqueConverter = subResponse.TorqueConverter;
+			Retarder = subResponse.Retarder;
 			HybridController = subResponse.HybridController;
 		}
 
@@ -93,7 +95,9 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 
 		public TorqueConverterResponse TorqueConverter { get; }
 
-		public AxlegearResponse Axlegear { get; }
+        public RetarderResponse Retarder { get; }
+
+        public AxlegearResponse Axlegear { get; }
 
 		public AngledriveResponse Angledrive { get; }
 		public WheelsResponse Wheels { get; }

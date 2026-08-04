@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TUGraz.Vecto.UnitTests.Utils;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
@@ -36,7 +37,7 @@ public class GearboxTests
     {
 		var gearboxData = CreateGearboxData();
         var runData = new VectoRunData() {
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -47,7 +48,7 @@ public class GearboxTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition((uint)gear));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
         Second reqAbsTime = null;
 		Second reqDt = null;

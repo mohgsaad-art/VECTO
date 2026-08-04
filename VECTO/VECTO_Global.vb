@@ -10,10 +10,11 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
 Imports System.Text
 
 Public Module VECTO_Global
-    Public Const VECTOvers As String = "5"
+    Public VECTOvers As String = FileVersionInfo.GetVersionInfo([Assembly].GetExecutingAssembly().Location).FileMajorPart.ToString()
     Public COREvers As String = "NOT FOUND"
 
     Public Const LicSigAppCode As String = "VECTO-Release-0093C61E0A2E4BFA9A7ED7E729C56AE4"
@@ -38,7 +39,6 @@ Public Module VECTO_Global
 
 
     Public ProgBarCtrl As ProgressbarControl
-
 
     Public Class FileLogger
         Private _logStream As StreamWriter
@@ -186,7 +186,7 @@ Public Module VECTO_Global
 
     'Path one-level-up      "C:\temp\ordner1\"  >>  "C:\temp\"
     Private Function PathUp(pfad As String) As String
-        Dim x As Integer
+		Dim x As Integer
 
         pfad = pfad.Substring(0, pfad.Length - 1)
 

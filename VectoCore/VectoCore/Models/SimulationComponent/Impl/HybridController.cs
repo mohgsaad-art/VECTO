@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			_electricMotorCtl = new Dictionary<PowertrainPosition, HybridCtlElectricMotorController>();
 			_vehicleContainer = container;
-			switch (container.RunData.GearboxData.Type) {
+			switch (container.RunData.GearboxSinglePwt.Type) {
 				case GearboxType.ATPowerSplit:
 				case GearboxType.ATSerial:
 					_shiftStrategy = new HybridCtlATShiftStrategy(this, container);
@@ -50,7 +50,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case GearboxType.IHPC:
 					_shiftStrategy = new HybridCtlIHPCShiftStrategy(this, container);
 					break;
-				default: throw new ArgumentException($"Unsupported Gearbox type for Hybrid Controller: {container.RunData.GearboxData.Type}");
+				default: throw new ArgumentException($"Unsupported Gearbox type for Hybrid Controller: {container.RunData.GearboxSinglePwt.Type}");
 			}
 			
 			_hybridStrategy = strategy;
@@ -194,15 +194,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				if (retVal is ResponseDifferentGearEngaged) {
-					retryCount++;
-					retry = true;
-					Strategy.OperatingpointChangedDuringRequest(absTime, dt, outTorque, outAngularVelocity, dryRun,
-						retVal);
-					continue;
-				}
-
-				if (retVal is ResponseOverload && DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
-					engaged != gearbox.GearEngaged(absTime)) {
 					retryCount++;
 					retry = true;
 					Strategy.OperatingpointChangedDuringRequest(absTime, dt, outTorque, outAngularVelocity, dryRun,

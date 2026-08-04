@@ -8,6 +8,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -26,9 +27,13 @@ public class FullReportTestsBase
     protected bool WRITE_REPORTS_TO_OUTPUT { get; set; }
 
 
-    protected const string BasePath = @"TestData/XML/v2.4/MockupJobData/";
+    protected const string BasePath = "TestData/XML/v2.4/MockupJobData/";
 
-	protected void SetupNinject()
+	protected const string v27LorryPath = "TestData/XML/v2.7/Lorries/";
+	protected const string v27PrimaryBusPath = "TestData/XML/v2.7/PrimaryBuses/";
+	protected const string v27CompleteBusPath = "TestData/XML/v2.7/CompletedBuses/";
+
+    protected void SetupNinject()
 	{
 		_vectoKernel = new StandardKernel(
 			new VectoNinjectModule(),
@@ -49,7 +54,7 @@ public class FullReportTestsBase
 
 	public void CheckElementCount(string name, XDocument xDoc, int count)
 	{
-		Assert.AreEqual(count, xDoc.XPathSelectElements($"//*[local-name()='{name}']").Count(), $"element count of '{name}' mismatch");
+		Assert.That(xDoc.XPathSelectElements($"//*[local-name()='{name}']").Count(), Is.EqualTo(count), $"element count of '{name}' mismatch");
 	}
 
 	protected void AssertElementValue(XDocument xdoc, string expectedValue, params string[] xPath)
@@ -57,7 +62,7 @@ public class FullReportTestsBase
 		var query = "./" + string.Join("/",
 			xPath.Where(x => x != null).Select(x => $"/*[local-name()='{x}']").ToArray());
 		var node = xdoc.XPathSelectElement(query);
-		Assert.AreEqual(expectedValue, node.Value);
+		Assert.That(node.Value, Is.EqualTo(expectedValue));
 	}
 
 	protected IEnumerable<XElement> GetElements(XDocument xdoc, params string[] xPath)

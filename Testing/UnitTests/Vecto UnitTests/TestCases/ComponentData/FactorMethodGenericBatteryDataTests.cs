@@ -15,7 +15,7 @@ public class FactorMethodGenericBatteryDataTests
 	{
 		var electricStorage = GetMockBatteryVIFInputData();
         var genericBusBatteryData = new GenericBusBatteryData();
-        var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true);
+        var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true, true);
 
         Assert.AreEqual(initialSoC, batterySystemData.InitialSoC);
         Assert.AreEqual(2, batterySystemData.Batteries.Count);

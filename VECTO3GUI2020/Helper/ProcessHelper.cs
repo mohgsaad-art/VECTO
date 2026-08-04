@@ -55,7 +55,7 @@ namespace VECTO3GUI2020.Helper
 					}
 				}
 
-				argumentsString = argumentsStrBuilder.ToString();
+				argumentsString = SanitizeInput(argumentsStrBuilder.ToString());
 				Debug.WriteLine(argumentsString);
 			}
 
@@ -69,5 +69,17 @@ namespace VECTO3GUI2020.Helper
 			}
 		}
 
-	}
+        public static string SanitizeInput(string input)
+        {
+            var disallowedChars = new char[] { '&', ';', '|', '$' };
+
+            foreach (var c in disallowedChars)
+            {
+                input = input.Replace(c.ToString(), string.Empty);
+            }
+
+            return input;
+        }
+
+    }
 }

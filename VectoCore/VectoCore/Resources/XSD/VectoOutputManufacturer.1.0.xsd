@@ -9,6 +9,8 @@
 	2025-05-11: Fixed FCHV_IEPC Primary Bus Aux type (HEVPrimaryBusAuxOutputType -> PEVPrimaryBusAuxOutputType).
 	2025-05-14: Made Retarder compulsory everywhere.
 	2025-09-18: Added missing optional WheelEnd sub-element to AxleType.
+	2025-12-01: GearshiftCount, AverageGearboxEfficiency, and AverageAxlegearEfficiency can have 2 occurences to accomodate vehicles with multiple powertrains.
+	2025-12-16: Added type ArchitectureType for FCHVArchitecture, PEVArchitecture, HEVArchitecture in order to support multiple powertrains.
 	-->
 	<!-- Imports_______________________________________________ -->
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
@@ -3241,25 +3243,34 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="GearshiftCount" type="xs:int">
+			<xs:element name="GearshiftCount" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation>I.2.2.7 / #66</xs:documentation>
 				</xs:annotation>
-			</xs:element>
-			<xs:element name="AverageGearboxEfficiency" minOccurs="0">
 				<xs:complexType>
 					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+						<xs:extension base="xs:int">
+							<xs:attribute name="axleNumber" type="xs:int"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="AverageAxlegearEfficiency" minOccurs="0">
+			<xs:element name="AverageGearboxEfficiency" minOccurs="0" maxOccurs="2">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
 							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+							<xs:attribute name="axleNumber" type="xs:int"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AverageAxlegearEfficiency" minOccurs="0" maxOccurs="2">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+							<xs:attribute name="axleNumber" type="xs:int"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
@@ -3353,26 +3364,35 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="GearshiftCount" type="xs:int">
+			<xs:element name="GearshiftCount" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation>I.2.2.7 / #66</xs:documentation>
 				</xs:annotation>
-			</xs:element>
-			<xs:element name="EngineSpeedDriving" type="mrf:EngineSpeedDrivingType"/>
-			<xs:element name="AverageGearboxEfficiency" minOccurs="0">
 				<xs:complexType>
 					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+						<xs:extension base="xs:int">
+							<xs:attribute name="axleNumber" type="xs:int"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="AverageAxlegearEfficiency" minOccurs="0">
+			<xs:element name="EngineSpeedDriving" type="mrf:EngineSpeedDrivingType"/>
+			<xs:element name="AverageGearboxEfficiency" minOccurs="0" maxOccurs="2">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
 							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+							<xs:attribute name="axleNumber" type="xs:int"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AverageAxlegearEfficiency" minOccurs="0" maxOccurs="2">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="mrf:PercentType" use="required"/>
+							<xs:attribute name="axleNumber" type="xs:int"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
@@ -3924,11 +3944,7 @@
 	</xs:group>
 	<xs:group name="FCHVVehicleSequenceGroup">
 		<xs:sequence>
-			<xs:element name="FCHVArchitecture" type="v2.7:ArchitectureID_FCHV_Fx_IEPC_Type">
-				<xs:annotation>
-					<xs:documentation>I.1.1.15.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="FCHVArchitecture" type="mrf:ArchitectureType" maxOccurs="2"/>	
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>I.1.1.16.</xs:documentation>
@@ -3942,6 +3958,16 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:group>
+	<xs:complexType name="ArchitectureType">
+		<xs:annotation>
+			<xs:documentation>II.1.1.15.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="axleNumber" type="xs:int"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	<xs:group name="GeneralVehicleOutputGroup">
 		<xs:sequence>
 			<xs:element name="Model" type="v1.0:ModelType">
@@ -4072,11 +4098,7 @@
 	</xs:group>
 	<xs:group name="HEVVehicleSequenceGroup">
 		<xs:sequence>
-			<xs:element name="HEVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>I.1.1.14.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="HEVArchitecture" type="mrf:ArchitectureType" maxOccurs="2"/>
 			<xs:group ref="mrf:OffVehicleChargingGroup"/>
 			<xs:element name="ADAS" type="mrf:HEVADASType">
 				<xs:annotation>
@@ -4235,11 +4257,7 @@
 	</xs:group>
 	<xs:group name="PEVVehicleSequenceGroup">
 		<xs:sequence>
-			<xs:element name="PEVArchitecture" type="v2.4:ArchitectureIDType">
-				<xs:annotation>
-					<xs:documentation>I.1.1.15.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="PEVArchitecture" type="mrf:ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>I.1.1.16.</xs:documentation>

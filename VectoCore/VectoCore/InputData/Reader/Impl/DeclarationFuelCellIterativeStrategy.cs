@@ -24,6 +24,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		/// <returns></returns>
 		public static FCHEVIterativeRunStrategy SetUpFuelCellIterativeRunStrategy(
 			VectoRunData runData,
+			IVehicleDeclarationInputData vehicle,
 			IDeclarationDataAdapter dataAdapter,
 			IDeclarationInputDataProvider inputDataProvider,
 			VectoSimulationJobType fuelCellJobType,
@@ -34,7 +35,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			iterativeRunStrategy.Update = (modData, iterationRunData) =>
 			{
 				var fchvDataAdapter = new FCHVDeclarationDataAdapter(inputDataProvider.DataSource);
-				var fuelCellSystemData = dataAdapter.CreateFuelCells(inputDataProvider.JobInputData.Vehicle.Components.FuelCellSystem).ConvertToEngineeringData();
+				var fuelCellSystemData = dataAdapter.CreateFuelCells(vehicle.Components.FuelCellSystem).ConvertToEngineeringData();
 
 				runData.BatteryData.Batteries = runData.BatteryData.Batteries
 					.Where(b => b.Item1 != fcBatteries.Item1)

@@ -1,14 +1,16 @@
-﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using Ninject;
-using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -52,8 +54,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(friction0, axlesDec[0].WheelEndFriction?.Value() ?? double.NaN);
 			Assert.AreEqual(friction1, axlesDec[1].WheelEndFriction?.Value() ?? double.NaN);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
-			var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
+            var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
 			
 			Assert.AreEqual(delta, deltaFriction.Value(), 1E-03);
 		}
@@ -71,8 +73,8 @@ namespace TUGraz.VectoCore.Tests.XML
 				() => { 
 					var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
 					var axlesDec = dataProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration;
-					var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
-					runsFactory.RunDataFactory.NextRun().First();
+					var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
+                    runsFactory.RunDataFactory.NextRun().First();
 				});
 				
 			TestContext.WriteLine(exception.Message);
@@ -91,8 +93,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(filename);
 			var writer = new FileOutputWriter(outputFile);
 
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, writer);
-			runsFactory.WriteModalResults = false;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, writer, null, null, false);
+            runsFactory.WriteModalResults = false;
 			runsFactory.SumData = new SummaryDataContainer(writer);
 
 			var jobContainer = new JobContainer(runsFactory.SumData);

@@ -116,7 +116,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
         public XMLDeclaration_PEV_PrimaryBus_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-            : base(jobData, xmlNode, sourceFile) { }
+            : base(jobData, xmlNode, sourceFile) 
+        {
+            if (!OVC)
+            {
+                throw new VectoException("OVC must be set to true for PEVs.");
+            }
+
+            if (!BatteryOnlyMode)
+            {
+                throw new VectoException("BatteryOnlyMode must be set to true for PEVs.");
+            }
+        }
 
         public override string PowertrainPositionPrefix => "E";
 
@@ -213,13 +224,21 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 		public override VectoSimulationJobType VehicleType => VectoSimulationJobType.FCHV_IEPC;
 	}
 
-    public class XMLDeclaration_Multiple_PrimaryBus_DataProviderV27 : AbstractXMLDeclarationPrimaryBusVehicleDataProviderV27
+    public abstract class XMLDeclaration_Multiple_PrimaryBus_DataProviderV27 : AbstractXMLDeclarationPrimaryBusVehicleDataProviderV27
     {
         public XMLDeclaration_Multiple_PrimaryBus_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
 #if PROHIBIT_NEW_XML
-            throw new VectoException("XML Jobs for multiple powertrain vehicles are not yet supported!");
+            if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
+            }
+
+            if (ArchitectureIDPwt2.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
+            }
 #endif
         }
 
@@ -308,7 +327,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public XMLDeclaration_Multiple_SHEV_PrimaryBus_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
-        { }
+        {
+#if PROHIBIT_NEW_XML
+            throw new VectoException("XML Jobs for SHEV with multiple powertrains are not yet supported!");
+#endif
+        }
 
         public override string PowertrainPositionPrefix => "S";
 

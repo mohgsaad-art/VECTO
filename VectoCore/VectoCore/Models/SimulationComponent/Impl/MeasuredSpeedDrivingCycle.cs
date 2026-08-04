@@ -45,6 +45,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -122,8 +123,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private void DeclareInterestForGearShiftEvent()
 		{
 			if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
-				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered -= GearShiftTriggered;
-				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered += GearShiftTriggered;
+				(DataBus.HybridControllerCtl.Strategy as AbstractHybridStrategy).GearShiftTriggered -= GearShiftTriggered;
+                (DataBus.HybridControllerCtl.Strategy as AbstractHybridStrategy).GearShiftTriggered += GearShiftTriggered;
 			}
 			else if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) ||
 				(RunData.JobType == VectoSimulationJobType.ConventionalVehicle)) {

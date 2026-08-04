@@ -363,16 +363,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 				case VectoSimulationJobType.IEPC_S:
 				case VectoSimulationJobType.FCHV:
 				case VectoSimulationJobType.FCHV_IEPC:
-				case VectoSimulationJobType.Multiple_FCHV:
-				case VectoSimulationJobType.Multiple_PEV:
-				case VectoSimulationJobType.Multiple_SHEV:
-					return (vehicleData.Components?.EngineInputData?.RatedPowerDeclared ?? 0.SI<Watt>()) +
-							(vehicleData.Components?.ElectricMachines?.Entries
-								.Where(x => x.Position != PowertrainPosition.GEN)
-								.Sum(x => x.ElectricMachine.R85RatedPower * x.Count) ?? 0.SI<Watt>()) +
-							(vehicleData.Components?.IEPC?.R85RatedPower ?? 0.SI<Watt>()) +
-							(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
-				default:
+					return 
+						(vehicleData.Components?.ElectricMachines?.Entries
+							.Where(x => x.Position != PowertrainPosition.GEN)
+							.Sum(x => x.ElectricMachine.R85RatedPower * x.Count) ?? 0.SI<Watt>()) +
+						(vehicleData.Components?.IEPC?.R85RatedPower ?? 0.SI<Watt>()) +
+						(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
+                case VectoSimulationJobType.Multiple_FCHV:
+                case VectoSimulationJobType.Multiple_PEV:
+                case VectoSimulationJobType.Multiple_SHEV:
+					return
+						(vehicleData.Components?.AxlePowertrainInputData?
+							.Where(x => x.ElectricMotor != null)
+							.Sum(x => x.ElectricMotor.ElectricMachine.R85RatedPower * x.ElectricMotor.Count) ?? 0.SI<Watt>()) +
+						(vehicleData.Components?.AxlePowertrainInputData?
+							.Where(x => x.IEPCInputData != null)
+							.Sum(x => x.IEPCInputData.R85RatedPower) ?? 0.SI<Watt>()) +
+						(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
+                default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
@@ -1181,8 +1189,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return new ShiftPolygon(TransformShiftPolygonEntries(downShift), TransformShiftPolygonEntries(upShift));
 				}
 			
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(emMaxSpeedDt, gbxMaxSpeed) * 0.9));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(emMaxSpeedDt, gbxMaxSpeed) * 0.9));
 				return new ShiftPolygon(TransformShiftPolygonEntries(downShift), TransformShiftPolygonEntries(upShift));
 			}
 
@@ -1875,10 +1883,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (type) {
 					case BatteryType.HPBS:
 						return SOCMinHP;
-						break;
 					case BatteryType.HEBS:
 						return SOCMinHE;
-						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(type), type, null);
 				}
@@ -1892,10 +1898,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				{
 					case BatteryType.HPBS:
 						return SOCMaxHP;
-						break;
 					case BatteryType.HEBS:
 						return SOCMaxHE;
-						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(type), type, null);
 				}
@@ -1973,7 +1977,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			//var D21_stationaryChargingDuringMission_AvgDurationPerEvent = vehicleOperation.StationaryChargingDuringMission_AvgDurationPerEvent;
 			//var D22_stationaryChargingDuringMission_NbrEvents = vehicleOperation.StationaryChargingDuringMission_NbrEvents;
 			var D23_realWorldFactorUsageStartSoC = vehicleOperation.RealWorldUsageFactors.StartSoCBeforeMission;
-			var D24_realWorldFactorChargeDuringMission = 0.0; // vehicleOperation.RealWorldUsageFactors.StationaryChargingDuringMission;
+			//var D24_realWorldFactorChargeDuringMission = 0.0; // vehicleOperation.RealWorldUsageFactors.StationaryChargingDuringMission;
 			var D25_shareOfDistanceWithInMotionCharging = GetShareIMCInfrastructure(cdResult.VectoRunData.InMotionChargingTechnology, vehicleOperation);
 			var D26_realWorldFactorInMotionChargingDuringMission = vehicleOperation.RealWorldUsageFactors.InMotionChargingDuringMission;
 
@@ -2549,7 +2553,8 @@ namespace TUGraz.VectoCore.Models.Declaration
             var batteryData = new ElectricStorageAdapter().CreateBatteryData(
                 vehicle.Components.ElectricStorage, 
 				runData.JobType, 
-				vehicle.OVC || runData.VehicleData.OffVehicleCharging, 
+				vehicle.OVC,
+				vehicle.BatteryOnlyMode,
 				deterioration);
 
             return DoCalculateElectricRangesPEV(electricEnergyConsumptionSoCCorr, distance, chargingEfficiencyBattery, batteryData);
@@ -2587,6 +2592,7 @@ namespace TUGraz.VectoCore.Models.Declaration
                 runData.InputData.JobInputData.Vehicle.Components.ElectricStorage,
                 runData.JobType,
                 runData.VehicleData.OffVehicleCharging,
+				runData.InputData.JobInputData.Vehicle.BatteryOnlyMode,
                 deterioration);
 
             return DoCalculateElectricRangesIMCPEV(modData, runData, batteryData);

@@ -60,13 +60,11 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 			_defaultOutputPath = _settings.DefaultOutputPath;
 		}
 
-		private ICommand _closeWindowCommand;
-
-		public ICommand CloseWindowCommand
+		public new ICommand CloseWindowCommand
 		{
 			get
 			{
-				return _closeWindowCommand ?? new RelayCommand<Window>(window => CloseWindow(window, _dialogHelper, false), window => true);
+				return new RelayCommand<Window>(window => CloseWindow(window, _dialogHelper, false), window => true);
 			}
 		}
 

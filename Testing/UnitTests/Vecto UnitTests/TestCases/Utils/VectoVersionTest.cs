@@ -53,14 +53,14 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Utils
         TestCase("1.2.3.4", true),
         TestCase("1", false),
         TestCase("1.1", false),
-        TestCase("1.1.1", false),
+        TestCase("1.1.1", true),
         TestCase("1.1.1.1.1", false),
         TestCase("abc", false),
         TestCase("1.abc", false),
         TestCase("", false),
         TestCase("1.1-DEV", false),
-        TestCase("1.1.1-DEV", false),
-        TestCase("a.b.c.d-qwe", false),
+        TestCase("1.1.1-DEV", true),
+        TestCase("a.b.c.d-qwe", false)
         ]
         public void TestIsVersion(string text, bool result)
         {

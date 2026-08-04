@@ -23,26 +23,26 @@ public class BatteryDataAdapterTest
 
 	}
 
-	//PEV
-	[TestCase(null, null, 0.0725, 0.9275, 0.8550, VectoSimulationJobType.BatteryElectricVehicle, true)]
-	[TestCase(null, null, 0.0725, 0.9275, 0.8550, VectoSimulationJobType.BatteryElectricVehicle, false)]
+    //PEV
+    [TestCase(0.1, 0.95, 0.12125, 0.92875, 0.8075, VectoSimulationJobType.BatteryElectricVehicle, true, true)]
 
-	//HEV Ovc
-	[TestCase(0.23, 0.77, 0.2435, 0.7565, 0.5130, VectoSimulationJobType.SerialHybridVehicle, true)]
-	[TestCase(null, null, 0.1675, 0.8325, 0.6650, VectoSimulationJobType.SerialHybridVehicle, true)]
-	[TestCase(0.05, 0.97, 0.1675, 0.8325, 0.6650, VectoSimulationJobType.SerialHybridVehicle, true)]
+    //HEV Ovc
+    [TestCase(0.23, 0.77, 0.2435, 0.7565, 0.513, VectoSimulationJobType.SerialHybridVehicle, true, false)] //input inside default limits -> use input
+    [TestCase(null, null, 0.1675, 0.8325, 0.6650, VectoSimulationJobType.SerialHybridVehicle, true, false)] //no input -> use default limits
+    [TestCase(0.1, 0.9, 0.1675, 0.8325, 0.6650, VectoSimulationJobType.SerialHybridVehicle, true, false)] //input outside default limits -> use default limits
+    [TestCase(0.05, 0.97, 0.073, 0.947, 0.874, VectoSimulationJobType.SerialHybridVehicle, true, true)] //no default limits -> use input
 
-	//HEV Non Ovc
-	[TestCase(0.40, 0.60, 0.4050, 0.5950, 0.1900, VectoSimulationJobType.SerialHybridVehicle, false)]
-	[TestCase(null, null, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false)]
-	[TestCase(0.15, 0.85, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false)]
-	[Category(Definitions.TESTCASE_MIGRATED)]
+    //HEV Non Ovc
+    [TestCase(0.40, 0.60, 0.4050, 0.5950, 0.1900, VectoSimulationJobType.SerialHybridVehicle, false, false)] //input inside default limits -> use input
+    [TestCase(null, null, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false, false)] //no input -> use default limits
+    [TestCase(0.15, 0.85, 0.2625, 0.7375, 0.4750, VectoSimulationJobType.SerialHybridVehicle, false, false)] //input outside default limits -> use default limits
+    [Category(Definitions.TESTCASE_MIGRATED)]
 	public void GenericSOCTest(
 		double inputMinSoc,
 		double inputMaxSoc,
 		double expectedMinSoc,
 		double expectedMaxSoc,
-		double usableSocRange, VectoSimulationJobType vectoSimulationJobType, bool ovc)
+		double usableSocRange, VectoSimulationJobType vectoSimulationJobType, bool ovc, bool batteryOnlyMode)
 	{
 
 			var elStorage = CreateElectricStorage(inputMinSoc, inputMaxSoc);
@@ -52,11 +52,11 @@ public class BatteryDataAdapterTest
 			BatterySystemData batteryData;
 			if (vectoSimulationJobType == VectoSimulationJobType.BatteryElectricVehicle && !ovc) {
 
-				Assert.Throws<VectoException>(() => _electricStorageAdapter.CreateBatteryData(inputData.Object, vectoSimulationJobType, ovc));
+				Assert.Throws<VectoException>(() => _electricStorageAdapter.CreateBatteryData(inputData.Object, vectoSimulationJobType, ovc, batteryOnlyMode));
 				Assert.Pass();
 			}
 
-			batteryData = _electricStorageAdapter.CreateBatteryData(inputData.Object, vectoSimulationJobType, ovc);
+			batteryData = _electricStorageAdapter.CreateBatteryData(inputData.Object, vectoSimulationJobType, ovc, batteryOnlyMode);
 
 
 

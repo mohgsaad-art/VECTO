@@ -37,9 +37,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 	public class AMTGearbox : AbstractAMTGearbox, IAMTGearbox
     {
-        public AMTGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy) { }
+        public AMTGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : base(container, strategy, axleNumber) { }
 
-        protected AMTGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy) : base(container, strategy, false) { }
+        protected AMTGearbox(IVehicleContainer container, IShiftStrategy strategy, bool dummy, int axleNumber) : base(container, strategy, false, axleNumber) { }
 
 		#region Implementation of IAMTGearbox
 

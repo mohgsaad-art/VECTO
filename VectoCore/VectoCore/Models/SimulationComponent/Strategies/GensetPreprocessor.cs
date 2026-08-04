@@ -131,7 +131,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					default:
 						throw new VectoException(
 							$"Could not determine max {(emDerated ? "derated" : "")} electric genset power! Invalid response [{response.GetType().Name}] from {response.Source.GetType().Name}");
-						break;
 				}
 			}
 		}

@@ -48,6 +48,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -102,37 +103,35 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var runData = new VectoRunData() {
 				JobRunId = 0,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				GearboxData = gearboxData,
-				GearshiftParameters = CreateGearshiftData(),
+				GearboxSinglePwt = gearboxData,
+				GearshiftParametersSinglePwt = CreateGearshiftData(),
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				JobName = modFileName,
 				Cycle = cycleData,
-				Retarder = new RetarderData() { Type = RetarderType.None },
+				RetarderSinglePwt = new RetarderData() { Type = RetarderType.None },
 				Aux = new List<VectoRunData.AuxData>(),
 				SimulationType = SimulationType.DistanceCycle,
 				DriverData = driverData,
 				ExecutionMode = ExecutionMode.Engineering,
 			};
 			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(runData, fileWriter, null) {
-				WriteModalResults = true,
-			};
-			var container =
-				VehicleContainer.CreateVehicleContainer(runData, modData,
-					summaryDataContainer);
-
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
+			var modData = kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
+			
+			var container = kernel.Get<IPowertrainBuilder>().Build(runData, modData, summaryDataContainer);
+            
+            var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 			var tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airdragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new APTGearbox(container, new ATShiftStrategyOptimized(container)))
+				.AddComponent(new APTGearbox(container, new ATShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(engine);
 			new ATClutchInfo(container);
 

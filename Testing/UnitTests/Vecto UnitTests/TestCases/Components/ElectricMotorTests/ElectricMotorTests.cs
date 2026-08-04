@@ -353,7 +353,7 @@ public class ElectricMotorTests
 		container.SetupGet(c => c.EngineCtl).Returns(ice.Object);
 
 		var runData = new VectoRunData() {
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(emPos, new ElectricMotorData())
 			}
 		};

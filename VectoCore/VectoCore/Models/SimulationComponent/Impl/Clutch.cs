@@ -79,7 +79,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_ratedSpeed = _engineFullLoadCurves[0].RatedSpeed;
 			_clutchSpeedSlippingFactor = Constants.SimulationSettings.ClutchClosingSpeedNorm * (_ratedSpeed - _idleSpeed) /
 										(_idleSpeed + Constants.SimulationSettings.ClutchClosingSpeedNorm * (_ratedSpeed - _idleSpeed));
-			_startAcceleration = container.RunData.GearshiftParameters?.StartAcceleration ?? 1.0.SI<MeterPerSquareSecond>();
+			_startAcceleration = container.RunData.GearshiftParametersSinglePwt?.StartAcceleration ?? 1.0.SI<MeterPerSquareSecond>();
 			_auxPower = 0.0.SI<Watt>();
 			foreach (var item in container.RunData.Aux)
 			{

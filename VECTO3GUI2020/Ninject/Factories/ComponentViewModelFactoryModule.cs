@@ -4,6 +4,7 @@ using Ninject.Extensions.Factory;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Utils.Ninject;
 using VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components;
@@ -23,7 +24,6 @@ namespace VECTO3GUI2020.Ninject.Factories
 
     public class ComponentViewModelFactoryModule : AbstractNinjectModule
 	{
-		private IComponentViewModelFactoryInternal factory;
 		private const string scopeName = nameof(IComponentViewModelFactory);
 		private const string common = "common";
 

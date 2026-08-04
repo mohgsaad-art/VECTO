@@ -1023,9 +1023,9 @@ Public Class VehicleForm
 		veh.MassMax = TbMassMass.Text.ToDouble(0)
 		veh.MassExtra = TbMassExtra.Text.ToDouble(0)
         veh.AxleConfiguration = CType(CbAxleConfig.SelectedValue, AxleConfiguration)
-        veh.EngineeringMaxWindowsSize = fuelCellSystemEngineeringInput.MaxWindowSize
+        veh.EngineeringMaxWindowsSize = fuelCellSystemEngineeringInput?.MaxWindowSize
 
-		Dim relCheck As Double = 0
+        Dim relCheck As Double = 0
 		Dim hasDrivenAxle As Boolean = False
 		For Each entry As ListViewItem In LvRRC.Items
 			Dim a0 As AxleInputData = New AxleInputData()

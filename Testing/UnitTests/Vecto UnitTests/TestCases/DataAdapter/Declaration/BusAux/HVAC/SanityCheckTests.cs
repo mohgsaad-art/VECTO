@@ -53,7 +53,7 @@ public class SanityCheckTests
 			VehicleData = new VehicleData() {
 				VehicleClass = VehicleClass.Class31c,
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None
 			}
 		};
@@ -116,7 +116,7 @@ public class SanityCheckTests
 			VehicleData = new VehicleData() {
 				VehicleClass = VehicleClass.Class31c,
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None
 			}
 		};

@@ -7,11 +7,15 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 
 namespace TUGraz.Vecto.IntegrationTests.Utils.DummyRun;
 
@@ -75,7 +79,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 
     protected virtual IEnumerable<VectoRunData> VectoRunDataHeavyBusCompleted()
     {
-        if (PrimaryVehicle.VehicleType.IsOneOf(VectoSimulationJobType.IEPC_E, VectoSimulationJobType.BatteryElectricVehicle))
+        if (PrimaryVehicle.VehicleType.IsOneOf(VectoSimulationJobType.IEPC_E, VectoSimulationJobType.BatteryElectricVehicle, VectoSimulationJobType.Multiple_PEV, VectoSimulationJobType.FCHV, VectoSimulationJobType.FCHV_IEPC, VectoSimulationJobType.Multiple_FCHV))
         {
             foreach (var vectoRunData in CreateVectoRunDataForMissions(0, ""))
                 yield return vectoRunData;
@@ -111,15 +115,11 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             Loading = loading.Key,
             VehicleData = DataAdapterSpecific.CreateVehicleData(PrimaryVehicle, CompletedVehicle, _segment,
                 mission, loading),
-            Retarder = DummyRunPrimaryBusRunDataFactory.CreateDummyRetarder(PrimaryVehicle),
             AirdragData = DummyRunPrimaryBusRunDataFactory.CreateDummyAirdragData(CompletedVehicle),
             EngineData = DummyRunPrimaryBusRunDataFactory.CreateDummyEngineData(PrimaryVehicle, modeIdx, CompletedVehicle.TankSystem),
             //ElectricMachinesData = PrimaryBusMockupRunDataFactory.CreateMockupElectricMachineData()
-            AngledriveData = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(PrimaryVehicle),
-            AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle),
             Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
             Mission = mission,
-            GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle),
             InputData = DataProvider.MultistageJobInputData,
             SimulationType = SimulationType.DistanceCycle,
             ExecutionMode = ExecutionMode.Declaration,
@@ -129,15 +129,57 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 
             JobType = DataProvider.MultistageJobInputData.JobInputData.JobType
         };
-        if (simulationRunData.EngineData != null)
-        {
+        if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
+			simulationRunData.AxlePowertrains = new List<AxlePowertrainData>();
+			foreach (var axlePt in PrimaryVehicle.Components.AxlePowertrainInputData) {
+				var axlePowertrainData = new AxlePowertrainData() {
+					AxleNumber = axlePt.AxleNumber,
+					Retarder = DummyRunPrimaryBusRunDataFactory.CreateDummyRetarder(axlePt),
+					AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(axlePt.AxleGearInputData),
+					GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(axlePt.GearboxInputData),
+					AngledriveData = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(axlePt.AngledriveInputData)
+				};
+				simulationRunData.AxlePowertrains.Add(axlePowertrainData);
+            }
+		} else {
+			simulationRunData.RetarderSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyRetarder(PrimaryVehicle);
+			simulationRunData.AngledriveSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(
+					PrimaryVehicle.Components.AngledriveInputData);
+			simulationRunData.AxleGearSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
+			simulationRunData.GearboxSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
+
+		}
+        if (simulationRunData.EngineData != null) {
             simulationRunData.EngineData.FuelMode = 0;
         }
         if (PrimaryVehicle.ArchitectureID.IsBatteryElectricVehicle() ||
-            PrimaryVehicle.ArchitectureID.IsHybridVehicle())
+            PrimaryVehicle.ArchitectureID.IsHybridVehicle() ||
+			PrimaryVehicle.ArchitectureID.IsFuelCellVehicle())
         {
             simulationRunData.BatteryData = CreateBatteryData();
         }
+
+        simulationRunData.ElectricMachinesSinglePwt = simulationRunData.JobType.IsIEPC()
+            ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+            : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
+
+        if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
+			simulationRunData.VehicleData.H2StorageUsableCapacity = PrimaryVehicle.H2StorageUsableCapacity;
+			simulationRunData.OVCMode = PrimaryVehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
+			simulationRunData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+			simulationRunData.FuelCellSystemData = new FuelCellSystemData() {
+				Fuel = { FuelData.H2 }
+			};
+			var fchviterativeStrategy =
+				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+			fchviterativeStrategy.Update = UpdateFCHVRunData;
+
+			simulationRunData.IterativeRunStrategy = fchviterativeStrategy;
+        }
+		if (simulationRunData.EngineData != null && simulationRunData.EngineData.Fuels.Any(x => x.FuelData.FuelType.IsOneOf(FuelType.H2CI, FuelType.H2PI))) {
+			simulationRunData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+		}
+
         simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
         simulationRunData.BusAuxiliaries = DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, simulationRunData);
 
@@ -267,21 +309,69 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             Report = Report,
             ModFileSuffix = $"_{_segment.VehicleClass.GetClassNumber()}-Generic_{loading.Key}",
             InputData = DataProvider.MultistageJobInputData,
-            GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle),
-            AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle),
 
             JobType = DataProvider.MultistageJobInputData.JobInputData.JobType
+		};
+		if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
+			runData.AxlePowertrains = new List<AxlePowertrainData>();
+			foreach (var axlePt in PrimaryVehicle.Components.AxlePowertrainInputData) {
+				var axlePowertrainData = new AxlePowertrainData() {
+					GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(axlePt.GearboxInputData),
+					AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(axlePt.AxleGearInputData),
+				};
+                runData.AxlePowertrains.Add(axlePowertrainData);
+			}
+		} else {
+			runData.GearboxSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
+			runData.AxleGearSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
 
-        };
+        }
         if (PrimaryVehicle.ArchitectureID.IsBatteryElectricVehicle() ||
-            PrimaryVehicle.ArchitectureID.IsHybridVehicle())
-        {
+            PrimaryVehicle.ArchitectureID.IsHybridVehicle() ||
+            PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
             runData.BatteryData = CreateBatteryData();
         }
+
+        runData.ElectricMachinesSinglePwt = runData.JobType.IsIEPC()
+            ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+            : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
+
+        if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
+			runData.VehicleData.H2StorageUsableCapacity = PrimaryVehicle.H2StorageUsableCapacity;
+			runData.OVCMode = PrimaryVehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
+			runData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+            runData.FuelCellSystemData = new FuelCellSystemData() {
+				Fuel = { FuelData.H2 }
+			};
+			var fchviterativeStrategy =
+				new FCHEVIterativeRunStrategy(new[] { new PreRunOptions(), new PreRunOptions() });
+			fchviterativeStrategy.Update = UpdateFCHVRunData;
+
+			runData.IterativeRunStrategy = fchviterativeStrategy;
+		}
+		if (runData.EngineData != null && runData.EngineData.Fuels.Any(x => x.FuelData.FuelType.IsOneOf(FuelType.H2CI, FuelType.H2PI))) {
+			runData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
+		}
         return runData;
     }
 
-    protected BatterySystemData CreateBatteryData()
+	private void UpdateFCHVRunData(IModalDataContainer moddata, VectoRunData runData)
+	{
+
+		runData.OVCMode = runData.OVCMode == OvcHevMode.NotApplicable
+			? OvcHevMode.NotApplicable
+			: OvcHevMode.ChargeSustaining;
+		if (runData.PrimaryResult != null && runData.InputData is IMultistepBusInputDataProvider vif) {
+			runData.PrimaryResult = vif.JobInputData.PrimaryVehicle.GetResult(
+				runData.Mission.BusParameter.BusGroup, runData.Mission.MissionType, null,
+				runData.VehicleData.Loading, runData.OVCMode);
+		}
+
+		runData.Iteration++;
+
+	}
+
+	protected BatterySystemData CreateBatteryData()
     {
         return new BatterySystemData()
         {

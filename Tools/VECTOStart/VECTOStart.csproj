@@ -5,7 +5,7 @@
     <AssemblyName>VECTO</AssemblyName>
     <ApplicationIcon>Icon2.ico</ApplicationIcon>
     <RootNamespace>TUGraz.VECTO</RootNamespace>
-    <Configurations>Debug;Release;Deploy;MockupDeploy</Configurations>
+    <Configurations>Debug;Release;Deploy</Configurations>
     <TargetFrameworks>net48</TargetFrameworks>
      
   </PropertyGroup>

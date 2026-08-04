@@ -214,12 +214,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 			AssertMetrics(factory, metrics, vectoTolerance);
 		}
 
-		public static void AssertMetrics(ISimulatorFactory factory, Dictionary<String, double> metrics, double tolerance = DoubleExtensionMethods.ToleranceFactor)
+		public static void AssertMetrics(ISimulatorFactory factory, Dictionary<String, double> metrics, double tolerance = DoubleExtensionMethods.ToleranceFactor, bool isFCHV = false)
 		{
 			String sumFilePath = WriteSumFile(factory);
 
 			var table = VectoCSVFile.Read(sumFilePath, true, true);
-			var row = table.Rows[0];
+			var row = isFCHV ? table.Rows[1] : table.Rows[0];
 
 			Dictionary<string, double> results = new Dictionary<string, double>();
 

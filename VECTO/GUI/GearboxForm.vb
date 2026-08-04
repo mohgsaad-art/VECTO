@@ -35,9 +35,9 @@ Imports TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 Imports TUGraz.VectoCore.Models.SimulationComponent.Impl
+Imports TUGraz.VectoCore.Ninject
 Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.OutputData.XML
-Imports TUGraz.VectoCore.OutputData.XML.Engineering.Interfaces
 
 
 ''' <summary>

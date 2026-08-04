@@ -12,7 +12,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27;
 using TUGraz.VectoCore.Utils;
 using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Model.Multistage;
@@ -349,9 +349,9 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			{
 				var inputData = _inputDataReader.Create(fileName) as IDeclarationInputDataProvider;
 				vehicleInputData = inputData.JobInputData.Vehicle;
-				valid = (inputData != null) && (vehicleInputData is AbstractXMLDeclarationCompletedBusDataProviderV24) || (vehicleInputData is XMLDeclarationExemptedCompletedBusDataProviderV24);
+				valid = (inputData != null) && (vehicleInputData is AbstractXMLDeclarationCompletedBusDataProviderV27) || (vehicleInputData is AbstractXMLDeclarationExemptedVehicleDataProviderV27);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				valid = false;
 			}
@@ -364,11 +364,8 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			}
 			else
 			{
-				_dialogHelper.ShowMessageBox("Invalid File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				_dialogHelper.ShowMessageBox($"Invalid File: Unexpected file version.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
-
-
-
 
 			return valid;
 		}
@@ -389,7 +386,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 				valid = inputData != null && inputData.JobInputData.Vehicle.VehicleCategory == VehicleCategory.HeavyBusPrimaryVehicle;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				valid = false;
 			}

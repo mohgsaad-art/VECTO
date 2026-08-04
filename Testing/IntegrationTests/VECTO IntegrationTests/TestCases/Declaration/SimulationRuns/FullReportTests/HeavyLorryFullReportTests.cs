@@ -1,7 +1,9 @@
 ﻿using TUGraz.Vecto.IntegrationTests.Utils;
 using TUGraz.Vecto.IntegrationTests.Utils.DummyRun;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
@@ -69,49 +71,101 @@ public class HeavyLorryFullReportTests : FullReportTestsBase
         WRITE_REPORTS_TO_OUTPUT = true;
     }
 
-	[TestCase(ConventionalHeavyLorry, TestName = "ConventionalHeavyLorry")]
-	[TestCase(ConventionalHeavyLorry_DualFuel, TestName = "ConventionalHeavyLorry_DualFuel")]
-	[TestCase(ConventionalHeavyLorry_WHR, TestName = "ConventionalHeavyLorry_WHR")]
-    [TestCase(ConventionalHeavyLorry_NoRetarder, TestName = "ConventionalHeavyLorry_NoRetarder")]
-    [TestCase(ConventionalHeavyLorry_NoAirdrag, TestName = "ConventionalHeavyLorry_NoAirdrag")]
-    [TestCase(ConventionalHeavyLorry_DifferentTyres, TestName = "ConventionalHeavyLorry_DifferentTyres")]
-    [TestCase(ConventionalHeavyLorry_AT_Angledrive, TestName = "ConventionalHeavyLorry_AT_Angledrive")]
-    [TestCase(ConventionalHeavyLorry_Vocational, TestName = "ConventionalHeavyLorry_Vocational")]
-    //[TestCase(ConventionalHeavyLorry, false, TestName = "ConventionalHeavyLorryNoMockup")]
-    [TestCase(HEV_S2_HeavyLorry, TestName = "HEV_S2_HeavyLorry")]
-    [TestCase(HEV_S2_HeavyLorry_NoRetarder, TestName = "HEV_S2_HeavyLorry_NoRetarder")]
-    [TestCase(HEV_S3_HeavyLorry, TestName = "HEV_S3_HeavyLorry")]
-    [TestCase(HEV_S3_HeavyLorry_ovc, TestName = "HEV_S3_HeavyLorry_ovc")]
-    [TestCase(HEV_S4_HeavyLorry, TestName = "HEV_S4_HeavyLorry")]
-    [TestCase(HEV_Px_HeavyLorry, TestName = "HEV_Px_HeavyLorry")]
-    [TestCase(HEV_Px_HeavyLorry_BatteryStd, TestName = "HEV_Px_HeavyLorry_BatteryStd")]
-    [TestCase(PEV_E2_HeavyLorry, TestName = "PEV_E2_HeavyLorry")]
-    [TestCase(PEV_E2_HeavyLorry_BatteryStd, TestName = "PEV_E2_HeavyLorry_BatteryStd")]
-    [TestCase(PEV_E2_HeavyLorry_NoRetarder, TestName = "PEV_E2_HeavyLorry_NoRetarder")]
-    [TestCase(PEV_E2_HeavyLorry_NoAirdrag, TestName = "PEV_E2_HeavyLorry_NoAirdrag")]
-    [TestCase(PEV_E2_HeavyLorry_Vocational, TestName = "PEV_E2_HeavyLorry_Vocational")]
-    //[TestCase(PEV_E2_HeavyLorry, false, TestName = "PEV_E2_HeavyLorryNoMockup")]
-    [TestCase(PEV_E3_HeavyLorry, TestName = "PEV_E3_HeavyLorry")]
-    [TestCase(PEV_E4_HeavyLorry, TestName = "PEV_E4_HeavyLorry")]
-    [TestCase(PEV_IEPC_HeavyLorry, TestName = "PEV_IEPC_HeavyLorry")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx1, TestName = "PEV_IEPC_HeavyLorry_Gbx1")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx1Axl, TestName = "PEV_IEPC_HeavyLorry_Gbx1Axl")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx1Whl, TestName = "PEV_IEPC_HeavyLorry_Gbx1Whl")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx2, TestName = "PEV_IEPC_HeavyLorry_Gbx2")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx2_drag, TestName = "PEV_IEPC_HeavyLorry_Gbx2_drag")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Axl, TestName = "PEV_IEPC_HeavyLorry_Gbx2Axl")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Axl_drag, TestName = "PEV_IEPC_HeavyLorry_Gbx2Axl_drag")]
-    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Whl, TestName = "PEV_IEPC_HeavyLorry_Gbx2Whl")]
+	[TestCase(ConventionalHeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry)")]
+	[TestCase(ConventionalHeavyLorry_DualFuel, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_DualFuel)")]
+	[TestCase(ConventionalHeavyLorry_WHR, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_WHR)")]
+    [TestCase(ConventionalHeavyLorry_NoRetarder, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_NoRetarder)")]
+    [TestCase(ConventionalHeavyLorry_NoAirdrag, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_NoAirdrag)")]
+    [TestCase(ConventionalHeavyLorry_DifferentTyres, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_DifferentTyres)")]
+    [TestCase(ConventionalHeavyLorry_AT_Angledrive, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_AT_Angledrive)")]
+    [TestCase(ConventionalHeavyLorry_Vocational, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorry_Vocational)")]
+    //[TestCase(ConventionalHeavyLorry, false, TestName = "HeavyLorryFullReportSuccessTest_v24(ConventionalHeavyLorryNoMockup)")]
+    [TestCase(HEV_S2_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S2_HeavyLorry)")]
+    [TestCase(HEV_S2_HeavyLorry_NoRetarder, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S2_HeavyLorry_NoRetarder)")]
+    [TestCase(HEV_S3_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S3_HeavyLorry)")]
+    [TestCase(HEV_S3_HeavyLorry_ovc, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S3_HeavyLorry_ovc)")]
+    [TestCase(HEV_S4_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S4_HeavyLorry)")]
+    [TestCase(HEV_Px_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry)")]
+    [TestCase(HEV_Px_HeavyLorry_BatteryStd, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry_BatteryStd)")]
+    [TestCase(PEV_E2_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorry)")]
+    [TestCase(PEV_E2_HeavyLorry_BatteryStd, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorry_BatteryStd)")]
+    [TestCase(PEV_E2_HeavyLorry_NoRetarder, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorry_NoRetarder)")]
+    [TestCase(PEV_E2_HeavyLorry_NoAirdrag, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorry_NoAirdrag)")]
+    [TestCase(PEV_E2_HeavyLorry_Vocational, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorry_Vocational)")]
+    //[TestCase(PEV_E2_HeavyLorry, false, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E2_HeavyLorryNoMockup)")]
+    [TestCase(PEV_E3_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E3_HeavyLorry)")]
+    [TestCase(PEV_E4_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_E4_HeavyLorry)")]
+    [TestCase(PEV_IEPC_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx1, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx1)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx1Axl, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx1Axl)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx1Whl, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx1Whl)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx2, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx2)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx2_drag, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx2_drag)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Axl, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx2Axl)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Axl_drag, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx2Axl_drag)")]
+    [TestCase(PEV_IEPC_HeavyLorry_Gbx2Whl, TestName = "HeavyLorryFullReportSuccessTest_v24(PEV_IEPC_HeavyLorry_Gbx2Whl)")]
 
-    [TestCase(HEV_IEPC_S_HeavyLorry, TestName = "HEV_IEPC_S_HeavyLorry")]
-    [TestCase(HEV_IHPC_HeavyLorry, TestName = "HEV_IHPC_HeavyLorry")]
-    [TestCase(HEV_Px_HeavyLorry_ADC, TestName = "HEV_Px_HeavyLorry_ADC")]
-    [TestCase(HEV_Px_HeavyLorry_NoRetarder, TestName = "HEV_Px_HeavyLorry_NoRetarder")]
-    [TestCase(HEV_Px_HeavyLorry_NoAirDrag, TestName = "HEV_Px_HeavyLorry_NoAirDrag")]
-    [TestCase(HEV_S3_HeavyLorry_ADC, TestName = "HEV_S3_HeavyLorry_ADC")]
-    [TestCase(HEV_Px_HeavyLorry_SuperCap, TestName = "HEV_Px_HeavyLorry_SuperCap")]
+    [TestCase(HEV_IEPC_S_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_IEPC_S_HeavyLorry)")]
+    [TestCase(HEV_IHPC_HeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_IHPC_HeavyLorry)")]
+    [TestCase(HEV_Px_HeavyLorry_ADC, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry_ADC)")]
+    [TestCase(HEV_Px_HeavyLorry_NoRetarder, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry_NoRetarder)")]
+    [TestCase(HEV_Px_HeavyLorry_NoAirDrag, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry_NoAirDrag)")]
+    [TestCase(HEV_S3_HeavyLorry_ADC, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_S3_HeavyLorry_ADC)")]
+    [TestCase(HEV_Px_HeavyLorry_SuperCap, TestName = "HeavyLorryFullReportSuccessTest_v24(HEV_Px_HeavyLorry_SuperCap)")]
 
-    [TestCase(ExemptedHeavyLorry, TestName = "ExemptedHeavyLorry")]
+    [TestCase(ExemptedHeavyLorry, TestName = "HeavyLorryFullReportSuccessTest_v24(ExemptedHeavyLorry)")]
+
+
+    [TestCase(v27LorryPath + "Conventional_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Conventional_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Conventional_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Conventional_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "FCHV_F2_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F2_HeavyLorry)")]
+    [TestCase(v27LorryPath + "FCHV_F2_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F2_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "FCHV_F3_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F3_HeavyLorry)")]
+    [TestCase(v27LorryPath + "FCHV_F3_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F3_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "FCHV_F4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "FCHV_F4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_F4_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "FCHV_IEPC_2xFC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_IEPC_2xFC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "FCHV_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "FCHV_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(FCHV_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "H2_ICE_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(H2_ICE_HeavyLorry)")]
+    [TestCase(v27LorryPath + "HEV_IHPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(HEV_IHPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "HEV_P2_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(HEV_P2_HeavyLorry)")]
+    [TestCase(v27LorryPath + "HEV_P2_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(HEV_P2_HeavyLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "HEV_P2_supercap_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(HEV_P2_supercap_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_E2_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E2_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_E2_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E2_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "PEV_E3_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E3_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_E3_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E3_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "PEV_E4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_E4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_E4_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "PEV_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "PEV_IEPC_multiCurve_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_IEPC_multiCurve_HeavyLorry)")]
+    [TestCase(v27LorryPath + "PEV_IEPC_stdValues_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(PEV_IEPC_stdValues_HeavyLorry)")]
+    [TestCase(v27LorryPath + "SHEV_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "SHEV_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "SHEV_S2_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S2_HeavyLorry)")]
+    [TestCase(v27LorryPath + "SHEV_S2_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S2_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "SHEV_S3_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S3_HeavyLorry)")]
+    [TestCase(v27LorryPath + "SHEV_S3_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S3_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "SHEV_S4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "SHEV_S4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(SHEV_S4_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_FCHV_F2_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_FCHV_F2_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_FCHV_F2_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_FCHV_F2_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_FCHV_F3_F4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_FCHV_F3_F4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_FCHV_F3_F4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_FCHV_F3_F4_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_PEV_E2_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_PEV_E2_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_PEV_E2_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_PEV_E2_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_PEV_E3_E4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_PEV_E3_E4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_PEV_E3_E4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_PEV_E3_E4_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_SHEV_S2_IEPC_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S2_IEPC_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_SHEV_S2_IEPC_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S2_IEPC_HeavyLorry_requiredOnly)")]
+    [TestCase(v27LorryPath + "Multiple_SHEV_S3_S4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S3_S4_HeavyLorry)")]
+    [TestCase(v27LorryPath + "Multiple_SHEV_S3_S4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S3_S4_HeavyLorry_requiredOnly)")]
+
+	[TestCase(v27LorryPath + "Exempted_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Exempted_HeavyLorry)")]
+	[TestCase(v27LorryPath + "Exempted_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Exempted_HeavyLorry_requiredOnly)")]
+
     public void HeavyLorryFullReportSuccessTest(string fileName)
     {
         CopyInputFile(fileName);
@@ -134,18 +188,18 @@ public class HeavyLorryFullReportTests : FullReportTestsBase
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLManufacturerReport, XmlDocumentType.ManufacturerReport), "MRF invalid");
         Assert.IsTrue(ValidateAndPrint(reportWriter.XMLCustomerReport, XmlDocumentType.CustomerReport), "CIF invalid");
 
-		if (!inputProvider.JobInputData.Vehicle.ExemptedVehicle) {
+		if (!inputProvider.JobInputData.Vehicle.ExemptedVehicle && !inputProvider.JobInputData.JobType.IsOneOf(VectoSimulationJobType.FCHV, VectoSimulationJobType.FCHV_IEPC, VectoSimulationJobType.Multiple_FCHV)) {
 			Assert.IsTrue(CheckElementExists(XMLNames.Report_Results_Summary, reportWriter.XMLCustomerReport));
 			//CheckElementCount(XMLNames.Report_Results_Summary, reportWriter.XMLCustomerReport, 2);
 		}
 
 	}
 
-	[TestCase(ConventionalHeavyLorry, TestName = "ConventionalHeavyLorry_Error")]
-	[TestCase(HEV_Px_HeavyLorry, TestName = "HEV_Px_HeavyLorry Error")]
-	[TestCase(HEV_S2_HeavyLorry, TestName = "HEV_S2_HeavyLorry Error")]
-    [TestCase(PEV_E2_HeavyLorry, TestName = "PEV_E2_HeavyLorry Error")]
-	[TestCase(HEV_S3_HeavyLorry_ovc, TestName = "HEV_S3_HeavyLorry_ovc")]
+	[TestCase(ConventionalHeavyLorry, TestName = "HeavyLorryFullReportErrorTest_v24(ConventionalHeavyLorry_Error)")]
+	[TestCase(HEV_Px_HeavyLorry, TestName = "HeavyLorryFullReportErrorTest_v24(HEV_Px_HeavyLorry Error)")]
+	[TestCase(HEV_S2_HeavyLorry, TestName = "HeavyLorryFullReportErrorTest_v24(HEV_S2_HeavyLorry Error)")]
+    [TestCase(PEV_E2_HeavyLorry, TestName = "HeavyLorryFullReportErrorTest_v24(PEV_E2_HeavyLorry Error)")]
+	[TestCase(HEV_S3_HeavyLorry_ovc, TestName = "HeavyLorryFullReportErrorTest_v24(HEV_S3_HeavyLorry_ovc)")]
 	public void HeavyLorryFullReportErrorTest(string fileName)
 	{
         CopyInputFile(fileName);

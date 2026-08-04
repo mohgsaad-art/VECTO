@@ -272,14 +272,14 @@ namespace VECTO3GUI2020.Views.Multistage.CustomControls
 		private static void ListItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			return;
-			
-			var listItems = e.NewValue as ObservableCollection<Enum>;
-			var multistageParameter = (MultiStageParameter)d;
-			if (multistageParameter.Mode == MultistageParameterViewMode.COMBOBOX && listItems != null) {
-				if (!listItems.Contains(multistageParameter.Content as Enum)) {
-					multistageParameter.Content = listItems[0];
-				}
-			}
+			//The lines below were commented out to suppress build-time waarnings
+			//var listItems = e.NewValue as ObservableCollection<Enum>;
+			//var multistageParameter = (MultiStageParameter)d;
+			//if (multistageParameter.Mode == MultistageParameterViewMode.COMBOBOX && listItems != null) {
+			//	if (!listItems.Contains(multistageParameter.Content as Enum)) {
+			//		multistageParameter.Content = listItems[0];
+			//	}
+			//}
 
 			
 		}

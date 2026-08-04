@@ -19,22 +19,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public int AxleNumber {  get; private set; }
 
-		public BatteryElectricMotorController(IVehicleContainer container, IElectricSystem es)
+		public BatteryElectricMotorController(IVehicleContainer container, IElectricSystem es, AxlePowertrainData axlePt = null)
 		{
 			DataBus = container;
-			ElectricMotorData = container.RunData.ElectricMachinesData.FirstOrDefault()?.Item2;
+			ElectricMotorData = (axlePt == null) ? container.RunData.ElectricMachinesSinglePwt.FirstOrDefault()?.Item2 : axlePt.ElectricMachineData.Item2;
 			ElectricSystem = es;
-			GearboxModelData = container.RunData.GearboxData;
-			AxleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
-		}
-
-		public BatteryElectricMotorController(IVehicleContainer container, AxlePowertrainData axlePt, IElectricSystem es)
-		{
-			DataBus = container;
-			ElectricMotorData = axlePt.ElectricMachineData.Item2;
-			ElectricSystem = es;
-			GearboxModelData = axlePt.GearboxData;
-			AxleNumber = axlePt.AxleNumber;
+			GearboxModelData = (axlePt == null) ? container.RunData.GearboxSinglePwt : axlePt.GearboxData;
+			AxleNumber = (axlePt == null) ? Constants.NOT_IN_AXLE_POWERTRAIN : axlePt.AxleNumber;
 		}
 
 		#region Implementation of IElectricMotorControl

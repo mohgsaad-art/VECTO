@@ -96,7 +96,7 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		Meter DynamicTyreRadius { get; }
 
-        Meter Height { get; }
+        new Meter Height { get; }
 
 
 		new IVehicleComponentsEngineering Components { get; }
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCommon.InputData
         // input parameters for road sweeper use case
 
 
-        VectoSimulationJobType VehicleType { get; }
+        new VectoSimulationJobType VehicleType { get; }
 		GearshiftPosition PTO_DriveGear { get; }
 
 		PerSecond PTO_DriveEngineSpeed { get; }

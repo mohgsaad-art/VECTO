@@ -230,11 +230,11 @@ namespace TUGraz.VectoCommon.Utils
 
 	public class ValidationHistoryItem
 	{
-		private (Object, List<ValidationResult>) historyItem;
+		//private (Object, List<ValidationResult>) historyItem;
 
 		public ValidationHistoryItem(Object entity, List<ValidationResult> result)
 		{
-			historyItem = (entity, result);
+			//historyItem = (entity, result); //commented-out to avoid compile-time warning
 		}
 	}
 

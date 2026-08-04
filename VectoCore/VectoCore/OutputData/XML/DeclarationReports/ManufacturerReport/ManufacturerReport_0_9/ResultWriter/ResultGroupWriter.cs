@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
@@ -81,7 +83,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 					new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, new ConvertedSI(double.NaN, XMLNames.UnitPercent).ValueAsUnit()),
 					new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, new ConvertedSI(double.NaN, XMLNames.UnitPercent).ValueAsUnit())
 				);
-            }
+			}
 			return new XElement(TNS + XMLNames.Report_ResultEntry_VehiclePerformance,
 				new XElement(TNS + XMLNames.Report_ResultEntry_AverageSpeed, entry.AverageSpeed.ValueAsUnit(XMLNames.Unit_kmph, 1)),
 				new XElement(TNS + XMLNames.Report_ResultEntry_AvgDrivingSpeed, entry.AverageDrivingSpeed.ValueAsUnit(XMLNames.Unit_kmph, 1)),
@@ -90,14 +92,35 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 				new XElement(TNS + XMLNames.Report_ResultEntry_MaxDeceleration, entry.MaxDeceleration.ValueAsUnit(XMLNames.Unit_mps2, 2)),
 				new XElement(TNS + XMLNames.Report_ResultEntry_MaxAcceleration, entry.MaxAcceleration.ValueAsUnit(XMLNames.Unit_mps2, 2)),
 				new XElement(TNS + XMLNames.Report_ResultEntry_FullLoadDrivingtimePercentage, entry.FullLoadPercentage.ToXMLFormat(2)),
-				new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, entry.GearshiftCount.ToXMLFormat(0)),
+				(entry.GearshiftCount.Count > 0)
+					? entry.GearshiftCount
+						.Select(x => new XElement(
+							TNS + XMLNames.Report_ResultEntry_GearshiftCount,
+							(x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+							x.Value.ToXMLFormat(0)))
+						.ToArray()
+					: new[] { new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, ((double)0).ToXMLFormat(0)) },
 				new XElement(TNS + XMLNames.Report_ResultEntry_EngineSpeedDriving,
 					new XElement(TNS + XMLNames.Report_ResultEntry_EngineSpeedDriving_Min, entry.EngineSpeedDrivingMin.ValueAsUnit(XMLNames.Unit_RPM, 1)),
 					new XElement(TNS + XMLNames.Report_ResultEntry_EngineSpeedDriving_Avg, entry.EngineSpeedDrivingAvg.ValueAsUnit(XMLNames.Unit_RPM, 1)),
 					new XElement(TNS + XMLNames.Report_ResultEntry_EngineSpeedDriving_Max, entry.EngineSpeedDrivingMax.ValueAsUnit(XMLNames.Unit_RPM, 1))
 				),
-				new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, entry.AverageGearboxEfficiency.ValueAsUnit(XMLNames.UnitPercent, 2)),
-				new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, entry.AverageAxlegearEfficiency.ValueAsUnit(XMLNames.UnitPercent, 2))
+                (entry.AverageGearboxEfficiency.Count() > 0)
+					? entry.AverageGearboxEfficiency
+						.Select(x => new XElement(
+							TNS + XMLNames.Report_Results_AverageGearboxEfficiency,
+							(x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+							x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
+						.ToArray()
+                    : new[] { new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) },
+                (entry.AverageAxlegearEfficiency.Count() > 0)
+                    ? entry.AverageAxlegearEfficiency
+                        .Select(x => new XElement(
+                            TNS + XMLNames.Report_Results_AverageAxlegearEfficiency,
+                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
+                        .ToArray()
+                    : new[] { new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) }
 			);
 		}
 
@@ -149,9 +172,30 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.
 				new XElement(TNS + XMLNames.Report_ResultEntry_MaxDeceleration, entry.MaxDeceleration.ValueAsUnit(XMLNames.Unit_mps2, 2)),
 				new XElement(TNS + XMLNames.Report_ResultEntry_MaxAcceleration, entry.MaxAcceleration.ValueAsUnit(XMLNames.Unit_mps2, 2)),
 				new XElement(TNS + XMLNames.Report_ResultEntry_FullLoadDrivingtimePercentage, entry.FullLoadPercentage.ToXMLFormat(2)),
-				new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, entry.GearshiftCount.ToXMLFormat(0)),
-				new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, entry.AverageGearboxEfficiency.ValueAsUnit(XMLNames.UnitPercent, 2)),
-				new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, entry.AverageAxlegearEfficiency.ValueAsUnit(XMLNames.UnitPercent, 2))
+                (entry.GearshiftCount.Count > 0)
+                    ? entry.GearshiftCount
+						.Select(x => new XElement(
+                            TNS + XMLNames.Report_ResultEntry_GearshiftCount,
+                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            x.Value.ToXMLFormat(0)))
+                        .ToArray()
+                    : new[] { new XElement(TNS + XMLNames.Report_ResultEntry_GearshiftCount, ((double)0).ToXMLFormat(0)) },
+                (entry.AverageGearboxEfficiency.Count() > 0)
+                    ? entry.AverageGearboxEfficiency
+                        .Select(x => new XElement(
+                            TNS + XMLNames.Report_Results_AverageGearboxEfficiency,
+                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
+                        .ToArray()
+                    : new[] { new XElement(TNS + XMLNames.Report_Results_AverageGearboxEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) },
+                (entry.AverageAxlegearEfficiency.Count() > 0)
+                    ? entry.AverageAxlegearEfficiency
+                        .Select(x => new XElement(
+                            TNS + XMLNames.Report_Results_AverageAxlegearEfficiency,
+                            (x.Key != Constants.NOT_IN_AXLE_POWERTRAIN) ? new XAttribute("axleNumber", x.Key) : null,
+                            x.Value.ValueAsUnit(XMLNames.UnitPercent, 2)))
+                        .ToArray()
+                    : new[] { new XElement(TNS + XMLNames.Report_Results_AverageAxlegearEfficiency, double.NaN.ValueAsUnit(XMLNames.UnitPercent, 2)) }
 			);
 		}
 

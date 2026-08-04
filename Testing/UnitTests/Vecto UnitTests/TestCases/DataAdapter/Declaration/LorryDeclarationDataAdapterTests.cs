@@ -181,7 +181,7 @@ public class LorryDeclarationDataAdapterTests
 					Assert.IsNotNull(componentDao);
 					Assert.IsInstanceOf(expectedType, componentDao);
 				}
-			} catch (Exception ex) {
+			} catch (Exception) {
 				if (expectedType != null) {
 					throw;
 				}

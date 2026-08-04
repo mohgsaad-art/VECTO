@@ -48,8 +48,9 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		public XMLPrimaryBusVehicleReport()
 		{
 			throw new NotImplementedException("use new implementation...");
-			VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
-			Results = new XElement(tns + XMLNames.Report_Results);
+			//The 2 lines below were commented out to suppress a build-time warning.
+			//VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
+			//Results = new XElement(tns + XMLNames.Report_Results);
 		}
 
 		public XDocument Report { get; protected set; }
@@ -145,11 +146,11 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 				new XElement(tns + XMLNames.Vehicle_Articulated, modelData.VehicleData.InputData.Articulated),
 				new XElement(tns + XMLNames.TPMLM, modelData.VehicleData.InputData.GrossVehicleMassRating.ToXMLFormat(0)),
 				new XElement(tns + XMLNames.Vehicle_IdlingSpeed, modelData.EngineData.IdleSpeed.AsRPM.ToXMLFormat(0)),
-				new XElement(tns + XMLNames.Vehicle_RetarderType, modelData.Retarder.Type.ToXMLFormat()),
-				modelData.Retarder.Type.IsDedicatedComponent()
-					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, modelData.Retarder.Ratio.ToXMLFormat(3))
+				new XElement(tns + XMLNames.Vehicle_RetarderType, modelData.RetarderSinglePwt.Type.ToXMLFormat()),
+				modelData.RetarderSinglePwt.Type.IsDedicatedComponent()
+					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, modelData.RetarderSinglePwt.Ratio.ToXMLFormat(3))
 					: null,
-				new XElement(tns + XMLNames.Vehicle_AngledriveType, (modelData.AngledriveData?.Type ?? AngledriveType.None).ToXMLFormat()),
+				new XElement(tns + XMLNames.Vehicle_AngledriveType, (modelData.AngledriveSinglePwt?.Type ?? AngledriveType.None).ToXMLFormat()),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				GetADAS(modelData.VehicleData.ADAS),
 				GetTorqueLimits(modelData),
@@ -199,10 +200,10 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 				tns + XMLNames.Vehicle_Components,
 				new XAttribute(xsi + XMLNames.XSIType, "Vehicle_Conventional_ComponentsVIFType"),
 				GetEngineDescription(modelData.EngineData),
-				GetGearboxDescription(modelData.GearboxData),
-				GetTorqueConverterDescription(modelData.GearboxData.TorqueConverterData),
-				GetAngledriveDescription(modelData.AngledriveData),
-				GetAxlegearDescription(modelData.AxleGearData),
+				GetGearboxDescription(modelData.GearboxSinglePwt),
+				GetTorqueConverterDescription(modelData.GearboxSinglePwt.TorqueConverterData),
+				GetAngledriveDescription(modelData.AngledriveSinglePwt),
+				GetAxlegearDescription(modelData.AxleGearSinglePwt),
 				GetAxleWheelsDescription(modelData),
 				GetAuxiliariesDescription(modelData)
 			);

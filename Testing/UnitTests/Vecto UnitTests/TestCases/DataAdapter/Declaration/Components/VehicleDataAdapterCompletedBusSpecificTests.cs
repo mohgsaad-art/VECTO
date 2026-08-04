@@ -47,7 +47,7 @@ public class VehicleDataAdapterCompletedBusSpecificTests
         {
             VehicleData = vehicleData,
             Mission = mission,
-            Retarder = new RetarderData()
+            RetarderSinglePwt = new RetarderData()
             {
                 Type = RetarderType.TransmissionOutputRetarder,
             }
@@ -88,7 +88,7 @@ public class VehicleDataAdapterCompletedBusSpecificTests
         {
             VehicleData = vehicleData,
             Mission = mission,
-            Retarder = new RetarderData()
+            RetarderSinglePwt = new RetarderData()
             {
                 Type = RetarderType.TransmissionOutputRetarder,
             },

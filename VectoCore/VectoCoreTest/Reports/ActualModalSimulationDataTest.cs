@@ -30,11 +30,15 @@
 */
 
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Connector.Ports;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 
@@ -44,11 +48,14 @@ namespace TUGraz.VectoCore.Tests.Reports
 	[Parallelizable(ParallelScope.All)]
 	public class ActualModalSimulationDataTest
 	{
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[Category("LongRunning")]
 		[TestCase]
@@ -60,11 +67,12 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var jobContainer = new JobContainer(sumData);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			factory.WriteModalResults = true;
-			factory.ActualModalData = true;
 
-			jobContainer.AddRuns(factory);
+            var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
+            factory.ActualModalData = true;
+
+            jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 			//jobContainer.Runs[4].Run.Run();
 

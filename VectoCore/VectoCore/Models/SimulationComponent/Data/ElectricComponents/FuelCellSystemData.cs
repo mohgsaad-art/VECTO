@@ -128,7 +128,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 
 	public class FuelCellStringData
 	{
-		private const double kgPerSecondConvertionFactor = 3.6E6;
 		private readonly int _count;
 		private readonly FuelCellData _fcData;
 
@@ -198,6 +197,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 
 		public Watt InitPower => _entries.MinBy(e => e.Power).Power;
 
+		public string CalculationError { get; private set; }
+
 		/// <summary>
 		/// Constant for now, remove when this is replaced with the actual implementation 
 		/// </summary>
@@ -211,12 +212,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 
 		}
 
-		public FuelCellPowerMap(FuelCellPreRunPostprocessor.FCCalcEntry[] entries) : this(entries.Select(e => new FuelCellPowerMapEntry() {
+		public FuelCellPowerMap(FuelCellPreRunPostprocessor.FCCalcEntry[] entries, string calculationError = null) : this(entries.Select(e => new FuelCellPowerMapEntry() {
 				Distance = e.s,
 				Power = e.FCPowerFinal,
 			}).ToArray())
 		{
-
+			CalculationError = calculationError;
 		}
 
 		public Watt Lookup(Meter distance)

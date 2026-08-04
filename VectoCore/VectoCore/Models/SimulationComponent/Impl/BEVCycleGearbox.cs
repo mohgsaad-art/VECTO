@@ -8,8 +8,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class BEVCycleGearbox : CycleGearbox
     {
-        public BEVCycleGearbox(IVehicleContainer container, VectoRunData runData) : 
-            base(container)
+        public BEVCycleGearbox(IVehicleContainer container, VectoRunData runData, int axleNumber) : 
+            base(container, axleNumber)
         {}
 
         protected override IResponse GetDisengagedResponse(Second absTime, Second dt, PerSecond outAngularVelocity)

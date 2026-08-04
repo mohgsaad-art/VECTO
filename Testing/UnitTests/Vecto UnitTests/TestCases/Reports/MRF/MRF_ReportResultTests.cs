@@ -7,6 +7,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
@@ -65,7 +66,7 @@ public class MRF_ReportResultTests
     public void Test_MRF_ReportResultInstance(VehicleCategory vehicleCategory, VectoSimulationJobType jobType, int amdm, bool ovc,
         bool exempted, Type expectedResultWriterType)
     {
-        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
+        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
 
         Assert.AreEqual(expectedResultWriterType, resultsWriter.GetType());
     }
@@ -122,7 +123,7 @@ public class MRF_ReportResultTests
         var vehicleCategory = VehicleCategory.RigidTruck;
         var ovcmode = ovc ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
         var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, ovc, exempted, ovcmode, fuels);
-		runData.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+		runData.InputData = ReportResultTestUtils.GetMockInputData(amdm, ovc);
 		var modData = ReportResultTestUtils.GetMockModData(success ? VectoRun.Status.Success : VectoRun.Status.Aborted, fuels);
 
         var resultEntries = new List<IResultEntry>();
@@ -147,7 +148,7 @@ public class MRF_ReportResultTests
 			resultEntry.ZEV_CO2 = resultEntry.ZEV_FuelConsumption_AuxHtr * resultEntry.AuxHeaterFuel.CO2PerFuelWeight;
 			if (ovc) {
 				var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
-				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm, ovc);
 				run2.Iteration = 1;
                 var res2 = ReportResultTestUtils.GetResultEntry(run2);
 				res2.SetResultData(run2, modData, 1);
@@ -160,7 +161,7 @@ public class MRF_ReportResultTests
 			}
 		}
 
-        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm),
+        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc),
             runData.VehicleData.VehicleCategory.GetVehicleType(),
             runData.JobType, runData.VehicleData.OffVehicleCharging, runData.Exempted);
 
@@ -233,7 +234,7 @@ public class MRF_ReportResultTests
             : OvcHevMode.NotApplicable;
 
         var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, ovc, exempted, ovcmode, fuels);
-		runData.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+		runData.InputData = ReportResultTestUtils.GetMockInputData(amdm, ovc);
         var modData = ReportResultTestUtils.GetMockModData(success ? VectoRun.Status.Success : VectoRun.Status.Aborted, fuels);
 
         var resultEntries = new List<IResultEntry>();
@@ -270,7 +271,7 @@ public class MRF_ReportResultTests
 			resultEntry.ZEV_CO2 = resultEntry.ZEV_FuelConsumption_AuxHtr * resultEntry.AuxHeaterFuel.CO2PerFuelWeight;
 			if (ovc) {
 				var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
-				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm, ovc);
 				run2.Iteration = 1;
                 var res2 = ReportResultTestUtils.GetResultEntry(run2);
 				res2.SetResultData(run2, modData, 1);
@@ -283,7 +284,7 @@ public class MRF_ReportResultTests
 			}
 		}
 
-        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm),
+        var resultsWriter = _reportResultsFactory.GetMRFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc),
             runData.VehicleData.VehicleCategory.GetVehicleType(),
             runData.JobType, runData.VehicleData.OffVehicleCharging, runData.Exempted);
 

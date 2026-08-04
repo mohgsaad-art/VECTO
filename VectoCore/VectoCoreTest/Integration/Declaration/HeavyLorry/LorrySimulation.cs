@@ -30,6 +30,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
@@ -194,8 +195,8 @@ public class LorrySimulation
 		dataProvider = _xmlReader.CreateDeclaration(filePath);
 		fileWriter = new FileOutputWriter(filePath);
 
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-		sumWriter = new SummaryDataContainer(fileWriter);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+        sumWriter = new SummaryDataContainer(fileWriter);
 		runsFactory.SumData = sumWriter;
 		return runsFactory;
 	}
@@ -291,8 +292,8 @@ public class LorrySimulation
 	public void AssertVSUMElectricMotorFields(string vsumFileName, VectoRunData runData)
 	{
 		var sumData = VectoCSVFile.Read(vsumFileName, false, true);
-		var em_positions = runData.ElectricMachinesData.Select(em => em.Item1);
-		foreach (var em_pos in runData.ElectricMachinesData.Select(e => e.Item1)) {
+		var em_positions = runData.ElectricMachinesSinglePwt.Select(em => em.Item1);
+		foreach (var em_pos in runData.ElectricMachinesSinglePwt.Select(e => e.Item1)) {
 			Tuple<string, Type>[] columns;
 			if (em_pos == PowertrainPosition.IEPC) {
 				columns = SummaryDataContainer.IEPCColumns;
@@ -318,8 +319,8 @@ public class LorrySimulation
 		{
 
 			var gbxTimeShareFields = new List<string> { };
-			if (runData.GearboxData?.Gears != null && runData.GearboxData.Gears.Count > 0) {
-				for (var i = 0; i <= runData.GearboxData.Gears.Count; i++) {
+			if (runData.GearboxSinglePwt?.Gears != null && runData.GearboxSinglePwt.Gears.Count > 0) {
+				for (var i = 0; i <= runData.GearboxSinglePwt.Gears.Count; i++) {
 					gbxTimeShareFields.Add(string.Format(SumDataFields.TIME_SHARE_PER_GEAR_FORMAT, i));
 				}
 
@@ -336,8 +337,6 @@ public class LorrySimulation
 				Assert.IsFalse(tableData.Columns.Contains(name), name);
 			}
 		}
-
-		void AssertOrder(TableData tableData, List<string> ordered) { }
 
 		void SearchForPattern(TableData tableData, List<string> pattern)
 		{
@@ -791,7 +790,7 @@ public class LorrySimulation
 			var rd = run.GetContainer().RunData;
 			// PEV with APT-S or APT-P transmission are simulated as APT-N
 			return rd.VehicleData.InputData.Components.GearboxInputData == null ||
-					rd.GearboxData.Type.IsOneOf(GearboxType.AMT, GearboxType.APTN);
+					rd.GearboxSinglePwt.Type.IsOneOf(GearboxType.AMT, GearboxType.APTN);
 		}));
 
 		var run = runs.Single(run => {
@@ -843,7 +842,7 @@ public class LorrySimulation
 			out var inputProvider);
 		var run = runs.First().GetContainer().RunData;
 
-		var iepc = run.ElectricMachinesData.First().Item2 as IEPCElectricMotorData;
+		var iepc = run.ElectricMachinesSinglePwt.First().Item2 as IEPCElectricMotorData;
 		Assert.IsNotNull(iepc);
 		var voltageLevel = iepc.EfficiencyData.VoltageLevels.First() as IEPCVoltageLevelData;
 		Assert.IsNotNull(voltageLevel);
@@ -887,7 +886,7 @@ public class LorrySimulation
 			out var inputProvider);
 		var run = runs.First().GetContainer().RunData;
 
-		var em = run.ElectricMachinesData.First().Item2;
+		var em = run.ElectricMachinesSinglePwt.First().Item2;
 		Assert.IsNotNull(em);
 		var voltageLevel = em.EfficiencyData.VoltageLevels.First();
 		Assert.IsNotNull(voltageLevel);
@@ -973,8 +972,8 @@ public class LorrySimulation
 			GetJobContainer(withPTOTransmission, null, out var fileWriterPto, out var runsPto, out _, false);
 		var jobContainer =
 			GetJobContainer(withoutPTOTransmission, null, out var fileWriter, out var runs, out _, false);
-		runsPto.ForEach(r => Assert.NotNull(r.GetContainer().RunData.PTO));
-		runs.ForEach(r => Assert.Null(r.GetContainer().RunData.PTO));
+		runsPto.ForEach(r => Assert.NotNull(r.GetContainer().RunData.PTOSinglePwt));
+		runs.ForEach(r => Assert.Null(r.GetContainer().RunData.PTOSinglePwt));
 		//var ptoPath = Path.Combine(BASE_DIR, withoutPTOTransmission);
 		//var noPtoPath = Path.Combine(BASE_DIR, withoutPTOTransmission);
 		//var ptoXDoc = XDocument.Load(ptoPath);
@@ -1123,9 +1122,8 @@ public class LorrySimulation
 		}
 
 		var fileWriter = new FileOutputWriter(path);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(executionMode, inputData, fileWriter,
-			writeReports ? null : new NullDeclarationReport()); //, writeReports ? null : new NullDeclarationReport());
-		DisableIterativeRuns(runsFactory);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(executionMode, inputData, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        DisableIterativeRuns(runsFactory);
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
 
@@ -1343,10 +1341,9 @@ public class LorrySimulation
 		var dataProvider = _xmlReader.CreateDeclaration(filePath);
 		inputData = dataProvider;
 		fileWriter = new FileOutputWriter(filePath);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter,
-			writeReports ? null : new NullDeclarationReport());
-		//runsFactory.ActualModalData = true;
-		runsFactory.SerializeVectoRunData = true;
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        //runsFactory.ActualModalData = true;
+        runsFactory.SerializeVectoRunData = true;
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter);
 

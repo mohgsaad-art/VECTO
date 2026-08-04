@@ -13,7 +13,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 	public class DisengagedGearbox : AbstractGearbox<GearboxState>, IGearbox, IHybridControlledGearbox
 	{
 
-		public DisengagedGearbox(IVehicleContainer container) : base(container)
+		public DisengagedGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
 		{
 			Gear = ModelData.GearList.Last();
 			LastDownshift = -double.MaxValue.SI<Second>();
@@ -123,16 +123,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] =  0;
-			container[ModalResultField.P_gbx_loss] = inPower - outPower;
-			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
-			container[ModalResultField.P_gbx_in] = inPower;
-			container[ModalResultField.n_gbx_out_avg] = (PreviousState.OutAngularVelocity +
+			container[ModalResultField.Gear, AxleNumber.FormatAxleNumber()] =  0;
+			container[ModalResultField.P_gbx_loss, AxleNumber.FormatAxleNumber()] = inPower - outPower;
+			container[ModalResultField.P_gbx_inertia, AxleNumber.FormatAxleNumber()] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
+			container[ModalResultField.P_gbx_in, AxleNumber.FormatAxleNumber()] = inPower;
+			container[ModalResultField.n_gbx_out_avg, AxleNumber.FormatAxleNumber()] = (PreviousState.OutAngularVelocity +
 														CurrentState.OutAngularVelocity) / 2.0;
-			container[ModalResultField.n_gbx_in_avg] = avgInAngularSpeed;
+			container[ModalResultField.n_gbx_in_avg, AxleNumber.FormatAxleNumber()] = avgInAngularSpeed;
 
-			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
-			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
+			container[ModalResultField.T_gbx_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
+			container[ModalResultField.T_gbx_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
 		}
 
 		public override bool GearEngaged(Second absTime)

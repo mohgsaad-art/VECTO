@@ -23,7 +23,7 @@
 		"Architecture": "E3",
 	    "ElectricMotor": {
 		  "Count": 1,
-		  "Ratio": 2,
+		  "Ratio": 11.6,
 	      "MechanicalEfficiency":  0.97, 
 	      "Position": "E3",
 	      "MotorFile": "GenericEMotor_125kW_485Nm.vem"

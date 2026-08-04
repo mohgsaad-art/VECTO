@@ -93,17 +93,21 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		void TriggerGearshift(Second absTime, Second dt);
 
 		event Action GearShiftTriggered;
-	}
+
+        int AxleNumber { get; }
+    }
 
 	public interface ITorqueConverterInfo
 	{
 		Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed);
 
-	}
+        int AxleNumber { get; }
+    }
 
 	public interface ITorqueConverterControl
 	{
-		
 		TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
-	}
+
+        int AxleNumber { get; }
+    }
 }

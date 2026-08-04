@@ -77,7 +77,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var vectoRun = new VectoRunData()
 			{
 				EngineData = EngineData,
-				AxleGearData = AxlegearData,
+				AxleGearSinglePwt = AxlegearData,
 				VehicleData = tempVehicle,
 				Cycle = VTPCycle
 			};
@@ -121,9 +121,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
                 VehicleData = tempVehicle,
                 AirdragData = airDragData,
 				EngineData = EngineData,
-                GearboxData = GearboxData,
-                AxleGearData = AxlegearData,
-                Retarder = RetarderData,
+                GearboxSinglePwt = GearboxData,
+                AxleGearSinglePwt = AxlegearData,
+                RetarderSinglePwt = RetarderData,
                 Aux = GetAuxiliaryData(Segment.Missions.First().MissionType),
 				BusAuxiliaries = busAuxiliaries,
 				Cycle = VTPCycle

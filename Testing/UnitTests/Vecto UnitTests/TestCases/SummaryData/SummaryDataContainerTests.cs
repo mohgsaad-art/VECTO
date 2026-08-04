@@ -10,6 +10,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 using Assert = NUnit.Framework.Assert;
@@ -35,7 +36,7 @@ public class SummaryDataContainerTests
 
         var modData = GetModalDataContainer(rundata);
 		sumWriter.AddAuxiliary("FAN");
-        sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+        sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
         sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
         sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -102,7 +103,7 @@ public class SummaryDataContainerTests
         var modData = GetModalDataContainer(rundata);
         
 		sumWriter.AddAuxiliary("FAN");
-        sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+        sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
         sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
         sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -204,7 +205,7 @@ public class SummaryDataContainerTests
 				RatedSpeedDeclared = 2000.RPMtoRad(),
 				Displacement = 7.SI(Unit.SI.Liter).Cast<CubicMeter>()
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 			Cycle = new DrivingCycleData()
 			{
 				Name = "MockCycle",

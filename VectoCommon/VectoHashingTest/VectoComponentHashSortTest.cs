@@ -21,7 +21,7 @@ namespace VectoHashingTest
         public void TestFuelCellHashSort(string expectedHash, string filePath)
         {
             var loadedFile = VectoHash.Load(filePath);
-            Assert.AreEqual(expectedHash, loadedFile.ComputeHash(VectoComponents.FuelCell));
+            Assert.AreEqual(expectedHash, loadedFile.ComputeHash(VectoComponents.FuelCell, 1));
         }
 
         [TestCase("sYOwPn3VlMw71bjQFfACuekdAjZ8QRT3S8c71w7810A=", SortedComponentPath + "Engine.xml"),

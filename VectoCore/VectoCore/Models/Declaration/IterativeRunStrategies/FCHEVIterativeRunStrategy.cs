@@ -11,17 +11,18 @@ namespace TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies
 		public DoUpdateRunData Update { get; set; }
 
 		private bool firstRunPerformed = false;
+		
 		public class FCHEVIterativeRunResult : IIterativeRunResult
 		{
 
 		}
 
+		public FCHEVIterativeRunStrategy(PreRunOptions[] preRunOptions) : base(preRunOptions) { }
 
 
+        #region Overrides of AbstractIterativeRunStrategy<FCHEVIterativeRunResult>
 
-		#region Overrides of AbstractIterativeRunStrategy<FCHEVIterativeRunResult>
-
-		public override bool RunAgain(int iteration, IModalDataContainer modData, VectoRunData runData)
+        public override bool RunAgain(int iteration, IModalDataContainer modData, VectoRunData runData)
 		{
 			if (!firstRunPerformed) {
 				firstRunPerformed = true;
@@ -48,6 +49,5 @@ namespace TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies
 
 		#endregion
 
-		public FCHEVIterativeRunStrategy(PreRunOptions[] preRunOptions) : base(preRunOptions) { }
 	}
 }

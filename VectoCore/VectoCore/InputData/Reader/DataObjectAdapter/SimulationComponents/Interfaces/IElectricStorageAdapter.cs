@@ -9,6 +9,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
         BatterySystemData CreateBatteryData(IElectricStorageSystemDeclarationInputData batteryInputData,
             VectoSimulationJobType jobType,
             bool ovc,
+            bool batteryOnlyMode,
             double deterioration = DeclarationData.Battery.GenericDeterioration);
 
         SuperCapData CreateSuperCapData(IElectricStorageSystemDeclarationInputData reessInputData);

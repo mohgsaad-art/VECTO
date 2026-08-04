@@ -47,25 +47,61 @@ public class MediumLorryFullReportTests : FullReportTestsBase
   //      WRITE_REPORTS_TO_OUTPUT = true;
 	}
 
-	[TestCase(Conventional_mediumLorry_AMT, TestName = "Conventional_Medium_Lorry")]
-	[TestCase(HEV_S_mediumLorry_AMT_S2, TestName = "HEV_S2_Medium_Lorry")]
-	[TestCase(HEV_S_mediumLorry_IEPC_S, TestName = "HEV_IEPC_Medium_Lorry")]
-	[TestCase(HEV_S_mediumLorry_S3, TestName = "HEV_S3_Medium_Lorry")]
-	[TestCase(HEV_S_mediumLorry_S3_BatteryStd, TestName = "HEV_S3_Medium_Lorry_BatteryStd")]
-	[TestCase(HEV_S_mediumLorry_S4, TestName = "HEV_S4_Medium_Lorry")]
-	[TestCase(HEV_mediumLorry_AMT_Px, TestName = "HEV_Px_Medium_Lorry")]
-	[TestCase(IEPC_mediumLorry, TestName = "PEV_IEPC_Medium_Lorry")]
-	[TestCase(PEV_mediumLorry_AMT_E2, TestName = "PEV_E2_Medium_Lorry")]
-	[TestCase(PEV_mediumLorry_AMT_E2_EM_Std, TestName = "PEV_E2_std_Medium_Lorry")]
-	[TestCase(PEV_mediumLorry_APT_N_E2, TestName = "PEV_E2_Medium_Lorry_2")]
-	[TestCase(PEV_mediumLorry_E3, TestName = "PEV_E3_Medium_Lorry")]
-	[TestCase(PEV_mediumLorry_E3_BatteryStd, TestName = "PEV_E3_Medium_Lorry_BatteryStd")]
-	[TestCase(PEV_mediumLorry_E4, TestName = "PEV_E4_Medium_Lorry")]
-	[TestCase(HEV_mediumLorry_IHPC, TestName = "HEV_IHPC_MediumLorry")]
-	[TestCase(HEV_mediumLorry_Px_SuperCap, TestName = "HEV_Px_Medium_Lorry_SuperCap")]
-	[TestCase(PEV_mediumLorry_AMT_E2_BatStd, TestName = "PEV_E2_Medium_Lorry_BatteryStd")]
+	[TestCase(Conventional_mediumLorry_AMT, TestName = "MediumLorryFullReportSuccessTest_v24(Conventional_Medium_Lorry)")]
+	[TestCase(HEV_S_mediumLorry_AMT_S2, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_S2_Medium_Lorry)")]
+	[TestCase(HEV_S_mediumLorry_IEPC_S, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_IEPC_Medium_Lorry)")]
+	[TestCase(HEV_S_mediumLorry_S3, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_S3_Medium_Lorry)")]
+	[TestCase(HEV_S_mediumLorry_S3_BatteryStd, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_S3_Medium_Lorry_BatteryStd)")]
+	[TestCase(HEV_S_mediumLorry_S4, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_S4_Medium_Lorry)")]
+	[TestCase(HEV_mediumLorry_AMT_Px, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_Px_Medium_Lorry)")]
+	[TestCase(IEPC_mediumLorry, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_IEPC_Medium_Lorry)")]
+	[TestCase(PEV_mediumLorry_AMT_E2, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E2_Medium_Lorry)")]
+	[TestCase(PEV_mediumLorry_AMT_E2_EM_Std, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E2_std_Medium_Lorry)")]
+	[TestCase(PEV_mediumLorry_APT_N_E2, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E2_Medium_Lorry_2)")]
+	[TestCase(PEV_mediumLorry_E3, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E3_Medium_Lorry)")]
+	[TestCase(PEV_mediumLorry_E3_BatteryStd, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E3_Medium_Lorry_BatteryStd)")]
+	[TestCase(PEV_mediumLorry_E4, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E4_Medium_Lorry)")]
+	[TestCase(HEV_mediumLorry_IHPC, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_IHPC_MediumLorry)")]
+	[TestCase(HEV_mediumLorry_Px_SuperCap, TestName = "MediumLorryFullReportSuccessTest_v24(HEV_Px_Medium_Lorry_SuperCap)")]
+	[TestCase(PEV_mediumLorry_AMT_E2_BatStd, TestName = "MediumLorryFullReportSuccessTest_v24(PEV_E2_Medium_Lorry_BatteryStd)")]
 
-    [TestCase(ExemptedMediumLorry, TestName = "Exempted_MediumLorry")]
+	[TestCase(ExemptedMediumLorry, TestName = "MediumLorryFullReportSuccessTest_v24(Exempted_MediumLorry)")]
+
+
+    [TestCase(v27LorryPath + "Conventional_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(Conventional_MediumLorry)")]
+	[TestCase(v27LorryPath + "Conventional_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(Conventional_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "FCHV_F2_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F2_MediumLorry)")]
+	[TestCase(v27LorryPath + "FCHV_F2_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F2_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "FCHV_F3_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F3_MediumLorry)")]
+	[TestCase(v27LorryPath + "FCHV_F3_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F3_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "FCHV_F4_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F4_MediumLorry)")]
+	[TestCase(v27LorryPath + "FCHV_F4_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_F4_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "FCHV_IEPC_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_IEPC_MediumLorry)")]
+	[TestCase(v27LorryPath + "FCHV_IEPC_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(FCHV_IEPC_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "H2_ICE_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(H2_ICE_MediumLorry)")]
+	[TestCase(v27LorryPath + "HEV_IHPC_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(HEV_IHPC_MediumLorry)")]
+	[TestCase(v27LorryPath + "HEV_P2_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(HEV_P2_MediumLorry)")]
+	[TestCase(v27LorryPath + "HEV_P2_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(HEV_P2_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "PEV_E2_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E2_MediumLorry)")]
+	[TestCase(v27LorryPath + "PEV_E2_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E2_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "PEV_E3_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E3_MediumLorry)")]
+	[TestCase(v27LorryPath + "PEV_E3_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E3_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "PEV_E4_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E4_MediumLorry)")]
+	[TestCase(v27LorryPath + "PEV_E4_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_E4_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "PEV_IEPC_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_IEPC_MediumLorry)")]
+	[TestCase(v27LorryPath + "PEV_IEPC_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(PEV_IEPC_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "SHEV_IEPC_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_IEPC_MediumLorry)")]
+	[TestCase(v27LorryPath + "SHEV_IEPC_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_IEPC_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "SHEV_S2_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S2_MediumLorry)")]
+	[TestCase(v27LorryPath + "SHEV_S2_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S2_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "SHEV_S3_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S3_MediumLorry)")]
+	[TestCase(v27LorryPath + "SHEV_S3_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S3_MediumLorry_requiredOnly)")]
+	[TestCase(v27LorryPath + "SHEV_S4_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S4_MediumLorry)")]
+	[TestCase(v27LorryPath + "SHEV_S4_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(SHEV_S4_MediumLorry_requiredOnly)")]
+
+	[TestCase(v27LorryPath + "Exempted_MediumLorry.xml", TestName = "MediumLorryFullReportSuccessTest_v27(Exempted_MediumLorry)")]
+	[TestCase(v27LorryPath + "Exempted_MediumLorry_requiredOnly.xml", TestName = "MediumLorryFullReportSuccessTest_v27(Exempted_MediumLorry_requiredOnly)")]
+
     public void MediumLorryFullReportSuccessTest(string fileName)
     {
         CopyInputFile(fileName);
@@ -95,10 +131,10 @@ public class MediumLorryFullReportTests : FullReportTestsBase
 
 	}
 
-	[TestCase(Conventional_mediumLorry_AMT, TestName = "Conventional_Medium_Lorry Error")]
-	[TestCase(HEV_S_mediumLorry_S3, TestName = "HEV_S3_Medium_Lorry Error")]
-	[TestCase(HEV_mediumLorry_AMT_Px, TestName = "HEV_Px_Medium_Lorry Error")]
-	[TestCase(PEV_mediumLorry_AMT_E2, TestName = "PEV_E2_Medium_Lorry Error")]
+	[TestCase(Conventional_mediumLorry_AMT, TestName = "MediumLorryFullReportErrorTest_v24(Conventional_Medium_Lorry Error)")]
+	[TestCase(HEV_S_mediumLorry_S3, TestName = "MediumLorryFullReportErrorTest_v24(HEV_S3_Medium_Lorry Error)")]
+	[TestCase(HEV_mediumLorry_AMT_Px, TestName = "MediumLorryFullReportErrorTest_v24(HEV_Px_Medium_Lorry Error)")]
+	[TestCase(PEV_mediumLorry_AMT_E2, TestName = "MediumLorryFullReportErrorTest_v24(PEV_E2_Medium_Lorry Error)")]
     public void MediumLorryFullReportErrorTest(string fileName)
 	{
 		CopyInputFile(fileName);

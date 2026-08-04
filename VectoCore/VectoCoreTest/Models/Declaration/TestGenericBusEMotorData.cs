@@ -7,6 +7,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.GenericModelData;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Declaration
@@ -165,7 +166,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var electricStorage = multistepBusInputData.JobInputData.PrimaryVehicle.Vehicle.Components.ElectricStorage;
 			
 			var genericBusBatteryData = new GenericBusBatteryData();
-			var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true);
+			var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true, true);
 
 			Assert.AreEqual(initialSoC, batterySystemData.InitialSoC);
 			Assert.AreEqual(2, batterySystemData.Batteries.Count);

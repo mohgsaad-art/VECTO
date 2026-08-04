@@ -22,8 +22,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 	public interface IElectricSystem : IElectricSystemInfo, IBatteryConnector, IElectricChargerConnector, IElectricAuxConnector
     {
 		IElectricSystemResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false);
-
-		void Connect(IElectricChargerPort charger);
 	}
 
 	public interface IElectricEnergyStorage : IBatteryProvider, IRESSInfo, IElectricEnergyStoragePort

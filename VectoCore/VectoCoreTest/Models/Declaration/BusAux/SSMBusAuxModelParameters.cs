@@ -127,7 +127,7 @@ static internal class SSMBusAuxModelParameters
 			VehicleData = new VehicleData() {
 				VehicleClass = vehicleClass,
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None
 			}
 		};

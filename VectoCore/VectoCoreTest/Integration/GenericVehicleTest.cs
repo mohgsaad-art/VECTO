@@ -13,6 +13,8 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
@@ -66,10 +68,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var inputData = JSONInputDataFactory.ReadJsonJob(path, false);
 
 			var fileWriter = new FileOutputWriter(path);
-			runsFactory = SimulatorFactory.CreateSimulatorFactory(executionMode, inputData, fileWriter,
-				writeReports ? null : new NullDeclarationReport()); //, writeReports ? null : new NullDeclarationReport());
-			//DisableIterativeRuns(runsFactory);
-			runsFactory.WriteModalResults = false;
+			runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(executionMode, inputData, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+            //DisableIterativeRuns(runsFactory);
+            runsFactory.WriteModalResults = false;
 			var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
 
 			jobContainer = new JobContainer(sumWriter);
@@ -139,14 +140,14 @@ namespace TUGraz.VectoCore.Tests.Integration
 					var busInputData = inputData as IMultistepBusInputDataProvider;
 					var multistepInputData = new XMLDeclarationVIFInputData(busInputData, null);
 					fileWriter = new FileOutputVIFWriter(path, busInputData.JobInputData.ManufacturingStages?.Count ?? 0);
-					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, multistepInputData, fileWriter, null, null, true);
-				}
+                    runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, multistepInputData, fileWriter, null, null, true);
+                }
 				else
 				{
 
-					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter, writeReports ? null : new NullDeclarationReport()); 
-					//, writeReports ? null : new NullDeclarationReport());
-				}
+					runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, writeReports ? null : new NullDeclarationReport(), null);
+                    //, writeReports ? null : new NullDeclarationReport());
+                }
 
 				var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
 				runsFactory.WriteModalResults = false;
@@ -232,7 +233,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 					case XmlDocumentType.EngineeringJobData:
 						throw new Exception("Engineering xml still a thing?");
-						break;
 					case XmlDocumentType.EngineeringComponentData:
 					case XmlDocumentType.DeclarationComponentData:
                     case XmlDocumentType.ManufacturerReport:

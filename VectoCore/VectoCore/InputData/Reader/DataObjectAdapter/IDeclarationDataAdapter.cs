@@ -41,13 +41,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             int axleNumber);
 
         void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-			VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData,
+			VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData,
 			Action<SuperCapData> setSuperCapData);
 
 		FuelCellSystemDeclarationData CreateFuelCells(IFuelCellSystemDeclarationInputData fuelCellSystem);
 
 		IList<AxlePowertrainData> CreateAxlePowertrainsData(
-			IDeclarationInputDataProvider input, 
+            IVehicleDeclarationInputData vehicle, 
 			Volt averageVoltage,
             bool batteryOnlyHybridMode, 
 			VehicleData vehicleData,
@@ -149,8 +149,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			IList<Tuple<PowertrainPosition, ElectricMotorData>> runDataElectricMachinesData, ArchitectureID architectureId);
 
 		RetarderData CreateGenericRetarderData(IRetarderInputData retarderData, VectoRunData vectoRun);
-
-        FuelCellSystemDeclarationData CreateFuelCells(IFuelCellSystemDeclarationInputData fuelCellSystem);
     }
 
 	public interface ISpecificCompletedBusDeclarationDataAdapter
@@ -167,8 +165,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		AirdragData CreateAirdragData(IVehicleDeclarationInputData completedVehicle, Mission mission, Segment segment,
 			OvcHevMode ovcMode);
-
-	}
+    }
 
 	public interface ISingleBusDeclarationDataAdapter : IDeclarationDataAdapter
 	{
@@ -196,7 +193,5 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			GearboxData gearboxData, CombustionEngineData engineData, IList<Tuple<PowertrainPosition, ElectricMotorData>> emData, ArchitectureID architectureId);
 
 		RetarderData CreateGenericRetarderData(IRetarderInputData retarderData, VectoRunData vectoRun);
-
-        FuelCellSystemDeclarationData CreateFuelCells(IFuelCellSystemDeclarationInputData fuelCellSystem);
     }
 }

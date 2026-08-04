@@ -318,9 +318,35 @@ namespace TUGraz.VectoCommon.InputData
 		/// Returns the gearbox type of Gearbox- or IEPC-Component
 		/// </summary>
 		/// <param name=""></param>
-		public static GearboxType? GetGearboxType(this IVehicleComponentsDeclaration components)
+		public static List<GearboxType> GetGearboxTypes(this IVehicleComponentsDeclaration components)
 		{
-			return components?.GearboxInputData?.Type ?? (components?.IEPC != null ? new GearboxType?(GearboxType.IEPC) : null);
+			var list = new List<GearboxType>();
+
+			if (components == null)
+			{
+				return list;
+			}
+
+			var single = components.GearboxInputData?.Type ?? (components.IEPC != null ? new GearboxType?(GearboxType.IEPC) : null);
+
+			if (single != null)
+			{
+				list.Add(single.Value);
+			}
+			else if (components.AxlePowertrainInputData?.Any() ?? false)
+			{
+				var multi = components.AxlePowertrainInputData.Select(x => x.GearboxInputData?.Type ?? (x.IEPCInputData != null ? new GearboxType?(GearboxType.IEPC) : null));
+
+				foreach (var item in multi)
+				{
+					if (item.HasValue)
+					{
+						list.Add(item.Value);
+					}
+				}
+			}
+            
+			return list; 
 		}
 	}
 
@@ -555,6 +581,8 @@ namespace TUGraz.VectoCommon.InputData
 		NewtonMeter WheelEndFriction { get; }
 
 		string WheelEndCertificationNumber {  get; }
+
+		int AxleNumber {  get; }
 	}
 
 	public interface ITyreDeclarationInputData : IComponentInputData
@@ -1537,6 +1565,11 @@ namespace TUGraz.VectoCommon.InputData
 				default:
 					return false;
 			}
+		}
+
+		public static bool IsIEPC(this ArchitectureID type)
+		{
+			return type.IsOneOf(ArchitectureID.F_IEPC, ArchitectureID.S_IEPC, ArchitectureID.E_IEPC);
 		}
 	}
 }

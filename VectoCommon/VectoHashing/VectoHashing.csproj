@@ -7,8 +7,10 @@
     <RootNamespace>TUGraz.VectoHashing</RootNamespace>
     <AssemblyName>VectoHashing</AssemblyName>
     <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
-    <Configurations>Debug;Release;MockupRelease</Configurations>
+    <Configurations>Debug;Release</Configurations>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
 
@@ -41,5 +43,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\XSLT\SortInputData.v3.xslt" />
     <EmbeddedResource Include="Resources\XSLT\SortInputData.xslt" />
+	<None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

@@ -18,6 +18,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
@@ -983,7 +984,7 @@ public class TestXMLResultsWriting
 				Fuels = fuels.Select(x => new CombustionEngineFuelData()
 					{ FuelData = DeclarationData.FuelData.Lookup(x, TankSystem.Liquefied) }).ToList(),
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None,
 			},
 			BatteryData = new BatterySystemData() {
@@ -1010,8 +1011,6 @@ public class TestXMLResultsWriting
 
     private IDeclarationInputDataProvider GetMockInputData(int amdm)
 	{
-		var xmlType = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24 + ":FOO";
-
 		var mock = new Mock<IDeclarationInputDataProvider>();
 		var inputDataSource = new DataSource() {
 			SourceType = DataSourceType.XMLFile

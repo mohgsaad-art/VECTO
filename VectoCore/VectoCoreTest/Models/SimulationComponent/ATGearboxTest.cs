@@ -281,7 +281,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 					TorqueLimits = torqueLimits
 				}, new VectoRunData() {
 					EngineData = engineData,
-					AxleGearData = new AxleGearData() {
+					AxleGearSinglePwt = new AxleGearData() {
 						AxleGear = new TransmissionData() { Ratio = ((IAxleGearInputData)gearboxInput).Ratio },
 					},
 					VehicleData =

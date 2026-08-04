@@ -19,6 +19,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
@@ -133,8 +134,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			var writer = new FileOutputVIFWriter(vifResult, numberOfManufacturingStages);
 			
 			var inputData = new XMLDeclarationVIFInputData(vifDataProvider, vehicle);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			var jobContainer = new JobContainer(new MockSumWriter());
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            var jobContainer = new JobContainer(new MockSumWriter());
 
 			var runs = factory.SimulationRuns().ToList();
 			Assert.AreEqual(numRuns, runs.Count);
@@ -337,8 +338,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			var writer = new MockDeclarationWriter("vif_vehicle-sample_test.xml");
 			
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));
@@ -363,7 +364,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			var writer = new FileOutputWriter("vif_vehicle-sample_test.xml");
 
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
 			factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
@@ -389,8 +390,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			
 			//var xmlreport = new XMLDeclarationReportMultistageBusVehicle(writer);
 			//var xmlreport = new XMLDeclarationReportPrimaryVehicle(writer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer, null, null, true);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, true);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));
@@ -407,8 +408,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			var inputData = _xmlInputReader.Create(primaryFile);
 
 			var writer = new MockDeclarationWriter(outputFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));
@@ -432,8 +433,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			var mrfFactory = _kernel.Get<IManufacturerReportFactory>();
 			var vifFactory = _kernel.Get<IVIFReportFactory>();
 			var xmlreport = new XMLDeclarationReportPrimaryVehicle(writer, mrfFactory, vifFactory);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer, xmlreport);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, xmlreport, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));

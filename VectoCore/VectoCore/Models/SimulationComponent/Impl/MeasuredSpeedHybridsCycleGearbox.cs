@@ -10,7 +10,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class MeasuredSpeedHybridsCycleGearbox : CycleGearbox, IHybridControlledGearbox
     {
-        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container) : base(container)
+        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
         {
             LastDownshift = -double.MaxValue.SI<Second>();
             LastUpshift = -double.MaxValue.SI<Second>();

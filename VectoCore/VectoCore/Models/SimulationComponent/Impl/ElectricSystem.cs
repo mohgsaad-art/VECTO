@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -84,7 +85,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 CurrentState.SetState(powerDemand, auxDemand, chargePower + fcPower, connectorLoss, batResponse.PowerDemand, fcPower);
             }
 
-			response.MaxNominalFCRatedPower = (FuelCell != null) ? (FuelCell as FuelCellSystem).FuelCellStrings.Sum(x => x.FuelCells.Sum(y => y.FCSRatedPower)) : null;
+            var fc = (FuelCell != null) ? (FuelCell as FuelCellSystem) : null;
+            response.MaxNominalFCRatedPower = (fc != null) 
+                ? (fc.FuelCellStrings.All(x => x.FuelCells.All(y => y.FCSRatedPower != null)) ? fc.FuelCellStrings.Sum(x => x.FuelCells.Sum(y => y.FCSRatedPower)) : null)
+                : null;
+
 			response.AbsTime = absTime;
             response.SimulationInterval = dt;
             response.RESSResponse = batResponse;

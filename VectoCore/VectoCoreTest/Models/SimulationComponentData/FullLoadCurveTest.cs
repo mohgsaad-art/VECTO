@@ -370,7 +370,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				}
 			};
 
-			var runData = new VectoRunData { GearboxData = gearboxData, EngineData = engineData, AxleGearData = axleGearData };
+			var runData = new VectoRunData { GearboxSinglePwt = gearboxData, EngineData = engineData, AxleGearSinglePwt = axleGearData };
 			Assert.IsFalse(runData.IsValid());
 		}
 

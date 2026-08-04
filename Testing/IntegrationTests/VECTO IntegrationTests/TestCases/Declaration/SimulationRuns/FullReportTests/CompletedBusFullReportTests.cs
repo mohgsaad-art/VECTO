@@ -90,36 +90,60 @@ public class CompletedBusFullReportTests : FullReportTestsBase
 		//      WRITE_REPORTS_TO_OUTPUT = true;
 	}
 
-	[TestCase(Conventional_PrimaryBus, Conventional_InterimBusInput, Conventional_CompletedBusInput_NoTankSystem, "Conventional", TestName = "Completed Conventional Bus")]
-    [TestCase(Conventional_PrimaryBus_Tyres, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed Conventional Bus Different Tyres")]
-    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed ConventionalPrimaryBus_DualFuel")]
-    [TestCase(Conventional_PrimaryBus_AT_Angledrive, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed Conventional Bus_AT_Angledrive")]
-    [TestCase(HEV_IEPC_S_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "IEPC-S", "HEV", TestName = "Completed HEV_IEPC_S_PrimaryBus")]
-    [TestCase(HEV_IEPC_S_PrimaryBus_BatteryStd, HEV_InterimBusInput, HEV_CompletedBusInput, "IEPC-S", "HEV", TestName = "Completed HEV_IEPC_S_PrimaryBus_BatteryStd")]
-    [TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus")]
-	[TestCase(HEV_Px_PrimaryBus_OVC, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus")]
-    [TestCase(HEV_Px_PrimaryBus_BatteryStd, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus_BatteryStd")]
-    [TestCase(HEV_IHPC_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_IHPC_PrimaryBus")]
-    [TestCase(HEV_IHPC_PrimaryBus_NoRetarder, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_IHPC_PrimaryBus_NoRetarder")]
-    [TestCase(HEV_S2_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput,"Sx", "HEV", TestName = "Completed HEV_S2_PrimaryBus")]
-    [TestCase(HEV_S3_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput,"Sx", "HEV", TestName = "Completed HEV_S3_PrimaryBus")]
-    [TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "Completed HEV_S4_PrimaryBus")]
-    [TestCase(PEV_E2_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "Completed PEV_E2_PrimaryBus")]
-    [TestCase(PEV_E3_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput,"Ex", "PEV", TestName = "Completed PEV_E3_PrimaryBus")]
-    [TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput,"Ex", "PEV", TestName = "Completed PEV_E4_PrimaryBus")]
-    [TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx1, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx1")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx1Axl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx1Axl")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx1Whl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx1Whl")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx2, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx2")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx2_drag, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx2_drag")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Axl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx2Axl")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Axl_drag, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx2Axl_drag")]
-    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Whl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus_Gbx2Whl")]
-    [TestCase(PEV_IEPC_std_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC-std_PrimaryBus")]
-    [TestCase(PEV_E2_PrimaryBus_StdEM, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", "PEV", TestName = "Completed PEV_E2_PrimaryBus_EM-Std")]
+	[TestCase(Conventional_PrimaryBus, Conventional_InterimBusInput, Conventional_CompletedBusInput_NoTankSystem, "Conventional", TestName = "CompletedBusFullReportSuccessTest_v24(Completed Conventional Bus)")]
+    [TestCase(Conventional_PrimaryBus_Tyres, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportSuccessTest_v24(Completed Conventional Bus Different Tyres)")]
+    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportSuccessTest_v24(Completed ConventionalPrimaryBus_DualFuel)")]
+    [TestCase(Conventional_PrimaryBus_AT_Angledrive, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportSuccessTest_v24(Completed Conventional Bus_AT_Angledrive)")]
+    [TestCase(HEV_IEPC_S_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "IEPC-S", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_IEPC_S_PrimaryBus)")]
+    [TestCase(HEV_IEPC_S_PrimaryBus_BatteryStd, HEV_InterimBusInput, HEV_CompletedBusInput, "IEPC-S", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_IEPC_S_PrimaryBus_BatteryStd)")]
+    [TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_Px_PrimaryBus)")]
+	[TestCase(HEV_Px_PrimaryBus_OVC, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_Px_PrimaryBus_OVC)")]
+    [TestCase(HEV_Px_PrimaryBus_BatteryStd, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_Px_PrimaryBus_BatteryStd)")]
+    [TestCase(HEV_IHPC_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_IHPC_PrimaryBus)")]
+    [TestCase(HEV_IHPC_PrimaryBus_NoRetarder, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_IHPC_PrimaryBus_NoRetarder)")]
+    [TestCase(HEV_S2_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput,"Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_S2_PrimaryBus)")]
+    [TestCase(HEV_S3_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput,"Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_S3_PrimaryBus)")]
+    [TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed HEV_S4_PrimaryBus)")]
+    [TestCase(PEV_E2_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_E2_PrimaryBus)")]
+    [TestCase(PEV_E3_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput,"Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_E3_PrimaryBus)")]
+    [TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput,"Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_E4_PrimaryBus)")]
+    [TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx1, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx1)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx1Axl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx1Axl)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx1Whl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx1Whl)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx2, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx2)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx2_drag, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx2_drag)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Axl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx2Axl)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Axl_drag, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx2Axl_drag)")]
+    [TestCase(PEV_IEPC_PrimaryBus_Gbx2Whl, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC_PrimaryBus_Gbx2Whl)")]
+    [TestCase(PEV_IEPC_std_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_IEPC-std_PrimaryBus)")]
+    [TestCase(PEV_E2_PrimaryBus_StdEM, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", "PEV", TestName = "CompletedBusFullReportSuccessTest_v24(Completed PEV_E2_PrimaryBus_EM-Std)")]
 
-    [TestCase(Exempted_PrimaryBus, Exempted_InterimBus, Exempted_CompletedBus, "Exempted", TestName = "Completed Exempted Bus")]
+    [TestCase(Exempted_PrimaryBus, Exempted_InterimBus, Exempted_CompletedBus, "Exempted", TestName = "CompletedBusFullReportSuccessTest_v24(Completed Exempted Bus)")]
+
+    [TestCase(v27PrimaryBusPath + "Conventional_PrimaryBus.xml", v27CompleteBusPath + "Conventional_CompletedBus.xml", v27CompleteBusPath + "Conventional_CompletedBus.xml", "Conventional", TestName = "CompletedBusFullReportSuccessTest_v27(Conventional_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "FCHV_F2_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(FCHV_F2_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "FCHV_F3_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(FCHV_F3_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "FCHV_F4_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(FCHV_F4_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "FCHV_IEPC_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(FCHV_IEPC_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "H2_ICE_PrimaryBus.xml", v27CompleteBusPath + "Conventional_CompletedBus.xml", v27CompleteBusPath + "Conventional_CompletedBus.xml", "Conventional", TestName = "CompletedBusFullReportSuccessTest_v27(H2_ICE_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "HEV_IHPC_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(HEV_IHPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "HEV_P2_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Px", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(HEV_P2_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "PEV_E2_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(PEV_E2_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "PEV_E3_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(PEV_E3_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "PEV_E4_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(PEV_E4_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "PEV_IEPC_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "IEPC", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(PEV_IEPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "SHEV_S2_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(SHEV_S2_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "SHEV_S3_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(SHEV_S3_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "SHEV_S4_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(SHEV_S4_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "SHEV_IEPC_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "IEPC", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(SHEV_IEPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_FCHV_F2_IEPC_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_FCHV_F2_IEPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_FCHV_F3_F4_PrimaryBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", v27CompleteBusPath + "FCHV_CompletedBus.xml", "Fx", "FCHV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_FCHV_F3_F4_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_PEV_E2_IEPC_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_PEV_E2_IEPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_PEV_E3_E4_PrimaryBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", v27CompleteBusPath + "PEV_CompletedBus.xml", "Ex", "PEV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_PEV_E3_E4_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_SHEV_S2_IEPC_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_SHEV_S2_IEPC_PrimaryBus_BusInterimFullComplete)")]
+    [TestCase(v27PrimaryBusPath + "Multiple_SHEV_S3_S4_PrimaryBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", v27CompleteBusPath + "HEV_CompletedBus.xml", "Sx", "HEV", TestName = "CompletedBusFullReportSuccessTest_v27(Multiple_SHEV_S3_S4_PrimaryBus_BusInterimFullComplete)")]
+
     public void CompletedBusFullReportSuccessTest(string primaryBusInput, string completeBusInput, string completedBusInput, params string[] expectedType)
     {
         var completeCopy = CopyInputFile(completeBusInput);
@@ -174,11 +198,11 @@ public class CompletedBusFullReportTests : FullReportTestsBase
     }
 
 
-	[TestCase(Conventional_PrimaryBus_Tyres, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed Conventional Bus Different Tyres Error")]
-	[TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus Error")]
-	[TestCase(HEV_Px_PrimaryBus_OVC, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus Error")]
-	[TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "Completed HEV_S4_PrimaryBus Error")]
-	[TestCase(PEV_E2_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "Completed PEV_E2_PrimaryBus Error")]
+	[TestCase(Conventional_PrimaryBus_Tyres, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportErrorTest_v24(Completed Conventional Bus Different Tyres Error)")]
+	[TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportErrorTest_v24(Completed HEV_Px_PrimaryBus Error)")]
+	[TestCase(HEV_Px_PrimaryBus_OVC, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportErrorTest_v24(Completed HEV_Px_PrimaryBus OVC Error)")]
+	[TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "CompletedBusFullReportErrorTest_v24(Completed HEV_S4_PrimaryBus Error)")]
+	[TestCase(PEV_E2_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "CompletedBusFullReportErrorTest_v24(Completed PEV_E2_PrimaryBus Error)")]
     public void CompletedBusFullReportErrorTest(string primaryBusInput, string completeBusInput, string completedBusInput, params string[] expectedType)
     {
         var completeCopy = CopyInputFile(completeBusInput);
@@ -243,11 +267,11 @@ public class CompletedBusFullReportTests : FullReportTestsBase
 		AssertHelper.Exception<Exception>(() => completedJobContainer2.WaitFinished());
     }
 
-    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed ConventionalPrimaryBus_DualFuel Ignore")]
-	[TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus Ignore")]
-	[TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "Completed HEV_S4_PrimaryBus Ignore")]
-	[TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "Completed PEV_E4_PrimaryBus Ignore")]
-	[TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "Completed PEV_IEPC_PrimaryBus Ignore")]
+    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportIgnoreTest_v24(Completed ConventionalPrimaryBus_DualFuel Ignore)")]
+	[TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportIgnoreTest_v24(Completed HEV_Px_PrimaryBus Ignore)")]
+	[TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "CompletedBusFullReportIgnoreTest_v24(Completed HEV_S4_PrimaryBus Ignore)")]
+	[TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "CompletedBusFullReportIgnoreTest_v24(Completed PEV_E4_PrimaryBus Ignore)")]
+	[TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", "PEV", TestName = "CompletedBusFullReportIgnoreTest_v24(Completed PEV_IEPC_PrimaryBus Ignore)")]
     public void CompletedBusFullReportIgnoreTest(string primaryBusInput, string completeBusInput, string completedBusInput, params string[] expectedType)
     {
         var completeCopy = CopyInputFile(completeBusInput);
@@ -324,11 +348,11 @@ public class CompletedBusFullReportTests : FullReportTestsBase
 		}
     }
 
-    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "Completed ConventionalPrimaryBus_DualFuel IgnoreError")]
-    [TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "Completed HEV_Px_PrimaryBus IgnoreError")]
-    [TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "Completed HEV_S4_PrimaryBus IgnoreError")]
-    [TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "Completed PEV_E4_PrimaryBus IgnoreError")]
-    [TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", TestName = "Completed PEV_IEPC_PrimaryBus IgnoreError")]
+    [TestCase(Conventional_PrimaryBus_DF, Conventional_InterimBusInput, Conventional_CompletedBusInput, "Conventional", TestName = "CompletedBusFullReportIgnoreErrorTest_v24(Completed ConventionalPrimaryBus_DualFuel IgnoreError)")]
+    [TestCase(HEV_Px_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Px", "HEV", TestName = "CompletedBusFullReportIgnoreErrorTest_v24(Completed HEV_Px_PrimaryBus IgnoreError)")]
+    [TestCase(HEV_S4_PrimaryBus, HEV_InterimBusInput, HEV_CompletedBusInput, "Sx", "HEV", TestName = "CompletedBusFullReportIgnoreErrorTest_v24(Completed HEV_S4_PrimaryBus IgnoreError)")]
+    [TestCase(PEV_E4_PrimaryBus, PEV_InterimBusInput, PEV_CompletedBusInput, "Ex", "PEV", TestName = "CompletedBusFullReportIgnoreErrorTest_v24(Completed PEV_E4_PrimaryBus IgnoreError)")]
+    [TestCase(PEV_IEPC_PrimaryBus, PEV_IEPC_InterimBusInput, PEV_IEPC_CompletedBusInput, "IEPC", TestName = "CompletedBusFullReportIgnoreErrorTest_v24(Completed PEV_IEPC_PrimaryBus IgnoreError)")]
     public void CompletedBusFullReportIgnoreErrorTest(string primaryBusInput, string completeBusInput, string completedBusInput, params string[] expectedType)
     {
         var completeCopy = CopyInputFile(completeBusInput);

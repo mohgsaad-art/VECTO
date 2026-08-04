@@ -24,7 +24,7 @@ Namespace UnitTests
 
         Private Function GetSSM() As ISSMTOOL
 
-            Const _SSMMAP As String = "TestFiles/ssm.Ahsm"
+            'Const _SSMMAP As String = "TestFiles/ssm.Ahsm"
 
             Dim auxconfig = Utils.GetAuxTestConfig()
 

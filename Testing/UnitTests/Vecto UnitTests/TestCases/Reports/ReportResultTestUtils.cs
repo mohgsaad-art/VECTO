@@ -5,6 +5,7 @@ using Moq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -139,7 +140,7 @@ public class ReportResultTestUtils
 				Fuels = fuels.Select(x => new CombustionEngineFuelData()
 					{ FuelData = DeclarationData.FuelData.Lookup(x, TankSystem.Liquefied) }).ToList(),
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None,
 			},
 			BatteryData = new BatterySystemData() {
@@ -159,7 +160,8 @@ public class ReportResultTestUtils
 
 					})
 				}
-			}
+			},
+			InputData = GetMockInputData(3, offVehicleCharging)
 		};
 		if (jobType.IsBatteryElectric() || jobType.IsFCHV()) {
 			retVal.EngineData = null;
@@ -177,7 +179,7 @@ public class ReportResultTestUtils
 		modData.Setup(x => x.Distance).Returns(30000.SI<Meter>());
 		modData.Setup(x => x.GetValues<MeterPerSecond>(ModalResultField.v_act)).Returns(new[] { 0.KMPHtoMeterPerSecond(), 50.KMPHtoMeterPerSecond() });
 		modData.Setup(x => x.GetValues<MeterPerSquareSecond>(ModalResultField.acc)).Returns(new[] { -1.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>(), 1.SI<MeterPerSquareSecond>() });
-		modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear)).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
+		modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
 
 		var e_gbxIn = 1000.SI<WattSecond>();
 		var gbxEff = 0.98;
@@ -238,10 +240,8 @@ public class ReportResultTestUtils
 		return modData.Object;
 	}
 
-	public static IDeclarationInputDataProvider GetMockInputData(int amdm)
+	public static IDeclarationInputDataProvider GetMockInputData(int amdm, bool ovc)
 	{
-		var xmlType = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24 + ":FOO";
-
 		var mock = new Mock<IDeclarationInputDataProvider>();
 		var inputDataSource = new DataSource() {
 			SourceType = DataSourceType.XMLFile
@@ -285,6 +285,7 @@ public class ReportResultTestUtils
 		bat.Setup(b => b.ElectricStorageElements).Returns(new[] { b1.Object });
 
 		mock.Setup(i => i.JobInputData.Vehicle.Components.ElectricStorage).Returns(bat.Object);
+		mock.Setup(i => i.JobInputData.Vehicle.OVC).Returns(ovc);
 
 		return mock.Object;
 	}

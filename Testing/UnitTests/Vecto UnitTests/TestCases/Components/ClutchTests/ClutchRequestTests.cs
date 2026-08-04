@@ -94,7 +94,7 @@ public class ClutchRequestTests
 		var cyi = new Mock<IDrivingCycleInfo>();
 		container.Setup(c => c.DrivingCycleInfo).Returns(cyi.Object);
 		var runData = new VectoRunData() {
-			GearshiftParameters = new ShiftStrategyParameters() {
+			GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 				StartAcceleration = 0.8.SI<MeterPerSquareSecond>()
 			},
 			Aux = new List<VectoRunData.AuxData>()

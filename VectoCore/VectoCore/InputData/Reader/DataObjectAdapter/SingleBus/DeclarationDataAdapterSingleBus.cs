@@ -1,5 +1,12 @@
-﻿using System;
+﻿#if CERTIFICATION_RELEASE || RELEASE_CANDIDATE
+#define PROHIBIT_NEW_XML
+#endif
+
+//#define PROHIBIT_NEW_XML
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ninject;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
@@ -56,7 +63,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
             #region Implementation of IDeclarationDataAdapter
 
-            public IList<AxlePowertrainData> CreateAxlePowertrainsData(IDeclarationInputDataProvider input, Volt averageVoltage, 
+            public virtual IList<AxlePowertrainData> CreateAxlePowertrainsData(IVehicleDeclarationInputData vehicle, Volt averageVoltage, 
 				bool batteryOnlyHybridMode, VehicleData vehicleData, Mission mission)
             {
                 return null;
@@ -136,7 +143,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 				GearboxType? overrideGearboxType = null)
 			{
 				var name = GetShiftStrategyName(inputData, overrideGearboxType, runData.BatteryOnlyHybridMode);
-				var retVal = GearboxDataAdapter.CreateGearboxData(inputData, runData, ShiftStrategyFactory.CreateShiftPolygonCalculator(name, runData.GearshiftParameters), supportedGearboxTypes: SupportedGearboxTypes);
+				var retVal = GearboxDataAdapter.CreateGearboxData(inputData, runData, ShiftStrategyFactory.CreateShiftPolygonCalculator(name, runData.GearshiftParametersSinglePwt), supportedGearboxTypes: SupportedGearboxTypes);
 				retVal.ShiftStrategy = name;
 				return retVal;
 			}
@@ -204,7 +211,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
             }
 
             public abstract void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData,
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData,
 				Action<SuperCapData> setSuperCapData);
 
 			public RetarderData CreateGenericRetarderData(IRetarderInputData retarderData, VectoRunData vectoRun)
@@ -230,7 +237,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 				throw new NotImplementedException();
 
 			public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
 				throw new NotImplementedException();
 			}
@@ -248,9 +255,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
 			
             public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
-				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
 				var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
 				if (batteryData != null) {
@@ -339,9 +346,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
                 new SpecificCompletedPEVBusAuxiliaryDataAdapter();
 
             public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-                VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+                VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
             {
-                var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+                var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
                 var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
                 if (batteryData != null)
@@ -401,9 +408,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 				new SpecificCompletedPEVBusAuxiliaryDataAdapter();
 
             public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
-				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
 				var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
 
@@ -437,6 +444,235 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 			protected override IGearboxDataAdapter GearboxDataAdapter { get; } = new IEPCGearboxDataAdapter();
         }
 
+		public abstract class MultiplePowertrains : SingleBusBase
+		{
+            public override GearboxType[] SupportedGearboxTypes => new GearboxType[] { };
+
+            protected IGearboxDataAdapter IEPCGearboxDataAdapter => new IEPCGearboxDataAdapter();
+
+            protected readonly IElectricStorageAdapter _electricStorageAdapter = new ElectricStorageAdapter();
+
+            protected override IEngineDataAdapter EngineDataAdapter => throw new NotImplementedException();
+
+            protected override IGearboxDataAdapter GearboxDataAdapter => throw new NotImplementedException();
+
+            protected override IElectricMachinesDataAdapter ElectricMachinesDataAdapter { get; } = new ElectricMachinesDataAdapter();
+
+            protected override IHybridStrategyDataAdapter HybridStrategyDataAdapter => throw new NotImplementedException();
+
+            public override IList<AxlePowertrainData> CreateAxlePowertrainsData(
+				IVehicleDeclarationInputData vehicle, 
+				Volt averageVoltage, 
+				bool batteryOnlyHybridMode, 
+				VehicleData vehicleData, 
+				Mission mission)
+            {
+                IList<AxlePowertrainData> axlePts = new List<AxlePowertrainData>();
+
+                foreach (var axlePtData in vehicle.Components.AxlePowertrainInputData)
+                {
+                    ValidateIEPCData(axlePtData.IEPCInputData, axlePtData.AxleGearInputData);
+
+#if PROHIBIT_NEW_XML
+                    if ((axlePtData.IEPCInputData != null) && axlePtData.IEPCInputData.Gears.Count > 1)
+                    {
+                        throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!");
+                    }
+#endif
+
+                    var axlegearData = (axlePtData.AxleGearInputData != null) ? CreateAxleGearData(axlePtData.AxleGearInputData) : null;
+
+                    var emData = (axlePtData.IEPCInputData != null)
+                        ? CreateIEPCElectricMachines(axlePtData.IEPCInputData, averageVoltage).First()
+                        : ElectricMachinesDataAdapter.CreateElectricMachine(
+                            axlePtData.ElectricMotor,
+                            vehicle.ElectricMotorTorqueLimits,
+                            averageVoltage,
+                            axlePtData.AxleNumber);
+
+                    Utils.ValidatePowertrainEMPosition(emData.Item1, axlePtData);
+
+                    var angledriveData = CreateAngledriveData(axlePtData.AngledriveInputData);
+
+                    var retarderData = CreateRetarderData(axlePtData.RetarderInputData, axlePtData.Architecture, axlePtData.IEPCInputData);
+
+                    var (gearboxData, gearshiftParams, shiftStrategy) =
+                        CreateGearboxDataForAxlePowertrain(emData, axlePtData, axlegearData, batteryOnlyHybridMode, vehicleData);
+
+                    axlePts.Add(new AxlePowertrainData()
+                    {
+                        AxleNumber = axlePtData.AxleNumber,
+                        Architecture = axlePtData.Architecture,
+                        AxleGearData = axlegearData,
+                        ElectricMachineData = emData,
+                        AngledriveData = angledriveData,
+                        GearboxData = gearboxData,
+                        Retarder = retarderData,
+                        GearshiftParameters = gearshiftParams,
+                        ShiftStrategy = shiftStrategy
+                    });
+                }
+
+                Utils.CrossValidatePowertrains(vehicle, axlePts);
+
+                return axlePts;
+            }
+
+            private Tuple<GearboxData, ShiftStrategyParameters, string> CreateGearboxDataForAxlePowertrain(
+                Tuple<PowertrainPosition, ElectricMotorData> emData,
+                IAxlePowertrainDeclarationInputData axlePtData,
+                AxleGearData axlegearData,
+                bool batteryOnlyHybridMode,
+                VehicleData vehicleData
+                )
+            {
+                GearboxData gearboxData = null;
+                ShiftStrategyParameters gearshiftParams = null;
+                string shiftStrategyName = null;
+
+                if (!emData.Item1.IsOneOf(PowertrainPosition.BatteryElectricE2, PowertrainPosition.IEPC))
+                {
+                    gearshiftParams = new ShiftStrategyParameters()
+                    {
+                        StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+                        StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
+                    };
+
+                    return new Tuple<GearboxData, ShiftStrategyParameters, string>(gearboxData, gearshiftParams, shiftStrategyName);
+                }
+
+                var gearboxType = axlePtData.GearboxInputData?.Type ?? GearboxType.APTN;
+
+                gearshiftParams = CreateGearshiftData(
+                    axlePtData.AxleGearInputData?.Ratio ?? 1,
+                    null,
+                    gearboxType,
+                    axlePtData.GearboxInputData?.Gears.Count ?? axlePtData.IEPCInputData.Gears.Count);
+
+                shiftStrategyName = GetShiftStrategyName(vehicleData.InputData, gearboxType, false);
+
+                var gearboxRunData = new VectoRunData()
+                {
+                    VehicleData = vehicleData,
+                    AxleGearSinglePwt = axlegearData,
+                    ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { emData },
+                };
+
+                var shiftPolygonCalculator = ShiftStrategyFactory.CreateShiftPolygonCalculator(shiftStrategyName, gearshiftParams);
+
+                gearboxData = (axlePtData.IEPCInputData != null)
+                    ? IEPCGearboxDataAdapter.CreateGearboxData(
+                        gearboxRunData,
+                        shiftPolygonCalculator,
+                        axlePtData.IEPCInputData)
+                    : GearboxDataAdapter.CreateGearboxData(
+                        vehicleData.InputData,
+                        gearboxRunData,
+                        shiftPolygonCalculator,
+                        SupportedGearboxTypes,
+                        axlePtData.GearboxInputData,
+                        axlePtData.TorqueConverterInputData);
+
+                return new Tuple<GearboxData, ShiftStrategyParameters, string>(gearboxData, gearshiftParams, shiftStrategyName);
+            }
+        }
+
+		public class MultiplePEV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedPEVBusAuxiliaryDataAdapter();
+
+            public override void CreateREESSData(
+				IElectricStorageSystemDeclarationInputData componentsElectricStorage, 
+				VectoSimulationJobType jobType, 
+				bool ovc, 
+				bool batteryOnlyMode,
+				Action<BatterySystemData> setBatteryData, 
+				Action<SuperCapData> setSuperCapData)
+            {
+                var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
+                var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
+
+                if (batteryData == null)
+                {
+                    throw new VectoException($"Could not create BatterySystem for {jobType}");
+                }
+                
+                if (superCapData != null)
+                {
+                    throw new VectoException($"Supercaps are not allowed for {jobType}");
+                }
+
+                setBatteryData(batteryData);
+            }
+        }
+
+		public class MultipleFCHV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedPEVBusAuxiliaryDataAdapter();
+
+            protected override IFuelCellDataAdapter FuelCellDataAdapter { get; } = new FuelCellDataAdapter();
+
+            public override void CreateREESSData(
+				IElectricStorageSystemDeclarationInputData componentsElectricStorage,
+                VectoSimulationJobType jobType, 
+				bool ovc, 
+				bool batteryOnlyMode,
+				Action<BatterySystemData> setBatteryData, 
+				Action<SuperCapData> setSuperCapData)
+            {
+                var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
+                var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
+
+                if (batteryData != null)
+                {
+                    setBatteryData(batteryData);
+                }
+                
+				if (superCapData != null)
+                {
+                    setSuperCapData(superCapData);
+                }
+
+                if ((batteryData != null) && (superCapData != null))
+                {
+                    throw new VectoException("Either battery or super cap must be provided");
+                }
+			}
+		}
+
+		public class MultipleSHEV : MultiplePowertrains
+		{
+            protected override IHybridStrategyDataAdapter HybridStrategyDataAdapter { get; } = new SerialHybridStrategyParameterDataAdapter();
+
+            protected override IEngineDataAdapter EngineDataAdapter { get; } = new CombustionEngineComponentDataAdapter();
+
+            public override void CreateREESSData(
+				IElectricStorageSystemDeclarationInputData componentsElectricStorage,
+                VectoSimulationJobType jobType,
+				bool ovc,
+				bool batteryOnlyMode,
+				Action<BatterySystemData> setBatteryData,
+				Action<SuperCapData> setSuperCapData)
+            {
+                var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
+                var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
+
+                if (batteryData != null)
+                {
+                    setBatteryData(batteryData);
+                }
+
+                if (superCapData != null)
+                {
+                    setSuperCapData(superCapData);
+                }
+
+                if ((batteryData != null) && (superCapData != null))
+                {
+                    throw new VectoException("Either battery or super cap must be provided");
+                }
+            }
+        }
 
 		public class Exempted : SingleBusBase
 		{
@@ -449,7 +685,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
 			
 			public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
 				throw new NotImplementedException();
 			}

@@ -24,6 +24,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
@@ -795,7 +796,7 @@ public class BusAuxDemandESSAlternatorTypeTests
             JobRunId = 0,
             VehicleData = vehicleData,
             EngineData = engineData,
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
             SimulationType = SimulationType.DistanceCycle,
             Cycle = cycleData,
             BusAuxiliaries = CreateBusAuxData(alternatorType, vehicleData, connectEsToReess),
@@ -832,7 +833,6 @@ public class BusAuxDemandESSAlternatorTypeTests
 
         if (reessSoC.HasValue) {
             // hybrid powertrain
-            var packCount = 2;
             runData.BatteryData = new BatterySystemData() {
                 Batteries = new List<Tuple<int, BatteryData>>() {
                         Tuple.Create(0, new BatteryData() {

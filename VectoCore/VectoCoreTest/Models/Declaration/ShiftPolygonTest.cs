@@ -50,6 +50,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies.ShiftPolygonCalc;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using Point = TUGraz.VectoCommon.Utils.Point;
@@ -971,13 +972,13 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var shiftPolygons = new List<ShiftPolygon>();
 
 			var runData = new VectoRunData() {
-				GearshiftParameters = new ShiftStrategyParameters(),
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters(),
 				ExecutionMode = ExecutionMode.Engineering,
             };
 			if (factorDownshiftSpeed.HasValue) {
-				runData.GearshiftParameters.PEV_DownshiftSpeedFactor = factorDownshiftSpeed.Value;
+				runData.GearshiftParametersSinglePwt.PEV_DownshiftSpeedFactor = factorDownshiftSpeed.Value;
 			}
-			var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+			var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 			
 			for (var i = 0; i < gearboxData.Gears.Count; i++) {
 				shiftPolygons.Add(shiftStrategy.ComputeDeclarationShiftPolygon(GearboxType.AMT, i, null, gearboxData.Gears,
@@ -1054,11 +1055,11 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			fullLoadCurves[(uint)(0)] = new EngineFullLoadCurve(fullLoadCurve, null) { EngineData = engineData };
 			
 			var shiftPolygons = new List<ShiftPolygon>();
-			var runData = new VectoRunData() { GearshiftParameters = new ShiftStrategyParameters(), ExecutionMode = ExecutionMode.Engineering, };
+			var runData = new VectoRunData() { GearshiftParametersSinglePwt = new ShiftStrategyParameters(), ExecutionMode = ExecutionMode.Engineering, };
 			if (factorDownshiftSpeed.HasValue) {
-				runData.GearshiftParameters.PEV_DeRatedDownshiftSpeedFactor = factorDownshiftSpeed.Value;
+				runData.GearshiftParametersSinglePwt.PEV_DeRatedDownshiftSpeedFactor = factorDownshiftSpeed.Value;
 			}
-			var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+			var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 			//var deRatedShiftLines = shiftStrategy.ComputeElectricMotorDeclarationShiftPolygon(emData, gearboxData.Gears,
 			//	r_dyn, axlegearRatio, gearboxData.Type);
 

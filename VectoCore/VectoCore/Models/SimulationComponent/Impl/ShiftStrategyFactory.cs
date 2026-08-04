@@ -31,10 +31,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                             return AMTShiftStrategyOptimized.Name;
                         case VectoSimulationJobType.BatteryElectricVehicle:
                         case VectoSimulationJobType.SerialHybridVehicle:
-                        case VectoSimulationJobType.FCHV:
 							return PEVAMTShiftStrategy.Name;
+                        case VectoSimulationJobType.FCHV:
+							return FCHVAMTShiftStrategy.Name;
                         default:
-                            throw new VectoException(
+							throw new VectoException(
                                 "no default gearshift strategy available for gearbox type {0} and job type {1}",
                                 gearboxType, jobType);
                     }
@@ -51,9 +52,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						case VectoSimulationJobType.ParallelHybridVehicle when batteryOnlyHybridMode:
                         case VectoSimulationJobType.SerialHybridVehicle:
                         case VectoSimulationJobType.BatteryElectricVehicle:
-                        case VectoSimulationJobType.FCHV:
-                        case VectoSimulationJobType.FCHV_IEPC:
                             return APTNShiftStrategy.Name;
+						case VectoSimulationJobType.FCHV:
+						case VectoSimulationJobType.FCHV_IEPC:
+							return FCHVAPTNShiftStrategy.Name;
                         default:
                             throw new VectoException(
                                 "no default gearshift strategy available for gearbox type {0} and job type {1}",
@@ -66,9 +68,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         case VectoSimulationJobType.BatteryElectricVehicle:
                         case VectoSimulationJobType.IEPC_E:
                         case VectoSimulationJobType.IEPC_S:
-                        case VectoSimulationJobType.FCHV:
-                        case VectoSimulationJobType.FCHV_IEPC:
+                        case VectoSimulationJobType.Multiple_PEV:
+                        case VectoSimulationJobType.Multiple_SHEV:
                             return APTNShiftStrategy.Name;
+						case VectoSimulationJobType.FCHV:
+						case VectoSimulationJobType.FCHV_IEPC:
+						case VectoSimulationJobType.Multiple_FCHV:
+                        	return FCHVAPTNShiftStrategy.Name;
                         //case VectoSimulationJobType.ConventionalVehicle when isTestPowerTrain:
                         //    return null;
                         default:

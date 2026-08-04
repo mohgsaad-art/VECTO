@@ -97,7 +97,9 @@ namespace TUGraz.VectoCore.OutputData
 
 		IEnumerable<T> GetValues<T>(ModalResultField key);
 
-		IEnumerable<T> GetValues<T>(DataColumn col);
+		IEnumerable<T> GetValues<T>(ModalResultField field, string arg);
+
+        IEnumerable<T> GetValues<T>(DataColumn col);
 
 		IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc);
 
@@ -131,8 +133,10 @@ namespace TUGraz.VectoCore.OutputData
 		
 		string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf);
 
+		string GetColumnName(ModalResultField mrf, string arg);
 
-		Second Duration { get; }
+
+        Second Duration { get; }
 
 		Meter Distance { get; }
 

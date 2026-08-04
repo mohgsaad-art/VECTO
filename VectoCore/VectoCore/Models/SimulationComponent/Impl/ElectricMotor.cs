@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     public class TestPowertrainElectricMotor : ElectricMotor, ITestpowertrainElectricMotor
 	{
 		public TestPowertrainElectricMotor(IVehicleContainer container, ElectricMotorData data,
-			IElectricMotorControl control, PowertrainPosition position) : base(container, data, control, position, false, Constants.NOT_IN_AXLE_POWERTRAIN)
+			IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(container, data, control, position, false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException(
@@ -95,7 +95,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (EMPosition == PowertrainPosition.HybridP2_5) {
 				TransmissionRatioPerGear = ModelData.RatioPerGear;
 				if (TransmissionRatioPerGear == null ||
-					TransmissionRatioPerGear.Length < container.RunData.GearboxData.GearList.Count()) {
+					TransmissionRatioPerGear.Length < container.RunData.GearboxSinglePwt.GearList.Count()) {
 					throw new VectoException("For powertrain configuration P2.5 a EM ratio for every gear has to be provided!");
 				}
 			}
@@ -417,9 +417,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
                 // electric motor only
 				var speedLimit = GetMotorSpeedLimit(absTime);
-				var remainingPower = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand);
 
-				if (dryRun) {
+                var remainingPowerDrive = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
+                var remainingPowerBrk = VectoMath.Min(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxChargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
+
+                var remainingPower = remainingPowerDrive;
+
+                if (remainingPowerBrk.IsSmaller(0.0))
+                {
+                    remainingPower = remainingPowerBrk;
+                }
+
+                if (dryRun) {
 					retVal = new ResponseDryRun(this) {
 						DeltaEngineSpeed = outAngularVelocity - speedLimit,
                         Engine = { EngineSpeed = avgDtSpeed},
@@ -532,8 +541,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					((inTorqueDt - outTorque) * avgDtSpeed - emTorque * avgEmSpeed)
 					/ avgDtSpeed;
 
-				CurrentState.ElectricPowerToBattery = retVal.ElectricSystem?.ConsumerPower;
-
+				CurrentState.ElectricPowerToBattery = (AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? retVal.ElectricSystem?.ConsumerPower : electricPower;
 			}
 			return retVal;
 		}

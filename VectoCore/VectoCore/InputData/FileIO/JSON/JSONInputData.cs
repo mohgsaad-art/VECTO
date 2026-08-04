@@ -57,6 +57,7 @@ using TUGraz.VectoHashing;
 using TUGraz.VectoHashing.Impl;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using Castle.Core.Internal;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -1488,6 +1489,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (Body[JsonKeys.Vehicle_EngineFile] != null)
 			{
 				Engine = ReadEngine();
+			}
+
+			if (JobType == VectoSimulationJobType.Multiple_SHEV)
+			{
+				throw new VectoException("SHEV with multiple powertrains are not yet supported.");
 			}
 		}
 

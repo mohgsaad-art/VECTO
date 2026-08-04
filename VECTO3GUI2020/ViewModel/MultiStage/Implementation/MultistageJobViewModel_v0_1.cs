@@ -129,13 +129,11 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
         #region Commands
 
-		private ICommand _saveVifCommand;
-
 		public ICommand SaveVIFCommand
 		{
 			get
 			{
-				return _saveVifCommand ?? new RelayCommand(() => {
+				return new RelayCommand(() => {
 					if (_manufacturingStageViewModel.Vehicle is IMultistageVehicleViewModel vehicleViewModel)
 					{
 						if (vehicleViewModel.HasErrors) {
@@ -236,7 +234,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		public ICommand SaveAsJSONCommand => _saveAsJsonCommand ?? new RelayCommand(
+		public ICommand SaveAsJSONCommand => new RelayCommand(
 			() => { SaveAsJSONExecute(null); },
 			() => VehicleInputDataFilePath != null
 		);
@@ -311,8 +309,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		private readonly IJobListViewModel _jobListViewModel;
 		private readonly IList<string> _invalidEntries;
 		private readonly ISimulatorFactoryFactory _simFactoryFactory;
-		private IRelayCommand _saveAsJsonCommand;
-
+		
 
 		public string VehicleInputDataFilePath
 		{
@@ -320,7 +317,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			set
 			{
 				ManufacturingStageViewModel.VehicleInputDataFilePath = value;
-				_saveAsJsonCommand?.NotifyCanExecuteChanged();
 				OnPropertyChanged();
 			}
 		}

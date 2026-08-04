@@ -142,12 +142,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 					VectoSimulationJobType.Multiple_SHEV);
 
 			PerSecond maxMotorSpeed = isBatteryElectric
-				? vehicleData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed
+				? vehicleData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item2.EfficiencyData.MaxSpeed
 				: vehicleData.EngineData.FullLoadCurves[0].MaxSpeed;
 
-			double maxGbxRatio = vehicleData.GearboxData?.Gears[(uint)vehicleData.GearboxData.Gears.Count].Ratio ?? 1;
+			double maxGbxRatio = vehicleData.GearboxSinglePwt?.Gears[(uint)vehicleData.GearboxSinglePwt.Gears.Count].Ratio ?? 1;
 			double combinedRatios = isBatteryElectric
-				? maxGbxRatio * vehicleData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item2.RatioADC
+				? maxGbxRatio * vehicleData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item2.RatioADC
 				: maxGbxRatio;
 
 			return _genericRetarderData.CreateGenericBusRetarderData(retarder, maxMotorSpeed, combinedRatios);

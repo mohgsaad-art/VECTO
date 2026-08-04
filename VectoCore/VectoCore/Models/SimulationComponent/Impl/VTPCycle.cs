@@ -183,31 +183,31 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void SelectStartGear()
 		{
-            if (RunData.GearboxData.Type.AutomaticTransmission()) {
+            if (RunData.GearboxSinglePwt.Type.AutomaticTransmission()) {
                 StartGear = 1;
                 return;
             }
-            var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
-									(RunData.AngledriveData?.Angledrive.Ratio ?? 1.0) /
+            var transmissionRatio = RunData.AxleGearSinglePwt.AxleGear.Ratio *
+									(RunData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0) /
 									RunData.VehicleData.DynamicTyreRadius;
-			var cardanStartSpeed = (RunData.GearshiftParameters.StartSpeed * transmissionRatio).Cast<PerSecond>();
+			var cardanStartSpeed = (RunData.GearshiftParametersSinglePwt.StartSpeed * transmissionRatio).Cast<PerSecond>();
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
 								Constants.SimulationSettings.ClutchClosingSpeedNorm + RunData.EngineData.IdleSpeed;
 			var wheelStartTorque =
 				(RunData.VehicleData.VehicleCategory == VehicleCategory.Tractor
 					? 40000.SI<Kilogram>()
-					: RunData.VehicleData.GrossVehicleMass) * RunData.GearshiftParameters.StartAcceleration *
+					: RunData.VehicleData.GrossVehicleMass) * RunData.GearshiftParametersSinglePwt.StartAcceleration *
 				RunData.VehicleData.DynamicTyreRadius;
-			var wheelStartSpeed = RunData.GearshiftParameters.StartSpeed / RunData.VehicleData.DynamicTyreRadius;
+			var wheelStartSpeed = RunData.GearshiftParametersSinglePwt.StartSpeed / RunData.VehicleData.DynamicTyreRadius;
 			CycleIterator.LeftSample.WheelAngularVelocity = wheelStartSpeed;
 			var maxStartGear = 1u;
-			foreach (var gearData in RunData.GearboxData.Gears.Reverse())
+			foreach (var gearData in RunData.GearboxSinglePwt.Gears.Reverse())
 				if (cardanStartSpeed * gearData.Value.Ratio > minEngineSpeed) {
 					maxStartGear = gearData.Key;
 					break;
 				}
 			for (var gear = maxStartGear; gear > 1; gear--) {
-				var inAngularSpeed = cardanStartSpeed * RunData.GearboxData.Gears[gear].Ratio;
+				var inAngularSpeed = cardanStartSpeed * RunData.GearboxSinglePwt.Gears[gear].Ratio;
 
 				var ratedSpeed = DataBus.EngineInfo.EngineRatedSpeed;
 				if (inAngularSpeed > ratedSpeed || inAngularSpeed.IsEqual(0))
@@ -218,7 +218,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
 				var reserve = fullLoadPower.IsEqual(0) ? 0.SI<Scalar>() : 1 - response.Engine.PowerRequest / fullLoadPower;
 
-				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineIdleSpeed && reserve >= RunData.GearshiftParameters.StartTorqueReserve) {
+				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineIdleSpeed && reserve >= RunData.GearshiftParametersSinglePwt.StartTorqueReserve) {
 					StartGear = gear;
 					return;
 				}
@@ -262,10 +262,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
 								Constants.SimulationSettings.ClutchClosingSpeedNorm + RunData.EngineData.IdleSpeed;
 
-			var gearRatios = RunData.GearboxData.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio);
+			var gearRatios = RunData.GearboxSinglePwt.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio);
 
 			var stopped = false;
-			var hasATGbx = RunData.GearboxData.TorqueConverterData != null && RunData.GearboxData.Type.AutomaticTransmission();
+			var hasATGbx = RunData.GearboxSinglePwt.TorqueConverterData != null && RunData.GearboxSinglePwt.Type.AutomaticTransmission();
 
 			foreach (var entry in Data.Entries) {
 				stopped = stopped || entry.VehicleTargetSpeed.IsEqual(0.KMPHtoMeterPerSecond(),
@@ -276,7 +276,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						: entry.WheelAngularVelocity;
 
 				var cardanSpeed = entry.WheelAngularVelocity *
-								RunData.AxleGearData.AxleGear.Ratio * (RunData.AngledriveData?.Angledrive.Ratio ?? 1);
+								RunData.AxleGearSinglePwt.AxleGear.Ratio * (RunData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1);
 				if (cardanSpeed.IsEqual(0.RPMtoRad(), 1.RPMtoRad()) || entry.AngularVelocity.IsEqual(0.RPMtoRad(), 1.RPMtoRad())) {
 					entry.Gear = 0;
 					continue;

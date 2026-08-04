@@ -176,7 +176,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public static string FormatAxleNumber(this int axleNumber)
 		{
-			return (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? "" : $"_axl{axleNumber}";
+			return (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? "" : $"_axle_{axleNumber}";
 		}
 	}
 }

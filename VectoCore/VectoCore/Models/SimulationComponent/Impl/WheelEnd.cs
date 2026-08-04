@@ -15,9 +15,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         protected ITnOutPort _nextComponent;
         protected NewtonMeter _deltaFrictionTorque;
         
-        public WheelEnd(IVehicleContainer container, WheelEndData wheelEndData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+        public WheelEnd(IVehicleContainer container, WheelEndData modelData) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
         { 
-            _deltaFrictionTorque = wheelEndData?.DeltaFrictionTorque ?? 0.SI<NewtonMeter>();
+            _deltaFrictionTorque = modelData?.DeltaFrictionTorque ?? 0.SI<NewtonMeter>();
         }
 
         public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 

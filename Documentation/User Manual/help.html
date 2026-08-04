@@ -20,9 +20,8 @@ margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
 
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +32,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -439,7 +438,9 @@ Map</a></li>
 <li><a href="#fuel-cell-system-input-file" id="toc-fuel-cell-system-input-file">Fuel Cell System Input
 File</a></li>
 </ul></li>
-<li><a href="#changelog" id="toc-changelog">Changelog</a></li>
+<li><a href="#changelog" id="toc-changelog">Changelog</a>
+<ul>
+</ul></li>
 </ul>
 </nav>
 <section id="platform-requirements" class="level1">
@@ -7663,21 +7664,21 @@ Limiting (VACC)</a></li>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;AdvancedAuxiliaryFilePath&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Aux&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Padd&quot;</span><span class="fu">:</span> <span class="fl">5000.0</span><span class="fu">,</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Padd_electric&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Padd_electric&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;VACC&quot;</span><span class="fu">:</span> <span class="st">&quot;Truck.vacc&quot;</span><span class="fu">,</span></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EngineStopStartAtVehicleStopThreshold&quot;</span><span class="fu">:</span> <span class="fl">2.0</span><span class="fu">,</span></span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EngineStopStartMaxOffTimespan&quot;</span><span class="fu">:</span> <span class="fl">120.0</span><span class="fu">,</span></span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EngineStopStartUtilityFactor&quot;</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollMinSpeed&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollActivationDelay&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollUnderspeedThreshold&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollMaxAcceleration&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCEnableSpeed&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCMinSpeed&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCUnderspeed&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollMinSpeed&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollActivationDelay&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollUnderspeedThreshold&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EcoRollMaxAcceleration&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCEnableSpeed&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCMinSpeed&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCUnderspeed&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCOverSpeed&quot;</span><span class="fu">:</span> <span class="fl">5.0</span><span class="fu">,</span></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCPreviewDistanceUC1&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCPreviewDistanceUC2&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCPreviewDistanceUC1&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PCCPreviewDistanceUC2&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;LAC&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Enabled&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
 <span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;PreviewDistanceFactor&quot;</span><span class="fu">:</span> <span class="fl">10.0</span><span class="fu">,</span></span>
@@ -7729,11 +7730,11 @@ with the <a href="#vtp-job-editor">Verification Test Job Editor</a>.</p>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ManufacturerRecord&quot;</span><span class="fu">:</span> <span class="st">&quot;SampleVehicle.MRF.xml&quot;</span><span class="fu">,</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Mileage&quot;</span><span class="fu">:</span> <span class="fl">30000.0</span><span class="fu">,</span></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;FanPowerCoefficients&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.00000055</span><span class="ot">,</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="dv">0</span><span class="er">.00000055</span><span class="ot">,</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>      <span class="fl">14.62</span><span class="ot">,</span></span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="fl">108.5</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;FanDiameter&quot;</span><span class="fu">:</span> <span class="fl">0.225</span><span class="fu">,</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;FanDiameter&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">225</span><span class="fu">,</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;FuelNCVs&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;Diesel CI&quot;</span><span class="fu">,</span></span>
@@ -7744,8 +7745,8 @@ with the <a href="#vtp-job-editor">Verification Test Job Editor</a>.</p>
 <span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;NCV&quot;</span><span class="fu">:</span> <span class="fl">48.0</span></span>
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TorqueDriftLeftWheel&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TorqueDriftRightWheel&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TorqueDriftLeftWheel&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TorqueDriftRightWheel&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Cycles&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;VTP-cycle.vdri&quot;</span></span>
 <span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
@@ -7794,45 +7795,45 @@ Angular Gear) (VTLM)</a></li>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">14.9</span><span class="fu">,</span></span>
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Wheels&quot;</span><span class="fu">:</span> <span class="st">&quot;315/70 R22.5&quot;</span><span class="fu">,</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="fl">0.2</span><span class="fu">,</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">2</span><span class="fu">,</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;TwinTyres&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="fl">0.0055</span><span class="fu">,</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.0055</span><span class="fu">,</span></span>
 <span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;FzISO&quot;</span><span class="fu">:</span> <span class="fl">33350.0</span><span class="fu">,</span></span>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;VehicleNonDriven&quot;</span></span>
 <span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
 <span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">14.9</span><span class="fu">,</span></span>
 <span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Wheels&quot;</span><span class="fu">:</span> <span class="st">&quot;315/70 R22.5&quot;</span><span class="fu">,</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="fl">0.25</span><span class="fu">,</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">25</span><span class="fu">,</span></span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;TwinTyres&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="fl">0.0065</span><span class="fu">,</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.0065</span><span class="fu">,</span></span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;FzISO&quot;</span><span class="fu">:</span> <span class="fl">33350.0</span><span class="fu">,</span></span>
 <span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;VehicleDriven&quot;</span></span>
 <span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
 <span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">19.2</span><span class="fu">,</span></span>
 <span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Wheels&quot;</span><span class="fu">:</span> <span class="st">&quot;385/65 R22.5&quot;</span><span class="fu">,</span></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="fl">0.18333</span><span class="fu">,</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">18333</span><span class="fu">,</span></span>
 <span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;TwinTyres&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="fl">0.0055</span><span class="fu">,</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.0055</span><span class="fu">,</span></span>
 <span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;FzISO&quot;</span><span class="fu">:</span> <span class="fl">41690.0</span><span class="fu">,</span></span>
 <span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;Trailer&quot;</span></span>
 <span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
 <span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">19.2</span><span class="fu">,</span></span>
 <span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Wheels&quot;</span><span class="fu">:</span> <span class="st">&quot;385/65 R22.5&quot;</span><span class="fu">,</span></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="fl">0.18333</span><span class="fu">,</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">18333</span><span class="fu">,</span></span>
 <span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;TwinTyres&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="fl">0.0055</span><span class="fu">,</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.0055</span><span class="fu">,</span></span>
 <span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;FzISO&quot;</span><span class="fu">:</span> <span class="fl">41690.0</span><span class="fu">,</span></span>
 <span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;Trailer&quot;</span></span>
 <span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span><span class="ot">,</span></span>
 <span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">19.2</span><span class="fu">,</span></span>
 <span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Wheels&quot;</span><span class="fu">:</span> <span class="st">&quot;385/65 R22.5&quot;</span><span class="fu">,</span></span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="fl">0.18334</span><span class="fu">,</span></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;AxleWeightShare&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">18334</span><span class="fu">,</span></span>
 <span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;TwinTyres&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="fl">0.0055</span><span class="fu">,</span></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;RRCISO&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.0055</span><span class="fu">,</span></span>
 <span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;FzISO&quot;</span><span class="fu">:</span> <span class="fl">41690.0</span><span class="fu">,</span></span>
 <span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;Trailer&quot;</span></span>
 <span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
@@ -7852,7 +7853,7 @@ Angular Gear) (VTLM)</a></li>
 <span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
 <span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Angledrive&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;None&quot;</span><span class="fu">,</span></span>
-<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Ratio&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Ratio&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;LossMap&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span></span>
 <span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
 <span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PTO&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -8006,11 +8007,11 @@ the <a href="#engine-editor">Engine Editor</a>.</p>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">5.1498</span><span class="fu">,</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Fuels&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Urban&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Rural&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Motorway&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Urban&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Rural&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Motorway&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;WHTC-Engineering&quot;</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ColdHotBalancingFactor&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ColdHotBalancingFactor&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CFRegPer&quot;</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span></span>
 <span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;FuelMap&quot;</span><span class="fu">:</span> <span class="st">&quot;325kW_WHR.vmap&quot;</span><span class="fu">,</span></span>
 <span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;FuelType&quot;</span><span class="fu">:</span> <span class="st">&quot;EthanolPI&quot;</span></span>
@@ -8026,20 +8027,20 @@ the <a href="#engine-editor">Engine Editor</a>.</p>
 <span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;FuelType&quot;</span><span class="fu">:</span> <span class="st">&quot;DieselCI&quot;</span></span>
 <span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
 <span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;RatedPower&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;RatedSpeed&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;MaxTorque&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;RatedPower&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;RatedSpeed&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;MaxTorque&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;FullLoadCurve&quot;</span><span class="fu">:</span> <span class="st">&quot;325kW.vfld&quot;</span><span class="fu">,</span></span>
 <span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;WHRType&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;ElectricalOutput&quot;</span></span>
 <span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;WHRCorrectionFactors&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Electrical&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Urban&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Rural&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Motorway&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ColdHotBalancingFactor&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CFRegPer&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Urban&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Rural&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Motorway&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ColdHotBalancingFactor&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CFRegPer&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;EngineeringCorrectionFactor&quot;</span><span class="fu">:</span> <span class="fl">1.02</span></span>
 <span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
 <span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
@@ -8371,7 +8372,7 @@ the <a href="#gearbox-editor">Gearbox Editor</a>.</p>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Body&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;SavedInDeclMode&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ModelName&quot;</span><span class="fu">:</span> <span class="st">&quot;Generic 8 Gears&quot;</span><span class="fu">,</span></span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TracInt&quot;</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span></span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Gears&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
@@ -8428,7 +8429,7 @@ the <a href="#gearbox-editor">Gearbox Editor</a>.</p>
 <span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;FullLoadCurve&quot;</span><span class="fu">:</span> <span class="st">&quot;&lt;NOFILE&gt;&quot;</span></span>
 <span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">,</span></span>
 <span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
-<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Ratio&quot;</span><span class="fu">:</span> <span class="fl">0.75</span><span class="fu">,</span></span>
+<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Ratio&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">75</span><span class="fu">,</span></span>
 <span id="cb33-69"><a href="#cb33-69" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;LossMap&quot;</span><span class="fu">:</span> <span class="st">&quot;Indirect Gear.vtlm&quot;</span><span class="fu">,</span></span>
 <span id="cb33-70"><a href="#cb33-70" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;TCactive&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
 <span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ShiftPolygon&quot;</span><span class="fu">:</span> <span class="st">&quot;ShiftPolygon.vgbs&quot;</span><span class="fu">,</span></span>
@@ -8441,17 +8442,17 @@ the <a href="#gearbox-editor">Gearbox Editor</a>.</p>
 <span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;EaryShiftUp&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
 <span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;StartTqReserve&quot;</span><span class="fu">:</span> <span class="fl">20.0</span><span class="fu">,</span></span>
 <span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;StartSpeed&quot;</span><span class="fu">:</span> <span class="fl">2.0</span><span class="fu">,</span></span>
-<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;StartAcc&quot;</span><span class="fu">:</span> <span class="fl">0.6</span><span class="fu">,</span></span>
+<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;StartAcc&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">6</span><span class="fu">,</span></span>
 <span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;GearboxType&quot;</span><span class="fu">:</span> <span class="st">&quot;AMT&quot;</span><span class="fu">,</span></span>
 <span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;TorqueConverter&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb33-84"><a href="#cb33-84" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Enabled&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
 <span id="cb33-85"><a href="#cb33-85" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;File&quot;</span><span class="fu">:</span> <span class="st">&quot;&lt;NOFILE&gt;&quot;</span><span class="fu">,</span></span>
-<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;RefRPM&quot;</span><span class="fu">:</span> <span class="fl">0.0</span><span class="fu">,</span></span>
-<span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="fl">0.0</span></span>
+<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;RefRPM&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Inertia&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span></span>
 <span id="cb33-88"><a href="#cb33-88" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
 <span id="cb33-89"><a href="#cb33-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DownshiftAferUpshiftDelay&quot;</span><span class="er">:</span> <span class="fl">10.0</span><span class="fu">,</span></span>
 <span id="cb33-90"><a href="#cb33-90" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;UpshiftAfterDownshiftDelay&quot;</span><span class="fu">:</span> <span class="fl">10.0</span><span class="fu">,</span></span>
-<span id="cb33-91"><a href="#cb33-91" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;UpshiftMinAcceleration&quot;</span><span class="fu">:</span> <span class="fl">0.1</span></span>
+<span id="cb33-91"><a href="#cb33-91" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;UpshiftMinAcceleration&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">1</span></span>
 <span id="cb33-92"><a href="#cb33-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb33-93"><a href="#cb33-93" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 </section>
@@ -8805,12 +8806,12 @@ speed</td>
 <span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Body&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;PneumaticSystem&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;CompressorMap&quot;</span><span class="fu">:</span> <span class="st">&quot;DEFAULT_3-Cylinder_2-Stage_598ccm.acmp&quot;</span><span class="fu">,</span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;AverageAirDemand&quot;</span><span class="fu">:</span> <span class="fl">0.7663</span><span class="fu">,</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;AverageAirDemand&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">7663</span><span class="fu">,</span></span>
 <span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;SmartAirCompression&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
 <span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;GearRatio&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
 <span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
 <span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ElectricSystem&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;AlternatorEfficiency&quot;</span><span class="fu">:</span> <span class="fl">0.7</span><span class="fu">,</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;AlternatorEfficiency&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">7</span><span class="fu">,</span></span>
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;CurrentDemand&quot;</span><span class="fu">:</span> <span class="fl">54.181</span><span class="fu">,</span></span>
 <span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;CurrentDemandEngineOffDriving&quot;</span><span class="fu">:</span> <span class="fl">54.181</span><span class="fu">,</span></span>
 <span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;CurrentDemandEngineOffStandstill&quot;</span><span class="fu">:</span> <span class="fl">54.181</span><span class="fu">,</span></span>
@@ -11486,6 +11487,154 @@ single fuel cell system</p>
 </section>
 <section id="changelog" class="level1">
 <h1>Changelog</h1>
+<p><strong>VECTO v5.1.3 Official Release (03-08-2026)</strong></p>
+<p>This version replaces v5.1.1 which had to be retracted. It is the
+same in terms of functionality and results.</p>
+<ul>
+<li><p>Features</p>
+<ul>
+<li>CodeEU n.a.: multiple powertrains completed and single bus.
+(vecto/vecto!516)</li>
+<li>CodeEU n.a.: Single-gear IEPC in multiple powertrains
+(vecto/vecto!524)</li>
+<li>CodeEU n.a.: Added input (axle-number specific) validation for
+multiple-powertrain vehicles. (vecto/vecto!537)</li>
+<li>CodeEU n.a.: PCC for multiple powertrains. (vecto/vecto!565)</li>
+</ul></li>
+<li><p>Bug Fixes</p>
+<ul>
+<li>CodeEU n.a.: Vecto console references (vecto/vecto!507)</li>
+<li>CodeEU n.a.: Completed bus input generation for v2.7
+(vecto/vecto!508)</li>
+<li>CodeEU n.a.: DefaultDriverStrategy - add accel action after
+gearshift + roll + brake if overload (vecto/vecto!510)</li>
+<li>CodeEU n.a.: Add retarder losses to TC max torque request
+(vecto/vecto!511)</li>
+<li>CodeEU n.a.: Rename constructor parameter to match factory method
+(vecto/vecto!512)</li>
+<li>CodeEU n.a.: Propagate ‘allowDeprecated’ parameter for XMLReader
+classes through injection hierarchy (vecto/vecto!513)</li>
+<li>CodeEU n.a.: Multiple powertrain FCHV bus execution
+(vecto/vecto!515)</li>
+<li>CodeEU n.a.: vsum fields for Retarder, Axlegear for multiple
+powertrains. (vecto/vecto!517)</li>
+<li>CodeEU n.a.: Increase max iteration in InterpolateSearch
+(vecto/vecto!514)</li>
+<li>CodeEU n.a.: use of battery SoC limits (input vs default)
+(vecto/vecto!519)</li>
+<li>CodeEU n.a.: Create fuel cell in testpowertrain (required in shift
+strategy) (vecto/vecto!520)</li>
+<li>CodeEU n.a.: Added missing function to DummyRunNinjectModule
+(vecto/vecto!521)</li>
+<li>CodeEU n.a.: Calculation of axlegear efficiency for P4 vehicles: in
+case of an P4, use EM<em>in to calculate axlegear efficiency instead of
+Brake</em>in (vecto/vecto!522)</li>
+<li>CodeEU n.a.: Added multiple-powertrain sample jobs
+(vecto/vecto!525)</li>
+<li>CodeEU n.a.: Avoid null reference in DeclarationData.cs
+(vecto/vecto!526)</li>
+<li>CodeEU n.a.: bugs regarding multiple powertrains.
+(vecto/vecto!527)</li>
+<li>CodeEU n.a.: Modified Torque Converter columns to handle multiple
+powertrains. (vecto/vecto!528)</li>
+<li>CodeEU n.a.: OVC-HEV mode for FCHV vehicles, null reference in fuel
+cells. (vecto/vecto!529)</li>
+<li>CodeEU n.a.: Don’t allow unsupported variations of multiple
+powertrain vehicles. (vecto/vecto!530)</li>
+<li>CodeEU n.a.: Enable unsupported vehicles in development mode
+(vecto/vecto!531)</li>
+<li>CodeEU n.a.: Modified xArchitecture element in reports to support
+multiple powertrains. (vecto/vecto!533)</li>
+<li>CodeEU n.a.: Calculate TotalPropulsionPower for multiple-powertrain
+vehicles (vecto/vecto!534)</li>
+<li>CodeEU n.a.: Improved error message when not finding primary vehicle
+missions (vecto/vecto!535)</li>
+<li>CodeEU n.a.: Removed engine power from calculation of total
+propulsion for SHEV (vecto/vecto!536)</li>
+<li>CodeEU n.a.: Added missing parameter to method that creates gearbox.
+(vecto/vecto!538)</li>
+<li>CodeEU n.a.: Modified method signature to satisfy interface
+(vecto/vecto!539)</li>
+<li>CodeEU n.a.: Re-enabled unit tests, that required battery input
+data. (vecto/vecto!540)</li>
+<li>CodeEU n.a.: Added OVC info to tests’ vehicle input
+(vecto/vecto!541)</li>
+<li>CodeEU n.a.: Ignore monitoring data when calculating job hash for
+reports (vecto/vecto!544)</li>
+<li>CodeEU n.a.: hashing tests (vecto/vecto!545)</li>
+<li>CodeEU n.a.: Save vehicle in job editor (vecto/vecto!546)</li>
+<li>CodeEU n.a.: Remove xml comments before calculating hash
+(vecto/vecto!547)</li>
+<li>CodeEU n.a.: Hashing Tool ignores comments when verifying XML
+content, and Monitoring… (vecto/vecto!551)</li>
+<li>CodeEU n.a.: Null reference &amp; sample job file
+(vecto/vecto!552)</li>
+<li>CodeEU n.a.: Handle cycles that fail during setup of the follow-up
+run. (vecto/vecto!553)</li>
+<li>CodeEU n.a.: Added pre-processing for APT-N gearboxes
+(vecto/vecto!554)</li>
+<li>CodeEU n.a.: Overloaded equality operators in GearshiftPosition
+(vecto/vecto!556)</li>
+<li>CodeEU #778, #785, #1029, #849: TC dryRun Response in Motoring
+conditions (vecto/vecto!561)</li>
+<li>CodeEU #639, #644, #646, #647, #664, #665, #666, #667, #668, #669,
+#670, #691: Brake Overload management (vecto/vecto!560)</li>
+<li>CodeEU #1281: Handled PCC pre-processing for IEPC single-speed
+gearbox (vecto/vecto!562)</li>
+<li>CodeEU n.a.: Corrected EM ElectricPowerToBattery for multiple
+powertrains. (vecto/vecto!563)</li>
+<li>CodeEU n.a.: Added missing dummy axlegear to E4 axle-powertrain
+(vecto/vecto!564)</li>
+<li>CodeEU n.a.: Avoid null reference in TestPowertrain Gearboxes
+(vecto/vecto!566)</li>
+<li>CodeEU #1242.: verification of reports with bad job hashes
+(incl. Monitoring Data) (vecto/vecto!568)</li>
+<li>CodeEU #1246: Handle primary cycles with insufficient fuel cell
+power (vecto/vecto!569)</li>
+<li>CodeEU #535, #536, #539, #541, #600, #604, #993, #689, #690: IHPC -
+add ignoreReason for clutch slipping (vecto/vecto!567)</li>
+<li>CodeEU #1042, #1133, #1138, #1139, #1182, #1191, #1244, #1277: Brake
+Overload management when engaged (vecto/vecto!570)</li>
+<li>CodeEU #1286: date parsing in fuel cell component hashing
+(vecto/vecto!572)</li>
+<li>CodeEU #1254, #1255, #1258, #1282: Integrate RESS ovl/underload in
+EM response (vecto/vecto!571)</li>
+<li>CodeEU n.a.: failing unit tests for shift strategies
+(vecto/vecto!573)</li>
+<li>CodeEU #1254, #1255, #1258, #1282: Integrate RESS ovl/underload in
+EM response - corrected (vecto/vecto!574)</li>
+<li>CodeEU n.a.: Handle InterUrban cycle setup fail in FCHV primary bus
+(vecto/vecto!575)</li>
+<li>CodeEU n.a.: fuel cell input in multiple-powertrain vehicle file
+(vecto/vecto!576)</li>
+<li>CodeEU #1242: Modified version-checking method to accept versions
+without build part (vecto/vecto!577)</li>
+</ul></li>
+<li><p>Refact</p>
+<ul>
+<li>CodeEU n.a.: Refactored multiple powertrains builder methods
+(vecto/vecto!509)</li>
+<li>CodeEU n.a.: Reduced build-time warnings (vecto/vecto!518)</li>
+<li>CodeEU n.a.: Project vecto sw3/task 2/unit tests amdm3
+(vecto/vecto!460)</li>
+<li>CodeEU n.a.: Modified IDataBus properties/methods to handle single
+&amp; multiple powertrains. (vecto/vecto!542)</li>
+<li>CodeEU n.a.: Renamed VectoRunData properties to indicate single
+powertrain (vecto/vecto!543)</li>
+<li>CodeEU n.a.: Minor cleanup/refactoring to reduce build-time
+warnings. (vecto/vecto!548)</li>
+<li>CodeEU n.a.: Cleaned up root folder (vecto/vecto!549)</li>
+<li>CodeEU n.a.: Cleanup/refactoring to reduce build-time warnings -
+part II. (vecto/vecto!550)</li>
+<li>CodeEU n.a.: Reduce compile-time warnings part III
+(vecto/vecto!555)</li>
+<li>CodeEU n.a.: Eliminated compile-time warnings in VectoCoreTests.
+(vecto/vecto!557)</li>
+<li>CodeEU n.a.: Reduce compile-time warnings in new Test projects.
+(vecto/vecto!558)</li>
+<li>CodeEU n.a.: Minor refactoring (vecto/vecto!559)</li>
+</ul></li>
+</ul>
 <p><strong>VECTO v5.0.7 Official Release (14-10-2025)</strong></p>
 <ul>
 <li><p>Bug Fixes</p>
@@ -13440,6 +13589,7 @@ lookup</li>
 <li>Bugfix: use unique identifier for jobs in job list</li>
 <li>Bugfix: error in triagulation of fuel consumption map</li>
 </ul>
+</section>
 </section>
 <div id="FOOTER">
 <a target="mainframe" href="mailto:JRC-VECTO@ec.europa.eu">Contact</a>

@@ -118,7 +118,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
             AngledriveData = DataAdapter.CreateAngledriveData(vehicle.Components.AngledriveInputData);
 
             GearboxData = DataAdapter.CreateGearboxData(
-                vehicle, new VectoRunData() { EngineData = EngineData, AxleGearData = AxlegearData, VehicleData = tempVehicle,
+                vehicle, new VectoRunData() { EngineData = EngineData, AxleGearSinglePwt = AxlegearData, VehicleData = tempVehicle,
                 Cycle = VTPCycle },
                 null);
             RetarderData = DataAdapter.CreateRetarderData(vehicle.Components.RetarderInputData, vehicle.ArchitectureID, vehicle.Components.IEPC);

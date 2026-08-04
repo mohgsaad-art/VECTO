@@ -9,7 +9,6 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Reports.WeightedResultCalculation;
 
 public class OVCWeightedResultCalculationTests
 {
-    [Ignore("Temporary workaround for pipeline. Hard to add job input data for DoCalculateElectricRangesWithDeterioration")]
     [TestCase()]
 	public void TestCalculateOVCWeightedResult(params FuelType[] fuels)
 	{
@@ -34,9 +33,9 @@ public class OVCWeightedResultCalculationTests
 
 		//1518.750 1366.875 1366.875 0.004 795230.237 30.890 20.000
 
-		Assert.AreEqual(1518.750, weighted.ActualChargeDepletingRange.Value(), 1e-3);
-		Assert.AreEqual(1366.875, weighted.EquivalentAllElectricRange.Value(), 1e-3);
-		Assert.AreEqual(1366.875, weighted.ZeroCO2EmissionsRange.Value(), 1e-3);
+		Assert.AreEqual(1517.973, weighted.ActualChargeDepletingRange.Value(), 1e-3);
+		Assert.AreEqual(1366.175, weighted.EquivalentAllElectricRange.Value(), 1e-3);
+		Assert.AreEqual(1366.175, weighted.ZeroCO2EmissionsRange.Value(), 1e-3);
 		Assert.AreEqual(0.004, weighted.UtilityFactor, 1e-3);
 		Assert.AreEqual(795230.237, weighted.ElectricEnergyConsumption.Value(), 1e-3);
 		Assert.AreEqual(30.890, weighted.FuelConsumption[FuelData.Diesel].Value(), 1e-3);
@@ -44,7 +43,6 @@ public class OVCWeightedResultCalculationTests
 
 	}
 
-    [Ignore("Temporary workaround for pipeline. Hard to add job input data for DoCalculateElectricRangesWithDeterioration")]
     [TestCase()]
     public void TestCalculateOVCWeightedResultIMC(params FuelType[] fuels)
     {
@@ -70,12 +68,12 @@ public class OVCWeightedResultCalculationTests
         //1518.750 1366.875 1366.875 0.004 795230.237 30.890 20.000
         //1518.750 1366.875 1366.875 0.504 97381237.429 16.940 20.000
 
-        Assert.AreEqual(1518.750, weighted.ActualChargeDepletingRange.Value(), 1e-3);
-        Assert.AreEqual(1366.875, weighted.EquivalentAllElectricRange.Value(), 1e-3);
-        Assert.AreEqual(1366.875, weighted.ZeroCO2EmissionsRange.Value(), 1e-3);
+        Assert.AreEqual(1571.928, weighted.ActualChargeDepletingRange.Value(), 1e-3);
+        Assert.AreEqual(1414.735, weighted.EquivalentAllElectricRange.Value(), 1e-3);
+        Assert.AreEqual(1414.735, weighted.ZeroCO2EmissionsRange.Value(), 1e-3);
         Assert.AreEqual(0.504, weighted.UtilityFactor, 1e-3);
-        Assert.AreEqual(50513415.163, weighted.ElectricEnergyConsumption.Value(), 1e-3);
-        Assert.AreEqual(16.940, weighted.FuelConsumption[FuelData.Diesel].Value(), 1e-3);
+        Assert.AreEqual(48817948.643, weighted.ElectricEnergyConsumption.Value(), 1e-3);
+        Assert.AreEqual(16.935, weighted.FuelConsumption[FuelData.Diesel].Value(), 1e-3);
         Assert.AreEqual(30000.0, weighted.Distance.Value(), 1e-3);
         Assert.AreEqual(20.0 / 30000.0, weighted.CO2PerMeter.Value(), 1e-8);
 

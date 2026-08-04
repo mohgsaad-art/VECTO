@@ -54,7 +54,7 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 				Assert.Fail("Expected Exception {0}, but no exception occured.", typeof(T));
 			} catch (T ex) {
 				if (message != null) {
-					Assert.AreEqual(message, ex.Message);
+					Assert.That(ex.Message, Is.EqualTo(message));
 				}
 				if (messageContains != null) {
 					Assert.IsTrue(ex.Message.Contains(messageContains), "Exception message does not contain expected text. Expected: '{1}', Message: '{0}'", ex.Message, messageContains);
@@ -139,16 +139,16 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 					continue;
 				}
 				if (propertyType.IsPrimitive || propertyType == typeof(string)) {
-					Assert.AreEqual(expectedVal, actualVal, $"Property {prop.Name}, expected: {expectedVal}, actual: {actualVal}");
+					Assert.That(actualVal, Is.EqualTo(expectedVal), $"Property {prop.Name}, expected: {expectedVal}, actual: {actualVal}");
 				} else if (propertyType == typeof(SI)) {
-					Assert.AreEqual((expectedVal as SI).Value(), (actualVal as SI).Value());
-					Assert.AreEqual((expectedVal as SI).UnitString, (actualVal as SI).UnitString);
+					Assert.That((actualVal as SI).Value(), Is.EqualTo((expectedVal as SI).Value()));
+					Assert.That((actualVal as SI).UnitString, Is.EqualTo((expectedVal as SI).UnitString));
 				} else if (expectedVal is IEnumerable<object>) {
 					Assert.IsTrue(actualVal is IList);
 					var expectedEnumerable = (expectedVal as IEnumerable<object>).ToArray();
 					Assert.IsTrue(actualVal is IEnumerable<object>);
 					var actualEnumerable = (actualVal as IEnumerable<object>).ToArray();
-					Assert.AreEqual(expectedEnumerable.Length, actualEnumerable.Length);
+					Assert.That(actualEnumerable.Length, Is.EqualTo(expectedEnumerable.Length));
 					if (expectedEnumerable.Length > 0) {
 						IterateElements(expectedEnumerable, actualEnumerable, ignoredProperties);
 					}
@@ -243,8 +243,8 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 			Assert.NotNull(expected);
 			Assert.NotNull(actual);
 
-			Assert.AreEqual(expected.Columns.Count, actual.Columns.Count);
-			Assert.AreEqual(expected.Rows.Count, actual.Rows.Count);
+			Assert.That(actual.Columns.Count, Is.EqualTo(expected.Columns.Count));
+			Assert.That(actual.Rows.Count, Is.EqualTo(expected.Rows.Count));
 
 			foreach (DataColumn expectedCol in expected.Columns) {
 				Assert.NotNull(actual.Columns[expectedCol.ColumnName]);
@@ -257,10 +257,10 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 				foreach (DataColumn col in expected.Columns) {
 					var value = expectedRow[col];
 					if (value is ConvertedSI) {
-						Assert.AreEqual((value as ConvertedSI).Value, (actualRow[col] as ConvertedSI).Value);
+						Assert.That((actualRow[col] as ConvertedSI).Value, Is.EqualTo((value as ConvertedSI).Value));
 					}
 					if (value.GetType().IsPrimitive) {
-						Assert.AreEqual(value, actualRow[col]);
+						Assert.That(actualRow[col], Is.EqualTo(value));
 					}
 				}
 			}

@@ -127,8 +127,11 @@ namespace TUGraz.VectoCore.Utils
 				}
 				table.Rows.Add(row);
 			}
-			var writer = new StreamWriter("statistics_" + runName + ".csv");
-			VectoCSVFile.Write(writer, table);
+
+			using (var writer = new StreamWriter("statistics_" + runName + ".csv"))
+			{
+                VectoCSVFile.Write(writer, table);
+            }
 		}
 
 		public sealed class DataEntry

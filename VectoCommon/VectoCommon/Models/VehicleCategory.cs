@@ -76,13 +76,10 @@ namespace TUGraz.VectoCommon.Models
 				case VehicleCategory.Tractor:
 				case VehicleCategory.Van:
 					return Lorry;
-					break;
 				case VehicleCategory.HeavyBusPrimaryVehicle:
 					return PrimaryBus;
-					break;
 				case VehicleCategory.HeavyBusCompletedVehicle:
 					return CompletedBus;
-					break;
 				//case VehicleCategory.Van:
 				//	return Van;
 				default:

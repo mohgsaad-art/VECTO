@@ -793,20 +793,20 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_AxleConfiguration, modelData.VehicleData.AxleConfiguration.GetName()),
 				new XElement(tns + XMLNames.Vehicle_TechnicalPermissibleMaximumLadenMass, modelData.VehicleData.InputData.GrossVehicleMassRating.ToXMLFormat(0)),
 				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, modelData.VehicleData.CurbMass.ToXMLFormat(0)),
-				modelData.Retarder.Type.IsDedicatedComponent()
-					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, modelData.Retarder.Ratio.ToXMLFormat(3))
+				modelData.RetarderSinglePwt.Type.IsDedicatedComponent()
+					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, modelData.RetarderSinglePwt.Ratio.ToXMLFormat(3))
 					: null,
-				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null));
+				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTOSinglePwt != null));
 			if (modelData.VehicleData.AxleConfiguration.AxlegearIncludedInGearbox()) {
 				VehiclePart.Add(
 					new XElement(
 						tns + XMLNames.Vehicle_Components,
 						new XAttribute(xsi + XMLNames.XSIType, "ComponentsTruckFWDType"),
 						GetEngineDescription(modelData.EngineData, modelData.InputData.JobInputData.Vehicle.TankSystem),
-						GetGearboxDescription(modelData.GearboxData, modelData.AxleGearData.AxleGear.Ratio),
-						GetTorqueConverterDescription(modelData.GearboxData.TorqueConverterData),
-						GetRetarderDescription(modelData.Retarder),
-						GetAngledriveDescription(modelData.AngledriveData),
+						GetGearboxDescription(modelData.GearboxSinglePwt, modelData.AxleGearSinglePwt.AxleGear.Ratio),
+						GetTorqueConverterDescription(modelData.GearboxSinglePwt.TorqueConverterData),
+						GetRetarderDescription(modelData.RetarderSinglePwt),
+						GetAngledriveDescription(modelData.AngledriveSinglePwt),
 						GetAirDragDescription(modelData.AirdragData),
 						GetAxleWheelsDescription(modelData.VehicleData),
 						GetAuxiliariesDescription(modelData)
@@ -817,11 +817,11 @@ namespace TUGraz.VectoCore.OutputData.XML
 						tns + XMLNames.Vehicle_Components,
 						new XAttribute(xsi + XMLNames.XSIType, "ComponentsTruckType"),
 						GetEngineDescription(modelData.EngineData, modelData.VehicleData.InputData.TankSystem),
-						GetGearboxDescription(modelData.GearboxData),
-						GetTorqueConverterDescription(modelData.GearboxData.TorqueConverterData),
-						GetRetarderDescription(modelData.Retarder),
-						GetAngledriveDescription(modelData.AngledriveData),
-						GetAxlegearDescription(modelData.AxleGearData),
+						GetGearboxDescription(modelData.GearboxSinglePwt),
+						GetTorqueConverterDescription(modelData.GearboxSinglePwt.TorqueConverterData),
+						GetRetarderDescription(modelData.RetarderSinglePwt),
+						GetAngledriveDescription(modelData.AngledriveSinglePwt),
+						GetAxlegearDescription(modelData.AxleGearSinglePwt),
 						GetAirDragDescription(modelData.AirdragData),
 						GetAxleWheelsDescription(modelData.VehicleData),
 						GetAuxiliariesDescription(modelData)

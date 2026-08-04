@@ -33,9 +33,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
@@ -48,6 +50,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -59,6 +62,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 	// ReSharper disable once InconsistentNaming
 	public class Truck40tPowerTrain
 	{
+        private static StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
 		public const string ShiftPolygonFile = @"TestData/Components/ShiftPolygons.vgbs";
 		public const string AccelerationFile = @"TestData/Components/Truck.vacc";
 		public const string EngineFile = @"TestData/Components/40t_Long_Haul_Truck.veng";
@@ -99,25 +104,23 @@ namespace TUGraz.VectoCore.Tests.Integration
 				JobRunId = 0,
 				JobName = Path.GetFileName(modFileName),
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				AxleGearData = axleGearData,
-				GearboxData = gearboxData,
-				Retarder = new RetarderData() { Type = RetarderType.None},
+				AxleGearSinglePwt = axleGearData,
+				GearboxSinglePwt = gearboxData,
+				RetarderSinglePwt = new RetarderData() { Type = RetarderType.None},
 				Aux = new List<VectoRunData.AuxData>(),
-				GearshiftParameters = CreateGearshiftData(),
+				GearshiftParametersSinglePwt = CreateGearshiftData(),
 				SimulationType = SimulationType.DistanceCycle,
 				Cycle = cycleData,
 				DriverData = driverData,
 			};
 
 			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(runData, fileWriter, null)
-			{
-				WriteModalResults = true
-			};
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
@@ -129,7 +132,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 					gbxStrategy = new MTShiftStrategy(container);
 					break;
 				case GearboxType.AMT:
-					gbxStrategy = new AMTShiftStrategy(container);
+					gbxStrategy = new AMTShiftStrategyOptimized(container);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("gbxType", gbxType, null);
@@ -140,7 +143,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, gbxStrategy))
+				.AddComponent(new AMTGearbox(container, gbxStrategy, Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(clutch)
 				.AddComponent(engine);
 

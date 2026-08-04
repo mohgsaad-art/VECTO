@@ -26,8 +26,8 @@ namespace VectoHashingTest
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.ElectricEnergyStorage));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.IEPC));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.ADC));
-            Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.FuelCell, 0));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.FuelCell, 1));
+            Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.FuelCell, 3));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.Gearbox));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.TorqueConverter));
             Assert.IsTrue(loadedFile.ValidateHash(VectoComponents.Angledrive));

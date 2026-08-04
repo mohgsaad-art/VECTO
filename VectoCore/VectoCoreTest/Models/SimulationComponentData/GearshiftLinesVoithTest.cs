@@ -122,11 +122,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				VehicleData = new VehicleData() {
 					GrossVehicleMass = 18000.SI<Kilogram>()
 				},
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					GearshiftLines = data,
 					LoadstageThresholds = loadStageThresoldsUp.Zip(loadStageThresoldsDown, Tuple.Create)
 				},
-				GearboxData = new GearboxData() {
+				GearboxSinglePwt = new GearboxData() {
 					Gears = new Dictionary<uint, GearData>() {
 						{1, new GearData() },
 						{2,new GearData() }

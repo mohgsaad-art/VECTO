@@ -211,7 +211,7 @@ public class ATShiftStrategyOptimizedTests
 		response.Engine.TorqueOutDemand = inTorque;
   
   
-		runData.GearshiftParameters.RatingFactorCurrentGear = 1.1;
+		runData.GearshiftParametersSinglePwt.RatingFactorCurrentGear = 1.1;
   
   
         var shiftRequired = shiftStrategy.ShiftRequired(absTime, dt, outTortque, outAngularVelocity, inTorque, inAngularVelocity, initGear, -double.MaxValue.SI<Second>(), response);
@@ -298,7 +298,7 @@ public class ATShiftStrategyOptimizedTests
 		var absTime = 0.SI<Second>();
 		var dt = 2.SI<Second>();
 				
-		Assert.That(runData.GearboxData.GearList.First(p => p.Gear == 2).TorqueConverterLocked, Is.False, "Expected 2nd gear with TC");
+		Assert.That(runData.GearboxSinglePwt.GearList.First(p => p.Gear == 2).TorqueConverterLocked, Is.False, "Expected 2nd gear with TC");
 		var initGear = shiftStrategy.InitGear(absTime, dt, 0.SI<NewtonMeter>(), angularVelocity);
 		SetCurrentGear(gbx, initGear);
 		
@@ -458,7 +458,7 @@ public class ATShiftStrategyOptimizedTests
 		var testPt =
 			vehicleContainer.Object.SimplePowertrainBuilder.CreateTestPowertrain(vehicleContainer.Object, false);
 		
-		var mockGb = Mock.Get(testPt.Gearbox);
+		var mockGb = Mock.Get(testPt.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN));
 		mockGb.Setup(g => g.Request(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 			It.IsAny<PerSecond>(), true)).Returns(dryRunResponse);
 		
@@ -538,7 +538,7 @@ public class ATShiftStrategyOptimizedTests
 		// });
 		
 		
-		runData.GearshiftParameters.RatingFactorCurrentGear = 2;
+		runData.GearshiftParametersSinglePwt.RatingFactorCurrentGear = 2;
 		
 		var shiftRequired = shiftStrategy.ShiftRequired(absTime,
 			dt,
@@ -687,7 +687,7 @@ public class ATShiftStrategyOptimizedTests
 
 
 		testPt.Setup(t => t.Container).Returns(simpleContainer.Object);
-		testPt.Setup(t => t.Gearbox).Returns(testGearbox.Object);
+		testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 		//Vehicle
 		var vehicle = new Mock<ITestPowertrainVehicle>();
@@ -800,8 +800,8 @@ public class ATShiftStrategyOptimizedTests
 		var gearShiftParams =
 			gbxDataAdapter.CreateGearshiftData(1.0, runData.EngineData.IdleSpeed, GearboxType.ATSerial, nrOfGears);
 
-		runData.GearboxData = gearboxData;
-		runData.GearshiftParameters = gearShiftParams;
+		runData.GearboxSinglePwt = gearboxData;
+		runData.GearshiftParametersSinglePwt = gearShiftParams;
 		return runData;
 	}
 
@@ -810,7 +810,7 @@ public class ATShiftStrategyOptimizedTests
 	{
 		var simplePt = new Mock<ISimpleVehicleContainer>();
 
-		testGearbox = GetMockTestGearbox(runData.GearboxData.Gears);
+		testGearbox = GetMockTestGearbox(runData.GearboxSinglePwt.Gears);
 
 
 		simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);

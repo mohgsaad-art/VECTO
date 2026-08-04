@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoException("no vehicle found...");
 			}
 
-            var gearbox = TestPowertrain.Gearbox;
+            var gearbox = TestPowertrain.Gearboxes.FirstOrDefault();
 			if (gearbox == null) {
 				throw new VectoException("no gearbox found...");
 			}
@@ -71,8 +71,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var modData = container.ModalData as ModalDataContainer;
 			var runData = container.RunData;
 			var ratio = 1.0 / runData.VehicleData.DynamicTyreRadius *
-						(runData.AxleGearData?.AxleGear.Ratio ?? 1.0) * // alxlegear may be null for certain IEPC configurations
-						(runData.AngledriveData?.Angledrive.Ratio ?? 1.0);
+						(runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) * // alxlegear may be null for certain IEPC configurations
+						(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0);
 
 			var tmp = new List<Entry>();
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
@@ -83,11 +83,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				var targetEngineSpeed = GetMotorTargetSpeed(runData);
-				var gearForSpeed = runData.GearboxData.GearList
+				var gearForSpeed = runData.GearboxSinglePwt.GearList
 					.Where(x => !x.TorqueConverterLocked.HasValue || x.TorqueConverterLocked.Value)
 					.Select(x => new {
 						Gear = x,
-						SpeedDiff = Math.Abs((speed * ratio * runData.GearboxData.Gears[x.Gear].Ratio -
+						SpeedDiff = Math.Abs((speed * ratio * runData.GearboxSinglePwt.Gears[x.Gear].Ratio -
 											targetEngineSpeed).Value())
 					})
 					.OrderBy(x => x.SpeedDiff).FirstOrDefault()?.Gear ?? new GearshiftPosition(0);
@@ -123,8 +123,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual MeterPerSecond GetVehicleMaxSpeed(VectoRunData runData)
 		{
-			var axleGearData = runData.AxleGearData;
-			var angledriveData = runData.AngledriveData;
+			var axleGearData = runData.AxleGearSinglePwt;
+			var angledriveData = runData.AngledriveSinglePwt;
 			var hasAngleDrive = angledriveData != null && angledriveData.Angledrive != null;
 			var angledriveRatio = hasAngleDrive && angledriveData.Type == AngledriveType.SeparateAngledrive
 				? angledriveData.Angledrive.Ratio
@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var dynamicTyreRadius = runData.VehicleData != null ? runData.VehicleData.DynamicTyreRadius : 0.0.SI<Meter>();
 
 			var vehicleMaxSpeed = GetMaxMotorspeed(runData) /
-					runData.GearboxData.Gears[runData.GearboxData.Gears.Keys.Max()].Ratio / axlegearRatio /
+					runData.GearboxSinglePwt.Gears[runData.GearboxSinglePwt.Gears.Keys.Max()].Ratio / axlegearRatio /
 					angledriveRatio * dynamicTyreRadius;
 			
 			var maxSpeed = VectoMath.Min(
@@ -243,10 +243,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private Tuple<PowertrainPosition, ElectricMotorData> GetEMPos(VectoRunData runData)
 		{
 			if (runData.JobType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.IHPC) && runData.BatteryOnlyHybridMode) {
-				return runData.ElectricMachinesData
+				return runData.ElectricMachinesSinglePwt
 					.FirstOrDefault(x => x.Item1.IsOneOf(PowertrainPosition.HybridP2, PowertrainPosition.HybridP2_5, PowertrainPosition.IHPC));
             }
-			return runData.ElectricMachinesData
+			return runData.ElectricMachinesSinglePwt
 				.FirstOrDefault(x => x.Item1 == PowertrainPosition.BatteryElectricE2 || x.Item1 == PowertrainPosition.IEPC);
         }
 	}

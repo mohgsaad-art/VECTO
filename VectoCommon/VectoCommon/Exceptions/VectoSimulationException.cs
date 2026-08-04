@@ -46,8 +46,6 @@ namespace TUGraz.VectoCommon.Exceptions
 
 		//[StringFormatMethod("message")]
 		public VectoSimulationException(string message, Exception inner, params object[] args) : base(message, inner, args) {}
-
-		protected VectoSimulationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	[Serializable]
@@ -64,17 +62,6 @@ namespace TUGraz.VectoCommon.Exceptions
 	[Serializable]
 	public class UnexpectedResponseException : VectoSimulationException
 	{
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-			info.AddValue("Response", Response);
-		}
-
-		protected UnexpectedResponseException(SerializationInfo info, StreamingContext context) : base(info, context)
-		{
-			Response = (IResponse)info.GetValue("Response", typeof(IResponse));
-		}
-
 		public readonly IResponse Response;
 
 		public UnexpectedResponseException(string message, IResponse resp)

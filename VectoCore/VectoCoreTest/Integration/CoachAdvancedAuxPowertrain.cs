@@ -32,9 +32,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
@@ -49,6 +51,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -59,6 +62,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 {
 	public class CoachAdvancedAuxPowertrain
 	{
+        private static StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
 		public const string AccelerationFile = @"TestData/Components/Truck.vacc";
 		public const string EngineFile = @"TestData/Components/24t Coach.veng";
 		public const string EngineFileHigh = @"TestData/Components/24t Coach_high.veng";
@@ -92,27 +97,25 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var runData = new VectoRunData() {
 				JobRunId = 0,
 				JobName = modFileName,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				GearboxData = gearboxData,
-				GearshiftParameters = CreateGearshiftData(),
+				GearboxSinglePwt = gearboxData,
+				GearshiftParametersSinglePwt = CreateGearshiftData(),
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				SimulationType = SimulationType.DistanceCycle,
 				Cycle = cycleData, 
 				DriverData = driverData,
-				Retarder = new RetarderData() { Type = RetarderType.None },
+				RetarderSinglePwt = new RetarderData() { Type = RetarderType.None },
 				Aux = new List<VectoRunData.AuxData>(),
 				BusAuxiliaries = BusAuxiliaryInputData.ReadBusAuxiliaries(AdvancedAuxFile, vehicleData)
 			};
 			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(runData, fileWriter, null)
-			{
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, fileWriter, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
 
-			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, modData, null);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 
@@ -121,7 +124,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(engine);
 

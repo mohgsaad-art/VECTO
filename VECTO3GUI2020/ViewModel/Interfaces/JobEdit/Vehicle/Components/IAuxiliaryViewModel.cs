@@ -11,7 +11,7 @@ namespace VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components
         string TechnologyName { get; set; }
 
         IList<string> TechnologyList { get; }
-        AuxiliaryType Type { get; }
+        new AuxiliaryType Type { get; }
 	}
 }
 

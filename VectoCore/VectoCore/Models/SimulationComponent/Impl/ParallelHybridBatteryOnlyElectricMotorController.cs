@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//ElectricMotorData = container.RunData.ElectricMachinesData.FirstOrDefault()?.Item2;
 			//ElectricSystem = es;
 
-			ElectricMotorsOff = ModelData.ElectricMachinesData
+			ElectricMotorsOff = ModelData.ElectricMachinesSinglePwt
 				.Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
 				.ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
 
@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								DataBus.DriverInfo.DrivingAction == DrivingAction.Brake;
 
 			return driverIsBraking && (DataBus.VehicleInfo.VehicleSpeed ?? 0.SI<MeterPerSecond>()).IsSmallerOrEqual(
-										ModelData.GearboxData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings
+										ModelData.GearboxSinglePwt?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings
 											.ATGearboxDisengageWhenHaltingSpeed)
 									&& outTorque.IsSmaller(0);
 		}
@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			TestPowertrain.UpdateComponents();
 
 			var emPos = ElectricMotorsOff.Keys.First();
-			var emCtl = TestPowertrain.ElectricMotors[emPos].Control as ITestPowertrainElectricMotorControl;
+			var emCtl = TestPowertrain.ElectricMotors.First(x => x.Position == emPos).Control as ITestPowertrainElectricMotorControl;
 
             emCtl.EmOff = false;
 
@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					//};
 					//TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 					emCtl.EMTorque = emTq;
-					var retVal = TestPowertrain.ElectricMotor.Request(absTime, dt, outTorque,
+					var retVal = TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime, dt, outTorque,
 							outAngularVelocity, true);
 					//retVal.HybridController.StrategySettings = cfg;
 					return retVal;
@@ -146,7 +146,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			var gear = DataBus.GearboxInfo().Gear;
 			var emPos = ElectricMotorsOff.Keys.First();
-			var emCtl = TestPowertrain.ElectricMotors[emPos].Control as ITestPowertrainElectricMotorControl;
+			var emCtl = TestPowertrain.ElectricMotors.First(x => x.Position == emPos).Control as ITestPowertrainElectricMotorControl;
 
             TestPowertrain.UpdateComponents();
 
@@ -154,7 +154,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			emCtl.EMTorque = null;
 			
 			var emOffResponse =
-				TestPowertrain.ElectricMotor.Request(absTime, dt, outTorque, outAngularVelocity, true);
+				TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Request(absTime, dt, outTorque, outAngularVelocity, true);
 
 			return emOffResponse;
 		}

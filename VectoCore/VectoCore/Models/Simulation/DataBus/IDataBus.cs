@@ -37,6 +37,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
@@ -55,7 +56,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IList<IGearboxInfo> GearboxesInfo {  get; }
 
-		IGearboxControl GearboxCtl { get; }
+		IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IList<IGearboxControl> GearboxesCtl { get; }
 
@@ -72,6 +73,8 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		IClutchInfo ClutchInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IList<IClutchInfo> ClutchesInfo { get; }
+
+		IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);	
 
 		IBrakes Brakes { get; }
 
@@ -91,9 +94,13 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IElectricSystemInfo JunctionBox {  get; }
 
-		ITorqueConverterInfo TorqueConverterInfo { get; }
+		ITorqueSplitter TorqueSplitter { get; }
 
-		ITorqueConverterControl TorqueConverterCtl { get; }
+		IWheelEnd WheelEnd { get; }
+
+		ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+		ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IPowertainInfo PowertrainInfo { get; }
 
@@ -120,6 +127,6 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		bool HasGearbox { get; }
 
-		VectoSimulationJobType VehicleArchitecutre { get; }
+		VectoSimulationJobType VehicleArchitecture { get; }
 	}
 }

@@ -22,7 +22,6 @@ public class PEV_ShiftLineTests
     [TestCase]
     public void ComputePEVShiftLinesADC()
     {
-		var axlegearRatio = 2.64;
 		var r_dyn = 0.421.SI<Meter>();
 
 		var expectedDownshiftNoADC = new[] {
@@ -174,7 +173,6 @@ public class PEV_ShiftLineTests
 	[TestCase]
     public void ComputePEVShiftLines()
     {
-		var axlegearRatio = 2.64;
 		var r_dyn = 0.421.SI<Meter>();
 
 		var expectedDownshift = new[] {
@@ -416,14 +414,14 @@ public class PEV_ShiftLineTests
         });
 
 		var shiftPolygons = new List<ShiftPolygon>();
-		var runData = new VectoRunData() { GearshiftParameters = new ShiftStrategyParameters() };
+		var runData = new VectoRunData() { GearshiftParametersSinglePwt = new ShiftStrategyParameters() };
 		var container = new Mock<IVehicleContainer>();
 		container.Setup(c => c.RunData).Returns(runData);
 		// var shiftStrategy = new PEVAMTShiftStrategy(container.Object);
 		// var deRatedShiftLines = shiftStrategy.CalculateDeratedShiftLines(emData, gearboxData.Gears,
 		// 	r_dyn, axlegearRatio, GearboxType.AMT);
 		
-		var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+		var shiftStrategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 		//var deRatedShiftLines = shiftStrategy.CalculateDeratedShiftLines(emData, gearboxData.Gears,
 		//    r_dyn, axlegearRatio, GearboxType.AMT);
 
@@ -576,11 +574,11 @@ public class PEV_ShiftLineTests
         });
 
 		var shiftPolygons = new List<ShiftPolygon>();
-		var runData = new VectoRunData() { GearshiftParameters = new ShiftStrategyParameters() };
+		var runData = new VectoRunData() { GearshiftParametersSinglePwt = new ShiftStrategyParameters() };
 		var container = new Mock<IVehicleContainer>();
 		container.Setup(c => c.RunData).Returns(runData);
 
-		var polygonCreator = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+		var polygonCreator = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 		//var deRatedShiftLines = shiftStrategy.CalculateDeratedShiftLines(emData, gearboxData.Gears,
 		//    r_dyn, axlegearRatio, GearboxType.AMT);
 
@@ -945,11 +943,11 @@ var expectedUpshift = new[] {
         //fullLoadCurves[(uint)(0)] = new EngineFullLoadCurve(fullLoadCurve, null) { EngineData = engineData };
 
         var shiftPolygons = new List<ShiftPolygon>();
-		var runData = new VectoRunData() { GearshiftParameters = new ShiftStrategyParameters() };
+		var runData = new VectoRunData() { GearshiftParametersSinglePwt = new ShiftStrategyParameters() };
 		var container = new Mock<IVehicleContainer>();
 		container.Setup(c => c.RunData).Returns(runData);
 
-		var polygonCreator = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+		var polygonCreator = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 		//var deRatedShiftLines = shiftStrategy.CalculateDeratedShiftLines(emData, gearboxData.Gears,
 		//    r_dyn, axlegearRatio, GearboxType.AMT);
 

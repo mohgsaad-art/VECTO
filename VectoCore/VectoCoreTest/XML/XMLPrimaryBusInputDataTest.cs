@@ -4,6 +4,7 @@ using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.XML
 {

@@ -14,6 +14,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 {
@@ -28,9 +29,6 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		[OneTimeSetUp]
 		public void OneTimeSetup()
 		{
-#if (MOCKUP)
-			Assert.Ignore("Tests not meaningful in mockup mode");
-#endif
 			var kernel = new StandardKernel(new VectoNinjectModule()) {
 			};
 

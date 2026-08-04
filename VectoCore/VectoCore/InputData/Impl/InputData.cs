@@ -119,6 +119,8 @@ namespace TUGraz.VectoCore.InputData.Impl
 
         public double AxleWeightShare { get; internal set; }
 
+		public int AxleNumber {  get; internal set; }
+
 		public DataSource DataSource { get; internal set; }
 	}
 

@@ -32,7 +32,6 @@ namespace VECTO3GUI2020.Helper.TemplateSelector
 						break;
 					default:
 						throw new VectoException("Unknown MultistageParameterType");
-						break;
 				}
 				factory = new FrameworkElementFactory(type);
 				DataTemplate dt = new DataTemplate();

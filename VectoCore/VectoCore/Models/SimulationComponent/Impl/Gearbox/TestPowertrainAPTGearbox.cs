@@ -11,8 +11,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 	// so that these can be set from outside without interfering with the class in the real implementation
 	public class TestPowertrainAPTGearbox : APTGearbox, ITestPowertrainTransmission
 	{
-		public TestPowertrainAPTGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy,
-			false)
+		public TestPowertrainAPTGearbox(IVehicleContainer container, IShiftStrategy strategy, int axleNumber) : base(container, strategy,
+			false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException("This class shall not be used in a real powertrain!");

@@ -1,0 +1,2272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration 
+	schemaVersion="2.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0"  
+	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"	
+	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob ..\..\..\..\..\VectoCore\Resources\XSD\VectoDeclarationJob.xsd">
+	<Vehicle id="VEH-PrimaryBus_nonSmart" xsi:type="Vehicle_Conventional_PrimaryBusDeclarationType">
+		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+		<ManufacturerAddress>Street, ZIP City</ManufacturerAddress>
+		<Model>Generic Model</Model>
+		<VIN>VEH-1234567890_nonSmart</VIN>
+		<Date>2017-02-15T11:00:00Z</Date>
+		<SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+		<LegislativeCategory>M3</LegislativeCategory>
+		<ChassisConfiguration>Bus</ChassisConfiguration>
+		<AxleConfiguration>4x2</AxleConfiguration>
+		<Articulated>true</Articulated>
+		<TechnicalPermissibleMaximumLadenMass>28000</TechnicalPermissibleMaximumLadenMass>
+		<IdlingSpeed>700</IdlingSpeed>
+		<RetarderType>Transmission Output Retarder</RetarderType>
+		<RetarderRatio>1.000</RetarderRatio>
+		<AngledriveType>None</AngledriveType>
+		<ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+		<ADAS>
+			<EngineStopStart>true</EngineStopStart>
+			<EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
+			<EcoRollWithEngineStop>true</EcoRollWithEngineStop>
+			<PredictiveCruiseControl>1,2</PredictiveCruiseControl>
+		</ADAS>
+		<TorqueLimits>
+			<Entry gear="6" maxTorque="1800"/>
+			<Entry gear="1" maxTorque="2500"/>
+		</TorqueLimits>
+		<H2StorageUsableCapacity>80.0</H2StorageUsableCapacity>
+		<HydrogenStorageTechnology>Compressed</HydrogenStorageTechnology>
+		<Components>
+			<Engine>
+				<v2.0:Data xsi:type="EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Model>Generic 40t Long Haul Truck Engine</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-02-15T11:00:00Z</Date>
+					<AppVersion>VectoEngine x.y</AppVersion>
+					<Displacement>12700</Displacement>
+					<RatedSpeed>1800</RatedSpeed>
+					<RatedPower>325032</RatedPower>
+					<MaxEngineTorque>2134</MaxEngineTorque>
+					<WHRType>
+						<MechanicalOutputICE>false</MechanicalOutputICE>
+						<MechanicalOutputDrivetrain>false</MechanicalOutputDrivetrain>
+						<ElectricalOutput>false</ElectricalOutput>
+					</WHRType>
+					<Mode>
+						<IdlingSpeed>600</IdlingSpeed>
+						<FullLoadAndDragCurve>
+							<Entry engineSpeed='600.00' maxTorque='1188.00' dragTorque='-125.56'/>
+							<Entry engineSpeed='800.00' maxTorque='1661.00' dragTorque='-130.72'/>
+							<Entry engineSpeed='1000.00' maxTorque='2134.00' dragTorque='-135.85'/>
+							<Entry engineSpeed='1200.00' maxTorque='2134.00' dragTorque='-146.72'/>
+							<Entry engineSpeed='1400.00' maxTorque='2134.00' dragTorque='-156.83'/>
+							<Entry engineSpeed='1600.00' maxTorque='1928.00' dragTorque='-183.84'/>
+							<Entry engineSpeed='1800.00' maxTorque='1722.00' dragTorque='-207.31'/>
+							<Entry engineSpeed='2000.00' maxTorque='1253.00' dragTorque='-236.72'/>
+							<Entry engineSpeed='2100.00' maxTorque='1019.00' dragTorque='-248.49'/>
+							<Entry engineSpeed='2200.00' maxTorque='0.00' dragTorque='-274.38'/>
+						</FullLoadAndDragCurve>
+						<Fuel type="H2 CI">
+							<WHTCUrban>1.0431</WHTCUrban>
+							<WHTCRural>1.0193</WHTCRural>
+							<WHTCMotorway>1.0024</WHTCMotorway>
+							<BFColdHot>1.0005</BFColdHot>
+							<CFRegPer>1.0000</CFRegPer>
+							<CFNCV>1.0000</CFNCV>
+							<FuelConsumptionMap>
+								<Entry engineSpeed='600.00' torque='0.00' fuelConsumption='1017.15'/>
+								<Entry engineSpeed='600.00' torque='216.90' fuelConsumption='2697.16'/>
+								<Entry engineSpeed='600.00' torque='433.80' fuelConsumption='5027.12'/>
+								<Entry engineSpeed='600.00' torque='650.70' fuelConsumption='7960.53'/>
+								<Entry engineSpeed='600.00' torque='867.60' fuelConsumption='10064.41'/>
+								<Entry engineSpeed='600.00' torque='1084.50' fuelConsumption='12292.76'/>
+								<Entry engineSpeed='600.00' torque='1301.40' fuelConsumption='14663.02'/>
+								<Entry engineSpeed='600.00' torque='1518.30' fuelConsumption='17043.72'/>
+								<Entry engineSpeed='600.00' torque='1735.20' fuelConsumption='19425.41'/>
+								<Entry engineSpeed='600.00' torque='1952.10' fuelConsumption='21808.12'/>
+								<Entry engineSpeed='600.00' torque='2169.00' fuelConsumption='24191.84'/>
+								<Entry engineSpeed='748.90' torque='0.00' fuelConsumption='1211.61'/>
+								<Entry engineSpeed='748.90' torque='216.90' fuelConsumption='3235.00'/>
+								<Entry engineSpeed='748.90' torque='433.80' fuelConsumption='6289.28'/>
+								<Entry engineSpeed='748.90' torque='650.70' fuelConsumption='9498.69'/>
+								<Entry engineSpeed='748.90' torque='867.60' fuelConsumption='12318.62'/>
+								<Entry engineSpeed='748.90' torque='1084.50' fuelConsumption='15232.52'/>
+								<Entry engineSpeed='748.90' torque='1301.40' fuelConsumption='18318.03'/>
+								<Entry engineSpeed='748.90' torque='1518.30' fuelConsumption='21372.13'/>
+								<Entry engineSpeed='748.90' torque='1735.20' fuelConsumption='24537.89'/>
+								<Entry engineSpeed='748.90' torque='1952.10' fuelConsumption='27678.12'/>
+								<Entry engineSpeed='748.90' torque='2169.00' fuelConsumption='30824.27'/>
+								<Entry engineSpeed='897.80' torque='0.00' fuelConsumption='1586.45'/>
+								<Entry engineSpeed='897.80' torque='216.90' fuelConsumption='4014.99'/>
+								<Entry engineSpeed='897.80' torque='433.80' fuelConsumption='7602.90'/>
+								<Entry engineSpeed='897.80' torque='650.70' fuelConsumption='11000.03'/>
+								<Entry engineSpeed='897.80' torque='867.60' fuelConsumption='14404.97'/>
+								<Entry engineSpeed='897.80' torque='1084.50' fuelConsumption='17919.09'/>
+								<Entry engineSpeed='897.80' torque='1301.40' fuelConsumption='21460.42'/>
+								<Entry engineSpeed='897.80' torque='1518.30' fuelConsumption='25050.01'/>
+								<Entry engineSpeed='897.80' torque='1735.20' fuelConsumption='28796.23'/>
+								<Entry engineSpeed='897.80' torque='1952.10' fuelConsumption='32637.26'/>
+								<Entry engineSpeed='897.80' torque='2169.00' fuelConsumption='36771.35'/>
+								<Entry engineSpeed='1046.70' torque='0.00' fuelConsumption='2011.04'/>
+								<Entry engineSpeed='1046.70' torque='216.90' fuelConsumption='4872.19'/>
+								<Entry engineSpeed='1046.70' torque='433.80' fuelConsumption='8715.31'/>
+								<Entry engineSpeed='1046.70' torque='650.70' fuelConsumption='12557.54'/>
+								<Entry engineSpeed='1046.70' torque='867.60' fuelConsumption='16475.40'/>
+								<Entry engineSpeed='1046.70' torque='1084.50' fuelConsumption='20537.07'/>
+								<Entry engineSpeed='1046.70' torque='1301.40' fuelConsumption='24462.25'/>
+								<Entry engineSpeed='1046.70' torque='1518.30' fuelConsumption='28489.22'/>
+								<Entry engineSpeed='1046.70' torque='1735.20' fuelConsumption='32710.67'/>
+								<Entry engineSpeed='1046.70' torque='1952.10' fuelConsumption='37226.90'/>
+								<Entry engineSpeed='1046.70' torque='2169.00' fuelConsumption='42188.14'/>
+								<Entry engineSpeed='1195.57' torque='0.00' fuelConsumption='2185.40'/>
+								<Entry engineSpeed='1195.57' torque='216.90' fuelConsumption='5364.25'/>
+								<Entry engineSpeed='1195.57' torque='433.80' fuelConsumption='9653.82'/>
+								<Entry engineSpeed='1195.57' torque='650.70' fuelConsumption='14190.70'/>
+								<Entry engineSpeed='1195.57' torque='867.60' fuelConsumption='18700.48'/>
+								<Entry engineSpeed='1195.57' torque='1084.50' fuelConsumption='23295.78'/>
+								<Entry engineSpeed='1195.57' torque='1301.40' fuelConsumption='27743.06'/>
+								<Entry engineSpeed='1195.57' torque='1518.30' fuelConsumption='32148.61'/>
+								<Entry engineSpeed='1195.57' torque='1735.20' fuelConsumption='36847.41'/>
+								<Entry engineSpeed='1195.57' torque='1952.10' fuelConsumption='42042.40'/>
+								<Entry engineSpeed='1195.57' torque='2169.00' fuelConsumption='47220.90'/>
+								<Entry engineSpeed='1359.19' torque='0.00' fuelConsumption='2772.48'/>
+								<Entry engineSpeed='1359.19' torque='216.90' fuelConsumption='6067.08'/>
+								<Entry engineSpeed='1359.19' torque='433.80' fuelConsumption='10995.64'/>
+								<Entry engineSpeed='1359.19' torque='650.70' fuelConsumption='16287.47'/>
+								<Entry engineSpeed='1359.19' torque='867.60' fuelConsumption='21027.31'/>
+								<Entry engineSpeed='1359.19' torque='1084.50' fuelConsumption='25950.61'/>
+								<Entry engineSpeed='1359.19' torque='1301.40' fuelConsumption='31137.39'/>
+								<Entry engineSpeed='1359.19' torque='1518.30' fuelConsumption='36273.70'/>
+								<Entry engineSpeed='1359.19' torque='1735.20' fuelConsumption='41991.43'/>
+								<Entry engineSpeed='1359.19' torque='1952.10' fuelConsumption='48335.18'/>
+								<Entry engineSpeed='1359.19' torque='2169.00' fuelConsumption='54142.82'/>
+								<Entry engineSpeed='1484.00' torque='0.00' fuelConsumption='3222.96'/>
+								<Entry engineSpeed='1484.00' torque='216.90' fuelConsumption='7056.43'/>
+								<Entry engineSpeed='1484.00' torque='433.80' fuelConsumption='12204.86'/>
+								<Entry engineSpeed='1484.00' torque='650.70' fuelConsumption='17817.02'/>
+								<Entry engineSpeed='1484.00' torque='867.60' fuelConsumption='23009.24'/>
+								<Entry engineSpeed='1484.00' torque='1084.50' fuelConsumption='28313.44'/>
+								<Entry engineSpeed='1484.00' torque='1301.40' fuelConsumption='33868.19'/>
+								<Entry engineSpeed='1484.00' torque='1518.30' fuelConsumption='39622.85'/>
+								<Entry engineSpeed='1484.00' torque='1735.20' fuelConsumption='46027.31'/>
+								<Entry engineSpeed='1484.00' torque='1952.10' fuelConsumption='53051.27'/>
+								<Entry engineSpeed='1484.00' torque='2169.00' fuelConsumption='59594.90'/>
+								<Entry engineSpeed='1608.90' torque='0.00' fuelConsumption='3676.48'/>
+								<Entry engineSpeed='1608.90' torque='216.90' fuelConsumption='7771.36'/>
+								<Entry engineSpeed='1608.90' torque='433.80' fuelConsumption='13347.97'/>
+								<Entry engineSpeed='1608.90' torque='650.70' fuelConsumption='19338.07'/>
+								<Entry engineSpeed='1608.90' torque='867.60' fuelConsumption='25127.50'/>
+								<Entry engineSpeed='1608.90' torque='1084.50' fuelConsumption='30866.79'/>
+								<Entry engineSpeed='1608.90' torque='1301.40' fuelConsumption='36723.14'/>
+								<Entry engineSpeed='1608.90' torque='1518.30' fuelConsumption='43120.16'/>
+								<Entry engineSpeed='1608.90' torque='1735.20' fuelConsumption='50153.47'/>
+								<Entry engineSpeed='1608.90' torque='1952.10' fuelConsumption='57745.79'/>
+								<Entry engineSpeed='1608.90' torque='2169.00' fuelConsumption='65121.91'/>
+								<Entry engineSpeed='1733.80' torque='0.00' fuelConsumption='4243.10'/>
+								<Entry engineSpeed='1733.80' torque='216.90' fuelConsumption='8890.92'/>
+								<Entry engineSpeed='1733.80' torque='433.80' fuelConsumption='14882.92'/>
+								<Entry engineSpeed='1733.80' torque='650.70' fuelConsumption='21023.58'/>
+								<Entry engineSpeed='1733.80' torque='867.60' fuelConsumption='27743.50'/>
+								<Entry engineSpeed='1733.80' torque='1084.50' fuelConsumption='33764.85'/>
+								<Entry engineSpeed='1733.80' torque='1301.40' fuelConsumption='40312.73'/>
+								<Entry engineSpeed='1733.80' torque='1518.30' fuelConsumption='47320.20'/>
+								<Entry engineSpeed='1733.80' torque='1735.20' fuelConsumption='54863.24'/>
+								<Entry engineSpeed='1733.80' torque='1952.10' fuelConsumption='62856.92'/>
+								<Entry engineSpeed='1733.80' torque='2169.00' fuelConsumption='70740.49'/>
+								<Entry engineSpeed='1858.61' torque='0.00' fuelConsumption='5123.27'/>
+								<Entry engineSpeed='1858.61' torque='216.90' fuelConsumption='10119.05'/>
+								<Entry engineSpeed='1858.61' torque='433.80' fuelConsumption='16419.00'/>
+								<Entry engineSpeed='1858.61' torque='650.70' fuelConsumption='22983.31'/>
+								<Entry engineSpeed='1858.61' torque='867.60' fuelConsumption='30330.60'/>
+								<Entry engineSpeed='1858.61' torque='1084.50' fuelConsumption='37253.85'/>
+								<Entry engineSpeed='1858.61' torque='1301.40' fuelConsumption='44572.85'/>
+								<Entry engineSpeed='1858.61' torque='1518.30' fuelConsumption='52192.55'/>
+								<Entry engineSpeed='1858.61' torque='1735.20' fuelConsumption='60150.49'/>
+								<Entry engineSpeed='1858.61' torque='1952.10' fuelConsumption='68389.55'/>
+								<Entry engineSpeed='1858.61' torque='2169.00' fuelConsumption='76591.65'/>
+								<Entry engineSpeed='600.00' torque='-125.55' fuelConsumption='0.00'/>
+								<Entry engineSpeed='748.90' torque='-129.40' fuelConsumption='0.00'/>
+								<Entry engineSpeed='897.80' torque='-133.23' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1046.70' torque='-138.39' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1195.57' torque='-146.47' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1359.19' torque='-154.76' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1484.00' torque='-168.17' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1608.90' torque='-223.56' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1733.80' torque='-199.54' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1858.61' torque='-215.92' fuelConsumption='0.00'/>
+								<Entry engineSpeed='600.00' torque='-140.55' fuelConsumption='0.00'/>
+								<Entry engineSpeed='748.90' torque='-144.40' fuelConsumption='0.00'/>
+								<Entry engineSpeed='897.80' torque='-148.23' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1046.70' torque='-153.39' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1195.57' torque='-161.47' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1359.19' torque='-169.76' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1484.00' torque='-183.17' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1608.90' torque='-238.56' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1733.80' torque='-214.54' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1858.61' torque='-230.92' fuelConsumption='0.00'/>
+							</FuelConsumptionMap>
+						</Fuel>
+					</Mode>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#ENG-gooZah3D">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>/qqS7iMvDm0MYurhsIRZTF5FeS+MNA2HnoS1P8SrSdA=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Engine>
+			<Gearbox>
+				<v2.0:Data id="gbx-vi2Oak2N" xsi:type="GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" >
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>AT 6 Gear</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<TransmissionType>APT-S</TransmissionType>
+					<MainCertificationMethod>Standard values</MainCertificationMethod>
+					<Gears xsi:type="GearsDeclarationType">
+						<Gear number="1">
+							<Ratio>3.364</Ratio>
+							<MaxTorque>1900</MaxTorque>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='1300.00' inputTorque='2610.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1300.00' inputTorque='2842.00' torqueLoss='71.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='-812.00' torqueLoss='46.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='-348.00' torqueLoss='37.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='0.00' torqueLoss='13.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='58.00' torqueLoss='16.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='290.00' torqueLoss='21.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='522.00' torqueLoss='26.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='754.00' torqueLoss='30.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='986.00' torqueLoss='35.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='1218.00' torqueLoss='39.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='1450.00' torqueLoss='44.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='1682.00' torqueLoss='49.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='1914.00' torqueLoss='53.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='2146.00' torqueLoss='58.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='2378.00' torqueLoss='63.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='2610.00' torqueLoss='67.00'/>
+								<Entry inputSpeed='1500.00' inputTorque='2842.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='-812.00' torqueLoss='49.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='-348.00' torqueLoss='39.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='0.00' torqueLoss='14.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='58.00' torqueLoss='17.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='290.00' torqueLoss='22.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='522.00' torqueLoss='27.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='754.00' torqueLoss='31.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='986.00' torqueLoss='36.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='1218.00' torqueLoss='41.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='1450.00' torqueLoss='45.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='1682.00' torqueLoss='50.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='1914.00' torqueLoss='55.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='2146.00' torqueLoss='59.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='2378.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='2610.00' torqueLoss='68.00'/>
+								<Entry inputSpeed='1700.00' inputTorque='2842.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='-812.00' torqueLoss='51.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='-348.00' torqueLoss='42.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='0.00' torqueLoss='15.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='58.00' torqueLoss='19.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='290.00' torqueLoss='23.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='522.00' torqueLoss='28.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='754.00' torqueLoss='32.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='986.00' torqueLoss='37.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='1218.00' torqueLoss='42.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='1450.00' torqueLoss='46.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='1682.00' torqueLoss='51.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='1914.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='2146.00' torqueLoss='60.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='2378.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='2610.00' torqueLoss='70.00'/>
+								<Entry inputSpeed='1900.00' inputTorque='2842.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='-812.00' torqueLoss='53.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='-348.00' torqueLoss='44.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='0.00' torqueLoss='16.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='58.00' torqueLoss='20.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='290.00' torqueLoss='24.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='522.00' torqueLoss='29.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='754.00' torqueLoss='34.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='986.00' torqueLoss='38.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='1218.00' torqueLoss='43.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='1450.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='1682.00' torqueLoss='52.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='1914.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='2146.00' torqueLoss='61.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='2378.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='2610.00' torqueLoss='71.00'/>
+								<Entry inputSpeed='2100.00' inputTorque='2842.00' torqueLoss='75.00'/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="2">
+							<Ratio>1.909</Ratio>
+							<MaxTorque>1900</MaxTorque>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='220.00'/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="3">
+							<Ratio>1.421</Ratio>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='220.00'/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="4">
+							<Ratio>1.000</Ratio>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='50.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='52.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='54.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='60.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='68.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='59.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='61.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='63.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='69.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='77.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='68.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='70.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='75.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='91.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='80.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='87.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='103.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='92.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='99.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='110.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='115.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='107.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='109.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='111.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='117.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='125.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='122.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='124.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='132.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='140.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='145.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='50.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='52.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='54.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='60.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='68.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='59.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='61.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='63.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='69.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='77.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='68.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='70.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='75.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='91.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='80.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='87.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='103.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='92.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='99.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='110.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='115.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='107.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='109.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='111.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='117.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='125.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='122.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='124.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='132.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='140.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='145.00'/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="5">
+							<Ratio>0.720</Ratio>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='220.00'/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="6">
+							<Ratio>0.615</Ratio>
+							<MaxSpeed>2500</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='0.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='0.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='0.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='0.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='0.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='0.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='2500.00' torqueLoss='220.00'/>
+								<Entry inputSpeed='600.00' inputTorque='0.00' torqueLoss='48.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-200.00' torqueLoss='56.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-400.00' torqueLoss='64.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-600.00' torqueLoss='72.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-900.00' torqueLoss='84.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1200.00' torqueLoss='96.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-1600.00' torqueLoss='112.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2000.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='600.00' inputTorque='-2500.00' torqueLoss='148.00'/>
+								<Entry inputSpeed='900.00' inputTorque='0.00' torqueLoss='57.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-200.00' torqueLoss='65.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-400.00' torqueLoss='73.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-600.00' torqueLoss='81.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-900.00' torqueLoss='93.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1200.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-1600.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2000.00' torqueLoss='137.00'/>
+								<Entry inputSpeed='900.00' inputTorque='-2500.00' torqueLoss='157.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='0.00' torqueLoss='66.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-200.00' torqueLoss='74.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-400.00' torqueLoss='82.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-600.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-900.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1200.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-1600.00' torqueLoss='130.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2000.00' torqueLoss='146.00'/>
+								<Entry inputSpeed='1200.00' inputTorque='-2500.00' torqueLoss='166.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='0.00' torqueLoss='78.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-200.00' torqueLoss='86.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-400.00' torqueLoss='94.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-600.00' torqueLoss='102.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-900.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1200.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-1600.00' torqueLoss='142.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2000.00' torqueLoss='158.00'/>
+								<Entry inputSpeed='1600.00' inputTorque='-2500.00' torqueLoss='178.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='0.00' torqueLoss='90.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-200.00' torqueLoss='98.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-400.00' torqueLoss='106.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-600.00' torqueLoss='114.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-900.00' torqueLoss='126.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1200.00' torqueLoss='138.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-1600.00' torqueLoss='154.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2000.00' torqueLoss='170.00'/>
+								<Entry inputSpeed='2000.00' inputTorque='-2500.00' torqueLoss='190.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='0.00' torqueLoss='105.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-200.00' torqueLoss='113.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-400.00' torqueLoss='121.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-600.00' torqueLoss='129.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-900.00' torqueLoss='141.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1200.00' torqueLoss='153.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-1600.00' torqueLoss='169.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2000.00' torqueLoss='185.00'/>
+								<Entry inputSpeed='2500.00' inputTorque='-2500.00' torqueLoss='205.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='0.00' torqueLoss='120.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-200.00' torqueLoss='128.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-400.00' torqueLoss='136.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-600.00' torqueLoss='144.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-900.00' torqueLoss='156.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1200.00' torqueLoss='168.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-1600.00' torqueLoss='184.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2000.00' torqueLoss='200.00'/>
+								<Entry inputSpeed='3000.00' inputTorque='-2500.00' torqueLoss='220.00'/>
+							</TorqueLossMap>
+						</Gear>
+					</Gears>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#gbx-vi2Oak2N">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>ieNmjofFObDBGnB7+GX9of3HYe3ydK/ra+YvmULVJIk=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Gearbox>
+			<TorqueConverter>
+				<v2.0:Data id="tc-123xyz" xsi:type="TorqueConverterDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Some Manufacturer</Manufacturer>
+					<Model>Some Model</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-02-15T11:00:00Z</Date>
+					<AppVersion>TC CalcApp 123</AppVersion>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<Characteristics>
+						<Entry speedRatio='0.0000' torqueRatio='1.80' inputTorqueRef='367.68'/>
+						<Entry speedRatio='0.1000' torqueRatio='1.71' inputTorqueRef='355.43'/>
+						<Entry speedRatio='0.2000' torqueRatio='1.61' inputTorqueRef='343.17'/>
+						<Entry speedRatio='0.3000' torqueRatio='1.52' inputTorqueRef='330.92'/>
+						<Entry speedRatio='0.4000' torqueRatio='1.42' inputTorqueRef='318.66'/>
+						<Entry speedRatio='0.5000' torqueRatio='1.33' inputTorqueRef='306.40'/>
+						<Entry speedRatio='0.6000' torqueRatio='1.23' inputTorqueRef='294.15'/>
+						<Entry speedRatio='0.6500' torqueRatio='1.19' inputTorqueRef='275.76'/>
+						<Entry speedRatio='0.7000' torqueRatio='1.14' inputTorqueRef='257.38'/>
+						<Entry speedRatio='0.7500' torqueRatio='1.09' inputTorqueRef='238.99'/>
+						<Entry speedRatio='0.8000' torqueRatio='1.04' inputTorqueRef='220.61'/>
+						<Entry speedRatio='0.8500' torqueRatio='1.00' inputTorqueRef='202.23'/>
+						<Entry speedRatio='0.9000' torqueRatio='0.95' inputTorqueRef='183.84'/>
+						<Entry speedRatio='0.9500' torqueRatio='0.95' inputTorqueRef='91.92'/>
+						<Entry speedRatio='1.0000' torqueRatio='0.95' inputTorqueRef='0.00'/>
+						<Entry speedRatio='1.1000' torqueRatio='1.00' inputTorqueRef='-40.34'/>
+						<Entry speedRatio='1.2200' torqueRatio='1.00' inputTorqueRef='-80.34'/>
+						<Entry speedRatio='1.3800' torqueRatio='1.00' inputTorqueRef='-136.11'/>
+						<Entry speedRatio='1.5700' torqueRatio='1.00' inputTorqueRef='-216.52'/>
+						<Entry speedRatio='1.8300' torqueRatio='1.00' inputTorqueRef='-335.19'/>
+						<Entry speedRatio='2.2000' torqueRatio='1.00' inputTorqueRef='-528.77'/>
+						<Entry speedRatio='2.5000' torqueRatio='1.00' inputTorqueRef='-721.00'/>
+						<Entry speedRatio='3.0000' torqueRatio='1.00' inputTorqueRef='-1122.00'/>
+						<Entry speedRatio='3.5000' torqueRatio='1.00' inputTorqueRef='-1648.00'/>
+						<Entry speedRatio='4.0000' torqueRatio='1.00' inputTorqueRef='-2326.00'/>
+						<Entry speedRatio='4.5000' torqueRatio='1.00' inputTorqueRef='-3182.00'/>
+						<Entry speedRatio='5.0000' torqueRatio='1.00' inputTorqueRef='-4242.00'/>
+					</Characteristics>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#tc-123xyz">
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>q2sumDwsqQKLw4xwkEllgsygF5bHBwZPSS66UNaXXis=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</TorqueConverter>
+			<Angledrive>
+				<v2.0:Data id="agl-vi2Oak2N" xsi:type="AngledriveDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>Generic primary bus 41 Gearbox</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<Ratio>2.345</Ratio>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<TorqueLossMap>
+						<Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="-1000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="10.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="0.00" torqueLoss="10.00"/>
+						<Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="1000.00" torqueLoss="100.00"/>
+					</TorqueLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#agl-vi2Oak2N">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>1tuF9SoA8luoUBQGym4bYi1TurDSmcYqBDJ6AP20OSs=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Angledrive>
+			<Retarder>
+				<v2.0:Data id="RET-Shai9imi" xsi:type="RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+					<Model>Generic Retarder</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<RetarderLossMap>
+						<Entry retarderSpeed="0.00" torqueLoss="10.00"/>
+						<Entry retarderSpeed="100.00" torqueLoss="10.02"/>
+						<Entry retarderSpeed="200.00" torqueLoss="10.08"/>
+						<Entry retarderSpeed="300.00" torqueLoss="10.18"/>
+						<Entry retarderSpeed="400.00" torqueLoss="10.32"/>
+						<Entry retarderSpeed="500.00" torqueLoss="10.50"/>
+						<Entry retarderSpeed="600.00" torqueLoss="10.72"/>
+						<Entry retarderSpeed="700.00" torqueLoss="10.98"/>
+						<Entry retarderSpeed="800.00" torqueLoss="11.28"/>
+						<Entry retarderSpeed="900.00" torqueLoss="11.62"/>
+						<Entry retarderSpeed="1000.00" torqueLoss="12.00"/>
+						<Entry retarderSpeed="1100.00" torqueLoss="12.42"/>
+						<Entry retarderSpeed="1200.00" torqueLoss="12.88"/>
+						<Entry retarderSpeed="1300.00" torqueLoss="13.38"/>
+						<Entry retarderSpeed="1400.00" torqueLoss="13.92"/>
+						<Entry retarderSpeed="1500.00" torqueLoss="14.50"/>
+						<Entry retarderSpeed="1600.00" torqueLoss="15.12"/>
+						<Entry retarderSpeed="1700.00" torqueLoss="15.78"/>
+						<Entry retarderSpeed="1800.00" torqueLoss="16.48"/>
+						<Entry retarderSpeed="1900.00" torqueLoss="17.22"/>
+						<Entry retarderSpeed="2000.00" torqueLoss="18.00"/>
+						<Entry retarderSpeed="2100.00" torqueLoss="18.82"/>
+						<Entry retarderSpeed="2200.00" torqueLoss="19.68"/>
+						<Entry retarderSpeed="2300.00" torqueLoss="20.58"/>
+						<Entry retarderSpeed="4000.00" torqueLoss="42.00"/>
+					</RetarderLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#RET-Shai9imi">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>fcEtYfDAbfuRq0xpuzapmEj+Py1PIPUZwVmx+amNvcc=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Retarder>
+			<Axlegear>
+				<v2.0:Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>Generic primary bus 41 AxleGear</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<LineType>Single portal axle</LineType>
+					<Ratio>6.500</Ratio>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<TorqueLossMap>
+							<Entry inputSpeed='0.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='0.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='0.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='0.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='0.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='0.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='0.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='0.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='0.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='0.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='0.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='0.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='0.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='0.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='0.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='0.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='0.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='0.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='0.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='0.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='0.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='0.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='0.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='0.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='0.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='0.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='0.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='0.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='0.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='0.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='0.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='0.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='0.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='0.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='0.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='325.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='325.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='325.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='325.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='325.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='325.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='325.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='325.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='325.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='325.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='325.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='325.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='325.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='325.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='325.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='325.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='325.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='325.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='325.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='325.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='325.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='325.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='325.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='325.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='325.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='325.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='325.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='325.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='325.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='325.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='325.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='325.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='325.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='325.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='325.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='650.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='650.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='650.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='650.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='650.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='650.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='650.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='650.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='650.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='650.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='650.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='650.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='650.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='650.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='650.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='650.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='650.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='650.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='650.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='650.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='650.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='650.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='650.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='650.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='650.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='650.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='650.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='650.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='650.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='650.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='650.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='650.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='650.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='650.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='650.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='975.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='975.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='975.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='975.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='975.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='975.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='975.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='975.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='975.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='975.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='975.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='975.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='975.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='975.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='975.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='975.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='975.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='975.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='975.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='975.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='975.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='975.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='975.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='975.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='975.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='975.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='975.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='975.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='975.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='975.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='975.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='975.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='975.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='975.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='975.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1300.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1300.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1300.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1300.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1300.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1300.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1300.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1300.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1300.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1300.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1300.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1300.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1300.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1300.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1300.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1300.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1300.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1300.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1300.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1300.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1300.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1300.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1300.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1300.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1300.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1300.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1300.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1300.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1300.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1300.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1300.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1300.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1625.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1625.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1625.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1625.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1625.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1625.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1625.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1625.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1625.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1625.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1625.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1625.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1625.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1625.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1625.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1625.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1625.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1625.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1625.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1625.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1625.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1625.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1625.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1625.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1625.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1625.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1625.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1625.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1625.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1625.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1625.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1625.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1950.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1950.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1950.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1950.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1950.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1950.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1950.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1950.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1950.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1950.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1950.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1950.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1950.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1950.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1950.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1950.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1950.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1950.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1950.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1950.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1950.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1950.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1950.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1950.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1950.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1950.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1950.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1950.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1950.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1950.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1950.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1950.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2275.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2275.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2275.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2275.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2275.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2275.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2275.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2275.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2275.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2275.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2275.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2275.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2275.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2275.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2275.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2275.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2275.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2275.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2275.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2275.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2275.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2275.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2275.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2275.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2275.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2275.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2275.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2275.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2275.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2275.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2275.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2275.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2600.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2600.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2600.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2600.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2600.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2600.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2600.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2600.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2600.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2600.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2600.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2600.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2600.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2600.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2600.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2600.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2600.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2600.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2600.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2600.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2600.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2600.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2600.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2600.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2600.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2600.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2600.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2600.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2600.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2600.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2600.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2600.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2925.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2925.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2925.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2925.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2925.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2925.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2925.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2925.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2925.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2925.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2925.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2925.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2925.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2925.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2925.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2925.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2925.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2925.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2925.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2925.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2925.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2925.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2925.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2925.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2925.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2925.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2925.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2925.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2925.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2925.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2925.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2925.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='3750.00' inputTorque='31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='3750.00' inputTorque='70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='3750.00' inputTorque='110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='3750.00' inputTorque='149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='3750.00' inputTorque='189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='3750.00' inputTorque='268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='3750.00' inputTorque='347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='3750.00' inputTorque='506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='3750.00' inputTorque='665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='3750.00' inputTorque='823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='3750.00' inputTorque='982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='3750.00' inputTorque='1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='3750.00' inputTorque='1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='3750.00' inputTorque='1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='3750.00' inputTorque='1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='3750.00' inputTorque='1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='3750.00' inputTorque='2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='3750.00' inputTorque='2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='3750.00' inputTorque='2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='3750.00' inputTorque='3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='3750.00' inputTorque='3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='3750.00' inputTorque='3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='3750.00' inputTorque='4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='3750.00' inputTorque='4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='3750.00' inputTorque='4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='3750.00' inputTorque='5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='3750.00' inputTorque='5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='3750.00' inputTorque='5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='3750.00' inputTorque='6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='3750.00' inputTorque='6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='3750.00' inputTorque='6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='3750.00' inputTorque='7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='3750.00' inputTorque='7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='3750.00' inputTorque='7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='3750.00' inputTorque='7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='0.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='0.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='0.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='0.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='0.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='0.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='0.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='0.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='0.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='0.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='0.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='0.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='0.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='0.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='0.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='0.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='0.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='0.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='0.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='0.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='0.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='0.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='0.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='0.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='0.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='0.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='0.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='0.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='0.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='0.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='0.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='0.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='0.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='0.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='0.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='325.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='325.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='325.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='325.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='325.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='325.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='325.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='325.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='325.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='325.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='325.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='325.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='325.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='325.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='325.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='325.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='325.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='325.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='325.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='325.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='325.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='325.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='325.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='325.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='325.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='325.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='325.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='325.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='325.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='325.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='325.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='325.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='325.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='325.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='325.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='650.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='650.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='650.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='650.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='650.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='650.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='650.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='650.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='650.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='650.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='650.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='650.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='650.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='650.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='650.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='650.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='650.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='650.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='650.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='650.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='650.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='650.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='650.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='650.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='650.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='650.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='650.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='650.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='650.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='650.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='650.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='650.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='650.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='650.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='650.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='975.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='975.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='975.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='975.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='975.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='975.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='975.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='975.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='975.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='975.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='975.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='975.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='975.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='975.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='975.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='975.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='975.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='975.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='975.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='975.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='975.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='975.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='975.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='975.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='975.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='975.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='975.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='975.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='975.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='975.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='975.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='975.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='975.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='975.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='975.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1300.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1300.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1300.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1300.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1300.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1300.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1300.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1300.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1300.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1300.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1300.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1300.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1300.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1300.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1300.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1300.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1300.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1300.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1300.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1300.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1300.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1300.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1300.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1300.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1300.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1300.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1300.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1300.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1300.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1300.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1300.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1300.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1300.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1625.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1625.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1625.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1625.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1625.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1625.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1625.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1625.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1625.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1625.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1625.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1625.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1625.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1625.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1625.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1625.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1625.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1625.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1625.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1625.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1625.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1625.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1625.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1625.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1625.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1625.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1625.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1625.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1625.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1625.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1625.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1625.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1625.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='1950.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='1950.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='1950.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='1950.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='1950.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='1950.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='1950.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='1950.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='1950.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='1950.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='1950.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='1950.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='1950.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='1950.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='1950.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='1950.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='1950.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='1950.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='1950.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='1950.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='1950.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='1950.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='1950.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='1950.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='1950.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='1950.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='1950.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='1950.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='1950.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='1950.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='1950.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='1950.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='1950.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2275.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2275.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2275.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2275.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2275.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2275.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2275.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2275.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2275.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2275.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2275.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2275.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2275.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2275.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2275.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2275.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2275.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2275.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2275.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2275.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2275.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2275.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2275.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2275.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2275.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2275.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2275.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2275.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2275.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2275.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2275.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2275.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2275.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2600.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2600.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2600.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2600.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2600.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2600.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2600.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2600.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2600.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2600.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2600.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2600.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2600.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2600.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2600.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2600.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2600.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2600.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2600.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2600.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2600.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2600.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2600.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2600.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2600.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2600.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2600.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2600.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2600.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2600.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2600.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2600.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2600.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='2925.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='2925.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='2925.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='2925.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='2925.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='2925.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='2925.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='2925.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='2925.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='2925.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='2925.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='2925.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='2925.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='2925.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='2925.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='2925.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='2925.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='2925.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='2925.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='2925.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='2925.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='2925.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='2925.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='2925.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='2925.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='2925.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='2925.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='2925.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='2925.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='2925.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='2925.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='2925.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='2925.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+							<Entry inputSpeed='3250.00' inputTorque='-31.96' torqueLoss='31.96'/>
+							<Entry inputSpeed='3250.00' inputTorque='-70.42' torqueLoss='31.96'/>
+							<Entry inputSpeed='3250.00' inputTorque='-110.07' torqueLoss='33.15'/>
+							<Entry inputSpeed='3250.00' inputTorque='-149.72' torqueLoss='34.34'/>
+							<Entry inputSpeed='3250.00' inputTorque='-189.37' torqueLoss='35.53'/>
+							<Entry inputSpeed='3250.00' inputTorque='-268.68' torqueLoss='37.91'/>
+							<Entry inputSpeed='3250.00' inputTorque='-347.98' torqueLoss='40.29'/>
+							<Entry inputSpeed='3250.00' inputTorque='-506.58' torqueLoss='45.04'/>
+							<Entry inputSpeed='3250.00' inputTorque='-665.19' torqueLoss='49.80'/>
+							<Entry inputSpeed='3250.00' inputTorque='-823.79' torqueLoss='54.56'/>
+							<Entry inputSpeed='3250.00' inputTorque='-982.39' torqueLoss='59.32'/>
+							<Entry inputSpeed='3250.00' inputTorque='-1141.00' torqueLoss='64.08'/>
+							<Entry inputSpeed='3250.00' inputTorque='-1299.60' torqueLoss='68.83'/>
+							<Entry inputSpeed='3250.00' inputTorque='-1458.21' torqueLoss='73.59'/>
+							<Entry inputSpeed='3250.00' inputTorque='-1616.81' torqueLoss='78.35'/>
+							<Entry inputSpeed='3250.00' inputTorque='-1934.02' torqueLoss='87.87'/>
+							<Entry inputSpeed='3250.00' inputTorque='-2251.23' torqueLoss='97.38'/>
+							<Entry inputSpeed='3250.00' inputTorque='-2568.44' torqueLoss='106.90'/>
+							<Entry inputSpeed='3250.00' inputTorque='-2885.65' torqueLoss='116.42'/>
+							<Entry inputSpeed='3250.00' inputTorque='-3202.85' torqueLoss='125.93'/>
+							<Entry inputSpeed='3250.00' inputTorque='-3520.06' torqueLoss='135.45'/>
+							<Entry inputSpeed='3250.00' inputTorque='-3837.27' torqueLoss='144.96'/>
+							<Entry inputSpeed='3250.00' inputTorque='-4154.48' torqueLoss='154.48'/>
+							<Entry inputSpeed='3250.00' inputTorque='-4471.69' torqueLoss='164.00'/>
+							<Entry inputSpeed='3250.00' inputTorque='-4788.90' torqueLoss='173.51'/>
+							<Entry inputSpeed='3250.00' inputTorque='-5106.11' torqueLoss='183.03'/>
+							<Entry inputSpeed='3250.00' inputTorque='-5423.31' torqueLoss='192.55'/>
+							<Entry inputSpeed='3250.00' inputTorque='-5740.52' torqueLoss='202.06'/>
+							<Entry inputSpeed='3250.00' inputTorque='-6057.73' torqueLoss='211.58'/>
+							<Entry inputSpeed='3250.00' inputTorque='-6374.94' torqueLoss='221.09'/>
+							<Entry inputSpeed='3250.00' inputTorque='-6692.15' torqueLoss='230.61'/>
+							<Entry inputSpeed='3250.00' inputTorque='-7009.36' torqueLoss='240.13'/>
+							<Entry inputSpeed='3250.00' inputTorque='-7326.57' torqueLoss='249.64'/>
+							<Entry inputSpeed='3250.00' inputTorque='-7643.77' torqueLoss='259.16'/>
+							<Entry inputSpeed='3250.00' inputTorque='-7960.98' torqueLoss='268.68'/>
+					</TorqueLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#AXL-EC3ohnoh">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>o4nYTajmWKaduxys5ShmnfJbYd23rpxZ01JbuG6dmzU=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Axlegear>
+			<AxleWheels>
+				<v2.0:Data xsi:type="AxleWheelsDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Axles>
+						<Axle axleNumber="1" xsi:type="AxleDataDeclarationType">
+							<AxleType>VehicleNonDriven</AxleType>
+							<TwinTyres>false</TwinTyres>
+							<Steered>true</Steered>
+							<Tyre>
+								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
+									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Model>Generic Wheel</Model>
+									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<Date>2017-01-11T14:00:00Z</Date>
+									<AppVersion>Tyre Generation App 1.0</AppVersion>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0055</RRCDeclared>
+									<FzISO>31300</FzISO>
+								</Data>
+								<Signature>
+									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
+										<di:Transforms>
+											<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+											<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+										</di:Transforms>
+										<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+										<di:DigestValue>4TkUGQTX8tevHOU9Cj9uyCFuI/aqcEYlo/gyVjVQmv0=</di:DigestValue>
+									</di:Reference>
+								</Signature>
+							</Tyre>
+						</Axle>
+						<Axle axleNumber="2" xsi:type="AxleDataDeclarationType">
+							<AxleType>VehicleDriven</AxleType>
+							<TwinTyres>true</TwinTyres>
+							<Steered>false</Steered>
+							<Tyre>
+								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
+									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Model>Generic Wheel</Model>
+									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<Date>2017-01-11T14:00:00Z</Date>
+									<AppVersion>Tyre Generation App 1.0</AppVersion>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0063</RRCDeclared>
+									<FzISO>31300</FzISO>
+								</Data>
+								<Signature>
+									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
+										<di:Transforms>
+											<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+											<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+										</di:Transforms>
+										<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+										<di:DigestValue>KljvtvGUUQ/L7MiLVAqU+bckL5PNDNNwdeLH9kUVrfM=</di:DigestValue>
+									</di:Reference>
+								</Signature>
+							</Tyre>
+						</Axle>
+					</Axles>
+				</v2.0:Data>
+			</AxleWheels>
+			<Auxiliaries>
+				<Data xsi:type="AUX_Conventional_PrimaryBusType">
+					<Fan>
+						<Technology>Hydraulic driven - Constant displacement pump</Technology>
+					</Fan>
+					<SteeringPump>
+						<Technology axleNumber="1">Variable displacement elec. controlled</Technology>
+					</SteeringPump>
+					<ElectricSystem>
+						<AlternatorTechnology>conventional</AlternatorTechnology>
+					</ElectricSystem>
+					<PneumaticSystem>
+						<SizeOfAirSupply>Large Supply 2-stage</SizeOfAirSupply>
+						<CompressorDrive>mechanically</CompressorDrive>
+						<Clutch>none</Clutch>
+						<CompressorRatio>1.000</CompressorRatio>
+						<SmartCompressionSystem>true</SmartCompressionSystem>
+						<SmartRegenerationSystem>true</SmartRegenerationSystem>
+						<AirsuspensionControl>electronically</AirsuspensionControl>
+						<PneumaticSCRReagentDosing>true</PneumaticSCRReagentDosing>
+					</PneumaticSystem>
+					<HVAC>
+						<AdjustableCoolantThermostat>true</AdjustableCoolantThermostat>
+						<EngineWasteGasHeatExchanger>true</EngineWasteGasHeatExchanger>
+					</HVAC>
+				</Data>
+			</Auxiliaries>
+		</Components>
+		<MonitoringData>
+			<VectoLicenseNbr>##VECTO_LICENSE_NUMBER##</VectoLicenseNbr>
+			<Vehicle>
+				<Make>##VEHICLE_MAKE##</Make>
+			</Vehicle>
+			<Engine>
+				<Manufacturer>##ENGINE_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##ENGINE_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##ENGINE_MAKE##</Make>
+				<WHTC>
+					<FuelType>Diesel CI</FuelType>
+					<CO2 unit="g/kWh">NaN</CO2>
+					<FuelConsumption unit="g/kWh">NaN</FuelConsumption>
+				</WHTC>
+				<WHSC>
+					<FuelType>Diesel CI</FuelType>
+					<CO2 unit="g/kWh">NaN</CO2>
+					<FuelConsumption unit="g/kWh">NaN</FuelConsumption>
+				</WHSC>
+				<TypeApprovalNumber>##TYPE_APPROVAL_NUMBER##</TypeApprovalNumber>
+			</Engine>
+			<Gearbox>
+				<Manufacturer>##GEARBOX_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##GEARBOX_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##GEARBOX_MAKE##</Make>
+			</Gearbox>
+			<Axlegear>
+				<Manufacturer>##AXLEGEAR_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##AXLEGEAR_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##AXLEGEAR_MAKE##</Make>
+			</Axlegear>
+			<AxleWheels>
+				<Axle axleNumber="1">
+					<Tyre>
+						<Manufacturer>##TYRE_1_MANUFACTURER##</Manufacturer>
+						<ManufacturerAddress>##TYRE_1_MANUFACTURERADDRESS##</ManufacturerAddress>
+						<Make>##TYRE_1_MAKE##</Make>
+					</Tyre>
+				</Axle>
+				<Axle axleNumber="2">
+					<Tyre>
+						<Manufacturer>##TYRE_2_MANUFACTURER##</Manufacturer>
+						<ManufacturerAddress>##TYRE_2_MANUFACTURERADDRESS##</ManufacturerAddress>
+						<Make>##TYRE_2_MAKE##</Make>
+					</Tyre>
+				</Axle>
+			</AxleWheels>
+			<AdvancedReducingTechnologies>
+				<!--
+<Entry category="advanced aerodynamic measures">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced rolling resistance measures">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced drivetrain technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced engine technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced auxiliary technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="additional ADAS technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced powertrain integration and hybridisation">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="other">##TECHNOLOGY_BRAND_NAME##</Entry>
+-->
+			</AdvancedReducingTechnologies>
+		</MonitoringData>
+	</Vehicle>
+</tns:VectoInputDeclaration>

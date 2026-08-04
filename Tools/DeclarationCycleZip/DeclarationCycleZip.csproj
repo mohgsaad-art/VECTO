@@ -4,6 +4,7 @@
     <RootNamespace>DeclarationCycleZip</RootNamespace>
     <AssemblyName>DeclarationCycleZip</AssemblyName>
     <TargetFrameworks>net8.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
 
   </PropertyGroup>
 

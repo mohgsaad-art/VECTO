@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Ninject.Extensions.Factory;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils.Ninject;
 using VECTO3GUI2020.ViewModel.MultiStage.Implementation;
 

@@ -106,18 +106,19 @@ namespace TUGraz.VectoHashing
 		string ReadHash(VectoComponents component, int index = 0);
 
 
-		/// <summary>
-		/// Computes the hash-value of the top-level Data element (or vehicle)
-		/// If the canoonicalizationMethods is null the canonicalizationMethods from 
-		/// the signature element are read if available or the default canonicalization is applied
-		/// If the digestMethod is null the digestMethod from the signature element is read if 
-		/// available or the default digestMethod is used
-		/// Note: the top-level Data element is required to have an id attribute!
-		/// </summary>
-		/// <param name="canonicalizationMethods">Canonicalization methods to use. If null the default methods are applied</param>
-		/// <param name="digestMethod">Digest method to use. If null, the default digest method is used.</param>
-		/// <returns>base64 encoded hash value</returns>
-		string ComputeHash(IEnumerable<string> canonicalizationMethods = null, string digestMethod = null);
+        /// <summary>
+        /// Computes the hash-value of the top-level Data element (or vehicle)
+        /// If the canoonicalizationMethods is null the canonicalizationMethods from 
+        /// the signature element are read if available or the default canonicalization is applied
+        /// If the digestMethod is null the digestMethod from the signature element is read if 
+        /// available or the default digestMethod is used
+        /// Note: the top-level Data element is required to have an id attribute!
+        /// </summary>
+        /// <param name="canonicalizationMethods">Canonicalization methods to use. If null the default methods are applied</param>
+        /// <param name="digestMethod">Digest method to use. If null, the default digest method is used.</param>
+        /// <param name="ignoreMonitoringData">Instructs whether to ignore monitoring data, in order to check miscalculated hashes in reports that did not ignore them</param> 
+        /// <returns>base64 encoded hash value</returns>
+        string ComputeHash(IEnumerable<string> canonicalizationMethods = null, string digestMethod = null, bool ignoreMonitoringData = true);
 
 
 		/// <summary>
@@ -138,11 +139,11 @@ namespace TUGraz.VectoHashing
 			string digestMethod = null);
 
 
-		/// <summary>
-		/// Validates the hash of the top-level component (or vehicle)
-		/// </summary>
-		/// <returns>true, if the re-computed digest value matches the document's digest value, false otherwise</returns>
-		bool ValidateHash();
+        /// <summary>
+        /// Validates the hash of the top-level component (or vehicle)
+        /// </summary>
+        /// <returns>true, if the re-computed digest value matches the document's digest value, false otherwise</returns>
+        bool ValidateHash();
 
 
 		/// <summary>

@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration 
+	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	schemaVersion="3.0" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0" 
+	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd" 
+	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+	>
+	<Vehicle xsi:type="Vehicle_HEV-Px_MediumLorryDeclarationType" id="a">
+		<Manufacturer>TU Graz</Manufacturer>
+		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+		<Model>HEV Heavy Lorry Px</Model>
+		<VIN>1234</VIN>
+		<Date>2017-01-01T00:00:00Z</Date>
+		<SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+		<LegislativeCategory>N2</LegislativeCategory>
+		<ChassisConfiguration>Van</ChassisConfiguration>
+		<AxleConfiguration>4x2</AxleConfiguration>
+		<CorrectedActualMass>3500</CorrectedActualMass>
+		<TechnicalPermissibleMaximumLadenMass>7100</TechnicalPermissibleMaximumLadenMass>
+		<IdlingSpeed>650</IdlingSpeed>
+		<CargoVolume>20.300</CargoVolume>
+		<RetarderType>Transmission Input Retarder</RetarderType>
+		<RetarderRatio>1.000</RetarderRatio>
+		<AngledriveType>Separate Angledrive</AngledriveType>
+		<ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+		<VehicleTypeApprovalNumber>ASDF</VehicleTypeApprovalNumber>
+		<ArchitectureID>P2</ArchitectureID>
+		<OVC>true</OVC>
+		<BatteryOnlyMode>true</BatteryOnlyMode>
+		<DynamicChargingTechnology>Overhead trolley</DynamicChargingTechnology>
+		<ADAS>
+			<EngineStopStart>true</EngineStopStart>
+			<PredictiveCruiseControl>1,2,3</PredictiveCruiseControl>
+		</ADAS>
+		<TorqueLimits>
+			<!-- optional -->
+			<Entry gear="9" maxTorque="2000"/>
+		</TorqueLimits>
+		<ElectricMotorTorqueLimits>
+			<!-- optional -->
+			<ElectricMachine>
+				<Position>2</Position>
+				<VoltageLevel>
+					<Voltage>100</Voltage>
+					<MaxTorqueCurve>
+						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
+						<Entry outShaftSpeed="1000.00" maxTorque="300.00" minTorque="-300.00"/>
+					</MaxTorqueCurve>
+				</VoltageLevel>
+				<VoltageLevel>
+					<Voltage>500</Voltage>
+					<MaxTorqueCurve>
+						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
+						<Entry outShaftSpeed="1000.00" maxTorque="300.00" minTorque="-300.00"/>
+					</MaxTorqueCurve>
+				</VoltageLevel>
+			</ElectricMachine>
+		</ElectricMotorTorqueLimits>
+		<BoostingLimitations>
+			<!-- optional -->
+			<Entry rotationalSpeed="0.00" boostingTorque="0.00"/>
+			<Entry rotationalSpeed="1000.00" boostingTorque="0.00"/>
+		</BoostingLimitations>
+		<H2StorageUsableCapacity>80.0</H2StorageUsableCapacity>
+		<HydrogenStorageTechnology>Compressed</HydrogenStorageTechnology>
+		<Components>
+			<Engine>
+				<v2.0:Data xsi:type="EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
+					<Model>Generic 40t Long Haul Truck Engine</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-02-15T11:00:00Z</Date>
+					<AppVersion>VectoEngine x.y</AppVersion>
+					<Displacement>12700</Displacement>
+					<RatedSpeed>1800</RatedSpeed>
+					<RatedPower>325032</RatedPower>
+					<MaxEngineTorque>2134</MaxEngineTorque>
+					<WHRType>
+						<MechanicalOutputICE>false</MechanicalOutputICE>
+						<MechanicalOutputDrivetrain>false</MechanicalOutputDrivetrain>
+						<ElectricalOutput>false</ElectricalOutput>
+					</WHRType>
+					<Mode>
+						<IdlingSpeed>600</IdlingSpeed>
+						<FullLoadAndDragCurve>
+							<Entry engineSpeed='600.00' maxTorque='1188.00' dragTorque='-125.56'/>
+							<Entry engineSpeed='800.00' maxTorque='1661.00' dragTorque='-130.72'/>
+							<Entry engineSpeed='1000.00' maxTorque='2134.00' dragTorque='-135.85'/>
+							<Entry engineSpeed='1200.00' maxTorque='2134.00' dragTorque='-146.72'/>
+							<Entry engineSpeed='1400.00' maxTorque='2134.00' dragTorque='-156.83'/>
+							<Entry engineSpeed='1600.00' maxTorque='1928.00' dragTorque='-183.84'/>
+							<Entry engineSpeed='1800.00' maxTorque='1722.00' dragTorque='-207.31'/>
+							<Entry engineSpeed='2000.00' maxTorque='1253.00' dragTorque='-236.72'/>
+							<Entry engineSpeed='2100.00' maxTorque='1019.00' dragTorque='-248.49'/>
+							<Entry engineSpeed='2200.00' maxTorque='0.00' dragTorque='-274.38'/>
+						</FullLoadAndDragCurve>
+						<Fuel type="H2 CI">
+							<WHTCUrban>1.0431</WHTCUrban>
+							<WHTCRural>1.0193</WHTCRural>
+							<WHTCMotorway>1.0024</WHTCMotorway>
+							<BFColdHot>1.0005</BFColdHot>
+							<CFRegPer>1.0000</CFRegPer>
+							<CFNCV>1.0000</CFNCV>
+							<FuelConsumptionMap>
+								<Entry engineSpeed='600.00' torque='0.00' fuelConsumption='1017.15'/>
+								<Entry engineSpeed='600.00' torque='216.90' fuelConsumption='2697.16'/>
+								<Entry engineSpeed='600.00' torque='433.80' fuelConsumption='5027.12'/>
+								<Entry engineSpeed='600.00' torque='650.70' fuelConsumption='7960.53'/>
+								<Entry engineSpeed='600.00' torque='867.60' fuelConsumption='10064.41'/>
+								<Entry engineSpeed='600.00' torque='1084.50' fuelConsumption='12292.76'/>
+								<Entry engineSpeed='600.00' torque='1301.40' fuelConsumption='14663.02'/>
+								<Entry engineSpeed='600.00' torque='1518.30' fuelConsumption='17043.72'/>
+								<Entry engineSpeed='600.00' torque='1735.20' fuelConsumption='19425.41'/>
+								<Entry engineSpeed='600.00' torque='1952.10' fuelConsumption='21808.12'/>
+								<Entry engineSpeed='600.00' torque='2169.00' fuelConsumption='24191.84'/>
+								<Entry engineSpeed='748.90' torque='0.00' fuelConsumption='1211.61'/>
+								<Entry engineSpeed='748.90' torque='216.90' fuelConsumption='3235.00'/>
+								<Entry engineSpeed='748.90' torque='433.80' fuelConsumption='6289.28'/>
+								<Entry engineSpeed='748.90' torque='650.70' fuelConsumption='9498.69'/>
+								<Entry engineSpeed='748.90' torque='867.60' fuelConsumption='12318.62'/>
+								<Entry engineSpeed='748.90' torque='1084.50' fuelConsumption='15232.52'/>
+								<Entry engineSpeed='748.90' torque='1301.40' fuelConsumption='18318.03'/>
+								<Entry engineSpeed='748.90' torque='1518.30' fuelConsumption='21372.13'/>
+								<Entry engineSpeed='748.90' torque='1735.20' fuelConsumption='24537.89'/>
+								<Entry engineSpeed='748.90' torque='1952.10' fuelConsumption='27678.12'/>
+								<Entry engineSpeed='748.90' torque='2169.00' fuelConsumption='30824.27'/>
+								<Entry engineSpeed='897.80' torque='0.00' fuelConsumption='1586.45'/>
+								<Entry engineSpeed='897.80' torque='216.90' fuelConsumption='4014.99'/>
+								<Entry engineSpeed='897.80' torque='433.80' fuelConsumption='7602.90'/>
+								<Entry engineSpeed='897.80' torque='650.70' fuelConsumption='11000.03'/>
+								<Entry engineSpeed='897.80' torque='867.60' fuelConsumption='14404.97'/>
+								<Entry engineSpeed='897.80' torque='1084.50' fuelConsumption='17919.09'/>
+								<Entry engineSpeed='897.80' torque='1301.40' fuelConsumption='21460.42'/>
+								<Entry engineSpeed='897.80' torque='1518.30' fuelConsumption='25050.01'/>
+								<Entry engineSpeed='897.80' torque='1735.20' fuelConsumption='28796.23'/>
+								<Entry engineSpeed='897.80' torque='1952.10' fuelConsumption='32637.26'/>
+								<Entry engineSpeed='897.80' torque='2169.00' fuelConsumption='36771.35'/>
+								<Entry engineSpeed='1046.70' torque='0.00' fuelConsumption='2011.04'/>
+								<Entry engineSpeed='1046.70' torque='216.90' fuelConsumption='4872.19'/>
+								<Entry engineSpeed='1046.70' torque='433.80' fuelConsumption='8715.31'/>
+								<Entry engineSpeed='1046.70' torque='650.70' fuelConsumption='12557.54'/>
+								<Entry engineSpeed='1046.70' torque='867.60' fuelConsumption='16475.40'/>
+								<Entry engineSpeed='1046.70' torque='1084.50' fuelConsumption='20537.07'/>
+								<Entry engineSpeed='1046.70' torque='1301.40' fuelConsumption='24462.25'/>
+								<Entry engineSpeed='1046.70' torque='1518.30' fuelConsumption='28489.22'/>
+								<Entry engineSpeed='1046.70' torque='1735.20' fuelConsumption='32710.67'/>
+								<Entry engineSpeed='1046.70' torque='1952.10' fuelConsumption='37226.90'/>
+								<Entry engineSpeed='1046.70' torque='2169.00' fuelConsumption='42188.14'/>
+								<Entry engineSpeed='1195.57' torque='0.00' fuelConsumption='2185.40'/>
+								<Entry engineSpeed='1195.57' torque='216.90' fuelConsumption='5364.25'/>
+								<Entry engineSpeed='1195.57' torque='433.80' fuelConsumption='9653.82'/>
+								<Entry engineSpeed='1195.57' torque='650.70' fuelConsumption='14190.70'/>
+								<Entry engineSpeed='1195.57' torque='867.60' fuelConsumption='18700.48'/>
+								<Entry engineSpeed='1195.57' torque='1084.50' fuelConsumption='23295.78'/>
+								<Entry engineSpeed='1195.57' torque='1301.40' fuelConsumption='27743.06'/>
+								<Entry engineSpeed='1195.57' torque='1518.30' fuelConsumption='32148.61'/>
+								<Entry engineSpeed='1195.57' torque='1735.20' fuelConsumption='36847.41'/>
+								<Entry engineSpeed='1195.57' torque='1952.10' fuelConsumption='42042.40'/>
+								<Entry engineSpeed='1195.57' torque='2169.00' fuelConsumption='47220.90'/>
+								<Entry engineSpeed='1359.19' torque='0.00' fuelConsumption='2772.48'/>
+								<Entry engineSpeed='1359.19' torque='216.90' fuelConsumption='6067.08'/>
+								<Entry engineSpeed='1359.19' torque='433.80' fuelConsumption='10995.64'/>
+								<Entry engineSpeed='1359.19' torque='650.70' fuelConsumption='16287.47'/>
+								<Entry engineSpeed='1359.19' torque='867.60' fuelConsumption='21027.31'/>
+								<Entry engineSpeed='1359.19' torque='1084.50' fuelConsumption='25950.61'/>
+								<Entry engineSpeed='1359.19' torque='1301.40' fuelConsumption='31137.39'/>
+								<Entry engineSpeed='1359.19' torque='1518.30' fuelConsumption='36273.70'/>
+								<Entry engineSpeed='1359.19' torque='1735.20' fuelConsumption='41991.43'/>
+								<Entry engineSpeed='1359.19' torque='1952.10' fuelConsumption='48335.18'/>
+								<Entry engineSpeed='1359.19' torque='2169.00' fuelConsumption='54142.82'/>
+								<Entry engineSpeed='1484.00' torque='0.00' fuelConsumption='3222.96'/>
+								<Entry engineSpeed='1484.00' torque='216.90' fuelConsumption='7056.43'/>
+								<Entry engineSpeed='1484.00' torque='433.80' fuelConsumption='12204.86'/>
+								<Entry engineSpeed='1484.00' torque='650.70' fuelConsumption='17817.02'/>
+								<Entry engineSpeed='1484.00' torque='867.60' fuelConsumption='23009.24'/>
+								<Entry engineSpeed='1484.00' torque='1084.50' fuelConsumption='28313.44'/>
+								<Entry engineSpeed='1484.00' torque='1301.40' fuelConsumption='33868.19'/>
+								<Entry engineSpeed='1484.00' torque='1518.30' fuelConsumption='39622.85'/>
+								<Entry engineSpeed='1484.00' torque='1735.20' fuelConsumption='46027.31'/>
+								<Entry engineSpeed='1484.00' torque='1952.10' fuelConsumption='53051.27'/>
+								<Entry engineSpeed='1484.00' torque='2169.00' fuelConsumption='59594.90'/>
+								<Entry engineSpeed='1608.90' torque='0.00' fuelConsumption='3676.48'/>
+								<Entry engineSpeed='1608.90' torque='216.90' fuelConsumption='7771.36'/>
+								<Entry engineSpeed='1608.90' torque='433.80' fuelConsumption='13347.97'/>
+								<Entry engineSpeed='1608.90' torque='650.70' fuelConsumption='19338.07'/>
+								<Entry engineSpeed='1608.90' torque='867.60' fuelConsumption='25127.50'/>
+								<Entry engineSpeed='1608.90' torque='1084.50' fuelConsumption='30866.79'/>
+								<Entry engineSpeed='1608.90' torque='1301.40' fuelConsumption='36723.14'/>
+								<Entry engineSpeed='1608.90' torque='1518.30' fuelConsumption='43120.16'/>
+								<Entry engineSpeed='1608.90' torque='1735.20' fuelConsumption='50153.47'/>
+								<Entry engineSpeed='1608.90' torque='1952.10' fuelConsumption='57745.79'/>
+								<Entry engineSpeed='1608.90' torque='2169.00' fuelConsumption='65121.91'/>
+								<Entry engineSpeed='1733.80' torque='0.00' fuelConsumption='4243.10'/>
+								<Entry engineSpeed='1733.80' torque='216.90' fuelConsumption='8890.92'/>
+								<Entry engineSpeed='1733.80' torque='433.80' fuelConsumption='14882.92'/>
+								<Entry engineSpeed='1733.80' torque='650.70' fuelConsumption='21023.58'/>
+								<Entry engineSpeed='1733.80' torque='867.60' fuelConsumption='27743.50'/>
+								<Entry engineSpeed='1733.80' torque='1084.50' fuelConsumption='33764.85'/>
+								<Entry engineSpeed='1733.80' torque='1301.40' fuelConsumption='40312.73'/>
+								<Entry engineSpeed='1733.80' torque='1518.30' fuelConsumption='47320.20'/>
+								<Entry engineSpeed='1733.80' torque='1735.20' fuelConsumption='54863.24'/>
+								<Entry engineSpeed='1733.80' torque='1952.10' fuelConsumption='62856.92'/>
+								<Entry engineSpeed='1733.80' torque='2169.00' fuelConsumption='70740.49'/>
+								<Entry engineSpeed='1858.61' torque='0.00' fuelConsumption='5123.27'/>
+								<Entry engineSpeed='1858.61' torque='216.90' fuelConsumption='10119.05'/>
+								<Entry engineSpeed='1858.61' torque='433.80' fuelConsumption='16419.00'/>
+								<Entry engineSpeed='1858.61' torque='650.70' fuelConsumption='22983.31'/>
+								<Entry engineSpeed='1858.61' torque='867.60' fuelConsumption='30330.60'/>
+								<Entry engineSpeed='1858.61' torque='1084.50' fuelConsumption='37253.85'/>
+								<Entry engineSpeed='1858.61' torque='1301.40' fuelConsumption='44572.85'/>
+								<Entry engineSpeed='1858.61' torque='1518.30' fuelConsumption='52192.55'/>
+								<Entry engineSpeed='1858.61' torque='1735.20' fuelConsumption='60150.49'/>
+								<Entry engineSpeed='1858.61' torque='1952.10' fuelConsumption='68389.55'/>
+								<Entry engineSpeed='1858.61' torque='2169.00' fuelConsumption='76591.65'/>
+								<Entry engineSpeed='600.00' torque='-125.55' fuelConsumption='0.00'/>
+								<Entry engineSpeed='748.90' torque='-129.40' fuelConsumption='0.00'/>
+								<Entry engineSpeed='897.80' torque='-133.23' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1046.70' torque='-138.39' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1195.57' torque='-146.47' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1359.19' torque='-154.76' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1484.00' torque='-168.17' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1608.90' torque='-223.56' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1733.80' torque='-199.54' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1858.61' torque='-215.92' fuelConsumption='0.00'/>
+								<Entry engineSpeed='600.00' torque='-140.55' fuelConsumption='0.00'/>
+								<Entry engineSpeed='748.90' torque='-144.40' fuelConsumption='0.00'/>
+								<Entry engineSpeed='897.80' torque='-148.23' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1046.70' torque='-153.39' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1195.57' torque='-161.47' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1359.19' torque='-169.76' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1484.00' torque='-183.17' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1608.90' torque='-238.56' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1733.80' torque='-214.54' fuelConsumption='0.00'/>
+								<Entry engineSpeed='1858.61' torque='-230.92' fuelConsumption='0.00'/>
+							</FuelConsumptionMap>
+						</Fuel>
+					</Mode>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#ENG-gooZah3D">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>/qqS7iMvDm0MYurhsIRZTF5FeS+MNA2HnoS1P8SrSdA=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Engine>
+			<ElectricMachine>
+				<PowertrainPosition>2</PowertrainPosition>
+				<Count>1</Count>
+				<ElectricMachineSystem>
+					<v2.3:Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+						<Manufacturer>a</Manufacturer>
+						<Model>a</Model>
+						<CertificationNumber>token</CertificationNumber>
+						<Date>2017-01-01T00:00:00Z</Date>
+						<AppVersion>aaaaa</AppVersion>
+						<ElectricMachineType>ASM</ElectricMachineType>
+						<CertificationMethod>Measured</CertificationMethod>
+						<R85RatedPower>50000</R85RatedPower>
+						<RotationalInertia>0.10</RotationalInertia>
+						<DcDcConverterIncluded>true</DcDcConverterIncluded>
+						<IHPCType>None</IHPCType>
+						<VoltageLevel>
+							<Voltage>400</Voltage>
+							<ContinuousTorque>200.00</ContinuousTorque>
+							<TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+							<OverloadTorque>400.00</OverloadTorque>
+							<TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+							<OverloadDuration>30.00</OverloadDuration>
+							<MaxTorqueCurve>
+								<Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00"/>
+								<Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00"/>
+							</MaxTorqueCurve>
+							<PowerMap>
+								<Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00"/>
+								<Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00"/>
+								<Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00"/>
+								<Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00"/>
+							</PowerMap>
+						</VoltageLevel>
+						<VoltageLevel>
+							<Voltage>600</Voltage>
+							<ContinuousTorque>200.00</ContinuousTorque>
+							<TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+							<OverloadTorque>400.00</OverloadTorque>
+							<TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+							<OverloadDuration>30.00</OverloadDuration>
+							<MaxTorqueCurve>
+								<Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00"/>
+								<Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00"/>
+							</MaxTorqueCurve>
+							<PowerMap>
+								<Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00"/>
+								<Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00"/>
+								<Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00"/>
+								<Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00"/>
+							</PowerMap>
+						</VoltageLevel>
+						<DragCurve>
+							<Entry outShaftSpeed="0.00" dragTorque="10.00"/>
+							<Entry outShaftSpeed="4000.00" dragTorque="30.00"/>
+						</DragCurve>
+						<Conditioning>
+							<Entry coolantTempInlet="30" coolingPower="5000"/>
+						</Conditioning>
+					</v2.3:Data>
+					<v2.3:Signature>
+						<di:Reference URI="#EM-1234">
+							<di:Transforms>
+								<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+								<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+							</di:Transforms>
+							<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+							<di:DigestValue>siONkqzC3QW+4si2eVwLNTwtAxUM0dxMFdAYXjVNl+0=</di:DigestValue>
+						</di:Reference>
+					</v2.3:Signature>
+				</ElectricMachineSystem>
+				<P2.5GearRatios>
+					<!-- only for P2.5 HEV -->
+					<Ratio gear="1">1.000</Ratio>
+					<Ratio gear="2">2.000</Ratio>
+				</P2.5GearRatios>
+			</ElectricMachine>
+			<ElectricEnergyStorage>
+				<Battery>
+					<StringID>0</StringID>
+					<REESS>
+						<v2.3:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
+							<Manufacturer>a</Manufacturer>
+							<Model>a</Model>
+							<CertificationNumber>token</CertificationNumber>
+							<Date>2017-01-01T00:00:00Z</Date>
+							<AppVersion>aaaaa</AppVersion>
+							<CertificationMethod>Measured</CertificationMethod>
+							<BatteryType>HPBS</BatteryType>
+							<RatedCapacity>72.00</RatedCapacity>
+							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
+							<JunctionboxIncluded>true</JunctionboxIncluded>
+							<TestingTemperature>20</TestingTemperature>
+							<OCV>
+								<Entry SoC="0" OCV="620.00"/>
+								<Entry SoC="100" OCV="640.00"/>
+							</OCV>
+							<InternalResistance>
+								<Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00"/>
+								<Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00"/>
+							</InternalResistance>
+							<CurrentLimits>
+								<Entry SoC="0" maxChargingCurrent="50.00" maxDischargingCurrent="0.00"/>
+								<Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="50.00"/>
+							</CurrentLimits>
+						</v2.3:Data>
+						<v2.3:Signature>
+							<di:Reference URI="#BAT-asdf">
+								<di:Transforms>
+									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+								</di:Transforms>
+								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
+							</di:Reference>
+						</v2.3:Signature>
+					</REESS>
+					<SOCmin>20.0</SOCmin>
+					<SOCmax>80.0</SOCmax>
+				</Battery>
+				<Battery>
+					<StringID>1</StringID>
+					<REESS>
+						<v2.3:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
+							<Manufacturer>a</Manufacturer>
+							<Model>a</Model>
+							<CertificationNumber>token</CertificationNumber>
+							<Date>2017-01-01T00:00:00Z</Date>
+							<AppVersion>aaaaa</AppVersion>
+							<CertificationMethod>Measured</CertificationMethod>
+							<BatteryType>HPBS</BatteryType>
+							<RatedCapacity>72.00</RatedCapacity>
+							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
+							<JunctionboxIncluded>true</JunctionboxIncluded>
+							<TestingTemperature>20</TestingTemperature>
+							<OCV>
+								<Entry SoC="0" OCV="620.00"/>
+								<Entry SoC="100" OCV="640.00"/>
+							</OCV>
+							<InternalResistance>
+								<Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00"/>
+								<Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00"/>
+							</InternalResistance>
+							<CurrentLimits>
+								<Entry SoC="0" maxChargingCurrent="50.00" maxDischargingCurrent="0.00"/>
+								<Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="50.00"/>
+							</CurrentLimits>
+						</v2.3:Data>
+						<v2.3:Signature>
+							<di:Reference URI="#BAT-asdf">
+								<di:Transforms>
+									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+								</di:Transforms>
+								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
+							</di:Reference>
+						</v2.3:Signature>
+					</REESS>
+					<SOCmin>20.0</SOCmin>
+					<SOCmax>80.0</SOCmax>
+				</Battery>
+			</ElectricEnergyStorage>
+			<Gearbox>
+				<v2.0:Data id="gbx-vi2Oak2N" xsi:type="GearboxDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>Generic 40t Long Haul Truck Gearbox</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<TransmissionType>AMT</TransmissionType>
+					<MainCertificationMethod>Standard values</MainCertificationMethod>
+					<Gears xsi:type="GearsDeclarationType">
+						<Gear number="1">
+							<Ratio>14.930</Ratio>
+							<MaxTorque>1900</MaxTorque>
+							<MaxSpeed>2000</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed="0.00" inputTorque="-1000.00" torqueLoss="25.06"/>
+								<Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="6.06"/>
+								<Entry inputSpeed="0.00" inputTorque="3000.00" torqueLoss="54.06"/>
+								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
+								<Entry inputSpeed="2100.00" inputTorque="50.00" torqueLoss="16.69"/>
+								<Entry inputSpeed="2100.00" inputTorque="3000.00" torqueLoss="64.69"/>
+							</TorqueLossMap>
+						</Gear>
+						<Gear number="2">
+							<Ratio>11.640</Ratio>
+							<MaxTorque>1900</MaxTorque>
+							<MaxSpeed>2000</MaxSpeed>
+							<TorqueLossMap>
+								<Entry inputSpeed="0.00" inputTorque="-1000.00" torqueLoss="25.06"/>
+								<Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="6.06"/>
+								<Entry inputSpeed="0.00" inputTorque="3000.00" torqueLoss="54.06"/>
+								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
+								<Entry inputSpeed="2100.00" inputTorque="50.00" torqueLoss="16.69"/>
+								<Entry inputSpeed="2100.00" inputTorque="3000.00" torqueLoss="64.69"/>
+							</TorqueLossMap>
+						</Gear>
+					</Gears>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#gbx-vi2Oak2N">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>8fsWE1AvinkI5UcWuU/vyx3X2kKjarP/qPC+Uon+aBE=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Gearbox>
+			<TorqueConverter>
+				<!-- optional -->
+				<v2.0:Data xsi:type="TorqueConverterDataDeclarationType" id="TQ-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
+					<Manufacturer>Some Manufacturer</Manufacturer>
+					<Model>Some Model</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-02-15T11:00:00Z</Date>
+					<AppVersion>TC CalcApp 123</AppVersion>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<Characteristics>
+						<Entry speedRatio="0.0000" torqueRatio="1.00" inputTorqueRef="300.00"/>
+						<Entry speedRatio="0.5000" torqueRatio="1.00" inputTorqueRef="200.00"/>
+						<Entry speedRatio="0.9000" torqueRatio="0.90" inputTorqueRef="200.00"/>
+					</Characteristics>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#TQ-1234">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>P8mKieew0dWJFSIPapRXdUf2FsYG4ONvolD5kjkYEkw=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</TorqueConverter>
+			<Angledrive>
+				<!-- optional -->
+				<v2.0:Data id="agl-vi2Oak2N" xsi:type="AngledriveDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>Generic 40t Long Haul Truck Gearbox</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<Ratio>2.345</Ratio>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<TorqueLossMap>
+						<Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="-1000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="10.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="0.00" torqueLoss="10.00"/>
+						<Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="100.00"/>
+						<Entry inputSpeed="1000.00" inputTorque="1000.00" torqueLoss="100.00"/>
+					</TorqueLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#agl-vi2Oak2N">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>iVRxT+wETVrlCQhZMsiqRC1mKcw3a3KSeb1y5uhINQk=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Angledrive>
+			<Retarder>
+				<!-- optional -->
+				<v2.0:Data id="RET-Shai9imi" xsi:type="RetarderDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+					<Model>Generic Retarder</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<RetarderLossMap>
+						<Entry retarderSpeed="0.00" torqueLoss="10.00"/>
+						<Entry retarderSpeed="2300.00" torqueLoss="20.58"/>
+					</RetarderLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#RET-Shai9imi">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>xcfok6Uo1kvFefSRo+W/oMfEfS5BdTklBugAjby2DUQ=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Retarder>
+			<Axlegear>
+				<v2.0:Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+					<Model>Generic 40t Long Haul Truck AxleGear</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-01-11T11:00:00Z</Date>
+					<AppVersion>3.0.1</AppVersion>
+					<LineType>Single portal axle</LineType>
+					<Ratio>2.590</Ratio>
+					<CertificationMethod>Standard values</CertificationMethod>
+					<TorqueLossMap>
+						<Entry inputSpeed="0.00" inputTorque="-5000.00" torqueLoss="115.00"/>
+						<Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="40.00"/>
+						<Entry inputSpeed="0.00" inputTorque="15000.00" torqueLoss="265.00"/>
+						<Entry inputSpeed="2100.00" inputTorque="-5000.00" torqueLoss="115.00"/>
+						<Entry inputSpeed="2100.00" inputTorque="0.00" torqueLoss="40.00"/>
+						<Entry inputSpeed="2100.00" inputTorque="35000.00" torqueLoss="565.00"/>
+					</TorqueLossMap>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#AXL-EC3ohnoh">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>Ux2vo+s07pGr9XCbvNs/YbJcFaZClORRGXpP6Eyeze8=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</Axlegear>
+			<AxleWheels>
+				<v2.0:Data xsi:type="AxleWheelsDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Axles>
+						<Axle axleNumber="1" xsi:type="AxleDataDeclarationType">
+							<AxleType>VehicleNonDriven</AxleType>
+							<TwinTyres>false</TwinTyres>
+							<Steered>true</Steered>
+							<Tyre>
+								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
+									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Model>Generic Wheel</Model>
+									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<Date>2017-01-11T14:00:00Z</Date>
+									<AppVersion>Tyre Generation App 1.0</AppVersion>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0055</RRCDeclared>
+									<FzISO>31300</FzISO>
+								</Data>
+								<Signature>
+									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
+										<di:Transforms>
+											<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+											<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+										</di:Transforms>
+										<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+										<di:DigestValue>A/sq1ng4cqeOyauDUqUEnonRSPch3VCqZDX9Pf3tW1Q=</di:DigestValue>
+									</di:Reference>
+								</Signature>
+							</Tyre>
+						</Axle>
+						<Axle axleNumber="2" xsi:type="AxleDataDeclarationType">
+							<AxleType>VehicleDriven</AxleType>
+							<TwinTyres>true</TwinTyres>
+							<Steered>false</Steered>
+							<Tyre>
+								<Data id="WHL-5432198760-315-70-R22.5" xsi:type="TyreDataDeclarationType">
+									<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+									<Model>Generic Wheel</Model>
+									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+									<Date>2017-01-11T14:00:00Z</Date>
+									<AppVersion>Tyre Generation App 1.0</AppVersion>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0063</RRCDeclared>
+									<FzISO>31300</FzISO>
+								</Data>
+								<Signature>
+									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
+										<di:Transforms>
+											<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+											<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+										</di:Transforms>
+										<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+										<di:DigestValue>z+KDXmc5MIezM6RVgfYax5J9Efi0ghciG2/wLLmWaBk=</di:DigestValue>
+									</di:Reference>
+								</Signature>
+							</Tyre>
+						</Axle>
+					</Axles>
+				</v2.0:Data>
+			</AxleWheels>
+			<Auxiliaries>
+				<Data xsi:type="AUX_HEV-P_LorryDataType">
+					<Fan>
+						<Technology>Hydraulic driven - Constant displacement pump</Technology>
+					</Fan>
+					<SteeringPump>
+						<Technology axleNumber="1">Variable displacement elec. controlled</Technology>
+					</SteeringPump>
+					<ElectricSystem>
+						<Technology>Standard technology - LED headlights, all</Technology>
+					</ElectricSystem>
+					<PneumaticSystem>
+						<Technology>Medium Supply 2-stage</Technology>
+					</PneumaticSystem>
+					<HVAC>
+						<Technology>Default</Technology>
+					</HVAC>
+				</Data>
+			</Auxiliaries>
+			<AirDrag>
+				<!-- optional -->
+				<v2.0:Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Manufacturer</Manufacturer>
+					<Model>Generic Model</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-03-24T15:00:00Z</Date>
+					<AppVersion>Vecto AirDrag x.y</AppVersion>
+					<CdxA_0>6.31</CdxA_0>
+					<TransferredCdxA>6.32</TransferredCdxA>
+					<DeclaredCdxA>6.34</DeclaredCdxA>
+				</v2.0:Data>
+				<v2.0:Signature>
+					<di:Reference URI="#CabinX23h">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>NroIsfnT7+1zYG5CTHxpclh0ZaRZvGyrfFPmWdKbFbg=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</AirDrag>
+		</Components>
+		<MonitoringData>
+			<VectoLicenseNbr>##VECTO_LICENSE_NUMBER##</VectoLicenseNbr>
+			<Vehicle>
+				<Make>##VEHICLE_MAKE##</Make>
+			</Vehicle>
+			<Engine>
+				<Manufacturer>##ENGINE_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##ENGINE_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##ENGINE_MAKE##</Make>
+				<WHTC>
+					<FuelType>NG</FuelType>
+					<CO2 unit="g/kWh">NaN</CO2>
+					<FuelConsumption unit="g/kWh">NaN</FuelConsumption>
+				</WHTC>
+				<WHSC>
+					<FuelType>NG</FuelType>
+					<CO2 unit="g/kWh">NaN</CO2>
+					<FuelConsumption unit="g/kWh">NaN</FuelConsumption>
+				</WHSC>
+				<TypeApprovalNumber>##TYPE_APPROVAL_NUMBER##</TypeApprovalNumber>
+			</Engine>
+			<Gearbox>
+				<Manufacturer>##GEARBOX_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##GEARBOX_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##GEARBOX_MAKE##</Make>
+			</Gearbox>
+			<Axlegear>
+				<Manufacturer>##AXLEGEAR_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##AXLEGEAR_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##AXLEGEAR_MAKE##</Make>
+			</Axlegear>
+			<AxleWheels>
+				<Axle axleNumber="1">
+					<Tyre>
+						<Manufacturer>##TYRE_1_MANUFACTURER##</Manufacturer>
+						<ManufacturerAddress>##TYRE_1_MANUFACTURERADDRESS##</ManufacturerAddress>
+						<Make>##TYRE_1_MAKE##</Make>
+					</Tyre>
+				</Axle>
+				<Axle axleNumber="2">
+					<Tyre>
+						<Manufacturer>##TYRE_2_MANUFACTURER##</Manufacturer>
+						<ManufacturerAddress>##TYRE_2_MANUFACTURERADDRESS##</ManufacturerAddress>
+						<Make>##TYRE_2_MAKE##</Make>
+					</Tyre>
+				</Axle>
+			</AxleWheels>
+			<ElectricMachine>
+				<Manufacturer>##ELECTRIC_MACHINE_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##ELECTRIC_MACHINE_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##ELECTRIC_MACHINE_MAKE##</Make>
+			</ElectricMachine>
+			<ElectricEnergyStorage>
+				<Manufacturer>##ELECTRIC_ENERGY_STORAGE_MANUFACTURER##</Manufacturer>
+				<ManufacturerAddress>##ELECTRIC_ENERGY_STORAGE_MANUFACTURERADDRESS##</ManufacturerAddress>
+				<Make>##ELECTRIC_ENERGY_STORAGE_MAKE##</Make>
+			</ElectricEnergyStorage>
+			<AdvancedReducingTechnologies>
+				<!--
+<Entry category="advanced aerodynamic measures">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced rolling resistance measures">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced drivetrain technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced engine technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced auxiliary technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="additional ADAS technologies">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="advanced powertrain integration and hybridisation">##TECHNOLOGY_BRAND_NAME##</Entry>
+<Entry category="other">##TECHNOLOGY_BRAND_NAME##</Entry>
+-->
+			</AdvancedReducingTechnologies>
+		</MonitoringData>
+	</Vehicle>
+</tns:VectoInputDeclaration>

@@ -31,32 +31,15 @@
 				<VoltageLevel>
 					<Voltage>100</Voltage>
 					<MaxTorqueCurve>
-						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
-						<Entry outShaftSpeed="8000.00" maxTorque="300.00" minTorque="-300.00"/>
+						<Entry outShaftSpeed="0.00" maxTorque="750.00" minTorque="-750.00"/>
+						<Entry outShaftSpeed="9000.00" maxTorque="300.00" minTorque="-300.00"/>
 					</MaxTorqueCurve>
 				</VoltageLevel>
 				<VoltageLevel>
-					<Voltage>600</Voltage>
+					<Voltage>1000</Voltage>
 					<MaxTorqueCurve>
-						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
-						<Entry outShaftSpeed="8000.00" maxTorque="300.00" minTorque="-300.00"/>
-					</MaxTorqueCurve>
-				</VoltageLevel>
-			</ElectricMachine>
-			<ElectricMachine axleNumber="2">
-				<Position>4</Position>
-				<VoltageLevel>
-					<Voltage>100</Voltage>
-					<MaxTorqueCurve>
-						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
-						<Entry outShaftSpeed="8000.00" maxTorque="300.00" minTorque="-300.00"/>
-					</MaxTorqueCurve>
-				</VoltageLevel>
-				<VoltageLevel>
-					<Voltage>600</Voltage>
-					<MaxTorqueCurve>
-						<Entry outShaftSpeed="0.00" maxTorque="200.00" minTorque="-200.00"/>
-						<Entry outShaftSpeed="8000.00" maxTorque="300.00" minTorque="-300.00"/>
+						<Entry outShaftSpeed="0.00" maxTorque="750.00" minTorque="-750.00"/>
+						<Entry outShaftSpeed="9000.00" maxTorque="300.00" minTorque="-300.00"/>
 					</MaxTorqueCurve>
 				</VoltageLevel>
 			</ElectricMachine>
@@ -113,63 +96,30 @@
 							<AppVersion>aaaaa</AppVersion>
 							<CertificationMethod>Measured</CertificationMethod>
 							<BatteryType>HPBS</BatteryType>
-							<RatedCapacity>324.00</RatedCapacity>
+							<RatedCapacity>1555.50</RatedCapacity>
 							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
 							<JunctionboxIncluded>true</JunctionboxIncluded>
 							<TestingTemperature>20</TestingTemperature>
 							<OCV>
-								<Entry SoC="0" OCV="673.50"/>
-								<Entry SoC="100" OCV="750.20"/>
+								<Entry SoC='0' OCV='718.42'/>
+								<Entry SoC='10' OCV='746.84'/>
+								<Entry SoC='20' OCV='763.14'/>
+								<Entry SoC='30' OCV='771.85'/>
+								<Entry SoC='40' OCV='776.26'/>
+								<Entry SoC='50' OCV='778.61'/>
+								<Entry SoC='60' OCV='780.43'/>
+								<Entry SoC='70' OCV='782.70'/>
+								<Entry SoC='80' OCV='786.19'/>
+								<Entry SoC='90' OCV='791.68'/>
+								<Entry SoC='100' OCV='800.21'/>
 							</OCV>
 							<InternalResistance>
-								<Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00"/>
-								<Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00"/>
+								<Entry SoC='0' R_2='40.00' R_10='40.00' R_20='40.00'/>
+								<Entry SoC='100' R_2='40.00' R_10='40.00' R_20='40.00'/>
 							</InternalResistance>
 							<CurrentLimits>
-								<Entry SoC="0" maxChargingCurrent="500.00" maxDischargingCurrent="500.00"/>
-								<Entry SoC="100" maxChargingCurrent="500.00" maxDischargingCurrent="500.00"/>
-							</CurrentLimits>
-						</v2.3:Data>
-						<v2.3:Signature>
-							<di:Reference URI="#BAT-asdf">
-								<di:Transforms>
-									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
-									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-								</di:Transforms>
-								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
-							</di:Reference>
-						</v2.3:Signature>
-					</REESS>
-					<SOCmin>8.0</SOCmin>
-					<SOCmax>92.0</SOCmax>
-				</Battery>
-				<Battery>
-					<StringID>1</StringID>
-					<REESS>
-						<v2.3:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
-							<Manufacturer>a</Manufacturer>
-							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
-							<Date>2017-01-01T00:00:00Z</Date>
-							<AppVersion>aaaaa</AppVersion>
-							<CertificationMethod>Measured</CertificationMethod>
-							<BatteryType>HPBS</BatteryType>
-							<RatedCapacity>324.00</RatedCapacity>
-							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
-							<JunctionboxIncluded>true</JunctionboxIncluded>
-							<TestingTemperature>20</TestingTemperature>
-							<OCV>
-								<Entry SoC="0" OCV="673.50"/>
-								<Entry SoC="100" OCV="750.20"/>
-							</OCV>
-							<InternalResistance>
-								<Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00"/>
-								<Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00"/>
-							</InternalResistance>
-							<CurrentLimits>
-								<Entry SoC="0" maxChargingCurrent="500.00" maxDischargingCurrent="500.00"/>
-								<Entry SoC="100" maxChargingCurrent="500.00" maxDischargingCurrent="500.00"/>
+								<Entry SoC='0' maxChargingCurrent='1500.00' maxDischargingCurrent='1500.00'/>
+								<Entry SoC='100' maxChargingCurrent='1500.00' maxDischargingCurrent='1500.00'/>
 							</CurrentLimits>
 						</v2.3:Data>
 						<v2.3:Signature>
@@ -200,91 +150,40 @@
 							<AppVersion>aaaaa</AppVersion>
 							<ElectricMachineType>ASM</ElectricMachineType>
 							<CertificationMethod>Measured</CertificationMethod>
-							<R85RatedPower>350000</R85RatedPower>
+							<R85RatedPower>325000</R85RatedPower>
 							<RotationalInertia>0.23</RotationalInertia>
 							<DcDcConverterIncluded>true</DcDcConverterIncluded>
 							<IHPCType>None</IHPCType>
 							<VoltageLevel>
 								<Voltage>100</Voltage>
-								<ContinuousTorque>350.00</ContinuousTorque>
-								<TestSpeedContinuousTorque>2400.00</TestSpeedContinuousTorque>
-								<OverloadTorque>470.00</OverloadTorque>
-								<TestSpeedOverloadTorque>2500.00</TestSpeedOverloadTorque>
+								<ContinuousTorque>700.00</ContinuousTorque>
+								<TestSpeedContinuousTorque>2069.00</TestSpeedContinuousTorque>
+								<OverloadTorque>750.00</OverloadTorque>
+								<TestSpeedOverloadTorque>2069.00</TestSpeedOverloadTorque>
 								<OverloadDuration>120.00</OverloadDuration>
 								<MaxTorqueCurve>
-									<Entry outShaftSpeed="0.00" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2461.16" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2452.14" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2466.86" maxTorque="483.88" minTorque="-483.88"/>
-									<Entry outShaftSpeed="2481.59" maxTorque="481.01" minTorque="-481.01"/>
-									<Entry outShaftSpeed="2496.32" maxTorque="478.17" minTorque="-478.17"/>
-									<Entry outShaftSpeed="2503.68" maxTorque="476.77" minTorque="-476.77"/>
-									<Entry outShaftSpeed="2577.32" maxTorque="463.14" minTorque="-463.14"/>
-									<Entry outShaftSpeed="2650.96" maxTorque="450.27" minTorque="-450.27"/>
-									<Entry outShaftSpeed="2724.59" maxTorque="438.10" minTorque="-438.10"/>
-									<Entry outShaftSpeed="2798.23" maxTorque="426.58" minTorque="-426.58"/>
-									<Entry outShaftSpeed="2871.87" maxTorque="415.64" minTorque="-415.64"/>
-									<Entry outShaftSpeed="2945.51" maxTorque="405.25" minTorque="-405.25"/>
-									<Entry outShaftSpeed="3019.15" maxTorque="395.36" minTorque="-395.36"/>
-									<Entry outShaftSpeed="3092.78" maxTorque="385.95" minTorque="-385.95"/>
-									<Entry outShaftSpeed="3166.42" maxTorque="376.98" minTorque="-376.98"/>
-									<Entry outShaftSpeed="3240.06" maxTorque="368.41" minTorque="-368.41"/>
-									<Entry outShaftSpeed="3313.70" maxTorque="360.22" minTorque="-360.22"/>
-									<Entry outShaftSpeed="3387.33" maxTorque="352.39" minTorque="-352.39"/>
-									<Entry outShaftSpeed="3460.97" maxTorque="344.90" minTorque="-344.90"/>
-									<Entry outShaftSpeed="3534.61" maxTorque="337.71" minTorque="-337.71"/>
-									<Entry outShaftSpeed="3608.25" maxTorque="330.82" minTorque="-330.82"/>
-									<Entry outShaftSpeed="3681.89" maxTorque="324.20" minTorque="-324.20"/>
-									<Entry outShaftSpeed="3755.52" maxTorque="317.84" minTorque="-317.84"/>
-									<Entry outShaftSpeed="3829.16" maxTorque="311.73" minTorque="-311.73"/>
-									<Entry outShaftSpeed="3902.80" maxTorque="305.85" minTorque="-305.85"/>
-									<Entry outShaftSpeed="3976.44" maxTorque="300.18" minTorque="-300.18"/>
-									<Entry outShaftSpeed="4050.07" maxTorque="294.72" minTorque="-294.72"/>
-									<Entry outShaftSpeed="4123.71" maxTorque="289.46" minTorque="-289.46"/>
-									<Entry outShaftSpeed="4197.35" maxTorque="284.38" minTorque="-284.38"/>
-									<Entry outShaftSpeed="4270.99" maxTorque="279.48" minTorque="-279.48"/>
-									<Entry outShaftSpeed="4344.62" maxTorque="274.74" minTorque="-274.74"/>
-									<Entry outShaftSpeed="4418.26" maxTorque="270.17" minTorque="-270.17"/>
-									<Entry outShaftSpeed="4491.90" maxTorque="265.73" minTorque="-265.73"/>
-									<Entry outShaftSpeed="4565.54" maxTorque="261.45" minTorque="-261.45"/>
-									<Entry outShaftSpeed="4639.18" maxTorque="257.30" minTorque="-257.30"/>
-									<Entry outShaftSpeed="4712.81" maxTorque="253.28" minTorque="-253.28"/>
-									<Entry outShaftSpeed="4786.45" maxTorque="249.39" minTorque="-249.39"/>
-									<Entry outShaftSpeed="4860.09" maxTorque="245.60" minTorque="-245.60"/>
-									<Entry outShaftSpeed="4933.73" maxTorque="241.94" minTorque="-241.94"/>
-									<Entry outShaftSpeed="5007.36" maxTorque="238.38" minTorque="-238.38"/>
-									<Entry outShaftSpeed="5081.00" maxTorque="234.92" minTorque="-234.92"/>
-									<Entry outShaftSpeed="5154.64" maxTorque="231.58" minTorque="-231.58"/>
-									<Entry outShaftSpeed="5228.28" maxTorque="228.31" minTorque="-228.31"/>
-									<Entry outShaftSpeed="5301.91" maxTorque="225.14" minTorque="-225.14"/>
-									<Entry outShaftSpeed="5375.55" maxTorque="222.06" minTorque="-222.06"/>
-									<Entry outShaftSpeed="5449.19" maxTorque="219.05" minTorque="-219.05"/>
-									<Entry outShaftSpeed="5522.83" maxTorque="216.13" minTorque="-216.13"/>
-									<Entry outShaftSpeed="5596.47" maxTorque="213.29" minTorque="-213.29"/>
-									<Entry outShaftSpeed="5670.10" maxTorque="210.51" minTorque="-210.51"/>
-									<Entry outShaftSpeed="5743.74" maxTorque="207.82" minTorque="-207.82"/>
-									<Entry outShaftSpeed="5817.38" maxTorque="205.19" minTorque="-205.19"/>
-									<Entry outShaftSpeed="5891.02" maxTorque="202.62" minTorque="-202.62"/>
-									<Entry outShaftSpeed="5964.65" maxTorque="200.12" minTorque="-200.12"/>
-									<Entry outShaftSpeed="6038.29" maxTorque="197.69" minTorque="-197.69"/>
-									<Entry outShaftSpeed="6111.93" maxTorque="195.30" minTorque="-195.30"/>
-									<Entry outShaftSpeed="6185.57" maxTorque="192.97" minTorque="-192.97"/>
-									<Entry outShaftSpeed="6259.20" maxTorque="190.70" minTorque="-190.70"/>
-									<Entry outShaftSpeed="6332.84" maxTorque="188.48" minTorque="-188.48"/>
-									<Entry outShaftSpeed="6406.48" maxTorque="186.32" minTorque="-186.32"/>
-									<Entry outShaftSpeed="6480.12" maxTorque="184.20" minTorque="-184.20"/>
-									<Entry outShaftSpeed="6553.76" maxTorque="182.13" minTorque="-182.13"/>
-									<Entry outShaftSpeed="6627.39" maxTorque="180.10" minTorque="-180.10"/>
-									<Entry outShaftSpeed="6701.03" maxTorque="178.13" minTorque="-178.13"/>
-									<Entry outShaftSpeed="6774.67" maxTorque="176.20" minTorque="-176.20"/>
-									<Entry outShaftSpeed="6848.31" maxTorque="174.30" minTorque="-174.30"/>
-									<Entry outShaftSpeed="6921.94" maxTorque="172.44" minTorque="-172.44"/>
-									<Entry outShaftSpeed="6995.58" maxTorque="170.64" minTorque="-170.64"/>
-									<Entry outShaftSpeed="7069.22" maxTorque="168.85" minTorque="-168.85"/>
-									<Entry outShaftSpeed="7142.86" maxTorque="167.11" minTorque="-167.11"/>
-									<Entry outShaftSpeed="7216.49" maxTorque="165.41" minTorque="-165.41"/>
-									<Entry outShaftSpeed="7290.13" maxTorque="163.74" minTorque="-163.74"/>
-									<Entry outShaftSpeed="7363.77" maxTorque="162.10" minTorque="-162.10"/>
+									<Entry outShaftSpeed='0.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='41.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='414.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='828.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1241.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1655.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2069.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2483.00' maxTorque='625.00' minTorque='-625.00'/>
+									<Entry outShaftSpeed='2897.00' maxTorque='535.71' minTorque='-535.71'/>
+									<Entry outShaftSpeed='3310.00' maxTorque='468.75' minTorque='-468.75'/>
+									<Entry outShaftSpeed='3724.00' maxTorque='416.67' minTorque='-416.67'/>
+									<Entry outShaftSpeed='4138.00' maxTorque='375.00' minTorque='-375.00'/>
+									<Entry outShaftSpeed='4552.00' maxTorque='340.91' minTorque='-340.91'/>
+									<Entry outShaftSpeed='4966.00' maxTorque='312.50' minTorque='-312.50'/>
+									<Entry outShaftSpeed='5379.00' maxTorque='288.46' minTorque='-288.46'/>
+									<Entry outShaftSpeed='5793.00' maxTorque='267.86' minTorque='-267.86'/>
+									<Entry outShaftSpeed='6207.00' maxTorque='250.00' minTorque='-250.00'/>
+									<Entry outShaftSpeed='6621.00' maxTorque='234.38' minTorque='-234.38'/>
+									<Entry outShaftSpeed='7035.00' maxTorque='220.59' minTorque='-220.59'/>
+									<Entry outShaftSpeed='7448.00' maxTorque='208.33' minTorque='-208.33'/>
+									<Entry outShaftSpeed='7862.00' maxTorque='197.37' minTorque='-197.37'/>
+									<Entry outShaftSpeed='8276.00' maxTorque='187.50' minTorque='-187.50'/>
 								</MaxTorqueCurve>
 								<PowerMap>
 									<Entry outShaftSpeed='0.00' torque='-750.00' electricPower='0.00'/>
@@ -1214,86 +1113,35 @@
 								</PowerMap>
 							</VoltageLevel>
 							<VoltageLevel>
-								<Voltage>600</Voltage>
-								<ContinuousTorque>350.00</ContinuousTorque>
-								<TestSpeedContinuousTorque>2400.00</TestSpeedContinuousTorque>
-								<OverloadTorque>470.00</OverloadTorque>
-								<TestSpeedOverloadTorque>2500.00</TestSpeedOverloadTorque>
+								<Voltage>1000</Voltage>
+								<ContinuousTorque>700.00</ContinuousTorque>
+								<TestSpeedContinuousTorque>2069.00</TestSpeedContinuousTorque>
+								<OverloadTorque>750.00</OverloadTorque>
+								<TestSpeedOverloadTorque>2069.00</TestSpeedOverloadTorque>
 								<OverloadDuration>120.00</OverloadDuration>
 								<MaxTorqueCurve>
-									<Entry outShaftSpeed="0.00" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2461.16" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2452.14" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2466.86" maxTorque="483.88" minTorque="-483.88"/>
-									<Entry outShaftSpeed="2481.59" maxTorque="481.01" minTorque="-481.01"/>
-									<Entry outShaftSpeed="2496.32" maxTorque="478.17" minTorque="-478.17"/>
-									<Entry outShaftSpeed="2503.68" maxTorque="476.77" minTorque="-476.77"/>
-									<Entry outShaftSpeed="2577.32" maxTorque="463.14" minTorque="-463.14"/>
-									<Entry outShaftSpeed="2650.96" maxTorque="450.27" minTorque="-450.27"/>
-									<Entry outShaftSpeed="2724.59" maxTorque="438.10" minTorque="-438.10"/>
-									<Entry outShaftSpeed="2798.23" maxTorque="426.58" minTorque="-426.58"/>
-									<Entry outShaftSpeed="2871.87" maxTorque="415.64" minTorque="-415.64"/>
-									<Entry outShaftSpeed="2945.51" maxTorque="405.25" minTorque="-405.25"/>
-									<Entry outShaftSpeed="3019.15" maxTorque="395.36" minTorque="-395.36"/>
-									<Entry outShaftSpeed="3092.78" maxTorque="385.95" minTorque="-385.95"/>
-									<Entry outShaftSpeed="3166.42" maxTorque="376.98" minTorque="-376.98"/>
-									<Entry outShaftSpeed="3240.06" maxTorque="368.41" minTorque="-368.41"/>
-									<Entry outShaftSpeed="3313.70" maxTorque="360.22" minTorque="-360.22"/>
-									<Entry outShaftSpeed="3387.33" maxTorque="352.39" minTorque="-352.39"/>
-									<Entry outShaftSpeed="3460.97" maxTorque="344.90" minTorque="-344.90"/>
-									<Entry outShaftSpeed="3534.61" maxTorque="337.71" minTorque="-337.71"/>
-									<Entry outShaftSpeed="3608.25" maxTorque="330.82" minTorque="-330.82"/>
-									<Entry outShaftSpeed="3681.89" maxTorque="324.20" minTorque="-324.20"/>
-									<Entry outShaftSpeed="3755.52" maxTorque="317.84" minTorque="-317.84"/>
-									<Entry outShaftSpeed="3829.16" maxTorque="311.73" minTorque="-311.73"/>
-									<Entry outShaftSpeed="3902.80" maxTorque="305.85" minTorque="-305.85"/>
-									<Entry outShaftSpeed="3976.44" maxTorque="300.18" minTorque="-300.18"/>
-									<Entry outShaftSpeed="4050.07" maxTorque="294.72" minTorque="-294.72"/>
-									<Entry outShaftSpeed="4123.71" maxTorque="289.46" minTorque="-289.46"/>
-									<Entry outShaftSpeed="4197.35" maxTorque="284.38" minTorque="-284.38"/>
-									<Entry outShaftSpeed="4270.99" maxTorque="279.48" minTorque="-279.48"/>
-									<Entry outShaftSpeed="4344.62" maxTorque="274.74" minTorque="-274.74"/>
-									<Entry outShaftSpeed="4418.26" maxTorque="270.17" minTorque="-270.17"/>
-									<Entry outShaftSpeed="4491.90" maxTorque="265.73" minTorque="-265.73"/>
-									<Entry outShaftSpeed="4565.54" maxTorque="261.45" minTorque="-261.45"/>
-									<Entry outShaftSpeed="4639.18" maxTorque="257.30" minTorque="-257.30"/>
-									<Entry outShaftSpeed="4712.81" maxTorque="253.28" minTorque="-253.28"/>
-									<Entry outShaftSpeed="4786.45" maxTorque="249.39" minTorque="-249.39"/>
-									<Entry outShaftSpeed="4860.09" maxTorque="245.60" minTorque="-245.60"/>
-									<Entry outShaftSpeed="4933.73" maxTorque="241.94" minTorque="-241.94"/>
-									<Entry outShaftSpeed="5007.36" maxTorque="238.38" minTorque="-238.38"/>
-									<Entry outShaftSpeed="5081.00" maxTorque="234.92" minTorque="-234.92"/>
-									<Entry outShaftSpeed="5154.64" maxTorque="231.58" minTorque="-231.58"/>
-									<Entry outShaftSpeed="5228.28" maxTorque="228.31" minTorque="-228.31"/>
-									<Entry outShaftSpeed="5301.91" maxTorque="225.14" minTorque="-225.14"/>
-									<Entry outShaftSpeed="5375.55" maxTorque="222.06" minTorque="-222.06"/>
-									<Entry outShaftSpeed="5449.19" maxTorque="219.05" minTorque="-219.05"/>
-									<Entry outShaftSpeed="5522.83" maxTorque="216.13" minTorque="-216.13"/>
-									<Entry outShaftSpeed="5596.47" maxTorque="213.29" minTorque="-213.29"/>
-									<Entry outShaftSpeed="5670.10" maxTorque="210.51" minTorque="-210.51"/>
-									<Entry outShaftSpeed="5743.74" maxTorque="207.82" minTorque="-207.82"/>
-									<Entry outShaftSpeed="5817.38" maxTorque="205.19" minTorque="-205.19"/>
-									<Entry outShaftSpeed="5891.02" maxTorque="202.62" minTorque="-202.62"/>
-									<Entry outShaftSpeed="5964.65" maxTorque="200.12" minTorque="-200.12"/>
-									<Entry outShaftSpeed="6038.29" maxTorque="197.69" minTorque="-197.69"/>
-									<Entry outShaftSpeed="6111.93" maxTorque="195.30" minTorque="-195.30"/>
-									<Entry outShaftSpeed="6185.57" maxTorque="192.97" minTorque="-192.97"/>
-									<Entry outShaftSpeed="6259.20" maxTorque="190.70" minTorque="-190.70"/>
-									<Entry outShaftSpeed="6332.84" maxTorque="188.48" minTorque="-188.48"/>
-									<Entry outShaftSpeed="6406.48" maxTorque="186.32" minTorque="-186.32"/>
-									<Entry outShaftSpeed="6480.12" maxTorque="184.20" minTorque="-184.20"/>
-									<Entry outShaftSpeed="6553.76" maxTorque="182.13" minTorque="-182.13"/>
-									<Entry outShaftSpeed="6627.39" maxTorque="180.10" minTorque="-180.10"/>
-									<Entry outShaftSpeed="6701.03" maxTorque="178.13" minTorque="-178.13"/>
-									<Entry outShaftSpeed="6774.67" maxTorque="176.20" minTorque="-176.20"/>
-									<Entry outShaftSpeed="6848.31" maxTorque="174.30" minTorque="-174.30"/>
-									<Entry outShaftSpeed="6921.94" maxTorque="172.44" minTorque="-172.44"/>
-									<Entry outShaftSpeed="6995.58" maxTorque="170.64" minTorque="-170.64"/>
-									<Entry outShaftSpeed="7069.22" maxTorque="168.85" minTorque="-168.85"/>
-									<Entry outShaftSpeed="7142.86" maxTorque="167.11" minTorque="-167.11"/>
-									<Entry outShaftSpeed="7216.49" maxTorque="165.41" minTorque="-165.41"/>
-									<Entry outShaftSpeed="7290.13" maxTorque="163.74" minTorque="-163.74"/>
-									<Entry outShaftSpeed="7363.77" maxTorque="162.10" minTorque="-162.10"/>
+									<Entry outShaftSpeed='0.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='41.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='414.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='828.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1241.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1655.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2069.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2483.00' maxTorque='625.00' minTorque='-625.00'/>
+									<Entry outShaftSpeed='2897.00' maxTorque='535.71' minTorque='-535.71'/>
+									<Entry outShaftSpeed='3310.00' maxTorque='468.75' minTorque='-468.75'/>
+									<Entry outShaftSpeed='3724.00' maxTorque='416.67' minTorque='-416.67'/>
+									<Entry outShaftSpeed='4138.00' maxTorque='375.00' minTorque='-375.00'/>
+									<Entry outShaftSpeed='4552.00' maxTorque='340.91' minTorque='-340.91'/>
+									<Entry outShaftSpeed='4966.00' maxTorque='312.50' minTorque='-312.50'/>
+									<Entry outShaftSpeed='5379.00' maxTorque='288.46' minTorque='-288.46'/>
+									<Entry outShaftSpeed='5793.00' maxTorque='267.86' minTorque='-267.86'/>
+									<Entry outShaftSpeed='6207.00' maxTorque='250.00' minTorque='-250.00'/>
+									<Entry outShaftSpeed='6621.00' maxTorque='234.38' minTorque='-234.38'/>
+									<Entry outShaftSpeed='7035.00' maxTorque='220.59' minTorque='-220.59'/>
+									<Entry outShaftSpeed='7448.00' maxTorque='208.33' minTorque='-208.33'/>
+									<Entry outShaftSpeed='7862.00' maxTorque='197.37' minTorque='-197.37'/>
+									<Entry outShaftSpeed='8276.00' maxTorque='187.50' minTorque='-187.50'/>
 								</MaxTorqueCurve>
 								<PowerMap>
 									<Entry outShaftSpeed='0.00' torque='-750.00' electricPower='0.00'/>
@@ -2223,8 +2071,28 @@
 								</PowerMap>
 							</VoltageLevel>
 							<DragCurve>
-								<Entry outShaftSpeed="0.00" dragTorque="-10.00"/>
-								<Entry outShaftSpeed="7363.00" dragTorque="-30.00"/>
+								<Entry outShaftSpeed='0.00' dragTorque='-1.77'/>
+								<Entry outShaftSpeed='41.38' dragTorque='-1.86'/>
+								<Entry outShaftSpeed='413.80' dragTorque='-2.72'/>
+								<Entry outShaftSpeed='827.61' dragTorque='-3.66'/>
+								<Entry outShaftSpeed='1241.41' dragTorque='-4.61'/>
+								<Entry outShaftSpeed='1655.21' dragTorque='-5.55'/>
+								<Entry outShaftSpeed='2069.01' dragTorque='-6.50'/>
+								<Entry outShaftSpeed='2482.82' dragTorque='-7.45'/>
+								<Entry outShaftSpeed='2896.62' dragTorque='-8.39'/>
+								<Entry outShaftSpeed='3310.42' dragTorque='-9.34'/>
+								<Entry outShaftSpeed='3724.23' dragTorque='-10.29'/>
+								<Entry outShaftSpeed='4138.03' dragTorque='-11.23'/>
+								<Entry outShaftSpeed='4551.83' dragTorque='-12.18'/>
+								<Entry outShaftSpeed='4965.63' dragTorque='-13.12'/>
+								<Entry outShaftSpeed='5379.44' dragTorque='-14.07'/>
+								<Entry outShaftSpeed='5793.24' dragTorque='-15.02'/>
+								<Entry outShaftSpeed='6207.04' dragTorque='-15.96'/>
+								<Entry outShaftSpeed='6620.85' dragTorque='-16.91'/>
+								<Entry outShaftSpeed='7034.65' dragTorque='-17.86'/>
+								<Entry outShaftSpeed='7448.45' dragTorque='-18.80'/>
+								<Entry outShaftSpeed='7862.25' dragTorque='-19.75'/>
+								<Entry outShaftSpeed='8276.06' dragTorque='-20.69'/>
 							</DragCurve>
 							<Conditioning>
 								<Entry coolantTempInlet="30" coolingPower="5000"/>
@@ -2237,6 +2105,35 @@
 							</di:Reference>
 						</v2.3:Signature>
 					</ElectricMachineSystem>
+					<ADC>
+						<v2.3:Data xsi:type="ADCDataDeclarationType" id="ADC-123498" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+							<Manufacturer>ADC MAnufacturer</Manufacturer>
+							<Model>Some ADC Model</Model>
+							<CertificationNumber>CertNbr 1234987</CertificationNumber>
+							<Date>2022-01-01T00:00:00Z</Date>
+							<AppVersion>ADC PreProcessing 1.0</AppVersion>
+							<Ratio>12.720</Ratio>
+							<CertificationMethod>Option 2</CertificationMethod>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-125.00' torqueLoss='3.75'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='0.00'/>
+								<Entry inputSpeed='0.00' inputTorque='125.00' torqueLoss='3.75'/>
+								<Entry inputSpeed='0.00' inputTorque='50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='-50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='-780.00' torqueLoss='23.25'/>
+								<Entry inputSpeed='20000.00' inputTorque='0.00' torqueLoss='0.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='780.00' torqueLoss='23.25'/>
+								<Entry inputSpeed='20000.00' inputTorque='50000.00' torqueLoss='1500.00'/>
+							</TorqueLossMap>
+						</v2.3:Data>
+						<v2.3:Signature>
+							<di:Reference>
+								<di:DigestMethod Algorithm=""/>
+								<di:DigestValue/>
+							</di:Reference>
+						</v2.3:Signature>
+					</ADC>
 				</ElectricMachine>
 			</Powertrain>
 			<Powertrain axleNumber="2" xsi:type="xEV_EM4_Powertrain_Type">
@@ -2252,91 +2149,40 @@
 							<AppVersion>aaaaa</AppVersion>
 							<ElectricMachineType>ASM</ElectricMachineType>
 							<CertificationMethod>Measured</CertificationMethod>
-							<R85RatedPower>350000</R85RatedPower>
+							<R85RatedPower>325000</R85RatedPower>
 							<RotationalInertia>0.23</RotationalInertia>
 							<DcDcConverterIncluded>true</DcDcConverterIncluded>
 							<IHPCType>None</IHPCType>
 							<VoltageLevel>
 								<Voltage>100</Voltage>
-								<ContinuousTorque>350.00</ContinuousTorque>
-								<TestSpeedContinuousTorque>2400.00</TestSpeedContinuousTorque>
-								<OverloadTorque>470.00</OverloadTorque>
-								<TestSpeedOverloadTorque>2500.00</TestSpeedOverloadTorque>
+								<ContinuousTorque>700.00</ContinuousTorque>
+								<TestSpeedContinuousTorque>2069.00</TestSpeedContinuousTorque>
+								<OverloadTorque>750.00</OverloadTorque>
+								<TestSpeedOverloadTorque>2069.00</TestSpeedOverloadTorque>
 								<OverloadDuration>120.00</OverloadDuration>
 								<MaxTorqueCurve>
-									<Entry outShaftSpeed="0.00" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2461.16" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2452.14" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2466.86" maxTorque="483.88" minTorque="-483.88"/>
-									<Entry outShaftSpeed="2481.59" maxTorque="481.01" minTorque="-481.01"/>
-									<Entry outShaftSpeed="2496.32" maxTorque="478.17" minTorque="-478.17"/>
-									<Entry outShaftSpeed="2503.68" maxTorque="476.77" minTorque="-476.77"/>
-									<Entry outShaftSpeed="2577.32" maxTorque="463.14" minTorque="-463.14"/>
-									<Entry outShaftSpeed="2650.96" maxTorque="450.27" minTorque="-450.27"/>
-									<Entry outShaftSpeed="2724.59" maxTorque="438.10" minTorque="-438.10"/>
-									<Entry outShaftSpeed="2798.23" maxTorque="426.58" minTorque="-426.58"/>
-									<Entry outShaftSpeed="2871.87" maxTorque="415.64" minTorque="-415.64"/>
-									<Entry outShaftSpeed="2945.51" maxTorque="405.25" minTorque="-405.25"/>
-									<Entry outShaftSpeed="3019.15" maxTorque="395.36" minTorque="-395.36"/>
-									<Entry outShaftSpeed="3092.78" maxTorque="385.95" minTorque="-385.95"/>
-									<Entry outShaftSpeed="3166.42" maxTorque="376.98" minTorque="-376.98"/>
-									<Entry outShaftSpeed="3240.06" maxTorque="368.41" minTorque="-368.41"/>
-									<Entry outShaftSpeed="3313.70" maxTorque="360.22" minTorque="-360.22"/>
-									<Entry outShaftSpeed="3387.33" maxTorque="352.39" minTorque="-352.39"/>
-									<Entry outShaftSpeed="3460.97" maxTorque="344.90" minTorque="-344.90"/>
-									<Entry outShaftSpeed="3534.61" maxTorque="337.71" minTorque="-337.71"/>
-									<Entry outShaftSpeed="3608.25" maxTorque="330.82" minTorque="-330.82"/>
-									<Entry outShaftSpeed="3681.89" maxTorque="324.20" minTorque="-324.20"/>
-									<Entry outShaftSpeed="3755.52" maxTorque="317.84" minTorque="-317.84"/>
-									<Entry outShaftSpeed="3829.16" maxTorque="311.73" minTorque="-311.73"/>
-									<Entry outShaftSpeed="3902.80" maxTorque="305.85" minTorque="-305.85"/>
-									<Entry outShaftSpeed="3976.44" maxTorque="300.18" minTorque="-300.18"/>
-									<Entry outShaftSpeed="4050.07" maxTorque="294.72" minTorque="-294.72"/>
-									<Entry outShaftSpeed="4123.71" maxTorque="289.46" minTorque="-289.46"/>
-									<Entry outShaftSpeed="4197.35" maxTorque="284.38" minTorque="-284.38"/>
-									<Entry outShaftSpeed="4270.99" maxTorque="279.48" minTorque="-279.48"/>
-									<Entry outShaftSpeed="4344.62" maxTorque="274.74" minTorque="-274.74"/>
-									<Entry outShaftSpeed="4418.26" maxTorque="270.17" minTorque="-270.17"/>
-									<Entry outShaftSpeed="4491.90" maxTorque="265.73" minTorque="-265.73"/>
-									<Entry outShaftSpeed="4565.54" maxTorque="261.45" minTorque="-261.45"/>
-									<Entry outShaftSpeed="4639.18" maxTorque="257.30" minTorque="-257.30"/>
-									<Entry outShaftSpeed="4712.81" maxTorque="253.28" minTorque="-253.28"/>
-									<Entry outShaftSpeed="4786.45" maxTorque="249.39" minTorque="-249.39"/>
-									<Entry outShaftSpeed="4860.09" maxTorque="245.60" minTorque="-245.60"/>
-									<Entry outShaftSpeed="4933.73" maxTorque="241.94" minTorque="-241.94"/>
-									<Entry outShaftSpeed="5007.36" maxTorque="238.38" minTorque="-238.38"/>
-									<Entry outShaftSpeed="5081.00" maxTorque="234.92" minTorque="-234.92"/>
-									<Entry outShaftSpeed="5154.64" maxTorque="231.58" minTorque="-231.58"/>
-									<Entry outShaftSpeed="5228.28" maxTorque="228.31" minTorque="-228.31"/>
-									<Entry outShaftSpeed="5301.91" maxTorque="225.14" minTorque="-225.14"/>
-									<Entry outShaftSpeed="5375.55" maxTorque="222.06" minTorque="-222.06"/>
-									<Entry outShaftSpeed="5449.19" maxTorque="219.05" minTorque="-219.05"/>
-									<Entry outShaftSpeed="5522.83" maxTorque="216.13" minTorque="-216.13"/>
-									<Entry outShaftSpeed="5596.47" maxTorque="213.29" minTorque="-213.29"/>
-									<Entry outShaftSpeed="5670.10" maxTorque="210.51" minTorque="-210.51"/>
-									<Entry outShaftSpeed="5743.74" maxTorque="207.82" minTorque="-207.82"/>
-									<Entry outShaftSpeed="5817.38" maxTorque="205.19" minTorque="-205.19"/>
-									<Entry outShaftSpeed="5891.02" maxTorque="202.62" minTorque="-202.62"/>
-									<Entry outShaftSpeed="5964.65" maxTorque="200.12" minTorque="-200.12"/>
-									<Entry outShaftSpeed="6038.29" maxTorque="197.69" minTorque="-197.69"/>
-									<Entry outShaftSpeed="6111.93" maxTorque="195.30" minTorque="-195.30"/>
-									<Entry outShaftSpeed="6185.57" maxTorque="192.97" minTorque="-192.97"/>
-									<Entry outShaftSpeed="6259.20" maxTorque="190.70" minTorque="-190.70"/>
-									<Entry outShaftSpeed="6332.84" maxTorque="188.48" minTorque="-188.48"/>
-									<Entry outShaftSpeed="6406.48" maxTorque="186.32" minTorque="-186.32"/>
-									<Entry outShaftSpeed="6480.12" maxTorque="184.20" minTorque="-184.20"/>
-									<Entry outShaftSpeed="6553.76" maxTorque="182.13" minTorque="-182.13"/>
-									<Entry outShaftSpeed="6627.39" maxTorque="180.10" minTorque="-180.10"/>
-									<Entry outShaftSpeed="6701.03" maxTorque="178.13" minTorque="-178.13"/>
-									<Entry outShaftSpeed="6774.67" maxTorque="176.20" minTorque="-176.20"/>
-									<Entry outShaftSpeed="6848.31" maxTorque="174.30" minTorque="-174.30"/>
-									<Entry outShaftSpeed="6921.94" maxTorque="172.44" minTorque="-172.44"/>
-									<Entry outShaftSpeed="6995.58" maxTorque="170.64" minTorque="-170.64"/>
-									<Entry outShaftSpeed="7069.22" maxTorque="168.85" minTorque="-168.85"/>
-									<Entry outShaftSpeed="7142.86" maxTorque="167.11" minTorque="-167.11"/>
-									<Entry outShaftSpeed="7216.49" maxTorque="165.41" minTorque="-165.41"/>
-									<Entry outShaftSpeed="7290.13" maxTorque="163.74" minTorque="-163.74"/>
-									<Entry outShaftSpeed="7363.77" maxTorque="162.10" minTorque="-162.10"/>
+									<Entry outShaftSpeed='0.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='41.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='414.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='828.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1241.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1655.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2069.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2483.00' maxTorque='625.00' minTorque='-625.00'/>
+									<Entry outShaftSpeed='2897.00' maxTorque='535.71' minTorque='-535.71'/>
+									<Entry outShaftSpeed='3310.00' maxTorque='468.75' minTorque='-468.75'/>
+									<Entry outShaftSpeed='3724.00' maxTorque='416.67' minTorque='-416.67'/>
+									<Entry outShaftSpeed='4138.00' maxTorque='375.00' minTorque='-375.00'/>
+									<Entry outShaftSpeed='4552.00' maxTorque='340.91' minTorque='-340.91'/>
+									<Entry outShaftSpeed='4966.00' maxTorque='312.50' minTorque='-312.50'/>
+									<Entry outShaftSpeed='5379.00' maxTorque='288.46' minTorque='-288.46'/>
+									<Entry outShaftSpeed='5793.00' maxTorque='267.86' minTorque='-267.86'/>
+									<Entry outShaftSpeed='6207.00' maxTorque='250.00' minTorque='-250.00'/>
+									<Entry outShaftSpeed='6621.00' maxTorque='234.38' minTorque='-234.38'/>
+									<Entry outShaftSpeed='7035.00' maxTorque='220.59' minTorque='-220.59'/>
+									<Entry outShaftSpeed='7448.00' maxTorque='208.33' minTorque='-208.33'/>
+									<Entry outShaftSpeed='7862.00' maxTorque='197.37' minTorque='-197.37'/>
+									<Entry outShaftSpeed='8276.00' maxTorque='187.50' minTorque='-187.50'/>
 								</MaxTorqueCurve>
 								<PowerMap>
 									<Entry outShaftSpeed='0.00' torque='-750.00' electricPower='0.00'/>
@@ -3266,86 +3112,35 @@
 								</PowerMap>
 							</VoltageLevel>
 							<VoltageLevel>
-								<Voltage>600</Voltage>
-								<ContinuousTorque>350.00</ContinuousTorque>
-								<TestSpeedContinuousTorque>2400.00</TestSpeedContinuousTorque>
-								<OverloadTorque>470.00</OverloadTorque>
-								<TestSpeedOverloadTorque>2500.00</TestSpeedOverloadTorque>
+								<Voltage>1000</Voltage>
+								<ContinuousTorque>700.00</ContinuousTorque>
+								<TestSpeedContinuousTorque>2069.00</TestSpeedContinuousTorque>
+								<OverloadTorque>750.00</OverloadTorque>
+								<TestSpeedOverloadTorque>2069.00</TestSpeedOverloadTorque>
 								<OverloadDuration>120.00</OverloadDuration>
 								<MaxTorqueCurve>
-									<Entry outShaftSpeed="0.00" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2461.16" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2452.14" maxTorque="485.00" minTorque="-485.00"/>
-									<Entry outShaftSpeed="2466.86" maxTorque="483.88" minTorque="-483.88"/>
-									<Entry outShaftSpeed="2481.59" maxTorque="481.01" minTorque="-481.01"/>
-									<Entry outShaftSpeed="2496.32" maxTorque="478.17" minTorque="-478.17"/>
-									<Entry outShaftSpeed="2503.68" maxTorque="476.77" minTorque="-476.77"/>
-									<Entry outShaftSpeed="2577.32" maxTorque="463.14" minTorque="-463.14"/>
-									<Entry outShaftSpeed="2650.96" maxTorque="450.27" minTorque="-450.27"/>
-									<Entry outShaftSpeed="2724.59" maxTorque="438.10" minTorque="-438.10"/>
-									<Entry outShaftSpeed="2798.23" maxTorque="426.58" minTorque="-426.58"/>
-									<Entry outShaftSpeed="2871.87" maxTorque="415.64" minTorque="-415.64"/>
-									<Entry outShaftSpeed="2945.51" maxTorque="405.25" minTorque="-405.25"/>
-									<Entry outShaftSpeed="3019.15" maxTorque="395.36" minTorque="-395.36"/>
-									<Entry outShaftSpeed="3092.78" maxTorque="385.95" minTorque="-385.95"/>
-									<Entry outShaftSpeed="3166.42" maxTorque="376.98" minTorque="-376.98"/>
-									<Entry outShaftSpeed="3240.06" maxTorque="368.41" minTorque="-368.41"/>
-									<Entry outShaftSpeed="3313.70" maxTorque="360.22" minTorque="-360.22"/>
-									<Entry outShaftSpeed="3387.33" maxTorque="352.39" minTorque="-352.39"/>
-									<Entry outShaftSpeed="3460.97" maxTorque="344.90" minTorque="-344.90"/>
-									<Entry outShaftSpeed="3534.61" maxTorque="337.71" minTorque="-337.71"/>
-									<Entry outShaftSpeed="3608.25" maxTorque="330.82" minTorque="-330.82"/>
-									<Entry outShaftSpeed="3681.89" maxTorque="324.20" minTorque="-324.20"/>
-									<Entry outShaftSpeed="3755.52" maxTorque="317.84" minTorque="-317.84"/>
-									<Entry outShaftSpeed="3829.16" maxTorque="311.73" minTorque="-311.73"/>
-									<Entry outShaftSpeed="3902.80" maxTorque="305.85" minTorque="-305.85"/>
-									<Entry outShaftSpeed="3976.44" maxTorque="300.18" minTorque="-300.18"/>
-									<Entry outShaftSpeed="4050.07" maxTorque="294.72" minTorque="-294.72"/>
-									<Entry outShaftSpeed="4123.71" maxTorque="289.46" minTorque="-289.46"/>
-									<Entry outShaftSpeed="4197.35" maxTorque="284.38" minTorque="-284.38"/>
-									<Entry outShaftSpeed="4270.99" maxTorque="279.48" minTorque="-279.48"/>
-									<Entry outShaftSpeed="4344.62" maxTorque="274.74" minTorque="-274.74"/>
-									<Entry outShaftSpeed="4418.26" maxTorque="270.17" minTorque="-270.17"/>
-									<Entry outShaftSpeed="4491.90" maxTorque="265.73" minTorque="-265.73"/>
-									<Entry outShaftSpeed="4565.54" maxTorque="261.45" minTorque="-261.45"/>
-									<Entry outShaftSpeed="4639.18" maxTorque="257.30" minTorque="-257.30"/>
-									<Entry outShaftSpeed="4712.81" maxTorque="253.28" minTorque="-253.28"/>
-									<Entry outShaftSpeed="4786.45" maxTorque="249.39" minTorque="-249.39"/>
-									<Entry outShaftSpeed="4860.09" maxTorque="245.60" minTorque="-245.60"/>
-									<Entry outShaftSpeed="4933.73" maxTorque="241.94" minTorque="-241.94"/>
-									<Entry outShaftSpeed="5007.36" maxTorque="238.38" minTorque="-238.38"/>
-									<Entry outShaftSpeed="5081.00" maxTorque="234.92" minTorque="-234.92"/>
-									<Entry outShaftSpeed="5154.64" maxTorque="231.58" minTorque="-231.58"/>
-									<Entry outShaftSpeed="5228.28" maxTorque="228.31" minTorque="-228.31"/>
-									<Entry outShaftSpeed="5301.91" maxTorque="225.14" minTorque="-225.14"/>
-									<Entry outShaftSpeed="5375.55" maxTorque="222.06" minTorque="-222.06"/>
-									<Entry outShaftSpeed="5449.19" maxTorque="219.05" minTorque="-219.05"/>
-									<Entry outShaftSpeed="5522.83" maxTorque="216.13" minTorque="-216.13"/>
-									<Entry outShaftSpeed="5596.47" maxTorque="213.29" minTorque="-213.29"/>
-									<Entry outShaftSpeed="5670.10" maxTorque="210.51" minTorque="-210.51"/>
-									<Entry outShaftSpeed="5743.74" maxTorque="207.82" minTorque="-207.82"/>
-									<Entry outShaftSpeed="5817.38" maxTorque="205.19" minTorque="-205.19"/>
-									<Entry outShaftSpeed="5891.02" maxTorque="202.62" minTorque="-202.62"/>
-									<Entry outShaftSpeed="5964.65" maxTorque="200.12" minTorque="-200.12"/>
-									<Entry outShaftSpeed="6038.29" maxTorque="197.69" minTorque="-197.69"/>
-									<Entry outShaftSpeed="6111.93" maxTorque="195.30" minTorque="-195.30"/>
-									<Entry outShaftSpeed="6185.57" maxTorque="192.97" minTorque="-192.97"/>
-									<Entry outShaftSpeed="6259.20" maxTorque="190.70" minTorque="-190.70"/>
-									<Entry outShaftSpeed="6332.84" maxTorque="188.48" minTorque="-188.48"/>
-									<Entry outShaftSpeed="6406.48" maxTorque="186.32" minTorque="-186.32"/>
-									<Entry outShaftSpeed="6480.12" maxTorque="184.20" minTorque="-184.20"/>
-									<Entry outShaftSpeed="6553.76" maxTorque="182.13" minTorque="-182.13"/>
-									<Entry outShaftSpeed="6627.39" maxTorque="180.10" minTorque="-180.10"/>
-									<Entry outShaftSpeed="6701.03" maxTorque="178.13" minTorque="-178.13"/>
-									<Entry outShaftSpeed="6774.67" maxTorque="176.20" minTorque="-176.20"/>
-									<Entry outShaftSpeed="6848.31" maxTorque="174.30" minTorque="-174.30"/>
-									<Entry outShaftSpeed="6921.94" maxTorque="172.44" minTorque="-172.44"/>
-									<Entry outShaftSpeed="6995.58" maxTorque="170.64" minTorque="-170.64"/>
-									<Entry outShaftSpeed="7069.22" maxTorque="168.85" minTorque="-168.85"/>
-									<Entry outShaftSpeed="7142.86" maxTorque="167.11" minTorque="-167.11"/>
-									<Entry outShaftSpeed="7216.49" maxTorque="165.41" minTorque="-165.41"/>
-									<Entry outShaftSpeed="7290.13" maxTorque="163.74" minTorque="-163.74"/>
-									<Entry outShaftSpeed="7363.77" maxTorque="162.10" minTorque="-162.10"/>
+									<Entry outShaftSpeed='0.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='41.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='414.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='828.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1241.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='1655.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2069.00' maxTorque='750.00' minTorque='-750.00'/>
+									<Entry outShaftSpeed='2483.00' maxTorque='625.00' minTorque='-625.00'/>
+									<Entry outShaftSpeed='2897.00' maxTorque='535.71' minTorque='-535.71'/>
+									<Entry outShaftSpeed='3310.00' maxTorque='468.75' minTorque='-468.75'/>
+									<Entry outShaftSpeed='3724.00' maxTorque='416.67' minTorque='-416.67'/>
+									<Entry outShaftSpeed='4138.00' maxTorque='375.00' minTorque='-375.00'/>
+									<Entry outShaftSpeed='4552.00' maxTorque='340.91' minTorque='-340.91'/>
+									<Entry outShaftSpeed='4966.00' maxTorque='312.50' minTorque='-312.50'/>
+									<Entry outShaftSpeed='5379.00' maxTorque='288.46' minTorque='-288.46'/>
+									<Entry outShaftSpeed='5793.00' maxTorque='267.86' minTorque='-267.86'/>
+									<Entry outShaftSpeed='6207.00' maxTorque='250.00' minTorque='-250.00'/>
+									<Entry outShaftSpeed='6621.00' maxTorque='234.38' minTorque='-234.38'/>
+									<Entry outShaftSpeed='7035.00' maxTorque='220.59' minTorque='-220.59'/>
+									<Entry outShaftSpeed='7448.00' maxTorque='208.33' minTorque='-208.33'/>
+									<Entry outShaftSpeed='7862.00' maxTorque='197.37' minTorque='-197.37'/>
+									<Entry outShaftSpeed='8276.00' maxTorque='187.50' minTorque='-187.50'/>
 								</MaxTorqueCurve>
 								<PowerMap>
 									<Entry outShaftSpeed='0.00' torque='-750.00' electricPower='0.00'/>
@@ -4275,8 +4070,28 @@
 								</PowerMap>
 							</VoltageLevel>
 							<DragCurve>
-								<Entry outShaftSpeed="0.00" dragTorque="-10.00"/>
-								<Entry outShaftSpeed="7363.00" dragTorque="-30.00"/>
+								<Entry outShaftSpeed='0.00' dragTorque='-1.77'/>
+								<Entry outShaftSpeed='41.38' dragTorque='-1.86'/>
+								<Entry outShaftSpeed='413.80' dragTorque='-2.72'/>
+								<Entry outShaftSpeed='827.61' dragTorque='-3.66'/>
+								<Entry outShaftSpeed='1241.41' dragTorque='-4.61'/>
+								<Entry outShaftSpeed='1655.21' dragTorque='-5.55'/>
+								<Entry outShaftSpeed='2069.01' dragTorque='-6.50'/>
+								<Entry outShaftSpeed='2482.82' dragTorque='-7.45'/>
+								<Entry outShaftSpeed='2896.62' dragTorque='-8.39'/>
+								<Entry outShaftSpeed='3310.42' dragTorque='-9.34'/>
+								<Entry outShaftSpeed='3724.23' dragTorque='-10.29'/>
+								<Entry outShaftSpeed='4138.03' dragTorque='-11.23'/>
+								<Entry outShaftSpeed='4551.83' dragTorque='-12.18'/>
+								<Entry outShaftSpeed='4965.63' dragTorque='-13.12'/>
+								<Entry outShaftSpeed='5379.44' dragTorque='-14.07'/>
+								<Entry outShaftSpeed='5793.24' dragTorque='-15.02'/>
+								<Entry outShaftSpeed='6207.04' dragTorque='-15.96'/>
+								<Entry outShaftSpeed='6620.85' dragTorque='-16.91'/>
+								<Entry outShaftSpeed='7034.65' dragTorque='-17.86'/>
+								<Entry outShaftSpeed='7448.45' dragTorque='-18.80'/>
+								<Entry outShaftSpeed='7862.25' dragTorque='-19.75'/>
+								<Entry outShaftSpeed='8276.06' dragTorque='-20.69'/>
 							</DragCurve>
 							<Conditioning>
 								<Entry coolantTempInlet="30" coolingPower="5000"/>
@@ -4289,6 +4104,35 @@
 							</di:Reference>
 						</v2.3:Signature>
 					</ElectricMachineSystem>
+					<ADC>
+						<v2.3:Data xsi:type="ADCDataDeclarationType" id="ADC-123498" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+							<Manufacturer>ADC MAnufacturer</Manufacturer>
+							<Model>Some ADC Model</Model>
+							<CertificationNumber>CertNbr 1234987</CertificationNumber>
+							<Date>2022-01-01T00:00:00Z</Date>
+							<AppVersion>ADC PreProcessing 1.0</AppVersion>
+							<Ratio>12.720</Ratio>
+							<CertificationMethod>Option 2</CertificationMethod>
+							<TorqueLossMap>
+								<Entry inputSpeed='0.00' inputTorque='-50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='0.00' inputTorque='-125.00' torqueLoss='3.75'/>
+								<Entry inputSpeed='0.00' inputTorque='0.00' torqueLoss='0.00'/>
+								<Entry inputSpeed='0.00' inputTorque='125.00' torqueLoss='3.75'/>
+								<Entry inputSpeed='0.00' inputTorque='50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='-50000.00' torqueLoss='1500.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='-780.00' torqueLoss='23.25'/>
+								<Entry inputSpeed='20000.00' inputTorque='0.00' torqueLoss='0.00'/>
+								<Entry inputSpeed='20000.00' inputTorque='780.00' torqueLoss='23.25'/>
+								<Entry inputSpeed='20000.00' inputTorque='50000.00' torqueLoss='1500.00'/>
+							</TorqueLossMap>
+						</v2.3:Data>
+						<v2.3:Signature>
+							<di:Reference>
+								<di:DigestMethod Algorithm=""/>
+								<di:DigestValue/>
+							</di:Reference>
+						</v2.3:Signature>
+					</ADC>
 				</ElectricMachine>
 			</Powertrain>
 			<AxleWheels>

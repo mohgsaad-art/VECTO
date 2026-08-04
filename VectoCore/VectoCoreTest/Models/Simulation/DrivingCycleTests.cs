@@ -30,15 +30,18 @@
 */
 
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using DummyDriverInfo = TUGraz.VectoCore.Tests.Utils.DummyDriverInfo;
@@ -49,18 +52,21 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	[Parallelizable(ParallelScope.All)]
 	public class DrivingCycleTests
 	{
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void Init()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase()]
 		//[Parallelizable(ParallelScope.All)]
 		public void TestEngineOnly()
 		{
 			var dataWriter = new MockModalDataContainer();
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData(), dataWriter, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData(), dataWriter, null);
 
 			var cycleData = DrivingCycleDataReader.ReadFromFile(@"TestData/Cycles/Coach Engine Only.vdri", CycleType.EngineOnly,
 				false);
@@ -94,7 +100,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		[TestCase()]
 		public void TestEngineOnlyWithTimestamps()
 		{
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData(), null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData(), null, null);
 
 			var cycleData = DrivingCycleDataReader.ReadFromFile(@"TestData/Cycles/Coach Engine Only Paux_var-dt.vdri",
 				CycleType.EngineOnly, false);

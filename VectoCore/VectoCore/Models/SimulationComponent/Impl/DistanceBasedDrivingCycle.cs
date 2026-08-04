@@ -108,12 +108,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 			CurrentState = PreviousState.Clone();
 
-			StartSpeed = container.RunData.GearshiftParameters?.StartSpeed;
-			StartAcceleration = container.RunData.GearshiftParameters?.StartAcceleration;
+			StartSpeed = container.RunData.GearshiftParametersSinglePwt?.StartSpeed;
+			StartAcceleration = container.RunData.GearshiftParametersSinglePwt?.StartAcceleration;
 
-			if (container.RunData.AxlePowertrainsData.Count() > 0)
+			if (container.RunData.AxlePowertrains.Count() > 0)
 			{
-				var gearParams = container.RunData.AxlePowertrainsData.First(x => x.GearshiftParameters != null).GearshiftParameters;
+				var gearParams = container.RunData.AxlePowertrains.First(x => x.GearshiftParameters != null).GearshiftParameters;
 				
 				StartSpeed = gearParams.StartSpeed;
 				StartAcceleration = gearParams.StartAcceleration;

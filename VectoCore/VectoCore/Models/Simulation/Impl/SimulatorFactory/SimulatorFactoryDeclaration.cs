@@ -18,10 +18,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		private IDeclarationReport _currentStageDeclarationReport;
 		private IVTPReport _currentStageVTPReport;
 		protected readonly IXMLDeclarationReportFactory _xmlDeclarationReportFactory;
-		private IVIFReportFactory _vifFactory;
-		private IManufacturerReportFactory _mrfFactory;
-
-		
 
 		public SimulatorFactoryDeclaration(IInputDataProvider dataProvider, 
 			IOutputDataWriter writer,

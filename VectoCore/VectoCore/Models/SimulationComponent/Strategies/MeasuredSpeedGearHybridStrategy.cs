@@ -5,6 +5,7 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
@@ -23,8 +24,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
 				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 
-			TestPowertrain.Gearbox.SetGear = useNextGear; // DataBus.VehicleInfo.VehicleStopped ? NextGear : PreviousState.GearboxEngaged ? CurrentGear : NextGear;
-			TestPowertrain.Gearbox.SetDisengageGearbox = !useNextGear.Engaged;
+			TestPowertrain.Gearboxes.First().SetGear = useNextGear; // DataBus.VehicleInfo.VehicleStopped ? NextGear : PreviousState.GearboxEngaged ? CurrentGear : NextGear;
+			TestPowertrain.Gearboxes.First().SetDisengageGearbox = !useNextGear.Engaged;
 			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 
@@ -32,14 +33,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			if (!PreviousState.GearboxEngaged || (useNextGear.Engaged && useNextGear.Equals(CurrentGear)) || !nextGear.Engaged) {
 				TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
-				TestPowertrain.Gearbox.UpdateFrom(DataBus.GearboxesInfo.First());
+				TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 				TestPowertrain.Clutch.UpdateFrom(DataBus.ClutchesInfo.First());
-				var pos = ModelData.ElectricMachinesData.FirstOrDefault().Item1;
-				TestPowertrain.ElectricMotor.UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
+				var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;
+				TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
 				// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
-				foreach (var emPos in TestPowertrain.ElectricMotorsUpstreamTransmission.Keys) {
-					//TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
-					TestPowertrain.ElectricMotorsUpstreamTransmission[pos].UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == emPos));
+				foreach (var emUpstreamTransmission in TestPowertrain.ElectricMotorsUpstreamTransmission) {
+                    //TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
+                    emUpstreamTransmission.UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == emUpstreamTransmission.Position));
 				}
 			}
 
@@ -53,13 +54,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//This is based on the corresponding method of the HybridStrategy class.
 			
 			if (resp.Engine.EngineSpeed != null && resp.Gearbox.Gear.Engaged &&
-				GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear]
+				GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxSinglePwt.Gears[resp.Gearbox.Gear.Gear]
 					.ShiftPolygon.IsAboveUpshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
 				
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedAboveUpshift;
 			}
 
-			if (resp.Engine.EngineSpeed != null && GearList.HasPredecessor(resp.Gearbox.Gear) && ModelData.GearboxData
+			if (resp.Engine.EngineSpeed != null && GearList.HasPredecessor(resp.Gearbox.Gear) && ModelData.GearboxSinglePwt
 				.Gears[resp.Gearbox.Gear.Gear].ShiftPolygon
 				.IsBelowDownshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
 				
@@ -83,8 +84,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			TestPowertrain.UpdateComponents();
 			
-			TestPowertrain.Gearbox.SetGear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
-			TestPowertrain.Gearbox.SetDisengageGearbox = !nextGear.Engaged;
+			TestPowertrain.Gearboxes.First().SetGear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
+			TestPowertrain.Gearboxes.First().SetDisengageGearbox = !nextGear.Engaged;
 			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
 			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
@@ -92,52 +93,52 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
 			TestPowertrain.DCDCConverter?.UpdateFrom(DataBus.DCDCConverter);
 			
-			if (nextGear.Engaged && !nextGear.Equals(TestPowertrain.Gearbox.Gear)) {
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParameters.RatioEarlyUpshiftFC) {
+			if (nextGear.Engaged && !nextGear.Equals(TestPowertrain.Gearboxes.First().Gear)) {
+				if (!AllowEmergencyShift && ModelData.GearboxSinglePwt.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParametersSinglePwt.RatioEarlyUpshiftFC) {
 					return null;
 				}
 
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio >= ModelData.GearshiftParameters.RatioEarlyDownshiftFC) {
+				if (!AllowEmergencyShift && ModelData.GearboxSinglePwt.Gears[nextGear.Gear].Ratio >= ModelData.GearshiftParametersSinglePwt.RatioEarlyDownshiftFC) {
 					return null;
 				}
 
-				var vDrop = DataBus.DriverInfo.DriverAcceleration * ModelData.GearshiftParameters.ATLookAheadTime;
-				var vehicleSpeedPostShift = (DataBus.VehicleInfo.VehicleSpeed + vDrop * ModelData.GearshiftParameters.VelocityDropFactor).LimitTo(0.KMPHtoMeterPerSecond(), DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed);
+				var vDrop = DataBus.DriverInfo.DriverAcceleration * ModelData.GearshiftParametersSinglePwt.ATLookAheadTime;
+				var vehicleSpeedPostShift = (DataBus.VehicleInfo.VehicleSpeed + vDrop * ModelData.GearshiftParametersSinglePwt.VelocityDropFactor).LimitTo(0.KMPHtoMeterPerSecond(), DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed);
 				if (nextGear.TorqueConverterLocked.HasValue && nextGear.TorqueConverterLocked.Value) {
-					var inAngularVelocity = ModelData.GearboxData.Gears[nextGear.Gear].Ratio * outAngularVelocity;
+					var inAngularVelocity = ModelData.GearboxSinglePwt.Gears[nextGear.Gear].Ratio * outAngularVelocity;
 					if (inAngularVelocity.IsEqual(0)) {
 						return null;
 					}
 
 					var totalTransmissionRatio = inAngularVelocity / (DataBus.VehicleInfo.VehicleSpeed + DataBus.DriverInfo.DriverAcceleration * dt);
 					var estimatedEngineSpeed = (vehicleSpeedPostShift * totalTransmissionRatio).Cast<PerSecond>();
-					if (estimatedEngineSpeed.IsSmaller(ModelData.GearshiftParameters.MinEngineSpeedPostUpshift)) {
+					if (estimatedEngineSpeed.IsSmaller(ModelData.GearshiftParametersSinglePwt.MinEngineSpeedPostUpshift)) {
 						return null;
 					}
 				}
 
-				TestPowertrain.Gearbox.SetGear = nextGear;
-				TestPowertrain.Gearbox.RequestAfterGearshift = true;
+				TestPowertrain.Gearboxes.First().SetGear = nextGear;
+				TestPowertrain.Gearboxes.First().RequestAfterGearshift = true;
 			} else {
-				TestPowertrain.Gearbox.RequestAfterGearshift = DataBus.GearboxesInfo.First().RequestAfterGearshift;
+				TestPowertrain.Gearboxes.First().RequestAfterGearshift = DataBus.GearboxesInfo.First().RequestAfterGearshift;
 			}
 			
 			if (!nextGear.Engaged) {
-				TestPowertrain.Gearbox.SetDisengageGearbox = !nextGear.Engaged;
+				TestPowertrain.Gearboxes.First().SetDisengageGearbox = !nextGear.Engaged;
 			}
 
 			TestPowertrain.CombustionEngine.UpdateFrom(DataBus.EngineInfo);
-			TestPowertrain.Gearbox.UpdateFrom(DataBus.GearboxesInfo.First());
+			TestPowertrain.Gearboxes.First().UpdateFrom(DataBus.GearboxesInfo.First());
 			if (nextGear.TorqueConverterLocked.HasValue && !nextGear.TorqueConverterLocked.Value) {
-				TestPowertrain.TorqueConverter.UpdateFrom(DataBus.TorqueConverterInfo);
+				TestPowertrain.TorqueConverters.First().UpdateFrom(DataBus.TorqueConverterInfo());
 			}
 
-			var pos = ModelData.ElectricMachinesData.FirstOrDefault().Item1;
-			TestPowertrain.ElectricMotor.UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
+			var pos = ModelData.ElectricMachinesSinglePwt.FirstOrDefault().Item1;
+			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == pos));
 			// TODO: MQ 2025-02-05: is this really necessary? EM is updated in the line above anyways
-			foreach (var emPos in TestPowertrain.ElectricMotorsUpstreamTransmission.Keys) {
-				//TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
-				TestPowertrain.ElectricMotorsUpstreamTransmission[pos].UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == emPos));
+			foreach (var emUpstreamTransmission in TestPowertrain.ElectricMotorsUpstreamTransmission) {
+                //TestPowertrain.ElectricMotorsUpstreamTransmission[pos].PreviousState.EMSpeed = DataBus.ElectricMotorsInfo.First(x => x.Position == emPos).ElectricMotorSpeed;
+                emUpstreamTransmission.UpdateFrom(DataBus.ElectricMotorsInfo.First(x => x.Position == emUpstreamTransmission.Position));
 			}
 
             var retVal = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
@@ -158,12 +159,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				var successor = GearList.Successor(current);
 				if (successor.IsLockedGear()) {
 					// C/L -> L shift
-					var nextEngineSpeed = resp.Gearbox.OutputSpeed * ModelData.GearboxData.Gears[successor.Gear].Ratio;
+					var nextEngineSpeed = resp.Gearbox.OutputSpeed * ModelData.GearboxSinglePwt.Gears[successor.Gear].Ratio;
 					if (nextEngineSpeed.IsEqual(0)) {
 						return;
 					}
 					var nextEngineTorque = resp.Engine.EngineSpeed * resp.Engine.TotalTorqueDemand / nextEngineSpeed;
-					if (ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear]
+					if (ModelData.GearboxSinglePwt.Gears[resp.Gearbox.Gear.Gear]
 						.ShiftPolygon.IsAboveUpshiftCurve(nextEngineTorque, nextEngineSpeed)) {
 						tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedAboveUpshift;
 					}
@@ -173,7 +174,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 
-			if (GearList.HasPredecessor(resp.Gearbox.Gear) && ModelData.GearboxData
+			if (GearList.HasPredecessor(resp.Gearbox.Gear) && ModelData.GearboxSinglePwt
 				.Gears[resp.Gearbox.Gear.Gear].ShiftPolygon
 				.IsBelowDownshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
 				//lastShiftTime = absTime;
@@ -216,12 +217,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         {
 			//Evaluate configs only for input gear instead of a range of gears (corresponding method in AbstractHybridStrategy class)
 
-            var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxData.TractionInterruption)
-                .IsGreaterOrEqual(absTime, ModelData.GearboxData.TractionInterruption / 20);
+            var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxSinglePwt.TractionInterruption)
+                .IsGreaterOrEqual(absTime, ModelData.GearboxSinglePwt.TractionInterruption / 20);
 
 			var allowICEOff = AllowICEOff(absTime) && (!DataBus.EngineInfo.EngineOn || !duringTractionInterruption);
 
-			var emPos = ModelData.ElectricMachinesData.First().Item1;
+			var emPos = ModelData.ElectricMachinesSinglePwt.First().Item1;
 
 			var responses = new List<HybridResultEntry>();
 

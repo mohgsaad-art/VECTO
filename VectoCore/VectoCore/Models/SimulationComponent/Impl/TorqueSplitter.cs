@@ -13,13 +13,12 @@ using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class TorqueSplitter :
-		StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, IUpdateable, IPowerTrainComponent
-	{
+	public class TorqueSplitter : StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, ITorqueSplitter
+    {
 		protected List<ITnOutPort> _nextComponents = new List<ITnOutPort>();
-		private ElectricPowerJunctionBox _junctionBox;
+		private IElectricPowerJunctionBox _junctionBox;
 
-		public TorqueSplitter(IVehicleContainer container, ElectricPowerJunctionBox junctionBox) : 
+		public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : 
 			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 			_junctionBox = junctionBox;
@@ -73,7 +72,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				first.ElectricMotor.ElectricMotorPowerMech = responses.Sum(x => x.ElectricMotor.ElectricMotorPowerMech?.Value() ?? 0).SI<Watt>();
 				first.ElectricMotor.InertiaPowerDemand = responses.Sum(x => x.ElectricMotor.InertiaPowerDemand?.Value() ?? 0).SI<Watt>();
 				first.ElectricMotor.PowerRequest = responses.Sum(x => x.ElectricMotor.PowerRequest?.Value() ?? 0).SI<Watt>();
-			}
+
+				if (first.Gearbox != null)
+				{
+					first.Gearbox.PowerRequest = responses.Any(x => x.Gearbox != null) ? responses.Sum(x => x.Gearbox?.PowerRequest?.Value() ?? 0).SI<Watt>() : null;
+                }
+            }
 
 			return first;
 		}

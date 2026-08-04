@@ -151,9 +151,9 @@ public class ValidationModeTests
                         CrossWindCorrectionCurveReader.GetNoCorrectionCurve(5.SI<SquareMeter>()),
                         CrossWindCorrectionMode.NoCorrection)
             },
-            GearboxData = gearboxData,
+            GearboxSinglePwt = gearboxData,
             EngineData = engineData,
-            AxleGearData = axleGearData,
+            AxleGearSinglePwt = axleGearData,
             Cycle = new DrivingCycleData() {
                 Entries = new List<DrivingCycleData.DrivingCycleEntry>() {
                     new DrivingCycleData.DrivingCycleEntry() {

@@ -65,7 +65,7 @@ public class PWheelCycleTests
 	private VectoRunData GetDummyRunData()
 	{
 		return new VectoRunData() {
-			GearboxData = new GearboxData {
+			GearboxSinglePwt = new GearboxData {
 				Gears = new Dictionary<uint, GearData> {
 					{ 1, new GearData { Ratio = 2.0 } },
 					{ 2, new GearData { Ratio = 3.5 } }
@@ -74,12 +74,12 @@ public class PWheelCycleTests
 			VehicleData = new VehicleData {
 				DynamicTyreRadius = 0.5.SI<Meter>()
 			},
-			AxleGearData = new AxleGearData {
+			AxleGearSinglePwt = new AxleGearData {
 				AxleGear = new TransmissionData {
 					Ratio = 2.3
 				}
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 		};
     }
 }

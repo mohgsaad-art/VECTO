@@ -62,9 +62,15 @@ namespace TUGraz.VectoCore.Tests.Utils
 
         public IElectricSystemInfo JunctionBox { get; set; }
 
+		public IWheelEnd WheelEnd { get; set; }
+
+		public ITorqueSplitter TorqueSplitter { get; set; }
+
         public IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
 
 		public IAngledriveInfo AngledriveInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+
+        public IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
         public IList<IAxlegearInfo> AxlegearsInfo { get; set; }
 
@@ -115,7 +121,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public event Action GearShiftTriggered;
 
-		public IGearboxControl GearboxCtl => this;
+		public IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
 
         public IList<IGearboxControl> GearboxesCtl { get; set; }
 
@@ -132,9 +138,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IElectricSystemInfo ElectricSystemInfo { get; }
 
-		public ITorqueConverterInfo TorqueConverterInfo => null;
+		public ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
-		public ITorqueConverterControl TorqueConverterCtl => null;
+		public ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
 		public IPowertainInfo PowertrainInfo => this;
 
@@ -339,6 +345,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public bool DisengageGearbox { get; set; }
 		public void TriggerGearshift(Second absTime, Second dt)
 		{
+			GearShiftTriggered?.Invoke();
 			throw new NotImplementedException();
 		}
 
@@ -391,7 +398,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			get; set;
 		}
 		public PowertrainPosition[] ElectricMotorPositions { get; set; }
-		public VectoSimulationJobType VehicleArchitecutre { get; }
+		public VectoSimulationJobType VehicleArchitecture { get; }
 
 		#endregion
 

@@ -255,11 +255,11 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
             }
             //if (runData.BusAuxiliaries.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart) {
             // case C3a
-            if (runData.ElectricMachinesData.Count != 1) 
+            if (runData.ElectricMachinesSinglePwt.Count != 1) 
             {
                 throw new VectoException("exactly 1 electric machine is required. got {0} ({1})",
-                    runData.ElectricMachinesData.Count,
-                    runData.ElectricMachinesData.Select(x => x.Item1.ToString()).Join());
+                    runData.ElectricMachinesSinglePwt.Count,
+                    runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()).Join());
             }
 
 			var averageEmEfficiencyCharging = runData.JobType.IsMultiplePowertrains()
@@ -267,7 +267,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
                     .Where(x => x.Item1.Position == PowertrainPosition.GEN)
                     .Average(x => modData.ElectricMotorEfficiencyGenerate(x.Item1.Position, x.Item1.AxleNumber))
                 : modData.ElectricMotorEfficiencyGenerate(
-                    runData.ElectricMachinesData.First().Item1, 
+                    runData.ElectricMachinesSinglePwt.First().Item1, 
                     Constants.NOT_IN_AXLE_POWERTRAIN);
             
             r.EnergyDCDCMissing = missingDCDCEnergy /
@@ -413,11 +413,11 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
                 if (runData.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS &&
                     runData.BusAuxiliaries.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart) {
 					// case C3a
-					if (runData.ElectricMachinesData.Count != 1)
+					if (runData.ElectricMachinesSinglePwt.Count != 1)
 					{
 						throw new VectoException("exactly 1 electric machine is required. got {0} ({1})",
-                            runData.ElectricMachinesData.Count,
-                            runData.ElectricMachinesData.Select(x => x.Item1.ToString()).Join());
+                            runData.ElectricMachinesSinglePwt.Count,
+                            runData.ElectricMachinesSinglePwt.Select(x => x.Item1.ToString()).Join());
                     }
 
 					var emEffGen = runData.GetEMData()

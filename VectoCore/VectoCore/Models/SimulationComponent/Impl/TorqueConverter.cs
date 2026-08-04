@@ -259,6 +259,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (dryOperatingPointMin != null) {
 				var avgOutSpeedMin = (PreviousState.OutAngularVelocity + dryOperatingPointMin.OutAngularVelocity) / 2.0;
 				deltaMin = (outTorque - dryOperatingPointMin.OutTorque) * avgOutSpeedMin;
+				if (engineResponse.DeltaDragLoad.IsSmaller(0.0) && engineResponse.DeltaDragLoad.IsSmaller(deltaMin * 10)){
+					deltaMin = engineResponse.DeltaDragLoad / 10.0;
+                }
 			}
 
 			return new ResponseDryRun(this) {
@@ -358,7 +361,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					: engineResponse.ElectricMotor.ElectricMotorPowerMech;
 
 				var operatingPoint = ModelData.FindOperatingPointForPowerDemand(
-					(engineResponse.Engine.DynamicFullLoadPower - engineResponse.Engine.AuxiliariesPowerDemand - emPower),
+					(engineResponse.Engine.DynamicFullLoadPower - engineResponse.Engine.AuxiliariesPowerDemand 
+					- (engineResponse.Retarder.RetarderTorqueLoss ?? 0.SI<NewtonMeter>()) * engineResponse.Engine.PowerRequest / engineResponse.Engine.TorqueOutDemand
+					- emPower),
 					DataBus.EngineInfo.EngineSpeed, outAngularVelocity, _engineInertia, dt, previousPower);
 				var maxInputSpeed = VectoMath.Min(ModelData.TorqueConverterSpeedLimit, DataBus.EngineInfo.EngineN95hSpeed);
 				if (operatingPoint.InAngularVelocity.IsGreater(maxInputSpeed)) {
@@ -506,23 +511,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (CurrentState.OperatingPoint == null) {
-				container[ModalResultField.TorqueConverterTorqueRatio] = 1.0;
-				container[ModalResultField.TorqueConverterSpeedRatio] = 1.0;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = 1.0;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = 1.0;
 			} else {
-				container[ModalResultField.TorqueConverterTorqueRatio] = CurrentState.OperatingPoint.TorqueRatio;
-				container[ModalResultField.TorqueConverterSpeedRatio] = CurrentState.OperatingPoint.SpeedRatio;
+				container[ModalResultField.TorqueConverterTorqueRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.TorqueRatio;
+				container[ModalResultField.TorqueConverterSpeedRatio, AxleNumber.FormatAxleNumber()] = CurrentState.OperatingPoint.SpeedRatio;
 			}
-			container[ModalResultField.TC_TorqueIn] = CurrentState.InTorque;
-			container[ModalResultField.TC_TorqueOut] = CurrentState.OutTorque;
-			container[ModalResultField.TC_angularSpeedIn] = CurrentState.InAngularVelocity;
-			container[ModalResultField.TC_angularSpeedOut] = CurrentState.OutAngularVelocity;
+			container[ModalResultField.TC_TorqueIn, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
+			container[ModalResultField.TC_TorqueOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
+			container[ModalResultField.TC_angularSpeedIn, AxleNumber.FormatAxleNumber()] = CurrentState.InAngularVelocity;
+			container[ModalResultField.TC_angularSpeedOut, AxleNumber.FormatAxleNumber()] = CurrentState.OutAngularVelocity;
 
 			var avgOutVelocity = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var avgInVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
-			container[ModalResultField.P_TC_out] = CurrentState.OutTorque * avgOutVelocity;
-			container[ModalResultField.P_TC_loss] = CurrentState.InTorque * avgInVelocity -
+			container[ModalResultField.P_TC_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque * avgOutVelocity;
+			container[ModalResultField.P_TC_loss, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgInVelocity -
 													CurrentState.OutTorque * avgOutVelocity;
-			container[ModalResultField.P_TC_in] = CurrentState.InTorque * avgInVelocity;
+			container[ModalResultField.P_TC_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque * avgInVelocity;
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

@@ -548,7 +548,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
     public class XMLSuperCapDeclarationInputDataV26 : XMLSuperCapDeclarationInputDataV23
 	{
         public static new readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
-        public const string XSD_TYPE = "CapacitorSystemDataType";
+        public new const string XSD_TYPE = "CapacitorSystemDataType";
         public static new readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
         public XMLSuperCapDeclarationInputDataV26(XmlNode componentNode, string sourceFile) : base(componentNode, sourceFile, false)

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
@@ -12,7 +14,30 @@ using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class FuelCellSystem : StatefulVectoSimulationComponent<FuelCellSystem.State>, IFuelCellPort
+	public class TestpowertrainFuelCellSystem : FuelCellSystem
+    {
+		protected FuelCellSystemData ModelData { get; set; }
+		
+		
+		public TestpowertrainFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData) : base(container, modelData, false)
+		{
+			if (!container.IsTestPowertrain) {
+				throw new VectoException("Component shall not be used in real powertrain!");
+			}
+        }
+
+		#region Overrides of VectoSimulationComponent
+
+		public override bool UpdateFrom(object other)
+		{
+			return true;
+		}
+
+		#endregion
+	}
+
+
+	public class FuelCellSystem : StatefulVectoSimulationComponent<FuelCellSystem.State>, IFuelCellSystem
 	{
 		private readonly IList<FuelCellString> _fuelCellStrings;
 
@@ -25,14 +50,31 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private readonly IMileageCounter _mileageCounter;
 		private readonly FuelCellSystemShareMap _fuelCellShareMap;
 
-		public FuelCellSystem(FuelCellSystemData fuelCellSystemData, IVehicleContainer databus) : 
-			base(databus, Constants.NOT_IN_AXLE_POWERTRAIN)
+		public FuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData) : this(container, modelData,
+			false)
 		{
-			_fuelCellShareMap = fuelCellSystemData.FuelCellShareMap;
-			_mileageCounter = databus.MileageCounter;
+			if (container.IsTestPowertrain) {
+				throw new VectoException("Component shall not be used in testpowertrain!");
+			}
+        }
+
+		protected FuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData, bool dummy) : 
+			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
+		{
+			
+
+			_fuelCellShareMap = modelData.FuelCellShareMap;
+			_mileageCounter = container.MileageCounter;
 			_fuelCellStrings = new List<FuelCellString>();
-			ModelData = fuelCellSystemData;
-			Initialize();
+			ModelData = modelData;
+
+			var id = 1;
+			foreach (var fuelCell in modelData.FuelCellStrings) {
+				var fcs = new FuelCellString(fuelCell, id++, dataBus: container);
+				AddFuelCellString(fcs);
+			}
+
+            Initialize();
 		}
 
 		public IReadOnlyCollection<FuelCellString> FuelCellStrings => new ReadOnlyCollection<FuelCellString>(_fuelCellStrings);

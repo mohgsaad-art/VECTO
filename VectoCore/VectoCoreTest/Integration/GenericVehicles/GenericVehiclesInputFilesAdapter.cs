@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Xml;
 using System;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9.ManufacturerReportXMLTypeWriter;
 
 namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 {
@@ -26,6 +27,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			HEV,
 			PEV,
 			ICE,
+			FCHV,
 			Other
 		}
 
@@ -194,6 +196,10 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			{
 				vehicleType = VectoTestVehicleType.HEV;
 			}
+			else if (xmlVehicleType.Contains("FCHV"))
+			{
+				vehicleType = VectoTestVehicleType.FCHV;
+			}
 
 			return GetVehicleDestinationPath(xmlFile, vehicleType);
 		}
@@ -208,6 +214,8 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 					return Path.Join(BasePath, @$"PEV/{fileParentDirectory}/{fileName}");
 				case VectoTestVehicleType.HEV:
 					return Path.Join(BasePath, @$"HEV/{fileParentDirectory}/{fileName}");
+				case VectoTestVehicleType.FCHV:
+					return Path.Join(BasePath, @$"FCHV/{fileParentDirectory}/{fileName}");
 				case VectoTestVehicleType.ICE:
 				default:
 					return Path.Join(BasePath, @$"ICE/{fileParentDirectory}/{fileName}");
@@ -224,6 +232,11 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 			foreach (var directory in Directory.GetDirectories(declarationModeDirectory))
 			{
+				if (directory.Contains("MultiplePowertrains"))
+				{
+					continue;
+				}
+
 				var files = GetFiles(directory);
 
 				List<string> vectoFiles = files
@@ -237,7 +250,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 				if (xmlFiles.Count > 0)
 				{
-					vehicleFiles[VectoFileType.XML].Add(GetMainXmlFile(xmlFiles));
+					vehicleFiles[VectoFileType.XML].AddRange(GetMainXmlFile(xmlFiles));
 				}
 			}
 
@@ -259,16 +272,21 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			return files;
 		}
 
-		private static string GetMainXmlFile(List<string> busVehiclePaths)
+		private static List<string> GetMainXmlFile(List<string> busVehiclePaths)
 		{
+			var xmlFiles = new List<string>();
 			if (busVehiclePaths.Count == 0)
 			{
-				return string.Empty;
+				return xmlFiles;
 			}
 
-			string[] primaryBusXMLs = busVehiclePaths.Where(f => f.ToUpper().Contains("PRIMARY")).ToArray();
+			string primaryBusXML = busVehiclePaths.FirstOrDefault(f => f.ToUpper().Contains("PRIMARY")) ?? busVehiclePaths[0];
+			List<string> fchvXMLs = busVehiclePaths.Where(f => f.ToUpper().Contains("FCHV")).ToList();
 
-			return primaryBusXMLs.Length != 0 ? primaryBusXMLs[0] : busVehiclePaths[0];
+			xmlFiles.Add(primaryBusXML);
+			xmlFiles.AddRange(fchvXMLs);
+
+			return xmlFiles;
 		}
 
 		private static bool IsInvalidFile(string filePath)

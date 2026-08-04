@@ -202,7 +202,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc) => 
 			throw new NotImplementedException();
 
-		public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
+        public IEnumerable<T> GetValues<T>(ModalResultField field, string arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
 			throw new NotImplementedException();
 
 		public T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T> =>
@@ -251,7 +256,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 			return string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber());
 		}
 
-		public void Reset(bool clearColumns = false){}
+        public string GetColumnName(ModalResultField mrf, string arg)
+        {
+            return string.Format(mrf.GetCaption(), arg);
+        }
+
+        public void Reset(bool clearColumns = false){}
 
 
 		public Second Duration => null;
@@ -391,5 +401,5 @@ namespace TUGraz.VectoCore.Tests.Utils
 			CurrentRow[ModalResultField.simulationInterval.GetName()] = simulationInterval;
 			CommitSimulationStep();
 		}
-	}
+    }
 }

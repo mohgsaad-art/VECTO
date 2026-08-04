@@ -3,6 +3,7 @@
     <RootNamespace>TUGraz.VectoCore.ModelbasedTests</RootNamespace>
     <AssemblyName>ModelbasedTests</AssemblyName>
     <TargetFrameworks>net8.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
 
   </PropertyGroup>
 

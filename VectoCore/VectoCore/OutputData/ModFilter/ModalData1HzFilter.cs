@@ -48,9 +48,13 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 			var results = (ModalResults)data.Clone();
 
 			object[] remainingRow = null;
-			var gearsList = new Dictionary<object, Second>(3);
+			var gearsList = new Dictionary<int, Dictionary<object, Second>>();
+			foreach (var item in data.Gearboxes)
+			{
+				gearsList.Add(item, new Dictionary<object, Second>());
+			}
 
-			var absTime = 0.SI<Second>();
+            var absTime = 0.SI<Second>();
 			var distance = 0.SI<Meter>();
 			var v = data.Rows[0].Field<MeterPerSecond>(ModalResultField.v_act.GetName());
 			var remainingDt = 0.SI<Second>();
@@ -69,9 +73,12 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				if (remainingDt > 0 && remainingDt + currentDt >= 1) {
 					// calculate values
 					var dt = 1.SI<Second>() - remainingDt;
-					var gear = row[ModalResultField.Gear.GetName()];
-					gearsList[gear] = gearsList.GetValueOrZero(gear) + dt;
-					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
+                    foreach (var item in data.Gearboxes)
+                    {
+                        var gear = row[string.Format(ModalResultField.Gear.GetCaption(), item.FormatAxleNumber())];
+						gearsList[item][gear] = gearsList[item].GetValueOrZero(gear) + dt;
+                    }
+                    var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = dt * v + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
 						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "1");
@@ -85,7 +92,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					r.ItemArray = AddRow(remainingRow, MultiplyRow(row.ItemArray, dt));
 					r[ModalResultField.time.GetName()] = absTime;
 					r[ModalResultField.simulationInterval.GetName()] = 1.SI<Second>();
-					r[ModalResultField.Gear.GetName()] = gearsList.MaxBy(kv => kv.Value).Key;
+					foreach (var item in data.Gearboxes)
+					{
+                        r[string.Format(ModalResultField.Gear.GetCaption(), item.FormatAxleNumber())] = gearsList[item].MaxBy(kv => kv.Value).Key;
+                    }
 					r[ModalResultField.dist.GetName()] = distance;
 					r[ModalResultField.v_act.GetName()] = (v + vPrevious) / 2;
 					vPrevious = v;
@@ -93,7 +103,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 
 					// reset remainder
 					// reduce current dt by already taken diff
-					gearsList.Clear();
+					foreach (var item in data.Gearboxes)
+					{
+						gearsList[item].Clear();
+					}
 					currentDt -= dt;
 					remainingDt = 0.SI<Second>();
 					remainingRow = null;
@@ -128,8 +141,11 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				if (currentDt > 0) {
 					// calculate values
 					var dt = currentDt;
-					var gear = row[ModalResultField.Gear.GetName()];
-					gearsList[gear] = gearsList.GetValueOrZero(gear) + dt;
+                    foreach (var item in data.Gearboxes)
+                    {
+                        var gear = row[string.Format(ModalResultField.Gear.GetCaption(), item.FormatAxleNumber())];
+                        gearsList[item][gear] = gearsList[item].GetValueOrZero(gear) + dt;
+                    }
 					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = v * dt + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
@@ -146,8 +162,11 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					// reset remainder (just to be sure!)
 					remainingRow = null;
 					remainingDt = 0.SI<Second>();
-					gearsList.Clear();
-				}
+                    foreach (var item in data.Gearboxes)
+                    {
+                        gearsList[item].Clear();
+                    }
+                }
 			}
 
 			// if last row was not enough to full second: take last row as whole second
@@ -172,7 +191,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				r.ItemArray = MultiplyRow(remainingRow, 1 / dt).ToArray();
 				r[ModalResultField.time.GetName()] = VectoMath.Ceiling(absTime);
 				r[ModalResultField.simulationInterval.GetName()] = 1.SI<Second>();
-				r[ModalResultField.Gear.GetName()] = gearsList.MaxBy(kv => kv.Value).Key;
+                foreach (var item in data.Gearboxes)
+                {
+                    r[string.Format(ModalResultField.Gear.GetCaption(), item.FormatAxleNumber())] = gearsList[item].MaxBy(kv => kv.Value).Key;
+                }
 				r[ModalResultField.dist.GetName()] = distance;
 				r[ModalResultField.v_act.GetName()] = (v + vPrevious) / 2;
 				results.Rows.Add(r);

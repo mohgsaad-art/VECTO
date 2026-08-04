@@ -5,6 +5,7 @@
     <AssemblyName>hashingcmd</AssemblyName>
     <RootNamespace>TUGraz.VECTO</RootNamespace>
     <TargetFrameworks>net48</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
      
   </PropertyGroup>
 

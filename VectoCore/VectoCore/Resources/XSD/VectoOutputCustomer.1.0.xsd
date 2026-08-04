@@ -14,6 +14,7 @@
 	2025-05-12: Fixed type of Engine FuelType to include all new types (e.g. H2).
 	2025-07-15: Fixed auxiliaries type for FCHV Completed Bus (PEV_CompletedBusAuxGroup).
 	2025-07-16: Fixed auxiliaries type for Multiple FCHV Completed Bus (PEV_CompletedBusAuxGroup).
+	2025-12-16: Added type ArchitectureType for FCHVArchitecture, PEVArchitecture, HEVArchitecture in order to support multiple powertrains.
 	-->
 	
 	<xs:element name="VectoMockResults">
@@ -2248,11 +2249,7 @@
 	</xs:group>
 	<xs:group name="FCHV_CompletedBusArchitectureGroup">
 		<xs:sequence>
-			<xs:element name="FCHVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.14.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="FCHVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>
@@ -2261,6 +2258,16 @@
 			<xs:element name="DynamicChargingTechnology" type="xs:string"/>
 		</xs:sequence>
 	</xs:group>
+	<xs:complexType name="ArchitectureType">
+		<xs:annotation>
+			<xs:documentation>II.1.1.14.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="axleNumber" type="xs:int"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	<xs:group name="FCHV_LorryVehicleTypeGroup">
 		<xs:sequence>
 			<xs:group ref="GeneralVehicleSequenceGroup"/>
@@ -2270,11 +2277,7 @@
 	</xs:group>
 	<xs:group name="FCHV_VehicleSequenceGroup">
 		<xs:sequence>
-			<xs:element name="FCHVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.14.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="FCHVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>
@@ -2408,11 +2411,7 @@
 	</xs:group>
 	<xs:group name="HEV_CompletedBusArchitectureGroup">
 		<xs:sequence>
-			<xs:element name="HEVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.14.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="HEVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>
@@ -2634,11 +2633,7 @@
 	<xs:group name="HEV_VehicleSequenceGroup">
 		<xs:sequence>
 			<xs:group ref="WHR_DualFuelSequenceGroup"/>
-			<xs:element name="HEVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.14.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="HEVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>
@@ -2828,11 +2823,7 @@
 	</xs:group>
 	<xs:group name="PEV_CompletedBusArchitectureGroup">
 		<xs:sequence>
-			<xs:element name="PEVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.15.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="PEVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>
@@ -2909,11 +2900,7 @@
 	</xs:group>
 	<xs:group name="PEV_VehicleSequenceGroup">
 		<xs:sequence>
-			<xs:element name="PEVArchitecture" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>II.1.1.15.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:element name="PEVArchitecture" type="ArchitectureType" maxOccurs="2"/>
 			<xs:element name="OffVehicleChargingCapability" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>II.1.1.16.</xs:documentation>

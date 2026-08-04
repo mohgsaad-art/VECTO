@@ -76,15 +76,23 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			
 			if (AxleNumber == int.MinValue)
 			{
-				throw new VectoException(
-					$"{JsonKeys.Vehicle_AxlePowertrain_AxleNumber} not defined in {JsonKeys.Vehicle_AxlePowertrains}");
+				throw new VectoException($"{JsonKeys.Vehicle_AxlePowertrain_AxleNumber} not defined in {JsonKeys.Vehicle_AxlePowertrains}");
 			}
 
 			if (Architecture == ArchitectureID.UNKNOWN)
 			{
-				throw new VectoException(
-					$"Architecture bad or missing in {JsonKeys.Vehicle_AxlePowertrains}");
+				throw new VectoException($"Architecture bad or missing in {JsonKeys.Vehicle_AxlePowertrains}");
 			}
+
+			if (Architecture.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+			{
+                throw new VectoException($"Architecture {Architecture} is not supported yet!");
+            }
+
+			if (Architecture.IsIEPC() && (IEPCEngineeringInputData.Gears.Count > 1))
+			{
+                throw new VectoException($"Architecture {Architecture} with multiple gears is not supported yet!");
+            }
 		}
 
 		public virtual int AxleNumber => (_axlePt[JsonKeys.Vehicle_AxlePowertrain_AxleNumber] == null)

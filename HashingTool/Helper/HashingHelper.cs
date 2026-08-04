@@ -37,6 +37,7 @@ using HashingTool.ViewModel.UserControl;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoHashing;
+using TUGraz.VectoHashing.Util;
 
 namespace HashingTool.Helper
 {
@@ -50,11 +51,14 @@ namespace HashingTool.Helper
 		public const string ToolTipNone = "";
 		public static string ToolTipComponentHashInvalid = "Job-Data validation failed!";
 
-		public static bool? IsCustomerReport(XmlDocument x, IErrorLogger errorLog)
+		public static bool? IsCustomerReport(XmlDocument xdoc, IErrorLogger errorLog)
 		{
-			if (x == null || x.DocumentElement == null) {
+			if (xdoc == null || xdoc.DocumentElement == null) {
 				return null;
 			}
+
+			var x = xdoc.RemoveComments();
+
 			var valid = x.DocumentElement != null && x.DocumentElement.LocalName == XMLNames.VectoCustomerReport;
 			if (!valid) {
 				errorLog.LogError($"Invalid XML file selected ({x.DocumentElement.LocalName}). " +
@@ -98,12 +102,14 @@ namespace HashingTool.Helper
 			return IsVehicleJobFile(x, errorLog, XMLNames.Hashing_VehicleVIFType);
 		}
 
-		public static bool? IsVehicleManufacturerReport(XmlDocument x, IErrorLogger errorLog, string vehicleFileType = null)
+		public static bool? IsVehicleManufacturerReport(XmlDocument xdoc, IErrorLogger errorLog, string vehicleFileType = null)
 		{
-			if (x == null || x.DocumentElement == null)
+			if (xdoc == null || xdoc.DocumentElement == null)
 			{
 				return null;
 			}
+
+			var x = xdoc.RemoveComments();
 
 			var isSupportedVehicleFile = IsSupportedVehicleFile(x, vehicleFileType);
 			var valid = x.DocumentElement.LocalName == XMLNames.VectoManufacturerReport && isSupportedVehicleFile;
@@ -121,12 +127,14 @@ namespace HashingTool.Helper
 			return valid;
 		}
 
-		public static bool? IsVehicleJobFile(XmlDocument x, IErrorLogger errorLog, string vehicleFileType = null)
+		public static bool? IsVehicleJobFile(XmlDocument xdoc, IErrorLogger errorLog, string vehicleFileType = null)
 		{
-			if (x == null || x.DocumentElement == null)
+			if (xdoc == null || xdoc.DocumentElement == null)
 			{
 				return null;
 			}
+
+			var x = xdoc.RemoveComments();
 
 			var validSingleStep = (x.DocumentElement.LocalName == XMLNames.VectoInputDeclaration &&
 						x.DocumentElement.FirstChild.LocalName == XMLNames.Component_Vehicle);
@@ -194,11 +202,13 @@ namespace HashingTool.Helper
 			return string.IsNullOrEmpty(jobTypeRaw) || string.IsNullOrWhiteSpace(jobTypeRaw) ? string.Empty : jobTypeRaw;
 		}
 
-		public static bool? IsComponentFile(XmlDocument x, IErrorLogger errorLog)
+		public static bool? IsComponentFile(XmlDocument xdoc, IErrorLogger errorLog)
 		{
-			if (x.DocumentElement == null) {
+			if (xdoc.DocumentElement == null) {
 				return null;
 			}
+
+			var x = xdoc.RemoveComments();
 
 			if (x.DocumentElement.LocalName != XMLNames.VectoInputDeclaration) {
 				errorLog.LogError($"Invalid XML file given ({x.DocumentElement.LocalName}). " +

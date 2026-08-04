@@ -33,7 +33,7 @@ namespace VectoHashingTest
 		//Fuel Consumption, CO2, Result, Summary
 		TestCase(@"HEV_completedBus_2.RSLT_CUSTOMER.xml", XmlDocumentType.CustomerReport, "/vQ5KuMptNzZfmJBDAToZOdPu6LqJI7n044Q+0sh9e8="),
 		//OVC Mode, Fuel Consumption, CO2, Result, EnergyConsumption
-		TestCase(@"HEV-S_heavyLorry_S3_ovc.RSLT_MANUFACTURER.xml", XmlDocumentType.ManufacturerReport, "GnoRUnF67vM+fX/L3olad4Ozs009B6muSw0j91rIo5U="),
+		TestCase(@"HEV-S_heavyLorry_S3_ovc.RSLT_MANUFACTURER.xml", XmlDocumentType.ManufacturerReport, "XKnEtwAmBTOFD07XeNyxyKXrbpuH36xCw6Wph2I+bgA="),
 		//EnergyConsumption, FC_ZEV_AuxHeater, CO2_ZEV_AuxHeater, Result, Summary
 		TestCase(@"PEV_completedBus_2.RSLT_CUSTOMER.xml", XmlDocumentType.CustomerReport, "iebdqUqvC1bt0NyEe+/4kRf+YMA9SGSb+955nOeSBQM=")]
 		public void TestValidation(string filename, XmlDocumentType documentType, string sortedHash)

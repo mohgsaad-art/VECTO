@@ -10,7 +10,7 @@ namespace VECTO3GUI2020.Helper
 		{
 			try {
 				Double.Parse(value as string);
-			} catch (Exception e) {
+			} catch (Exception) {
 				return new ValidationResult(false, "Not a number");
 			}
 

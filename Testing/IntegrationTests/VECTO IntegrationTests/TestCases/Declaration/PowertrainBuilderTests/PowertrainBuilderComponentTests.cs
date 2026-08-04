@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.ComponentModel;
+using System.Data;
 using System.Reflection;
 using Moq;
 using Ninject;
@@ -56,6 +58,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
@@ -239,7 +242,39 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		private ISumData GetMockSumWriter()
 		{
 			return new Mock<ISumData>().Object;
-		}
+        }
+
+        protected void AssertMultiplePowertrainComponents(
+            IVehicleContainer container, 
+            Type drivingCycleType,
+            Type engineType,
+            Dictionary<Type, Func<IVehicleContainer, Object>> powertrain1,
+            Dictionary<Type, Func<IVehicleContainer, Object>> powertrain2)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf(VehicleContainerT, container, "VehicleContainer");
+                Assert.IsInstanceOf(ElectricPowerJunctionBoxT, container.JunctionBox, "JunctionBox");
+                Assert.IsInstanceOf(drivingCycleType, container.DrivingCycleInfo, "DrivingCycle");
+                Assert.IsInstanceOf(DriverT, container.DriverInfo, "Driver");
+                Assert.IsInstanceOf(VehicleT, container.VehicleInfo, "Vehicle");
+                Assert.IsInstanceOf(WheelsT, container.WheelsInfo, "Wheels");
+                Assert.IsInstanceOf(BrakesT, container.Brakes, "Brakes");
+                Assert.IsInstanceOf(WheelEndT, container.WheelEnd, "WheelEnd");
+                Assert.IsInstanceOf(TorqueSplitterT, container.TorqueSplitter, "TorqueSplitter");
+                Assert.IsInstanceOf(engineType, container.EngineInfo, "Engine");
+                
+                foreach (var comp in powertrain1)
+                {
+                    Assert.IsInstanceOf(comp.Key, comp.Value(container), $"pt1: {comp.Key.ToString()}");
+                }
+
+                foreach (var comp in powertrain2)
+                {
+                    Assert.IsInstanceOf(comp.Key, comp.Value(container), $"pt2: {comp.Key.ToString()}");
+                }
+            });
+        }
 
         protected void AssertPowertrainComponents(IVehicleContainer container, Type vehicleContainer, Type drivingCycle,
             Type driver, Type vehicle, Type wheels, Type brakes, Type axlegear, Type angledrive, Type retarder,
@@ -316,9 +351,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (torqueConverter != null) {
-                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo);
+                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo());
                 } else {
-                    Assert.IsNull(container.TorqueConverterInfo);
+                    Assert.IsNull(container.TorqueConverterInfo());
                 }
                 if (clutch != null) {
                     Assert.IsInstanceOf(clutch, container.ClutchInfo(), "Clutch");
@@ -390,6 +425,12 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         private static Type ATClutchInfoT = typeof(ATClutchInfo);
         private static Type EngineT = typeof(StopStartCombustionEngine);
         private static Type DummyEngineT = typeof(DummyEngineInfo);
+        private static Type ElectricPowerJunctionBoxT = typeof(ElectricPowerJunctionBox);
+        private static Type WheelEndT = typeof(WheelEnd); 
+        private static Type TorqueSplitterT = typeof(TorqueSplitter);
+        private static Type RetarderT = typeof(Retarder);
+        private static Type ElectricMotorT = typeof(ElectricMotor);
+        private static Type DummyGearboxT = typeof(DummyGearboxInfo);
 
         private static Type MTShiftStrategyT = typeof(MTShiftStrategy);
         private static Type AMTShiftStrategyT = typeof(AMTShiftStrategyOptimized);
@@ -1366,9 +1407,224 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         #endregion
 
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        #region Multiple PEV PT, distance based
+
+        public static object[] DistanceBased_MultiplePEV_Source =
+        {
+            new object[] { 
+                "Distance Multiple_PEV E3 E4",
+                VectoSimulationJobType.Multiple_PEV,
+                CycleType.DistanceBased,
+                DummyEngineT,
+                new Dictionary<Type, Func<IVehicleContainer, Object>>() {
+                    { AxleGearT, (container) => container.AxlegearInfo(1) },
+                    { RetarderT, (container) => container.Retarder(1) },
+                    { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 1) },
+                    { DummyGearboxT, (container) => container.GearboxInfo(1) },
+                    { ATClutchInfoT, (container) => container.ClutchInfo(1) }
+                },
+                PowertrainPosition.BatteryElectricE3,
+                new Dictionary<Type, Func<IVehicleContainer, Object>>() {
+                    { ElectricMotorT, (container) => container.ElectricMotorsInfo.First(x => x.AxleNumber == 2) },
+                    { DummyGearboxT, (container) => container.GearboxInfo(2) },
+                    { ATClutchInfoT, (container) => container.ClutchInfo(2) }
+                },
+                PowertrainPosition.BatteryElectricE4
+            },
+        };
+
+        [TestCaseSource(nameof(DistanceBased_MultiplePEV_Source))]
+        public void TestPowertrainBuilder_Components_Distance_MultiplePowertrains(
+            string name, 
+            VectoSimulationJobType jobType, 
+            CycleType cycleType,
+            Type engineType,
+            Dictionary<Type, Func<IVehicleContainer, Object>> powertrain1,
+            PowertrainPosition pos1,
+            Dictionary<Type, Func<IVehicleContainer, Object>> powertrain2,
+            PowertrainPosition pos2)
+        {
+            var runData = CreateRunDataForMultiplePowertrains(cycleType, jobType, powertrain1.Keys.AsEnumerable(), pos1, powertrain2.Keys.AsEnumerable(), pos2);
+
+            var pt = PowertrainBuilder.Build(runData, GetMockModalDataContainer());
+            
+            AssertMultiplePowertrainComponents(pt, DistanceBasedDrivingCycleT, engineType, powertrain1, powertrain2);
+        }
+
+        #endregion
+
         // ############################
         // ############################
         // ############################
+
+        private VectoRunData CreateRunDataForMultiplePowertrains(
+            CycleType cycleType, 
+            VectoSimulationJobType jobType, 
+            IEnumerable<Type> powertrain1, 
+            PowertrainPosition pos1,
+            IEnumerable<Type> powertrain2,
+            PowertrainPosition pos2)
+        {
+            var runData = new VectoRunData() 
+            {
+                AxlePowertrains = new List<AxlePowertrainData>()
+                {
+                    CreateAxlePowertrain(powertrain1, pos1, 1),
+                    CreateAxlePowertrain(powertrain2, pos2, 2)
+                },
+                JobType = jobType,
+                Cycle = new DrivingCycleData()
+                {
+                    CycleType = cycleType,
+                    Entries = new List<DrivingCycleData.DrivingCycleEntry>() {
+                        new DrivingCycleData.DrivingCycleEntry() {
+                            Distance = 0.SI<Meter>(),
+                            RoadGradient = 0.SI<Radian>()
+                        }
+                    },
+                },
+                DriverData = new DriverData()
+                {
+
+                },
+                VehicleData = new VehicleData()
+                {
+                    DynamicTyreRadius = 0.5.SI<Meter>(),
+                    CurbMass = 7000.SI<Kilogram>(),
+                    AxleData = new List<Axle>() {
+                        new Axle() {
+                            AxleType = AxleType.VehicleNonDriven,
+                            RollResistanceCoefficient = 0.005,
+                            AxleWeightShare = 0.5,
+                            TyreTestLoad = 33500.SI<Newton>(),
+                            Inertia = 5.SI<KilogramSquareMeter>()
+                        },
+                        new Axle() {
+                            AxleType = AxleType.VehicleDriven,
+                            RollResistanceCoefficient = 0.005,
+                            AxleWeightShare = 0.5,
+                            TyreTestLoad = 33500.SI<Newton>(),
+                            Inertia = 5.SI<KilogramSquareMeter>()
+                        }
+                    },
+                    AirDensity = DeclarationData.AirDensity,
+                },
+                AirdragData = new AirdragData()
+                {
+                    CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection,
+                    CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(4.SI<SquareMeter>(), 0.SI<SquareMeter>(), new[] {
+                        new CrossWindCorrectionCurveReader.CrossWindCorrectionEntry() {
+                            Velocity = 0.KMPHtoMeterPerSecond(),
+                            EffectiveCrossSectionArea = 4.SI<SquareMeter>()
+                        },
+                        new CrossWindCorrectionCurveReader.CrossWindCorrectionEntry() {
+                            Velocity = 100.KMPHtoMeterPerSecond(),
+                            EffectiveCrossSectionArea = 4.SI<SquareMeter>()
+                        },
+                    }.ToList(), CrossWindCorrectionMode.DeclarationModeCorrection)
+                },
+                BatteryData = new BatterySystemData()
+                {
+                    Batteries = new List<Tuple<int, BatteryData>>() {
+                        Tuple.Create(0, new BatteryData() {
+                            BatteryId = 0,
+                            Capacity = 50.SI(Unit.SI.Ampere.Hour).Cast<AmpereSecond>(),
+                            MinSOC = 0.3,
+                            MaxSOC = 0.8
+                        })
+                    },
+                    ConnectionSystemResistance = 0.SI<Ohm>(),
+                    InitialSoC = 0.5
+                },
+                Aux = new List<VectoRunData.AuxData>(),
+            };
+
+            return runData;
+        }
+
+        private AxlePowertrainData CreateAxlePowertrain(IEnumerable<Type> powertrain, PowertrainPosition pos, int axleNumber)
+        {
+            var pt = new AxlePowertrainData()
+            {
+                AxleNumber = axleNumber
+            };
+
+            var engineIdlingSpeed = 600.RPMtoRad();
+
+            pt.GearshiftParameters = new ShiftStrategyParameters()
+            {
+                StartSpeed = 8.KMPHtoMeterPerSecond(),
+                LoadStageThresoldsDown = DeclarationData.GearboxTCU.LoadStageThresoldsDown,
+                LoadStageThresoldsUp = DeclarationData.GearboxTCU.LoadStageThresholdsUp,
+                ShiftSpeedsTCToLocked = DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked
+                        .Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
+            };
+
+            foreach (var comp in powertrain)
+            {
+                if (comp == AxleGearT)
+                {
+                    pt.AxleGearData = new AxleGearData()
+                    {
+                        AxleGear = new TransmissionData()
+                        {
+                            Ratio = 1.0,
+                            LossMap = TransmissionLossMapReader.Create(1.0, 1.0, "axlegear"),
+                        }
+                    };
+                }
+
+                if (comp == RetarderT)
+                {
+                    pt.Retarder = new RetarderData()
+                    {
+                        Type = RetarderType.AxlegearInputRetarder
+                    };
+                }
+
+                if (comp == ATClutchInfoT)
+                {
+                       
+                }
+
+                if (comp == ElectricMotorT)
+                {
+                    pt.ElectricMachineData = Tuple.Create(pos, new ElectricMotorData()
+                    {
+                        Overload = new OverloadData()
+                        {
+                            ContinuousPowerLoss = 0.SI<Watt>(),
+                            ContinuousTorque = 0.SI<NewtonMeter>(),
+                            OverloadBuffer = 0.SI<Joule>()
+                        },
+                        OverloadRecoveryFactor = 0.9,
+                        EfficiencyData = new VoltageLevelData()
+                        {
+                            VoltageLevels = new List<ElectricMotorVoltageLevelData>() {
+                            new ElectricMotorVoltageLevelData() {
+                                FullLoadCurve = new ElectricMotorFullLoadCurve(new[] {
+                                    new ElectricMotorFullLoadCurve.FullLoadEntry() {
+                                        FullDriveTorque = 400.SI<NewtonMeter>(),
+                                        FullGenerationTorque = 400.SI<NewtonMeter>(),
+                                        MotorSpeed = 0.RPMtoRad()
+                                    }
+                                }.ToList())
+                            }
+                        }
+                        }
+                    });
+                }
+
+                if (comp == DummyGearboxT)
+                {
+
+                }
+            }
+
+            return pt;
+        }
 
         private VectoRunData CreateRunData(CycleType cycleType, VectoSimulationJobType jobType, GearboxType gbxType)
         {
@@ -1421,13 +1677,13 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                         },
 					}.ToList(), CrossWindCorrectionMode.DeclarationModeCorrection)
                 },
-                AxleGearData = new AxleGearData() {
+                AxleGearSinglePwt = new AxleGearData() {
                     AxleGear = new TransmissionData() {
                         Ratio = 1.0,
                         LossMap = TransmissionLossMapReader.Create(1.0, 1.0, "axlegear"),
                     }
                 },
-                GearboxData = new GearboxData() {
+                GearboxSinglePwt = new GearboxData() {
                     Type = gbxType,
                     Gears = new Dictionary<uint, GearData>() {
                         {1, new GearData() {
@@ -1441,7 +1697,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                     },
                     ShiftStrategy = _kernel.Get<IShiftStrategyFactory>().GetShiftStrategyName(gbxType, jobType, false),
                 },
-                GearshiftParameters = new ShiftStrategyParameters() {
+                GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
                     StartSpeed = 8.KMPHtoMeterPerSecond(),
                     LoadStageThresoldsDown = DeclarationData.GearboxTCU.LoadStageThresoldsDown,
                     LoadStageThresoldsUp = DeclarationData.GearboxTCU.LoadStageThresholdsUp,
@@ -1451,10 +1707,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 HybridStrategyParameters = new HybridStrategyParameters() {
 
                 },
-                Retarder = new RetarderData() {
+                RetarderSinglePwt = new RetarderData() {
                     Type = RetarderType.None,
                 },
-                ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+                ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 
                 Aux = new List<VectoRunData.AuxData>(),
             };
@@ -1464,7 +1720,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                     VectoSimulationJobType.IEPC_E)) {
                 var gbxMock = new Mock<IGearboxDeclarationInputData>();
                 gbxMock.Setup(g => g.Gears).Returns(new List<ITransmissionInputData>());
-                retVal.GearboxData.InputData = gbxMock.Object;
+                retVal.GearboxSinglePwt.InputData = gbxMock.Object;
             }
 
             if (!jobType.IsBatteryElectric()) {
@@ -1503,7 +1759,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             }
 
             if (jobType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.IHPC)) {
-                retVal.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.HybridP3, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.HybridP3, new ElectricMotorData() {
                     Overload = new OverloadData() { ContinuousPowerLoss = 0.SI<Watt>(), ContinuousTorque = 0.SI<NewtonMeter>(), OverloadBuffer = 0.SI<Joule>() },
                     OverloadRecoveryFactor = 0.9,
                 }));
@@ -1523,7 +1779,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             }
 
             if (jobType.IsOneOf(VectoSimulationJobType.SerialHybridVehicle, VectoSimulationJobType.IEPC_S)) {
-                retVal.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.GEN, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.GEN, new ElectricMotorData() {
                     Overload = new OverloadData() {
                         ContinuousPowerLoss = 0.SI<Watt>(),
                         ContinuousTorque = 0.SI<NewtonMeter>(),
@@ -1549,7 +1805,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 var pos = jobType == VectoSimulationJobType.IEPC_S || jobType == VectoSimulationJobType.IEPC_E
                     ? PowertrainPosition.IEPC
                     : PowertrainPosition.BatteryElectricE2;
-                retVal.ElectricMachinesData.Add(Tuple.Create(pos, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(pos, new ElectricMotorData() {
                     Overload = new OverloadData() {
                         ContinuousPowerLoss = 0.SI<Watt>(),
                         ContinuousTorque = 0.SI<NewtonMeter>(),

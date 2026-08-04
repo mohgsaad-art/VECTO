@@ -160,6 +160,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		public override bool OVC => true;
 
+        public override bool BatteryOnlyMode => true;
+
 		#endregion
 
 		public override IList<ITorqueLimitInputData> TorqueLimits => null;
@@ -189,6 +191,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
 		public override bool OVC => true;
+
+		public override bool BatteryOnlyMode => true;
 
 		#endregion
 

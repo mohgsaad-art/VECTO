@@ -326,7 +326,7 @@ public class GearboxDataAdapterTests
 				VehicleCategory = vehCategory,
 				DynamicTyreRadius = 0.5.SI<Meter>()
 			},
-			AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+			AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 		};
 
 	}
@@ -429,13 +429,13 @@ public class GearboxDataAdapterTests
             VehicleData = new VehicleData() {
                 DynamicTyreRadius = 0.492.SI<Meter>(),
             },
-            AxleGearData = new AxleGearData() {
+            AxleGearSinglePwt = new AxleGearData() {
                 AxleGear = new GearData() {
                     Ratio = 2.64
                 }
             },
             EngineData = engineData,
-            GearshiftParameters = new ShiftStrategyParameters() {
+            GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
                 StartSpeed = 2.SI<MeterPerSecond>(),
                 StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
                 TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,

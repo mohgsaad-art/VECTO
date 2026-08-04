@@ -542,8 +542,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		// Fallback solution for calculating operating point with TC in semi-forward way.
 		private OperatingPoint SetTCOperatingPointATGbxCoastOrRoll(Second absTime, Radian gradient, OperatingPoint operatingPoint, ResponseDryRun dryRunResp)
 		{
-			var tc = DataBus.TorqueConverterCtl;
-			var tcInfo = DataBus.TorqueConverterInfo;
+			var tc = DataBus.TorqueConverterCtl();
+			var tcInfo = DataBus.TorqueConverterInfo();
 			if (tc == null) {
 				throw new VectoException("NO TorqueConverter Available!");
 			}
@@ -910,7 +910,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			retVal.Driver.OperatingPoint = operatingPoint;
 
 			if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() && engaged != DataBus.GearboxInfo().DisengageGearbox) {
-				DataBus.GearboxCtl.DisengageGearbox = engaged;
+				DataBus.GearboxCtl().DisengageGearbox = engaged;
 			}
 			return retVal;
 		}
@@ -918,7 +918,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private OperatingPoint SetTCOperatingPointATGbxBraking(
 			Second absTime, Radian gradient, OperatingPoint operatingPoint, IResponse response)
 		{
-			var tc = DataBus.TorqueConverterCtl;
+			var tc = DataBus.TorqueConverterCtl();
 			if (tc == null) {
 				throw new VectoException("NO TorqueConverter Available!");
 			}
@@ -932,11 +932,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								operatingPoint.SimulationInterval) / avgEngineSpeed;
 			var auxTqDemand = DataBus.EngineInfo.EngineAuxDemand(avgEngineSpeed, operatingPoint.SimulationInterval) / avgEngineSpeed;
 			//var maxTorque = DataBus.e
-			var tcOp = DataBus.TorqueConverterInfo.CalculateOperatingPoint(DataBus.EngineInfo.EngineIdleSpeed * 1.01, response.Gearbox.InputSpeed);
+			var tcOp = DataBus.TorqueConverterInfo().CalculateOperatingPoint(DataBus.EngineInfo.EngineIdleSpeed * 1.01, response.Gearbox.InputSpeed);
 
 			//if (tcOp.Item2.IsBetween(dragTorque - inertiaTq - auxTqDemand, maxTorque - inertiaTq - auxTqDemand)) {
 				_previousGearboxDisengaged = DataBus.GearboxInfo().DisengageGearbox;
-				DataBus.GearboxCtl.DisengageGearbox = true;
+				DataBus.GearboxCtl().DisengageGearbox = true;
 				operatingPoint = SearchBrakingPower(
 					absTime, operatingPoint.SimulationDistance, gradient,
 					operatingPoint.Acceleration, response);
@@ -1462,7 +1462,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.Response = null;
 			DriverStrategy.CommitSimulationStep();
 			if (_previousGearboxDisengaged.HasValue) {
-				DataBus.GearboxCtl.DisengageGearbox = _previousGearboxDisengaged.Value;
+				DataBus.GearboxCtl().DisengageGearbox = _previousGearboxDisengaged.Value;
 				_previousGearboxDisengaged = null;
 			}
 		}

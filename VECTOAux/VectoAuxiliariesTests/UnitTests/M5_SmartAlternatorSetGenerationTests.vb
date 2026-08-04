@@ -35,10 +35,10 @@ Namespace UnitTests
 		Private Function GetSSM() As ISSMTOOL
 
 
-			Const _SSMMAP As String = "TestFiles/ssm.Ahsm"
+			'Const _SSMMAP As String = "TestFiles/ssm.Ahsm"
 			'Const _BusDatabase As String ="TestFiles/BusDatabase.abdb
 
-            Dim auxConfig = Utils.GetAuxTestConfig()
+			Dim auxConfig = Utils.GetAuxTestConfig()
 		    
 			Dim ssm As ISSMTOOL = New SSMTOOL(auxConfig.SSMInputsCooling)
                 'New SSMTOOL(SSMInputData.ReadFile(_SSMMAP, DeclarationData.BusAuxiliaries.DefaultEnvironmentalConditions, DeclarationData.BusAuxiliaries.SSMTechnologyList)) ', New HVACConstants())

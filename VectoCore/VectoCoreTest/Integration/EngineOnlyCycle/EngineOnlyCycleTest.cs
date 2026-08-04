@@ -39,10 +39,12 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -55,13 +57,16 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 	[Parallelizable(ParallelScope.All)]
 	public class EngineOnlyCycleTest
 	{
-		private const string EngineFile = @"TestData/Components/24t Coach.veng";
+        private StandardKernel _kernel;
+
+        private const string EngineFile = @"TestData/Components/24t Coach.veng";
 
 		[OneTimeSetUp]
 		public void Init()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase(
 			"24tCoach_EngineOnly",
@@ -83,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 			var data = DrivingCycleDataReader.ReadFromFile(
 				cycleFile, CycleType.EngineOnly,
 				false);
-			var vehicle = VehicleContainer.CreateVehicleContainer(null, null, null);
+			var vehicle = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
 
 			// ReSharper disable once ObjectCreationAsStatement
 			new MockDrivingCycle(vehicle, data);
@@ -143,7 +148,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 		{
 			var dataWriter = new MockModalDataContainer();
 
-			var vehicleContainer = VehicleContainer.CreateVehicleContainer(null, null, null);
+			var vehicleContainer = _kernel.Get<IPowertrainBuilder>().Build(null, null, null);
 
 			var engine = new CombustionEngine(
 				vehicleContainer, MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0));

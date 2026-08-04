@@ -29,27 +29,11 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-#if (MOCKUP)
-using System.IO;
-using System.Reflection;
-#endif
 using Ninject.Modules;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.Reader;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
-using TUGraz.VectoCore.Models.Simulation;
-using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
-using TUGraz.VectoCore.OutputData.XML;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9;
-using TUGraz.VectoCore.OutputData.XML.ComponentWriter;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
+using TUGraz.VectoCore.Ninject.XMLReports;
 
-using TUGraz.VectoCore.OutputData.XML.GroupWriter;
-using TUGraz.VectoMockup.Ninject;
-
-namespace TUGraz.VectoCore
+namespace TUGraz.VectoCore.Ninject
 {
 	public abstract class AbstractNinjectModule : NinjectModule
 	{
@@ -64,8 +48,6 @@ namespace TUGraz.VectoCore
 
 	public class VectoNinjectModule : AbstractNinjectModule
 	{
-		private readonly bool _mockup;
-
 		#region Overrides of NinjectModule
 
 		public override void Load()
@@ -111,10 +93,6 @@ namespace TUGraz.VectoCore
 
 			LoadModule<PostProcessingNinjectModule>();
 
-
-			#if (MOCKUP)  //TODO: add second constant for release
-				LoadModule<MockupModule>();
-			#endif
 		}
 		#endregion
 	}

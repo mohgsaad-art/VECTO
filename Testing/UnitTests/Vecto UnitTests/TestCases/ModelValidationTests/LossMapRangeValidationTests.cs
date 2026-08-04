@@ -37,7 +37,7 @@ public class LossMapRangeValidationTests
 
 	private static string GetValidationMessage(VectoRunData runData)
 	{
-		return runData.Validate(runData.ExecutionMode, runData.JobType, null, runData.GearboxData?.Type, false).Select(x => x.ErrorMessage).Join();
+		return runData.Validate(runData.ExecutionMode, runData.JobType, null, runData.GearboxSinglePwt?.Type, false).Select(x => x.ErrorMessage).Join();
 	}
 
 
@@ -220,7 +220,7 @@ public class LossMapRangeValidationTests
 		};
 		var runData = new VectoRunData {
 			JobType = VectoSimulationJobType.ConventionalVehicle,
-			GearboxData = gearboxData, EngineData = engineData, AxleGearData = axleGearData, VehicleData = vehicleData,
+			GearboxSinglePwt = gearboxData, EngineData = engineData, AxleGearSinglePwt = axleGearData, VehicleData = vehicleData,
 			JobName = "ValidationJob",
 			Cycle = DrivingCycleDataReader.ReadFromDataTable(InputDataHelper.InputDataAsTableData(CycleHdr, CycleData), "DummyCycle", false)
 		};

@@ -45,8 +45,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public interface IRetarder : IPowerTrainComponent
 	{
-
-	}
+        int AxleNumber { get; }
+    }
 
     /// <summary>
     /// Retarder component.
@@ -70,8 +70,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_lossMap = lossMap;
 			_ratio = ratio;
 			_primaryRetarder = (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-				? container.RunData != null && container.RunData.Retarder.Type == RetarderType.TransmissionInputRetarder
-				: container.RunData.AxlePowertrainsData.Where(x => x.AxleNumber == axleNumber).All(x => x.Retarder.Type == RetarderType.TransmissionInputRetarder);
+				? container.RunData != null && container.RunData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder
+				: container.RunData.AxlePowertrains.Where(x => x.AxleNumber == axleNumber).All(x => x.Retarder.Type == RetarderType.TransmissionInputRetarder);
 		}
 
 		public IResponse Initialize(NewtonMeter torque, PerSecond angularVelocity)
@@ -94,7 +94,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!dryRun) {
 				CurrentState.SetState(inTorque, angularVelocity, torque, angularVelocity);
 			}
-			return NextComponent.Request(absTime, dt, inTorque, angularVelocity, dryRun);
+			
+			var response = NextComponent.Request(absTime, dt, inTorque, angularVelocity, dryRun);
+			response.Retarder.RetarderTorqueLoss = retarderTorqueLoss; 
+
+            return response;
 		}
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)

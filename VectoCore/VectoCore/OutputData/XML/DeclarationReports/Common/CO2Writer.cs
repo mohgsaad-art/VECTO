@@ -179,7 +179,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common
 			retVal.AddRange(GetCO2ResultEntries(entry.CO2PerMeter, entry.Payload, entry.CargoVolume, entry.PassengerCount)
 				.Select(x => new XElement(TNS + XMLNames.Report_Results_CO2, x.GetElement())));
 			
-			if (entry.FuelConsumption.Keys.All(x => x.FuelType.IsHydrogenFuel())) {
+			if (entry.FuelConsumption.Keys.All(x => x.FuelType.IsHydrogenFuel()) && (entry.AuxHeaterFuel != null)) {
 				var tmp = _factory.GetFuelConsumptionBus(_factory, TNS);
 				retVal.Add(new XElement(TNS + XMLNames.Report_ResultEntry_FCZEVAuxHeater,
 					new XAttribute(XMLNames.Report_Results_Fuel_Type_Attr, entry.AuxHeaterFuel.FuelType.ToXMLFormat()),

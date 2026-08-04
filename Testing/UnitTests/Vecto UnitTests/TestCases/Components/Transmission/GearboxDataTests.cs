@@ -4,6 +4,7 @@ using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Models.Connector.Ports;
@@ -49,13 +50,13 @@ public class GearboxDataTests
         // create gearbox data
         var gearboxData = new GearboxDataAdapter(null).CreateGearboxData(inputData, runData, shiftPolygonCalc.Object, gbxTypes); // MockSimulationDataFactory.CreateGearboxDataFromFile(gbxFile, engineFile);
 
-        runData.GearboxData = gearboxData;
+        runData.GearboxSinglePwt = gearboxData;
         var container = GetMockVehicleContainer(runData);
         var shiftStrategy = new Mock<IShiftStrategy>();
         shiftStrategy.Setup(s =>
                 s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(), It.IsAny<PerSecond>()))
             .Returns(new GearshiftPosition(1));
-        var gearbox = new AMTGearbox(container, shiftStrategy.Object);
+        var gearbox = new AMTGearbox(container, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
         NewtonMeter tqRequest = null;
         PerSecond rpmRequest = null;
@@ -177,7 +178,7 @@ public class GearboxDataTests
             {
                 DynamicTyreRadius = 0.492.SI<Meter>(),
 			},
-            AxleGearData = new AxleGearData()
+            AxleGearSinglePwt = new AxleGearData()
             {
                 AxleGear = new GearData()
                 {
@@ -185,7 +186,7 @@ public class GearboxDataTests
                 }
             },
 			EngineData = engineData,
-            GearshiftParameters = new ShiftStrategyParameters()
+            GearshiftParametersSinglePwt = new ShiftStrategyParameters()
             {
                 StartSpeed = 2.SI<MeterPerSecond>(),
                 StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,

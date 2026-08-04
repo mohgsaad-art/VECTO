@@ -406,7 +406,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 			BusAuxiliaries = busAux
 		};
 		return runData;
@@ -436,7 +436,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.HybridP2, emData.Object)
 			},
 			BusAuxiliaries = busAux
@@ -469,7 +469,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 				Tuple.Create(PowertrainPosition.GEN, genData.Object),
 			},
@@ -501,7 +501,7 @@ public class SSMHeatingPostProcessingCorrection
 			//		ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 			//	}}.ToList(),
 			//},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 			},
 			BusAuxiliaries = busAux,
@@ -565,7 +565,7 @@ public class SSMHeatingPostProcessingCorrection
 
 		if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle,
 				VectoSimulationJobType.EngineOnlySimulation)
-			&& !runData.ElectricMachinesData.Any()) {
+			&& !runData.ElectricMachinesSinglePwt.Any()) {
 			throw new VectoException("hybrid vehicle requires electric machine");
 		}
 		

@@ -252,7 +252,7 @@ namespace TUGraz.VectoCore.Utils
 					return x2.SI<T>();
 				}
 
-				for (var count = 2; count < 30; count++, iterationCount++) {
+				for (var count = 2; count < 35; count++, iterationCount++) {
 					var y2 = getYValue(result).Value();
 					debug.Add($"[SA.IS-2-{iterationCount}]", new { x = x2, y = y2, delta = criterion(result), result });
 

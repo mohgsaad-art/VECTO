@@ -35,6 +35,7 @@ using System.ComponentModel;
 using System.Xml;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoHashing;
+using TUGraz.VectoHashing.Impl;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace HashingTool.ViewModel.UserControl
@@ -101,8 +102,9 @@ namespace HashingTool.ViewModel.UserControl
 			try {
 				var h = VectoHash.Load(_jobData.XMLFile.Document);
 				JobDigestValueComputed = h.ComputeHash(
-					JobCanonicalizationMethodRead,
-					JobDigestMethodRead);
+					JobCanonicalizationMethodRead, 
+					JobDigestMethodRead, 
+					!XMLHashProvider.DoesReportHaveBadJobHashWithMonitoringData(_xmlFile.Document));
 
 				var digestMatch = JobDigestValueComputed == JobDigestValueRead;
 				var vinMatch = _jobData.VehicleIdentificationNumber == ReportVIN;

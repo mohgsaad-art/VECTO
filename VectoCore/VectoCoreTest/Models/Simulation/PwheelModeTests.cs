@@ -54,6 +54,8 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
@@ -62,13 +64,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	public class PwheelModeTests
 	{
 		protected IPowertrainBuilder PowertrainBuilder;
+        private StandardKernel _kernel;
 
         [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			PowertrainBuilder = kernel.Get<IPowertrainBuilder>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			PowertrainBuilder = _kernel.Get<IPowertrainBuilder>();
         }
 
 
@@ -81,7 +84,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void Pwheel_ReadCycle_Test()
 		{
 			var runData = new VectoRunData() {
-				GearboxData = new GearboxData {
+				GearboxSinglePwt = new GearboxData {
 					Gears = new Dictionary<uint, GearData> {
 						{ 1, new GearData { Ratio = 2.0 } },
 						{ 2, new GearData { Ratio = 3.5 } }
@@ -90,15 +93,15 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				VehicleData = new VehicleData {
                     DynamicTyreRadius = 0.5.SI<Meter>()
 				},
-				AxleGearData = new AxleGearData {
+				AxleGearSinglePwt = new AxleGearData {
 					AxleGear = new TransmissionData {
 						Ratio = 2.3
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
-			var container = VehicleContainer.CreateVehicleContainer(runData, null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(runData, null, null);
 			var inputData = @"<t>,<Pwheel>,<gear>,<n>,<Padd>
 							   1,89,2,1748,1.300
 							   2,120,2,1400,0.4";
@@ -106,7 +109,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var cycleFile = new MemoryStream(Encoding.UTF8.GetBytes(inputData));
 			var drivingCycle = DrivingCycleDataReader.ReadFromStream(cycleFile, CycleType.PWheel, "", false);
 
-			var gearbox = new CycleGearbox(container);
+			var gearbox = new CycleGearbox(container, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 			var cycle = new PWheelCycle(container, drivingCycle);
 			cycle.Connect(new MockTnOutPort());
@@ -166,7 +169,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fullLoadCurve = FullLoadCurveReader.Create(fullLoad);
 			var data = new VectoRunData {
 				Cycle = drivingCycle,
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
@@ -179,8 +182,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 							}
 						}
 					},
-				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 2, new GearData { Ratio = 3.5 } } } },
-				Retarder = new RetarderData(),
+				GearboxSinglePwt = new GearboxData { Gears = new Dictionary<uint, GearData> { { 2, new GearData { Ratio = 3.5 } } } },
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						UtilityFactorStandstill = DeclarationData.Driver.GetEngineStopStartLorry().UtilityFactor,
@@ -207,9 +210,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
 
-			jobContainer.AddRuns(runsFactory);
+            jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
 
 			jobContainer.WaitFinished();
@@ -236,9 +239,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-
-			jobContainer.AddRuns(runsFactory);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
 
 			jobContainer.WaitFinished();

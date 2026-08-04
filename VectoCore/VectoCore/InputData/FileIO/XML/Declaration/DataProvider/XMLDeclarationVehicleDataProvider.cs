@@ -637,8 +637,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public virtual ConsumerTechnology? DoorDriveTechnology => ConsumerTechnology.Unknown;
 
 		public virtual VehicleDeclarationType VehicleDeclarationType { get; }
-		public virtual IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits { get; }
-		public virtual TableData BoostingLimitations { get; }
+		public virtual IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits => ElementExists(XMLNames.ElectricMotorTorqueLimits)
+            ? ReadElectricMotorTorqueLimits()
+            : null;
+
+        public virtual TableData BoostingLimitations { get; }
 		public virtual string VehicleTypeApprovalNumber { get; }
 		public virtual IVehicleComponentsDeclaration Components => _components ?? (_components = ComponentReader.ComponentInputData);
 		public virtual ArchitectureID ArchitectureID => ElementExists(XMLNames.Vehicle_ArchitectureID) ? ArchitectureIDHelper.Parse(GetString(XMLNames.Vehicle_ArchitectureID)) : ArchitectureID.UNKNOWN;
@@ -646,10 +649,56 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
         public virtual bool OVC => ElementExists(XMLNames.Vehicle_OvcHev) && GetBool(XMLNames.Vehicle_OvcHev);
 		public virtual Watt MaxChargingPower => ElementExists(XMLNames.Vehicle_MaxChargingPower) ? GetDouble(XMLNames.Vehicle_MaxChargingPower).SI<Watt>() : null;
 
+        private IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> ReadElectricMotorTorqueLimits()
+        {
+            var torqueLimitNodes = GetNodes(XMLNames.ElectricMotorTorqueLimits);
+            var motorTorqueLimits = new Dictionary<EMPlacement, IList<Tuple<Volt, TableData>>>();
 
-		#region  Non seeded Properties
+            foreach (XmlNode torqueLimitNode in torqueLimitNodes)
+            {
+                var electricMachineNodes = GetNodes(XMLNames.ElectricMotorTorqueLimit_ElectricMachine, torqueLimitNode);
+                if (electricMachineNodes == null || electricMachineNodes.Count == 0)
+                    return null;
 
-		public string Identifier { get; }
+                foreach (XmlNode electricMachineNode in electricMachineNodes)
+                {
+                    var powertrainPosition =
+                        PowertrainPositionHelper.Parse(PowertrainPositionPrefix, GetString(XMLNames.ElectricMachine_Position, electricMachineNode));
+
+                    var axleNumber = int.Parse(GetAttribute(electricMachineNode, "axleNumber") ?? $"{Constants.NOT_IN_AXLE_POWERTRAIN}");
+                    var emPlacement = new EMPlacement(powertrainPosition, axleNumber);
+
+                    if (!motorTorqueLimits.ContainsKey(emPlacement))
+                        motorTorqueLimits.Add(emPlacement, new List<Tuple<Volt, TableData>>());
+
+                    var voltageLevelNodes = GetNodes(XMLNames.ElectricMachine_VoltageLevel, electricMachineNode);
+                    foreach (XmlNode voltageLevelNode in voltageLevelNodes)
+                    {
+                        var voltageLevel = ReadVoltageLevelNode(voltageLevelNode);
+                        motorTorqueLimits[emPlacement].Add(voltageLevel);
+                    }
+                }
+            }
+
+            return motorTorqueLimits.Count == 0 ? null : motorTorqueLimits;
+        }
+
+        private Tuple<Volt, TableData> ReadVoltageLevelNode(XmlNode voltageLevelNode)
+        {
+            var voltage = GetString(XMLNames.VoltageLevel_Voltage, voltageLevelNode).ToDouble().SI<Volt>();
+            var entries = voltageLevelNode.SelectNodes(XMLHelper.QueryLocalName(XMLNames.MaxTorqueCurve, XMLNames.MaxTorqueCurve_Entry));
+            var mapping = new Dictionary<string, string> {
+                            { XMLNames.MaxTorqueCurve_OutShaftSpeed, XMLNames.MaxTorqueCurve_OutShaftSpeed},
+                            { XMLNames.MaxTorqueCurve_MaxTorque, XMLNames.MaxTorqueCurve_MaxTorque },
+                            { XMLNames.MaxTorqueCurve_MinTorque, XMLNames.MaxTorqueCurve_MinTorque}
+                        };
+            var maxTorqueCurve = XMLHelper.ReadTableData(mapping, entries);
+            return new Tuple<Volt, TableData>(voltage, maxTorqueCurve);
+        }
+
+        #region  Non seeded Properties
+
+        public string Identifier { get; }
 		public virtual bool ExemptedVehicle { get; }
 		public int? NumberPassengerSeatsUpperDeck { get; }
 		public int? NumberPassengerSeatsLowerDeck { get; }

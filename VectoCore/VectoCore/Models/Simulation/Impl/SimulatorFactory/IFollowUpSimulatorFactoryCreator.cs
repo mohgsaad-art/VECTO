@@ -61,9 +61,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		private readonly IDeclarationReport _originalDeclarationReport;
 		private readonly IDeclarationInputDataProvider _currentStageInputData;
 
-		private readonly IManufacturerReportFactory _mrfFactory;
-		private readonly IVIFReportFactory _vifFactory;
-
 		public InterimAfterPrimaryFactoryCreator(IMultistagePrimaryAndStageInputDataProvider originalStageInputData,
 			IOutputDataWriter originalReportWriter,
 			IDeclarationReport originalDeclarationReport,

@@ -5,6 +5,7 @@ using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using Assert = NUnit.Framework.Assert;
 

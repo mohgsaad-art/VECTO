@@ -176,16 +176,17 @@ namespace TUGraz.VectoCore.Models.Declaration
                 }
             }
 
-            public struct CycleEntry
-            {
-                public string VehicleGroup;
-                public Tuple<double, double> LongHaul;
-                public Tuple<double, double> RegionalDelivery;
-                public Tuple<double, double> UrbanDelivery;
-                public Tuple<double, double> MunicipalUtility;
-                public Tuple<double, double> Construction;
+            //commented-out to avoid compile-time warning
+            //public struct CycleEntry
+            //{
+            //    public string VehicleGroup;
+            //    public Tuple<double, double> LongHaul;
+            //    public Tuple<double, double> RegionalDelivery;
+            //    public Tuple<double, double> UrbanDelivery;
+            //    public Tuple<double, double> MunicipalUtility;
+            //    public Tuple<double, double> Construction;
 
-            }
+            //}
 
             public struct Entry
             {
