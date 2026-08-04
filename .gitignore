@@ -234,3 +234,4 @@ Documentation/VehiclesReleaseComparisonDeclarationMode/**/*.vsum
 Documentation/User Manual/mermaid-filter.err
 **/XX_RESULTS*/
 **/Reports*/
+**/.vecto_hooks/
