@@ -116,6 +116,24 @@ python A03_Scan_XML_Metadata.py <extract_root> [--output-dir <path>] [--copy-onl
 - Temporary extraction directories (for archives found while walking) are not cleaned up automatically.
 - If an XML file fails to parse, a `WARNING: failed to parse ...` line is printed to stdout. To avoid leaking local filesystem paths into CI logs, only the file's immediate parent folder name is printed (not the full path), and the trailing `(path/URI, line N)` segment embedded in the underlying lxml error message is stripped entirely.
 
+### A04 — Generalize identifying XML element values
+```bash
+python A04_Generalize_Data.py <data_dir>
+python A04_Generalize_Data.py -e | --use-env-var
+```
+- `data_dir`: directory to walk for `.xml` files. Ignored if `-e`/`--use-env-var` is passed.
+- `-e`, `--use-env-var`: read the directory to process from the `A04_DATA_DIR` environment variable instead of the `data_dir` argument.
+- Replaces the text content of every `Manufacturer`, `ManufacturerAddress`, `Model`, `VIN`, and `CertificationNumber` element (namespace-agnostic match, all occurrences) with a fixed generic value — `Vecto Manufacturer`, `Vecto Manufacturer Address`, `Vecto Model`, `Vecto VIN Number`, and `Vecto Certification Number` respectively — overwriting unconditionally, in place, in every `.xml` file found.
+- Only loose `.xml` files are processed — archives (`.zip`/`.7z`/`.rar`) are not extracted or followed.
+- A04 replaces every value it finds in these fields with a generic placeholder, across all files in a directory. Rather than typing the directory path every time, set it once in the `A04_DATA_DIR` environment variable and run the script with `-e` to reuse it:
+  ```powershell
+  python.exe .\A04_Generalize_Data.py ".\Group 54 XML"
+  ```
+  or, with `A04_DATA_DIR` set:
+  ```powershell
+  python.exe .\A04_Generalize_Data.py -e
+  ```
+
 ### C04 — Generate HTML dashboard
 ```bash
 python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
