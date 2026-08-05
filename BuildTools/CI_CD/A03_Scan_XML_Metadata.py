@@ -44,8 +44,16 @@ TARGET_ELEMENTS = ('Manufacturer', 'VIN', 'CertificationNumber')
 
 # Values that are placeholders/non-values rather than real data, and should
 # never appear in the output .txt files. Matched case-insensitively, ignoring
-# '.' and '/' (so "N/A", "n.a.", "NA" etc. all match).
-BLACKLISTED_VALUES = {'na', 'none', 'void', 'token'}
+# '.' and '/' (so "N/A", "n.a.", "NA" etc. all match), after stripping
+# leading/trailing whitespace.
+BLACKLISTED_VALUES = {
+    '-', '--', '---', '1234567890',
+    'generic gearbox manufacturer', 'generic manufacturer', 'generic retarder manufacturer',
+    'na', 'none', 'not required for standard values',
+    'standard values', 'table value',
+    'todo', 'todo - vin', 'todo- vin', 'todo-vin', 'todo: vin', 'token',
+    'veh-1234567890', 'void',
+}
 PLACEHOLDER_RE = re.compile(r'^##.*##$')  # e.g. ##TYRE_2_MANUFACTURER##
 
 
