@@ -49,28 +49,6 @@ namespace TUGraz.VectoCommon.Exceptions
             LogManager.Flush();
         }
 
-        public VectoException(string message) : base(message)
-        {
-            LogManager.Flush();
-        }
-
-        public VectoException(string message, Exception innerException) : base(message, innerException)
-        {
-            LogManager.Flush();
-        }
-
-        public VectoException(string message, params object[] args)
-            : base(string.Format(message, args))
-        {
-            LogManager.Flush();
-        }
-
-        public VectoException(string message, Exception inner, params object[] args)
-            : base(string.Format(message, args), inner)
-        {
-            LogManager.Flush();
-        }
-
         public const string NO_FIX_AVAILABLE = "Cannot suggest a fix. You may want to report this issue.";
     }
 
