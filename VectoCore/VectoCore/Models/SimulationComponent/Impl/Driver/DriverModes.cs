@@ -688,21 +688,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
                         if (DataBus.ClutchesInfo.All(c => c.ClutchClosed(absTime)))
                         {
-                            response = Driver.DrivingActionCoast(absTime, ds,
-                                DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                            debug.Add("[DMB-DB-6-1] Coast", response);
-                            if (response is ResponseGearShift)
-                            {
-                                response = Driver.DrivingActionCoast(absTime, ds,
+                            response = Driver.DrivingActionAccelerate(absTime, ds,
                                     DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                                debug.Add("[DMB-DB-6-2] Coast", response);
-                            }
+                            debug.Add("[DMB-DB-6-1] Accelerate", response);
 
-                            if ((response is ResponseOverload) || (response is ResponseDrivingCycleDistanceExceeded))
+                            if (response is ResponseGearShift)
                             {
                                 response = Driver.DrivingActionAccelerate(absTime, ds,
                                     DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                                debug.Add("[DMB-DB-6-3] Accelerate", response);
+                                debug.Add("[DMB-DB-6-2] Accelerate", response);
+                            }
+
+                            if ((response is ResponseUnderload) || (response is ResponseDrivingCycleDistanceExceeded))
+                            {
+                                response = Driver.DrivingActionCoast(absTime, ds,
+                                DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-3] Coast", response);
                             }
                         }
                     }
