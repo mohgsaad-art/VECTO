@@ -80,6 +80,18 @@ namespace TUGraz.VectoCore.Models.GenericModelData
             var tDrive = fullLoadCurve.AsEnumerable()
                 .Max(row => row.ParseDouble(TorqueDriveColumn).SI<NewtonMeter>());
 
+            var tDrag = fullLoadCurve.AsEnumerable()
+                .Min(row => row.ParseDouble(TorqueDragColumn).SI<NewtonMeter>());
+
+            if (tDrive.IsGreaterOrEqual(-tDrag / 1.05))
+            {
+                return new RatedPoint(n, tDrive);
+            }
+            else
+            {
+                return new RatedPoint(n, -tDrag);
+            }
+
             return new RatedPoint(n, tDrive);
 
             //SetCurveValues(fullLoadCurve);
