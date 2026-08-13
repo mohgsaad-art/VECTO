@@ -6,7 +6,7 @@
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoHashing</RootNamespace>
     <AssemblyName>VectoHashing</AssemblyName>
-    <TargetFrameworks>net48;net6.0;net8.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0;net10.0;net10.0-windows</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
