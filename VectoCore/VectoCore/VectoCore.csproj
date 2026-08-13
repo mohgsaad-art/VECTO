@@ -6,7 +6,7 @@
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCore</RootNamespace>
     <AssemblyName>VectoCore</AssemblyName>
-    <TargetFrameworks>net48;net6.0;net8.0;net10.0;net10.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0;net8.0-windows;net10.0;net10.0-windows</TargetFrameworks>
     <DefineConstants>FCOutput</DefineConstants>
     <Description>Provides Vecto Core functionality.</Description>
     <Configurations>Debug;Release;MockupDebug</Configurations>
