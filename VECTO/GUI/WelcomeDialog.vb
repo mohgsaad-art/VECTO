@@ -34,9 +34,11 @@ Public Class WelcomeDialog
 
 	'Open Release Notes
 	Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If File.Exists(UserManualPDF) Then
-            Process.Start(New ProcessStartInfo(UserManualPDF) With {.UseShellExecute = True})
-        Else
+		If File.Exists(UserManualPDF) Then
+			Process.Start(New ProcessStartInfo(UserManualPDF) With {.UseShellExecute = True})
+		ElseIf File.Exists("..\" + UserManualPDF) Then
+			Process.Start(New ProcessStartInfo("..\" + UserManualPDF) With {.UseShellExecute = True})
+		Else
             MsgBox("Release Notes not found!", MsgBoxStyle.Critical)
 		End If
 	End Sub
@@ -45,6 +47,8 @@ Public Class WelcomeDialog
 	Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If File.Exists(HelpDocumentationHtml) Then
             Process.Start(New ProcessStartInfo(HelpDocumentationHtml) With {.UseShellExecute = True})
+        ElseIf File.Exists("..\" + HelpDocumentationHtml) Then
+            Process.Start(New ProcessStartInfo("..\" + HelpDocumentationHtml) With {.UseShellExecute = True})
         Else
             MsgBox("User Manual not found!", MsgBoxStyle.Critical)
 		End If

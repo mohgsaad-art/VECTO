@@ -829,8 +829,10 @@ lbFound:
     Private Sub OpenFileExternal(filepath As String)
         If File.Exists(filepath) Then
             Process.Start(New ProcessStartInfo(filepath) With {.UseShellExecute = True})
+        ElseIf File.Exists("..\\" + filepath) Then
+            Process.Start(New ProcessStartInfo("..\\" + filepath) With {.UseShellExecute = True})
         Else
-            MsgBox("File not found!", MsgBoxStyle.Critical)
+            MsgBox($"File ({filepath}) not found!", MsgBoxStyle.Critical)
         End If
     End Sub
 
