@@ -399,8 +399,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var tcLocked = GearboxInfo.TCLocked;
 			var retVal = CoastOrRollAction(absTime, ds, maxVelocity, gradient, false);
 			var gearChanged = !(GearboxInfo.Gear == gear && GearboxInfo.TCLocked == tcLocked);
-			if ((GearboxInfo.GearboxType.AutomaticTransmission() || GearboxInfo.GearboxType is GearboxType.IHPC)
-                && gearChanged
+			if (GearboxInfo.GearboxType.AutomaticTransmission()
+				&& gearChanged
 				&& (retVal is ResponseOverload || retVal is ResponseUnderload)) {
 				Log.Debug("Gear changed after a valid operating point was found - re-try coasting!");
 				retVal = CoastOrRollAction(absTime, ds, maxVelocity, gradient, false);
