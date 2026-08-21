@@ -20,7 +20,13 @@ def get_vecto_version(vecto_root):
     else:
         version_cmd = f'"{vecto_cmd}" -V'
     result = subprocess.run(version_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-    return result.stdout.decode('utf-8').strip() or 'unknown'
+    output = result.stdout.decode('utf-8')
+
+    match = re.search(r'^\s*VectoCore:\s*(\S+)\s*$', output, re.MULTILINE)
+    if match:
+        return match.group(1)
+
+    return 'unknown'
 
 
 def get_vecto_hash(vecto_root):
