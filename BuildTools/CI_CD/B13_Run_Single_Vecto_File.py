@@ -8,7 +8,7 @@ worker node:
   2. Unpacks the input archive into a scratch working directory.
   3. Locates the runnable input file (.xml or .vecto).
   4. Runs VECTO and writes a .log file alongside the result.
-  5. Archives the output and moves it to the submission directory.
+  5. Archives the output into the submission (working) directory.
 
 Called by the HTCondor submit script with three positional arguments:
     python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filename>
@@ -180,7 +180,7 @@ for root, dummy, files in os.walk(Path(file2run).parent):
             os.remove(os.path.join(root, f))
 
 # ---------------------------------------------------------------------------
-# Step 6 - Archive and move result to cwd
+# Step 6 - Archive result into cwd
 # ---------------------------------------------------------------------------
 
 arch_stem = Path(output_filename).stem
@@ -188,6 +188,5 @@ arch_ext = Path(output_filename).suffixes[-1].lstrip('.') if Path(output_filenam
 
 print(f'Archiving results: {arch_stem}.{arch_ext} from {work_dir}')
 shutil.make_archive(arch_stem, arch_ext, root_dir=work_dir)
-shutil.move(f'{arch_stem}.{arch_ext}', '.')
 
 print('Done.')
