@@ -269,7 +269,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			jobContainer.AddRuns(factory);
 
 			IVectoRun cycleToRun = factory.SimulationRuns()
-				.Where(r => r.CycleName == cycleName && r.RunSuffix == loading.ToString())
+				.Where(r => r.CycleName == cycleName && (r.RunSuffix == $"_{loading}"))
 				.FirstOrDefault();
 
 			if(cycleToRun == null && factory.SimulationRuns().Any(r => r.RunName.ToLower().Contains("bus")))
