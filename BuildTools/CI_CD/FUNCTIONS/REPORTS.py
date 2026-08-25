@@ -22,7 +22,7 @@ def get_vecto_version(vecto_root):
     result = subprocess.run(version_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     output = result.stdout.decode('utf-8')
 
-    match = re.search(r'(\d+\.\d+\.\d+)', output)
+    match = re.search(r'(\d+\.\d+\.\d+(?:-RC|-DEV)?)', output)
     if match:
         return match.group(1)
 
