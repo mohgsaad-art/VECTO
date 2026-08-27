@@ -270,7 +270,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
             _strategy?.Request(absTime, dt, outTorque, outAngularVelocity);
 
             var driveOffSpeed = DataBus.VehicleInfo.VehicleStopped && outAngularVelocity > 0;
-            var driveOffTorque = CurrentState.Disengaged && outTorque.IsGreater(0, 5e-2);
+            var driveOffTorque = CurrentState.Disengaged && (outTorque * (outAngularVelocity + PreviousState.OutAngularVelocity) / 2.0).IsGreater(0, Constants.SimulationSettings.LineSearchTolerance);
             if (!dryRun && (driveOffSpeed || driveOffTorque)) {
                 Gear = ModelData.GearList.First();
                 LastShift = absTime;
