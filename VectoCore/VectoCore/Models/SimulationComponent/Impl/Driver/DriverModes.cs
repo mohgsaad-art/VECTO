@@ -688,21 +688,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
                         if (DataBus.ClutchesInfo.All(c => c.ClutchClosed(absTime)))
                         {
-                            response = Driver.DrivingActionCoast(absTime, ds,
-                                DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                            debug.Add("[DMB-DB-6-1] Coast", response);
-                            if (response is ResponseGearShift)
-                            {
-                                response = Driver.DrivingActionCoast(absTime, ds,
+                            response = Driver.DrivingActionAccelerate(absTime, ds,
                                     DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                                debug.Add("[DMB-DB-6-2] Coast", response);
-                            }
+                            debug.Add("[DMB-DB-6-1] Accelerate", response);
 
-                            if ((response is ResponseOverload) || (response is ResponseDrivingCycleDistanceExceeded))
+                            if (response is ResponseGearShift)
                             {
                                 response = Driver.DrivingActionAccelerate(absTime, ds,
                                     DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
-                                debug.Add("[DMB-DB-6-3] Accelerate", response);
+                                debug.Add("[DMB-DB-6-2] Accelerate", response);
+                            }
+
+                            if ((response is ResponseUnderload) || (response is ResponseDrivingCycleDistanceExceeded))
+                            {
+                                response = Driver.DrivingActionCoast(absTime, ds,
+                                DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-3] Coast", response);
                             }
                         }
                     }
@@ -858,14 +859,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 
             var gbxInfo = PowertrainContainer.GearboxInfo;
-            var gearShiftCondition = ((gbxInfo.GearboxType is GearboxType.MT || gbxInfo.GearboxType is GearboxType.AMT ||
+            var gearShiftCondition = ((gbxInfo.GearboxType is GearboxType.MT || gbxInfo.GearboxType is GearboxType.AMT || gbxInfo.GearboxType is GearboxType.IHPC ||
                                        gbxInfo.GearboxType is GearboxType.APTN || gbxInfo.GearboxType is GearboxType.ATSerial)
                                       && ((gbxInfo.LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (gbxInfo.LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
             // handle the SpeedLimitExceeded Response and Gearshift Response separately in case it occurs in one of the requests in the second try
             for (var i = 0;
                  i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded ||
-                           (response is ResponseOverload && gearShiftCondition));
+                           (response is ResponseOverload && gearShiftCondition) || (response is ResponseUnderload && gearShiftCondition));
                  i++)
             {
                 switch (response)
@@ -894,9 +895,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         response = Driver.DrivingActionAccelerate(absTime, ds, DataBus.VehicleInfo.VehicleSpeed,
                             gradient);
                         break;
+                    case ResponseUnderload _:
+                        // add a condition for IHPC as ResponseGearShift does not exist for them in case of downshift
+                        response = Driver.DrivingActionBrake(absTime, ds, DataBus.VehicleInfo.VehicleSpeed,
+                            gradient);
+                        break;
                 }
 
-                gearShiftCondition = ((gbxInfo.GearboxType is GearboxType.MT || gbxInfo.GearboxType is GearboxType.AMT ||
+                gearShiftCondition = ((gbxInfo.GearboxType is GearboxType.MT || gbxInfo.GearboxType is GearboxType.AMT || gbxInfo.GearboxType is GearboxType.IHPC ||
                                        gbxInfo.GearboxType is GearboxType.APTN || gbxInfo.GearboxType is GearboxType.ATSerial)
                                       && ((gbxInfo.LastDownshift?.IsGreaterOrEqual(absTime) ?? false) || (gbxInfo.LastShift?.IsGreaterOrEqual(absTime) ?? false)));
 
