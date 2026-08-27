@@ -6,6 +6,9 @@ arguments = B13_Run_Single_Vecto_File.py $(vecto) $(input_dir)\input.zip $(outpu
 request_cpus = 1
 batch_name = vecto_batch
 
+request_memory = 4GB
+retry_request_memory = 8GB
+
 output = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).err
 log    = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).log
