@@ -7,8 +7,8 @@ request_cpus = 1
 batch_name = vecto_batch
 
 max_retries = 2
-request_memory = 4096
-retry_request_memory = 8192
+request_memory = 12288
+retry_request_memory = 16384
 
 output = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).err
