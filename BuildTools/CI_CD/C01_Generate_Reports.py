@@ -32,6 +32,7 @@ from lxml import etree
 
 from C44_Generate_Delta_Report import append_delta_to_report, generate_delta_report
 from FUNCTIONS.REPORTS import (
+    check_log_vsum_match,
     find_result_dirs,
     get_default_report_dir,
     get_latest_release_report,
@@ -212,8 +213,13 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
         vsum_ok = len(df_vsum) > 0 and df_vsum['Status'].isin(_valid_statuses).all()
 
         log = logs[0]
-        with open(log) as fh:
-            log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
+        try:
+            log_ok = check_log_vsum_match(log, df_vsum, valid_statuses=_valid_statuses).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); '
+                  f'falling back to legacy 100% substring check.')
+            with open(log) as fh:
+                log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
         with open(log) as fh:
             t_cpu = [_num_pattern.findall(line)[0] for line in fh if 'Simulation runs' in line]
 
@@ -465,12 +471,17 @@ def build_crf_dataframe(result_dir: str) -> pd.DataFrame | None:
     for res_dir in res_dir_list:
         crf_files = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.RSLT_CUSTOMER.xml')]
         logs      = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.log')]
+        vsums     = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.vsum')]
 
-        if not crf_files or not logs:
+        if not crf_files or not logs or not vsums:
             continue
 
-        with open(logs[0]) as fh:
-            log_ok = any('[100.000%]' in line or '[100.00%]' in line for line in fh)
+        try:
+            df_vsum = pd.read_csv(vsums[0], skiprows=[0])[:-1]
+            log_ok = check_log_vsum_match(logs[0], df_vsum).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); skipping.')
+            continue
         if not log_ok:
             continue
 

@@ -79,7 +79,7 @@ def badge_color(status):
 _CRITERIA_COLS = ['vsum_ok', 'log_ok', 'rslt_mfr_ok', 'complete_step_ok']
 _CRITERIA_LABELS = {
     'vsum_ok':          'VSUM',
-    'log_ok':           'Log 100%',
+    'log_ok':           'Log/Vsum Match',
     'rslt_mfr_ok':      'MRF',
     'complete_step_ok': 'Complete step',
 }
@@ -224,7 +224,7 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(0)" title="Test case identifier derived from the input directory path">Test Name &#8597;</th>
       <th onclick="sortTable(1)" title="Overall result: OK when all criteria pass, ERROR otherwise">Status &#8597;</th>
       <th onclick="sortTable(2)" title="True when a vsum file exists and all simulations in it have Status = Success">VSUM &#8597;</th>
-      <th onclick="sortTable(3)" title="True when the VECTO log file contains a 100% completion line">Log 100% &#8597;</th>
+      <th onclick="sortTable(3)" title="True when every per-cycle log progress line is corroborated by a valid vsum result row (no silently dropped or unexplained non-Success cycles)">Log/Vsum Match &#8597;</th>
       <th onclick="sortTable(4)" title="True when the RSLT_MANUFACTURER file contains no Error entries">MRF &#8597;</th>
       <th onclick="sortTable(5)" title="True when the complete-step check passes (bus-specific; n/a for other vehicles)">Complete step &#8597;</th>
       {'<th onclick="sortTable(6)" title="WARNING when CO2/FC delta vs. reference version exceeds the defined threshold">Delta &#8597;</th>' if _has_delta else ''}
