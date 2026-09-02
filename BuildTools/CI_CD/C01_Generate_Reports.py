@@ -31,8 +31,8 @@ import pandas as pd
 from lxml import etree
 
 from C44_Generate_Delta_Report import append_delta_to_report, generate_delta_report
+from FUNCTIONS.LOG_VSUM_MATCH import check_log_vsum_match
 from FUNCTIONS.REPORTS import (
-    check_log_vsum_match,
     find_result_dirs,
     get_default_report_dir,
     get_latest_release_report,
