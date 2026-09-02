@@ -473,8 +473,7 @@ namespace TUGraz.VectoCore.OutputData
 			Tuple.Create(SumDataFields.E_AUX_EL, typeof(ConvertedSI)),
 			Tuple.Create(SumDataFields.E_AUX_EL_HV, typeof(ConvertedSI)),
 		};
-
-		private object _tableLock = new object();
+		
 		internal readonly DataTable Table;
 		private readonly ISummaryWriter _sumWriter;
 		
@@ -1130,7 +1129,7 @@ namespace TUGraz.VectoCore.OutputData
 
 		private void AddResultDictionary(Dictionary<string, object> row)
 		{
-			lock (_tableLock) {
+			lock (Table) {
 				var tableRow = Table.NewRow();
 				foreach (var keyValuePair in row) {
 					tableRow[keyValuePair.Key] = keyValuePair.Value;
