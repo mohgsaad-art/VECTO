@@ -228,6 +228,7 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
   - `Delta Summary`, `Δ<var>` — reference delta sheets (when a release OR report is available in `--reports-cache`)
   - `Delta Summary_MR`, `Δ<var>_MR` — Intermediate (MR) delta sheets (when an MR OR report is available in `--mr-reports-cache`)
 - The `Success` sheet gains a `Delta Status` column (reference delta) and/or a `Delta Status_MR` column (Intermediate Delta) when the respective delta data is present.
+- `log_ok` (shown as "Log/Vsum Match" in the C04 HTML report) cross-validates each per-cycle log progress line against its corresponding vsum result row(s), rather than checking for a raw `100%` substring in the log. A cycle is flagged as not OK if its vsum row(s) show a non-Success/non-PrimaryBusSimulationIgnore status while the log claims 100%, or if the log expected a cycle that has no vsum row at all (a silently dropped result).
 - On every run, output files of failed vehicles (any `Success` containing `'error'`) are copied to `D:\CI\FailedReports\<run_label>\<vehicle>\` (or `C:\CI\FailedReports` when `D:\` is not present). `<run_label>` matches the OR filename stem (`<Version>_<Date>_<NNNN>_<Hash>`), grouping all failures from one run together.
 - Run subdirectories in `FailedReports` older than 10 days are automatically purged on each run.
 - Exits with a non-zero return code equal to the number of failed vehicles if any errors are detected.
