@@ -18,7 +18,6 @@ SUBMIT_TEMPLATE = 'B11_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
 POLL_INTERVAL_SECONDS = 600   # 10 minutes
-MAX_WAIT_SECONDS = 18 * 3600  # 18 hours
 
 parser = argparse.ArgumentParser(
     description='Submit VECTO test cases to HTCondor and wait for completion.'
@@ -109,7 +108,7 @@ print('Waiting for HTCondor jobs to complete...')
 t_start = time.time()
 t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
-while time.time() - t_start < MAX_WAIT_SECONDS:
+while True:
     if time.time() >= t_next_check:
         queue_status = run('condor_q')
         print(queue_status)
@@ -119,12 +118,6 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
             break
 
         t_next_check = time.time() + POLL_INTERVAL_SECONDS
-
-# If MAX_WAIT_SECONDS hit and jobs are still queued, remove them.
-queue_status = run('condor_q')
-if QUEUE_NAME in queue_status:
-    print(f'MAX_WAIT_SECONDS ({MAX_WAIT_SECONDS}s) exceeded - removing remaining jobs in batch "{QUEUE_NAME}".')
-    print(run(f'condor_rm -constraint \'JobBatchName == "{QUEUE_NAME}"\''))
 
 # --- Step 5: Extract result files ---
 print('Extracting result files...')
