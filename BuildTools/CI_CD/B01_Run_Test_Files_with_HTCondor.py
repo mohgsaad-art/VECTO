@@ -120,6 +120,12 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
 
         t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
+# If MAX_WAIT_SECONDS hit and jobs are still queued, remove them.
+queue_status = run('condor_q')
+if QUEUE_NAME in queue_status:
+    print(f'MAX_WAIT_SECONDS ({MAX_WAIT_SECONDS}s) exceeded - removing remaining jobs in batch "{QUEUE_NAME}".')
+    print(run(f'condor_rm -constraint \'JobBatchName == "{QUEUE_NAME}"\''))
+
 # --- Step 5: Extract result files ---
 print('Extracting result files...')
 run(f'python B14_Unzip_Results.py "{vecto_root}"')
