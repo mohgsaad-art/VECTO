@@ -1,152 +1,174 @@
 
-## VECTO v5.1.3 Official Release (03-08-2026)
+## VECTO v5.1.4-RC (03-09-2026)
 
-This version replaces v5.1.1 which had to be retracted. It is the same in terms of functionality and results.
 
 ### Features
 
-- multiple powertrains completed and single bus. (vecto/vecto!516)
+- Extrapolate EHC data from LHE and RD (vecto/vecto!601)
 
-- Single-gear IEPC in multiple powertrains (vecto/vecto!524)
+- Deploy local beta releases (vecto/vecto!608)
 
-- Added input (axle-number specific) validation for multiple-powertrain vehicles. (vecto/vecto!537)
+- Optimized torque splitter (partial implementation) and PCC torque splitter (vecto/vecto!612)
 
-- PCC for multiple powertrains. (vecto/vecto!565)
+- Added 'ExtraTechnologies' to monitoring data (vecto/vecto!626)
+
+- Improve error reporting (vecto/vecto!635)
+
+- vehicle int-test script in LEGENT server (vecto/vecto!642)
+
+- Improve error reporting part2 (vecto/vecto!641)
+
+- Consider CRF delta in report (vecto/vecto!645)
 
 
 ### Bug Fixes
-- Vecto console references (vecto/vecto!507)
 
-- Completed bus input generation for v2.7 (vecto/vecto!508)
+- Battery-only P2 (vecto/vecto!580)
 
-- DefaultDriverStrategy - add accel action after gearshift + roll + brake if overload (vecto/vecto!510)
+- Output writing for FCHVs (vecto/vecto!581)
 
-- Add retarder losses to TC max torque request (vecto/vecto!511)
+- Consider ratio per gear for calculation of EM shift polygons in case of P2.5... (vecto/vecto!582)
 
-- Rename constructor parameter to match factory method (vecto/vecto!512)
+- Extend GearShift cond when doCoastOvl for AMT (vecto/vecto!584)
 
-- Propagate 'allowDeprecated' parameter for XMLReader classes through injection hierarchy (vecto/vecto!513)
+- Add AMT 1st Gear DownShift safety (vecto/vecto!583)
 
-- Multiple powertrain FCHV bus execution (vecto/vecto!515)
+- angledrive component file hashing (vecto/vecto!589)
 
-- vsum fields for Retarder, Axlegear for multiple powertrains. (vecto/vecto!517)
+- validation of IEPC data coming from a VIF (vecto/vecto!590)
 
-- Increase max iteration in InterpolateSearch (vecto/vecto!514)
+- Unit Tests after multiple powertrains merge (vecto/vecto!592)
 
-- use of battery SoC limits (input vs default) (vecto/vecto!519)
+- PreRunOptions.WriteModAndSumData outputs (vecto/vecto!591)
 
-- Create fuel cell in testpowertrain (required in shift strategy) (vecto/vecto!520)
+- bugs created by multiple-powertrain refactoring. (vecto/vecto!597)
 
-- Added missing function to DummyRunNinjectModule (vecto/vecto!521)
+- Added missing mocked property for vehicle container (vecto/vecto!598)
 
-- Calculation of axlegear efficiency for P4 vehicles: in case of an P4, use EM-in to calculate axlegear efficiency instead of Brake-in (vecto/vecto!522)
+- Add inertia torque reserve in Upshifts (vecto/vecto!595)
 
-- Added multiple-powertrain sample jobs (vecto/vecto!525)
+- Removed duplicate clutch from P1 vehicles (vecto/vecto!599)
 
-- Avoid null reference in DeclarationData.cs (vecto/vecto!526)
+- Validation & serialization vecto rundata in case of multiple powertrains, gearbox bindings multiple powertrains (vecto/vecto!600)
 
-- bugs regarding multiple powertrains. (vecto/vecto!527)
+- Vocational output for group 16 vehicles (vecto/vecto!586)
 
-- Modified Torque Converter columns to handle multiple powertrains. (vecto/vecto!528)
+- Added missing IPowertrainContainer parameter to creation methods of battery-only hybrids. (vecto/vecto!602)
 
-- OVC-HEV mode for FCHV vehicles, null reference in fuel cells. (vecto/vecto!529)
+- Added missing parameters to component factory methods of tests (vecto/vecto!603)
 
-- Don't allow unsupported variations of multiple powertrain vehicles. (vecto/vecto!530)
+- Added property to VectoRunData for generator of multiple-powertrain SHEV (vecto/vecto!604)
 
-- Enable unsupported vehicles in development mode (vecto/vecto!531)
+- Removing unused classes (vecto/vecto!605)
 
-- Modified xArchitecture element in reports to support multiple powertrains. (vecto/vecto!533)
+- Correctly identify VIF report for mulitple-powertrain vehicles in HashingTool (vecto/vecto!606)
 
-- Calculate TotalPropulsionPower for multiple-powertrain vehicles (vecto/vecto!534)
+- error in validation of auxiliaries for battery-only hybrids (vecto/vecto!607)
 
-- Improved error message when not finding primary vehicle missions (vecto/vecto!535)
+- Engine fan's power demand ignored when powertrain has no engine (vecto/vecto!610)
 
-- Removed engine power from calculation of total propulsion for SHEV (vecto/vecto!536)
+- Property HybridElectricHDV returns true for vehicle data originating from hybrid VIFs (vecto/vecto!613)
 
-- Added missing parameter to method that creates gearbox. (vecto/vecto!538)
+- Add further VectoTrailer projects (tests), build script publish (vecto/vecto!614)
 
-- Modified method signature to satisfy interface (vecto/vecto!539)
+- Added missing components to simple powertrains for multiple-powertrain vehicles. (vecto/vecto!615)
 
-- Re-enabled unit tests, that required battery input data. (vecto/vecto!540)
+- Added class1s vehicles for VTP selected mission: Regional Delivery (vecto/vecto!617)
 
-- Added OVC info to tests' vehicle input (vecto/vecto!541)
+- Debugged optimized torquesplitter (vecto/vecto!618)
 
-- Ignore monitoring data when calculating job hash for reports (vecto/vecto!544)
+- Improved error message for missing auxiliaries in completed vehicles (vecto/vecto!621)
 
-- hashing tests (vecto/vecto!545)
+- Added missing gearbox configuration for dependency injection (vecto/vecto!622)
 
-- Save vehicle in job editor (vecto/vecto!546)
+- Reverted type of dummy gearbox back to APTN (vecto/vecto!624)
 
-- Remove xml comments before calculating hash (vecto/vecto!547)
+- Write axle number correctly in Monitoring Report & validate report in tests (vecto/vecto!625)
 
-- Hashing Tool ignores comments when verifying XML content, and Monitoring... (vecto/vecto!551)
+- Proper creation of IEPC completed vehicle in multistep tool (vecto/vecto!627)
 
-- Null reference & sample job file (vecto/vecto!552)
+- Allow v2.6 AirDrag component to be read for input in multistep tool (vecto/vecto!628)
 
-- Handle cycles that fail during setup of the follow-up run. (vecto/vecto!553)
+- 1187cor - apply inertia trq reserve only if tqInterrupt (vecto/vecto!630)
 
-- Added pre-processing for APT-N gearboxes (vecto/vecto!554)
+- Adaptions for Vecto Trailer (vecto/vecto!629)
 
-- Overloaded equality operators in GearshiftPosition (vecto/vecto!556)
+- Get proper segment from completed buses to retrieve CdxA for reports (vecto/vecto!632)
 
-- TC dryRun Response in Motoring conditions (vecto/vecto!561)
+- P2.5 battery-only complete bus simulation aborts (vecto/vecto!631)
 
-- Brake Overload management (vecto/vecto!560)
+- Add build option to build script to create a release candidate build (vecto/vecto!633)
 
-- Handled PCC pre-processing for IEPC single-speed gearbox (vecto/vecto!562)
+- problems of error handling (vecto/vecto!636)
 
-- Corrected EM ElectricPowerToBattery for multiple powertrains. (vecto/vecto!563)
+- Caught exception when raising log event (vecto/vecto!637)
 
-- Added missing dummy axlegear to E4 axle-powertrain (vecto/vecto!564)
+- Avoid null reference in 'Error Details' UI (vecto/vecto!638)
 
-- Avoid null reference in TestPowertrain Gearboxes (vecto/vecto!566)
+- Properly read certification number of fuel-cell component (vecto/vecto!639)
 
-- verification of reports with bad job hashes (incl. Monitoring Data) (vecto/vecto!568)
+- Improved 'Error Details' UI component and GUI output messages. (vecto/vecto!640)
 
-- Handle primary cycles with insufficient fuel cell power (vecto/vecto!569)
+- CIF summary entry (vecto/vecto!644)
 
-- IHPC - add ignoreReason for clutch slipping (vecto/vecto!567)
+- Disable vehicles with non-identical axle-powertrains (vecto/vecto!646)
 
-- Brake Overload management when engaged (vecto/vecto!570)
+- Multiple-powertrains - torque share for coast or roll (vecto/vecto!648)
 
-- date parsing in fuel cell component hashing (vecto/vecto!572)
+- Avoid null reference when calculating gearbox loss during initialization (vecto/vecto!649)
 
-- Integrate RESS ovl/underload in EM response (vecto/vecto!571)
+- Removed obsolete target .NET 8 from test and auxiliary projects (vecto/vecto!651)
 
-- failing unit tests for shift strategies (vecto/vecto!573)
+- errors and updated information in README file (vecto/vecto!652)
 
-- Integrate RESS ovl/underload in EM response - corrected (vecto/vecto!574)
+- Added missing error codes (vecto/vecto!656)
 
-- Handle InterUrban cycle setup fail in FCHV primary bus (vecto/vecto!575)
+- Server problems (vecto/vecto!653)
 
-- fuel cell input in multiple-powertrain vehicle file (vecto/vecto!576)
+- label placement for cycle run info values (vecto/vecto!658)
 
-- Modified version-checking method to accept versions without build part (vecto/vecto!577)
+- Prevent exception in gearbox loss calculation (vecto/vecto!659)
+
+- Changed values for 'Manufacturer' and 'Certification Number' elements in... (vecto/vecto!661)
+
+- Can open GUI documentation links when running VECTO from netXX folder (vecto/vecto!666)
+
+- Overwriting vmods for FCHV OVC vehicles (vecto/vecto!671)
+
+- Correct DS detect Condition for Brake after Acc UL (vecto/vecto!670)
+
+- Coasting action after reengage (vecto/vecto!669)
+
+- Change driveOffTorque APT Threshold for reengage (vecto/vecto!668)
+
+- EM generic effmap for EM with asymmetric perfo. (vecto/vecto!667)
 
 
 ### Refactor
 
-- Refactored multiple powertrains builder methods (vecto/vecto!509)
+- Refactoring of multiple powertrains (vecto/vecto!587)
 
-- Reduced build-time warnings (vecto/vecto!518)
+- Removed obsolete methods from IDataBus and increased component access through IPowerContainer properties (vecto/vecto!611)
 
-- Project vecto sw3/task 2/unit tests amdm3 (vecto/vecto!460)
+- Removed some built-time warnings (vecto/vecto!619)
 
-- Modified IDataBus properties/methods to handle single & multiple powertrains. (vecto/vecto!542)
+- Removed build-time warnings (vecto/vecto!623)
 
-- Renamed VectoRunData properties to indicate single powertrain (vecto/vecto!543)
+- Kept only one property denoting position in the electric motor class (vecto/vecto!643)
 
-- Minor cleanup/refactoring to reduce build-time warnings. (vecto/vecto!548)
+- Improve error reporting part3 (vecto/vecto!650)
 
-- Cleaned up root folder (vecto/vecto!549)
+- Improved error messages and added suggestions (vecto/vecto!654)
 
-- Cleanup/refactoring to reduce build-time warnings - part II. (vecto/vecto!550)
+- Making methods virtual in moddatacontainer and allow overrides in trailer project (vecto/vecto!665)
 
-- Reduce compile-time warnings part III (vecto/vecto!555)
 
-- Eliminated compile-time warnings in VectoCoreTests. (vecto/vecto!557)
+### Testing
 
-- Reduce compile-time warnings in new Test projects. (vecto/vecto!558)
+- Added HybridStrategyTests (vecto/vecto!593)
 
-- Minor refactoring (vecto/vecto!559)
+
+### Improvement
+
+- Set internals visible to trailer project (vecto/vecto!609)
 
