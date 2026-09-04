@@ -7,7 +7,6 @@ request_cpus = 1
 batch_name = vecto_batch
 
 max_retries = 2
-max_materialize = 100
 request_memory = 4096
 retry_request_memory = 8192
 
