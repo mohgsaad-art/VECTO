@@ -106,7 +106,9 @@ if vecto_root.endswith('.zip'):
         Path(vecto_dir).mkdir(parents=True, exist_ok=True)
         shutil.unpack_archive(vecto_root, vecto_dir)
 else:
-    vecto_dir = vecto_root
+    vecto_dir = os.path.join(scratch_dir, 'VECTO_EXE', Path(vecto_root).name)
+    if not os.path.exists(vecto_dir):
+        shutil.copytree(vecto_root, vecto_dir)
 
 print(f'vecto_dir: {vecto_dir}')
 
