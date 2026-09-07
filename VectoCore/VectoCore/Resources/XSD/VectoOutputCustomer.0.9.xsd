@@ -2182,7 +2182,7 @@
 			<xs:choice>
 				<xs:sequence>
 					<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
-					<xs:element name="Summary" type="AbstractResultSummaryType" minOccurs="0" maxOccurs="2"/>
+					<xs:element name="Summary" type="AbstractResultSummaryType" minOccurs="0" maxOccurs="3"/>
 				</xs:sequence>
 				<xs:element name="ExemptedVehicle">
 					<xs:complexType/>
@@ -2610,7 +2610,9 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:group>
-	<xs:complexType name="AbstractResultSummaryType" abstract="true"/>
+	<xs:complexType name="AbstractResultSummaryType" abstract="true">
+		<xs:attribute name="id" type="xs:NCName" use="optional"/>
+	</xs:complexType>
 	<xs:complexType name="ResultSummaryConventionalType">
 		<xs:complexContent>
 			<xs:extension base="AbstractResultSummaryType">

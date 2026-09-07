@@ -59,12 +59,16 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 			return DoGetElement(weighted, weightedVocationals, weightedEHC);
 		}
 
+		private static readonly string[] _summaryIds = { "Summary", "Vocational_Summary", "EHC_Summary" };
+
 		protected virtual XElement[] DoGetElement(IWeightedResult weighted, IWeightedResult weightedVocationals, IWeightedResult weightedEHC = null)
 		{
 			bool isVocational = false;
 			List<XElement> results = new List<XElement>();
-			foreach (IWeightedResult weightedResult in new[] { weighted, weightedVocationals, weightedEHC })
+			IWeightedResult[] weightedResults = { weighted, weightedVocationals, weightedEHC };
+			for (int i = 0; i < weightedResults.Length; i++)
 			{
+				IWeightedResult weightedResult = weightedResults[i];
 				if (weightedResult == null)
 				{
 					results.Add(null);
@@ -73,6 +77,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 				}
 
 				XElement element = new XElement(TNS + XMLNames.Report_Results_Summary,
+					new XAttribute(XMLNames.Component_ID_Attr, _summaryIds[i]),
 					new XAttribute(xsi + XMLNames.XSIType, ResultSummaryXMLType),
 					new XElement(TNS + XMLNames.XMLCustomerReportIsVocational, isVocational),
 					GetSummary(weightedResult),
