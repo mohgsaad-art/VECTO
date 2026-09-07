@@ -11,7 +11,7 @@ request_memory = 4096
 retry_request_memory = 8192
 
 max_retries = 2
-on_exit_hold = (ExitCode != 0) && (NumJobStarts >= $(max_retries))
+on_exit_remove = (ExitCode == 0) || (NumJobStarts >= $(max_retries))
 
 output = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).err
