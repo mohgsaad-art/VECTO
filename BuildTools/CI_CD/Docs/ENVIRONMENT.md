@@ -99,6 +99,7 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 - `--force-repackage`: re-zip even if `<vehicle>/input.zip` already exists.
 - Generic vehicles are placed under `<output_dir>/To_Run/<mode>/<powertrain>/<vehicle>/`.
 - Issue vehicles are placed under `<output_dir>/To_Run/articles/<vehicle>/`.
+- Issue vehicles labeled `art10::rejected`, `art10::open`, or `art10::need_info` are excluded from the run.
 - No intermediate folders are created: all vehicles are collected in memory and written directly as `input.zip` files.
 - Produces a `Vehicles_found_<timestamp>.xlsx` diagnostic report in the current working directory (only the most recent is kept).
 - **Override mechanism (`A02_OTHERS`):** files placed under `A02_OTHERS` replace the corresponding inputs from `A00_RAW`. To override a file, mirror its path under `A02_OTHERS` — the sorting algorithm picks the `A02_OTHERS` copy instead of the original. For example, to override `A00_RAW/555/uploads/23d4ert546tfcb45mnbd3/original_input.xml`, place the replacement at `A02_OTHERS/555/uploads/23d4ert546tfcb45mnbd3/modified_input.xml`.
@@ -160,7 +161,7 @@ python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 ```bash
 python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filename>
 ```
-- `vecto_root`: path to the VECTO installation directory, or a `.zip` archive of it (unpacked to `_CONDOR_SCRATCH_DIR`).
+- `vecto_root`: path to the VECTO installation directory, or a `.zip` archive of it. Either way it is staged under `_CONDOR_SCRATCH_DIR/VECTO_EXE/<name>` (unpacked if a zip, copied if a directory) before running.
 - `input_archive`: path to the zipped input files (`input.zip`).
 - `output_filename`: output archive name (without extension). Result is saved as `<output_filename>.zip`.
 - Called by the HTCondor submit script — not intended to be run directly.

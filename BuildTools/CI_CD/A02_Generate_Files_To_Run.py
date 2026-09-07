@@ -357,8 +357,9 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
 
     # Build manifests from df_vehicles_ref
     col_to_explode = ['REF_local_path', 'REF_file_type', 'REF_vehicle_type']
+    excluded_labels = ['art10::rejected', 'art10::open', 'art10::need_info']
     df_to_run = (
-        df_vehicles_ref[df_vehicles_ref.REF_art10_label != 'art10::rejected']
+        df_vehicles_ref[~df_vehicles_ref.REF_art10_label.isin(excluded_labels)]
         .explode(col_to_explode)
     )
 
