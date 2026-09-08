@@ -45,6 +45,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
@@ -723,9 +724,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			protected virtual IResponse DoHandleRequest(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity) 
 			{
 				var gearbox = _powertrainContainer.GearboxInfo;
-				
-				if (!_dataBus.VehicleInfo.VehicleStopped && gearbox.Gear.Gear != 0 && gearbox.Gear.Gear != gearbox.NextGear.Gear  &&
-					gearbox.NextGear.Gear != 0) 
+
+                bool notInEcoRoll = _engine.DataBus.DriverInfo.PCCState != PCCStates.UseCase1;
+
+                if (!_dataBus.VehicleInfo.VehicleStopped && gearbox.Gear.Gear != 0 && gearbox.Gear.Gear != gearbox.NextGear.Gear  &&
+					gearbox.NextGear.Gear != 0 && notInEcoRoll) 
 				{
 					return RequestDoubleClutch(absTime, dt, outTorque, outAngularVelocity);
 				}
