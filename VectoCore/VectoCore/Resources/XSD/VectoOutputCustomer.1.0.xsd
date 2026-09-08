@@ -44,7 +44,9 @@
 	<xs:complexType name="AbstractPowertrainType" abstract="true">
 		<xs:attribute name="axleNumber" type="xs:int" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="AbstractResultSummaryType" abstract="true"/>
+	<xs:complexType name="AbstractResultSummaryType" abstract="true">
+		<xs:attribute name="id" type="xs:NCName" use="optional"/>
+	</xs:complexType>
 	<xs:complexType name="AbstractResultType" abstract="true">
 		<xs:attribute name="status" use="required">
 			<xs:simpleType>
@@ -994,7 +996,7 @@
 			<xs:choice>
 				<xs:sequence>
 					<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
-					<xs:element name="Summary" type="AbstractResultSummaryType" minOccurs="0" maxOccurs="2"/>
+					<xs:element name="Summary" type="AbstractResultSummaryType" minOccurs="0" maxOccurs="3"/>
 				</xs:sequence>
 				<xs:element name="ExemptedVehicle">
 					<xs:complexType/>
