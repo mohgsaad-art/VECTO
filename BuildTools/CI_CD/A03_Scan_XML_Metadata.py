@@ -8,6 +8,9 @@ not followed), and collects a unique, sorted list of Manufacturer, VIN, and
 CertificationNumber values from every declaration XML encountered. Writes
 three output .txt files, one per element.
 
+Files whose name starts with "DEBUG_VIN_" (case-insensitive) are intermediate
+debug artifacts, not valid declaration XML, and are skipped entirely.
+
 Zip archives are extracted to a fresh temporary directory per archive; these
 temporary directories are not cleaned up automatically.
 
@@ -42,6 +45,10 @@ logging.getLogger('patool').setLevel(logging.WARNING)
 
 TARGET_ELEMENTS = ('Manufacturer', 'VIN', 'CertificationNumber')
 
+# Files with this prefix are intermediate debug artifacts
+# and must be skipped entirely.
+DEBUG_FILE_PREFIX = 'debug_vin_'
+
 # Values that are placeholders/non-values rather than real data, and should
 # never appear in the output .txt files. Matched case-insensitively, ignoring
 # '.' and '/' (so "N/A", "n.a.", "NA" etc. all match), after stripping
@@ -70,11 +77,16 @@ def is_blacklisted(value: str) -> bool:
 
 def find_xml_files(extract_root: Path) -> list[Path]:
     """Walk extract_root, unzip any .zip/.7z/.rar files found (one level),
-    and return the full list of .xml file paths (original + extracted)."""
+    and return the full list of .xml file paths (original + extracted).
+
+    Files whose name starts with DEBUG_FILE_PREFIX are intermediate debug
+    artifacts, not valid declaration XML, and are excluded."""
     xml_files = []
     for root, _dirs, files in os.walk(extract_root):
         for fname in files:
             fpath = Path(root) / fname
+            if fname.lower().startswith(DEBUG_FILE_PREFIX):
+                continue
             if fname.lower().endswith('.xml'):
                 xml_files.append(fpath)
             elif patoolib.is_archive(str(fpath)):
@@ -102,7 +114,7 @@ def _extract_and_find_xml(archive_path: Path) -> list[Path]:
         Path(sub_root) / sub_fname
         for sub_root, _sub_dirs, sub_files in os.walk(extract_dir)
         for sub_fname in sub_files
-        if sub_fname.lower().endswith('.xml')
+        if sub_fname.lower().endswith('.xml') and not sub_fname.lower().startswith(DEBUG_FILE_PREFIX)
     ]
 
 
