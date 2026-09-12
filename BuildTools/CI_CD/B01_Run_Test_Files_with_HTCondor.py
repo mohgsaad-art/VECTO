@@ -17,8 +17,7 @@ import os
 SUBMIT_TEMPLATE = 'B11_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
-POLL_INTERVAL_SECONDS = 600 # 10 minutes
-MAX_WAIT_SECONDS = 10 * 3600  # 10 hours
+POLL_INTERVAL_SECONDS = 600   # 10 minutes
 
 parser = argparse.ArgumentParser(
     description='Submit VECTO test cases to HTCondor and wait for completion.'
@@ -109,7 +108,7 @@ print('Waiting for HTCondor jobs to complete...')
 t_start = time.time()
 t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
-while time.time() - t_start < MAX_WAIT_SECONDS:
+while True:
     if time.time() >= t_next_check:
         queue_status = run('condor_q')
         print(queue_status)

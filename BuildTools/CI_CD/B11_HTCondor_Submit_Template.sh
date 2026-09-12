@@ -6,11 +6,16 @@ arguments = B13_Run_Single_Vecto_File.py $(vecto) $(input_dir)\input.zip $(outpu
 request_cpus = 1
 batch_name = vecto_batch
 
+request_memory = 4096
+retry_request_memory = 8192
+
 output = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).err
 log    = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).log
 
+RunningStatus = 2
+
 # https://htcondor.readthedocs.io/en/latest/codes-other-values/job-status-codes.html
-periodic_remove = JobStatus == 2 && CurrentTime-EnteredCurrentStatus > 3600*12
+periodic_remove = JobStatus == $(RunningStatus) && CurrentTime-EnteredCurrentStatus > 3600*12
 
 queue vecto,input_dir,output_file_name from batch_arguments.txt

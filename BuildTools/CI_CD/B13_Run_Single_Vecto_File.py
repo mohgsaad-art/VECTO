@@ -8,7 +8,7 @@ worker node:
   2. Unpacks the input archive into a scratch working directory.
   3. Locates the runnable input file (.xml or .vecto).
   4. Runs VECTO and writes a .log file alongside the result.
-  5. Archives the output and moves it to the submission directory.
+  5. Archives the output into the submission (working) directory.
 
 Called by the HTCondor submit script with three positional arguments:
     python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filename>
@@ -85,6 +85,12 @@ def run_individual_file(vectofile_fpath, vecto_cmd_path, vecto_cmd_option, log=T
             f.write(job_cmd + '\n\n')
             f.write(txt)
 
+    if res.returncode != 0:
+        raise RuntimeError(
+            f'VECTO run failed with exit code {res.returncode} for {vectofile_fpath} '
+            f'(see {logpath if log else "log (not written)"} for details).'
+        )
+
     return vectofile_fpath, et - st
 
 
@@ -100,7 +106,9 @@ if vecto_root.endswith('.zip'):
         Path(vecto_dir).mkdir(parents=True, exist_ok=True)
         shutil.unpack_archive(vecto_root, vecto_dir)
 else:
-    vecto_dir = vecto_root
+    vecto_dir = os.path.join(scratch_dir, 'VECTO_EXE', Path(vecto_root).name)
+    if not os.path.exists(vecto_dir):
+        shutil.copytree(vecto_root, vecto_dir)
 
 print(f'vecto_dir: {vecto_dir}')
 
@@ -166,12 +174,17 @@ if 'ENG_mode' in file2run or 'ENGmode' in file2run or 'GenericEngineering' in fi
     vecto_cmd_option += ' -eng'
 
 print(f'Running: {file2run}')
-run_individual_file(
-    vectofile_fpath=file2run,
-    vecto_cmd_path=vecto_cmd,
-    vecto_cmd_option=vecto_cmd_option,
-    log=True,
-)
+run_error = None
+try:
+    run_individual_file(
+        vectofile_fpath=file2run,
+        vecto_cmd_path=vecto_cmd,
+        vecto_cmd_option=vecto_cmd_option,
+        log=True,
+    )
+except RuntimeError as exc:
+    run_error = exc
+    print(f'VECTO run failed: {exc}')
 
 # Remove intermediate .vmod files generated for ENG mode
 for root, dummy, files in os.walk(Path(file2run).parent):
@@ -180,14 +193,22 @@ for root, dummy, files in os.walk(Path(file2run).parent):
             os.remove(os.path.join(root, f))
 
 # ---------------------------------------------------------------------------
-# Step 6 - Archive and move result to cwd
+# Step 6 - Archive result into cwd (even on failure, to preserve the .log and
+# any partial output for later inspection)
 # ---------------------------------------------------------------------------
 
 arch_stem = Path(output_filename).stem
 arch_ext = Path(output_filename).suffixes[-1].lstrip('.') if Path(output_filename).suffixes else 'zip'
+arch_path = f'{arch_stem}.{arch_ext}'
 
-print(f'Archiving results: {arch_stem}.{arch_ext} from {work_dir}')
+if os.path.exists(arch_path):
+    print(f'Removing pre-existing archive: {arch_path}')
+    os.remove(arch_path)
+
+print(f'Archiving results: {arch_path} from {work_dir}')
 shutil.make_archive(arch_stem, arch_ext, root_dir=work_dir)
-shutil.move(f'{arch_stem}.{arch_ext}', '.')
+
+if run_error is not None:
+    raise run_error
 
 print('Done.')
