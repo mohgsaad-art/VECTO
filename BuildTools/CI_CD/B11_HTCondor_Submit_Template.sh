@@ -9,8 +9,6 @@ batch_name = vecto_batch
 request_memory = 4096
 retry_request_memory = 8192
 
-max_retries = 2
-
 output = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).out
 error  = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).err
 log    = D:\CI\CONDOR\Z01_LOGS\$(output_file_name).log
