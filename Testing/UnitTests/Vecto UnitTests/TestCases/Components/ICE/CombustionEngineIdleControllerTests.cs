@@ -297,16 +297,19 @@ public class CombustionEngineIdleControllerTests
 		var ice = new Mock<IEngineInfo>().WithDefaultAxleNumber();
 		var iceCtl = new Mock<IEngineControl>();
 		var veh = new Mock<IVehicleInfo>();
+        var driver = new Mock<IDriverInfo>();
 
-		gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(0));
+        gbx.Setup(g => g.Gear).Returns(new GearshiftPosition(0));
 		ice.Setup(i => i.EngineOn).Returns(true);
 		iceCtl.Setup(i => i.CombustionEngineOn).Returns(true);
 		veh.Setup(v => v.VehicleStopped).Returns(false);
+        driver.Setup(d => d.PCCState).Returns(PCCStates.OutsideSegment);
 
-		container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
+        container.Setup(c => c.GearboxesInfo).Returns(new List<IGearboxInfo>(){gbx.Object});
 		container.Setup(c => c.EngineInfo).Returns(ice.Object);
 		container.Setup(c => c.EngineCtl).Returns(iceCtl.Object);
 		container.Setup(c => c.VehicleInfo).Returns(veh.Object);
+		container.Setup(c => c.DriverInfo).Returns(driver.Object);
 
 		return container.Object;
 	}
