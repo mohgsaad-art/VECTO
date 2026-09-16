@@ -126,13 +126,27 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		private readonly ISumData _sumWriter;
 		internal readonly List<RunEntry> Runs = new List<RunEntry>();
-		private readonly ConcurrentDictionary<int, byte> _unfinishedRuns = new ConcurrentDictionary<int, byte>(); //only key is used 
+		private readonly ConcurrentDictionary<int, byte> _unfinishedRuns = new ConcurrentDictionary<int, byte>(); //only key is used
 		private ReaderWriterLockSlim _runsRwLock = new ReaderWriterLockSlim();
 		private ConcurrentDictionary<int, RunContainer> _runContainerMap  = new ConcurrentDictionary<int, RunContainer>();
 		private static int _jobNumber;
 		private bool _multithreaded = true;
 		private bool _canceled = false;
 		private ReaderWriterLockSlim _cancelLock = new ReaderWriterLockSlim();
+
+		private readonly ConcurrentQueue<Exception> _fatalErrors = new ConcurrentQueue<Exception>();
+
+		// True if the job-level orchestration itself failed to construct/read the next batch
+		// of runs (e.g. a multistage follow-up stage). Does not include per-run failures inside
+		// IVectoRun.Run(), which are already tracked via ProgressEntry.Error/ExecException.
+		public bool HasFatalError => !_fatalErrors.IsEmpty;
+
+		public IEnumerable<Exception> GetFatalErrors() => _fatalErrors;
+
+		internal void RecordFatalError(Exception ex)
+		{
+			_fatalErrors.Enqueue(ex);
+		}
 
 		private ConcurrentDictionary<int, ProgressEntry> _progressDictionary =
 			new ConcurrentDictionary<int, ProgressEntry>();
@@ -222,16 +236,23 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				factory.SumData = _sumWriter;
 				factory.JobNumber = Interlocked.Increment(ref _jobNumber);
 
+				// Buffer first so a partial enumeration (factory.SimulationRuns() throwing
+				// partway through) never publishes orphaned entries to Runs/_unfinishedRuns.
+				var toExecuteRuns = new List<RunEntry>();
+				foreach (var run in factory.SimulationRuns())
+				{
+					var entry = new RunEntry(run, this, factory.JobNumber);
+					toExecuteRuns.Add(entry);
+					runIDs.Add(entry.RunId);
+				}
+
 				try
 				{
 					_runsRwLock.EnterWriteLock();
-					foreach (var run in factory.SimulationRuns())
+					foreach (var run in toExecuteRuns)
 					{
-                        var entry = new RunEntry(run, this, factory.JobNumber);
-						Runs.Add(entry);
-						_unfinishedRuns[run.RunIdentifier] = Byte.MinValue;
-						//_unfinishedRuns.Add(run.RunIdentifier);
-						runIDs.Add(entry.RunId);
+						Runs.Add(run);
+						_unfinishedRuns[run.Run.RunIdentifier] = Byte.MinValue;
 					}
 				}
 				finally
@@ -529,13 +550,19 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					} catch (Exception ex) {
 						ExecException = ex;
 						Log.Error(ex);
-                        throw;
 					} finally {
 						stopWatch.Stop();
 						Success = Run.FinishedWithoutErrors && ExecException == null;
 						ExecTime = stopWatch.Elapsed.TotalMilliseconds;
-						JobContainer.JobCompleted(RunId, _runContainerId);
-						_done = true;
+						// JobCompleted may itself throw - must not prevent _done from being set.
+						try {
+							JobContainer.JobCompleted(RunId, _runContainerId);
+						} catch (VectoException ex2) {
+							Log.Error(ex2);
+							JobContainer.RecordFatalError(ex2);
+						} finally {
+							_done = true;
+						}
 					}
 				}, TaskCreationOptions.LongRunning);
 			}
