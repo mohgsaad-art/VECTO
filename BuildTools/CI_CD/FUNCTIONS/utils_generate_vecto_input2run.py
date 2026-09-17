@@ -281,7 +281,7 @@ def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
         df_vehicles = df_vehicles[~no_valid_input]
 
     for col in col2sort:
-        df_vehicles[col] = df_vehicles.apply(lambda x: list(np.array(x[col])[x['selection']]), axis=1)
+        df_vehicles[col] = df_vehicles.apply(lambda x: [x[col][i] for i in x['selection']], axis=1)
 
     df_vehicles.drop(columns=["selection"], axis=1, inplace=True)
 
