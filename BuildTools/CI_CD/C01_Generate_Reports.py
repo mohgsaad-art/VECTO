@@ -241,7 +241,9 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             )
             try:
                 with open(vecto_file) as fh:
-                    file_version = json.load(fh)['Header']['FileVersion']
+                    vecto_json = json.load(fh)
+                    file_version = jvecto_json['Header']['FileVersion']
+                    file_body = vecto_json["Body"]
             except Exception:
                 file_version = 0
 
@@ -249,11 +251,11 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
                 rslt_mfr_final = [
                     f for f in os.listdir(res_dir) if '.RSLT_MANUFACTURER.xml' in f
                 ]
-                if not rslt_mfr_final:
-                    with open(log) as fh:
-                        exempted = any('xempted' in line for line in fh)
-                    if not exempted:
-                        complete_step_ok = False
+                if (not rslt_mfr_final) and (str(file_body["RunSimulation"]).lower()=='true'):
+                    complete_step_ok = False
+                    vsum_ok=False # vsum miss the complete data
+                else:
+                    complete_step_ok = True
 
         # RSLT_MANUFACTURER error check
         rslt_mfr_ok = True
