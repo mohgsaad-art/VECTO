@@ -167,7 +167,7 @@ assert (_pp := next_fpath("foo{}", also_last=True)) == (Path("foo0"), None), _pp
 
 def get_issue_id_from_path(fpath: Path | str) -> str:
     filep = str(fpath)
-    regexp = r"[0-9]{4}"
+    regexp = r"[\\/]([0-9]{4})[\\/]"
     iids = re.findall(regexp, filep)
     iid=None
     if iids:
