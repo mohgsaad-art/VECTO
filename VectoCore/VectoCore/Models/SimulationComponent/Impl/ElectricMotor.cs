@@ -68,7 +68,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public IBusAuxiliariesAdapter BusAux { protected get; set; }
 
-		public PowertrainPosition Position { get; private set; }
+        public PowertrainPosition Position => RealPowertrainPosition;
+
+        // the differentiation is necessary for battery-only hybrid simulations
+        // PositionForsimulation holds the powertrain position used for all simulations (e.g. BatteryElectricE2 instead of HybridP2 for a BO simulation)
+        protected PowertrainPosition PositionForSimulation { get; set; }
+        // RealPowertrainPosition is used for writing the results in the mod-file (and consequently .vsum, etc) (e.g. HybridP2 even in case of a BO simulation)
+        protected PowertrainPosition RealPowertrainPosition { get; set; }
 
 		public ElectricMotor(IVehicleContainer container, IPowertrainContainer powertrainContainer, ElectricMotorData data, IElectricMotorControl control,
 			PowertrainPosition position) : this(container, powertrainContainer, data, control, position, false)
@@ -90,9 +96,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			Control = control;
 			ModelData = data;
-            Position = position;
+            PositionForSimulation = position;
 
-			if (Position == PowertrainPosition.HybridP2_5) {
+            RealPowertrainPosition = container.RunData.AxlePowertrainsDict[powertrainContainer.AxleNumber].ElectricMachinesData
+                .First(x =>
+                        x.Item1.GetPositionNumber() == position.GetPositionNumber()).Item1;
+
+            if (PositionForSimulation == PowertrainPosition.HybridP2_5) {
 				TransmissionRatioPerGear = ModelData.RatioPerGear;
 				if (TransmissionRatioPerGear == null ||
 					TransmissionRatioPerGear.Length < container.RunData.GearboxSinglePwt.GearList.Count()) {
@@ -220,7 +230,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var voltage = DataBus.BatteryInfo.InternalVoltage;
 
-			var iceOn =  Position == PowertrainPosition.HybridP1 &&
+			var iceOn =  PositionForSimulation == PowertrainPosition.HybridP1 &&
 						!DataBus.EngineInfo.EngineOn && DataBus.EngineCtl.CombustionEngineOn;
 			var prevDtSpeed = iceOn ? DataBus.EngineInfo.EngineSpeed : PreviousState.DrivetrainSpeed;
 			var prevEmSpeed = iceOn ? prevDtSpeed * ModelData.RatioADC : PreviousState.EMSpeed;
@@ -258,7 +268,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			// control returns torque that shall be applied on the drivetrain. calculate backward to the EM
 			var emTorqueDt = Control.MechanicalAssistPower(absTime, dt, outTorque,
-				PreviousState.DrivetrainSpeed, outAngularVelocity, maxDriveTorqueDt, maxRecuperationTorqueDt, Position, dryRun);
+				PreviousState.DrivetrainSpeed, outAngularVelocity, maxDriveTorqueDt, maxRecuperationTorqueDt, PositionForSimulation, dryRun);
 
 			var emTorque = (emTorqueDt == null)
 				? null 
@@ -268,7 +278,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!dryRun && !DataBus.IsTestPowertrain && emTorqueDt != null && NextComponent != null && (emTorque.IsSmaller(maxDriveTorqueEm ?? 0.SI<NewtonMeter>(), 1e-3) ||
 																		emTorque.IsGreater(maxRecuperationTorqueEm ?? 0.SI<NewtonMeter>(), 1e-3))) {
 				// check if provided EM torque (drivetrain) is valid)
-				if ((!avgDtSpeed.IsEqual(DataBus.HybridControllerInfo.ElectricMotorSpeed(Position) / ModelData.RatioADC) ||
+				if ((!avgDtSpeed.IsEqual(DataBus.HybridControllerInfo.ElectricMotorSpeed(PositionForSimulation) / ModelData.RatioADC) ||
 															!dt.IsEqual(DataBus.HybridControllerInfo.SimulationInterval))) {
 					return new ResponseInvalidOperatingPoint(this) {
 						ElectricMotor = {
@@ -288,7 +298,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 
 			
-			if ((Position == PowertrainPosition.HybridP2 || Position == PowertrainPosition.HybridP2_5 || Position == PowertrainPosition.IHPC) && !gearbox.GearEngaged(absTime)) {
+			if ((PositionForSimulation == PowertrainPosition.HybridP2 || PositionForSimulation == PowertrainPosition.HybridP2_5 || PositionForSimulation == PowertrainPosition.IHPC) && !gearbox.GearEngaged(absTime)) {
 				// electric motor is between gearbox and clutch, but no gear is engaged...
 				if (emTorque != null) {
 					if (!DataBus.HybridControllerInfo.GearboxEngaged || (DataBus.HybridControllerInfo.GearboxEngaged && !gearbox.GearEngaged(absTime))) {
@@ -314,14 +324,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				emTorque = 0.SI<NewtonMeter>();
 			}
 
-            if (Position == PowertrainPosition.BatteryElectricE2 && !gearbox.GearEngaged(absTime))
+            if (PositionForSimulation == PowertrainPosition.BatteryElectricE2 && !gearbox.GearEngaged(absTime))
             {
                 // electric motor is after the gearbox but no gear engaged - ignore inertia and drag...
                 emTorqueDt = 0.SI<NewtonMeter>();
                 emTorque = 0.SI<NewtonMeter>();
             }
 
-            if (Position == PowertrainPosition.HybridP1 && !DataBus.EngineCtl.CombustionEngineOn) {
+            if (PositionForSimulation == PowertrainPosition.HybridP1 && !DataBus.EngineCtl.CombustionEngineOn) {
 				// electric motor is directly connected to the ICE, ICE is off and EM is off - do not apply drag loss
 				emTorqueDt = 0.SI<NewtonMeter>();
 				emTorque = 0.SI<NewtonMeter>();
@@ -402,7 +412,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 
-			if (Position == PowertrainPosition.GEN && emOff && !DataBus.EngineCtl.CombustionEngineOn) {
+			if (PositionForSimulation == PowertrainPosition.GEN && emOff && !DataBus.EngineCtl.CombustionEngineOn) {
 				emTorqueDt = 0.SI<NewtonMeter>();
 			}
 			var inTorqueDt = outTorque + emTorqueDt;
@@ -665,38 +675,38 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgEMSpeed = (prevEmSpeed + CurrentState.EMSpeed) / 2;
 			var avgDTSpeed = (prevDtSpeed + CurrentState.DrivetrainSpeed) / 2;
 
-			container[ModalResultField.EM_ratio_, Position, AxleNumber] = ModelData.RatioADC.SI<Scalar>();
-			container[ModalResultField.n_EM_electricMotor_, Position, AxleNumber] = avgEMSpeed;
-			container[ModalResultField.T_EM_electricMotor_, Position, AxleNumber] = CurrentState.EMTorque;
-			container[ModalResultField.T_EM_electricMotor_map_, Position, AxleNumber] = CurrentState.EmTorqueMap;
+			container[ModalResultField.EM_ratio_, RealPowertrainPosition, AxleNumber] = ModelData.RatioADC.SI<Scalar>();
+			container[ModalResultField.n_EM_electricMotor_, RealPowertrainPosition, AxleNumber] = avgEMSpeed;
+			container[ModalResultField.T_EM_electricMotor_, RealPowertrainPosition, AxleNumber] = CurrentState.EMTorque;
+			container[ModalResultField.T_EM_electricMotor_map_, RealPowertrainPosition, AxleNumber] = CurrentState.EmTorqueMap;
 
-			container[ModalResultField.T_EM_electricMotor_drive_max_, Position, AxleNumber] = CurrentState.DriveMax;
-			container[ModalResultField.T_EM_electricMotor_gen_max_, Position, AxleNumber] = CurrentState.DragMax;
+			container[ModalResultField.T_EM_electricMotor_drive_max_, RealPowertrainPosition, AxleNumber] = CurrentState.DriveMax;
+			container[ModalResultField.T_EM_electricMotor_gen_max_, RealPowertrainPosition, AxleNumber] = CurrentState.DragMax;
 
-			container[ModalResultField.P_EM_electricMotor_gen_max_, Position, AxleNumber] = (CurrentState.DragMax ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
-			container[ModalResultField.P_EM_electricMotor_drive_max_, Position, AxleNumber] = (CurrentState.DriveMax ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
+			container[ModalResultField.P_EM_electricMotor_gen_max_, RealPowertrainPosition, AxleNumber] = (CurrentState.DragMax ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
+			container[ModalResultField.P_EM_electricMotor_drive_max_, RealPowertrainPosition, AxleNumber] = (CurrentState.DriveMax ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
 			
-			container[ModalResultField.P_EM_electricMotor_em_mech_, Position, AxleNumber] = (CurrentState.EMTorque ?? 0.SI<NewtonMeter>() ) * avgEMSpeed;
-			container[ModalResultField.P_EM_electricMotor_em_mech_map_, Position, AxleNumber] = (CurrentState.EmTorqueMap ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
+			container[ModalResultField.P_EM_electricMotor_em_mech_, RealPowertrainPosition, AxleNumber] = (CurrentState.EMTorque ?? 0.SI<NewtonMeter>() ) * avgEMSpeed;
+			container[ModalResultField.P_EM_electricMotor_em_mech_map_, RealPowertrainPosition, AxleNumber] = (CurrentState.EmTorqueMap ?? 0.SI<NewtonMeter>()) * avgEMSpeed;
 
-			if (!Position.IsBatteryElectric()) {
-				container[ModalResultField.P_EM_in_, Position, AxleNumber] = CurrentState.DrivetrainInTorque * avgDTSpeed;
+			if (!RealPowertrainPosition.IsBatteryElectric()) {
+				container[ModalResultField.P_EM_in_, RealPowertrainPosition, AxleNumber] = CurrentState.DrivetrainInTorque * avgDTSpeed;
 			}
 
-			container[ModalResultField.P_EM_out_, Position, AxleNumber] = CurrentState.DrivetrainOutTorque * avgDTSpeed;
-			container[ModalResultField.P_EM_mech_, Position, AxleNumber] = (CurrentState.DrivetrainInTorque - CurrentState.DrivetrainOutTorque) * avgDTSpeed;
+			container[ModalResultField.P_EM_out_, RealPowertrainPosition, AxleNumber] = CurrentState.DrivetrainOutTorque * avgDTSpeed;
+			container[ModalResultField.P_EM_mech_, RealPowertrainPosition, AxleNumber] = (CurrentState.DrivetrainInTorque - CurrentState.DrivetrainOutTorque) * avgDTSpeed;
 			
-			container[ModalResultField.P_EM_electricMotor_el_, Position, AxleNumber] = CurrentState.ElectricPowerToBattery;
+			container[ModalResultField.P_EM_electricMotor_el_, RealPowertrainPosition, AxleNumber] = CurrentState.ElectricPowerToBattery;
 			
-			container[ModalResultField.P_EM_electricMotorLoss_, Position, AxleNumber] = (CurrentState.EmTorqueMap ?? 0.SI<NewtonMeter>()) * avgEMSpeed - CurrentState.ElectricPowerToBattery;
+			container[ModalResultField.P_EM_electricMotorLoss_, RealPowertrainPosition, AxleNumber] = (CurrentState.EmTorqueMap ?? 0.SI<NewtonMeter>()) * avgEMSpeed - CurrentState.ElectricPowerToBattery;
 
-			container[ModalResultField.P_EM_TransmissionLoss_, Position, AxleNumber] = CurrentState.TransmissionTorqueLoss * avgDTSpeed;
+			container[ModalResultField.P_EM_TransmissionLoss_, RealPowertrainPosition, AxleNumber] = CurrentState.TransmissionTorqueLoss * avgDTSpeed;
 
-			container[ModalResultField.P_EM_electricMotorInertiaLoss_, Position, AxleNumber] = CurrentState.InertiaTorqueLoss * avgEMSpeed;
+			container[ModalResultField.P_EM_electricMotorInertiaLoss_, RealPowertrainPosition, AxleNumber] = CurrentState.InertiaTorqueLoss * avgEMSpeed;
 
-			container[ModalResultField.P_EM_loss_, Position, AxleNumber] = (CurrentState.DrivetrainInTorque - CurrentState.DrivetrainOutTorque) * avgDTSpeed - CurrentState.ElectricPowerToBattery;
+			container[ModalResultField.P_EM_loss_, RealPowertrainPosition, AxleNumber] = (CurrentState.DrivetrainInTorque - CurrentState.DrivetrainOutTorque) * avgDTSpeed - CurrentState.ElectricPowerToBattery;
 
-			container[ModalResultField.EM_Off_, Position, AxleNumber] = CurrentState.EMTorque == null ? 1.SI<Scalar>() : 0.SI<Scalar>();
+			container[ModalResultField.EM_Off_, RealPowertrainPosition, AxleNumber] = CurrentState.EMTorque == null ? 1.SI<Scalar>() : 0.SI<Scalar>();
 
 			var losses = (CurrentState.EmTorqueMap ?? 0.SI<NewtonMeter>()) * avgEMSpeed - CurrentState.ElectricPowerToBattery;
 			var contribution = (losses - ModelData.Overload.ContinuousPowerLoss) * simulationInterval;
@@ -708,9 +718,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				contribution = (ModelData.Overload.OverloadBuffer - ThermalBuffer).Cast<WattSecond>();
 			}
 			if (ModelData.Overload.OverloadBuffer.Value() != 0) { // mk2021-08-03 overloadbuffer was 0 in Test Case: "ADASTestPEV.TestPCCEngineeringSampleCases G5Eng PCC12 Case A"
-				container[ModalResultField.ElectricMotor_OvlBuffer_, Position, AxleNumber] = VectoMath.Max(0, (ThermalBuffer + contribution) / ModelData.Overload.OverloadBuffer);
+				container[ModalResultField.ElectricMotor_OvlBuffer_, RealPowertrainPosition, AxleNumber] = VectoMath.Max(0, (ThermalBuffer + contribution) / ModelData.Overload.OverloadBuffer);
 			} else {
-				container[ModalResultField.ElectricMotor_OvlBuffer_, Position, AxleNumber] = 0.SI<Scalar>();
+				container[ModalResultField.ElectricMotor_OvlBuffer_, RealPowertrainPosition, AxleNumber] = 0.SI<Scalar>();
 			}
 				
 			if (NextComponent == null && BusAux != null) {
@@ -771,7 +781,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		#region Implementation of IUpdateable
 
 		protected override bool DoUpdateFrom(object other) {
-			if (other is ElectricMotor e && Position == e.Position) {
+			if (other is ElectricMotor e && PositionForSimulation == e.PositionForSimulation) {
 				ThermalBuffer = e.ThermalBuffer;
 				DeRatingActive = e.DeRatingActive;
 				PreviousState = e.PreviousState.Clone();
