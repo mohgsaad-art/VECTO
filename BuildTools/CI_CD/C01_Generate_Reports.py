@@ -13,8 +13,9 @@ Usage:
         [--interim-report]           Write to Interim_Reports/ subfolder instead of Reports/
         [--reports-cache <path>]     Cache directory used to determine the next report number
         [--mr-reports-cache <path>]  Directory for MR OR reports (default: <reports-cache>/MR)
-        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-ref-run/--is-mr-run
-        [--is-ref-run]               Also (re)generate the reference OR report from XX_RESULTS/<ref_version>
+        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; when supplied, the reference OR report is
+                                       always (re)generated from XX_RESULTS/<ref_version> if present.
+                                       Required with --is-mr-run.
         [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
@@ -85,14 +86,6 @@ parser.add_argument(
     help='When set, also generates the MR OR report (from <ref-vecto-root>/MR results) '
          'before generating the current report, so the Intermediate Delta is included '
          'in the same pipeline run.',
-)
-parser.add_argument(
-    '--is-ref-run',
-    action='store_true',
-    default=False,
-    help='When set, also (re)generates the reference OR report (from <ref-vecto-root> '
-         'results) before generating the current report, so the reference Delta reflects '
-         'this same pipeline run instead of a report from an earlier, separate run.',
 )
 args = parser.parse_args()
 
@@ -644,7 +637,9 @@ def refresh_ref_report() -> None:
     """Generate a fresh reference OR report from <ref-vecto-root> results,
     replacing any existing report for that version in _reports_cache.
 
-    Mirrors refresh_mr_report(). Only called when --is-ref-run is set.
+    Mirrors refresh_mr_report(). Called unconditionally whenever
+    --ref-vecto-root is supplied; no-ops if it is absent or its
+    XX_RESULTS/<ref_version> results aren't available yet.
     """
     if not args.ref_vecto_root:
         print('--ref-vecto-root not supplied - cannot generate reference report.')
@@ -698,12 +693,12 @@ def copy_failed_outputs(failed_names: list[str], src_result_dir: str, dest_dir: 
 
 
 def main() -> None:
-    # When --is-ref-run/--is-mr-run is set, regenerate the reference/MR OR
-    # report first so the Delta reflects this same pipeline run instead of
-    # an earlier, separately-produced report.
-    if args.is_ref_run:
-        print('--- Generating reference OR report ---')
-        refresh_ref_report()
+    # Regenerate the reference OR report first, whenever possible, so the
+    # reference Delta reflects this same pipeline run instead of an earlier,
+    # separately-produced report. When --is-mr-run is set, do the same for
+    # the MR OR report.
+    print('--- Generating reference OR report ---')
+    refresh_ref_report()
 
     if args.is_mr_run:
         print('--- Generating MR OR report ---')

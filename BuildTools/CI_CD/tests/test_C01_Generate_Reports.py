@@ -47,14 +47,12 @@ def _init_git_repo(path):
     subprocess.run(['git', 'commit', '--allow-empty', '-q', '-m', 'init'], cwd=path, check=True)
 
 
-def _import_c01_with_ref(ref_vecto_root, cwd, is_ref_run=False):
+def _import_c01_with_ref(ref_vecto_root, cwd):
     sys.modules.pop('C01_Generate_Reports', None)
     vecto_root = os.path.join(cwd, 'vecto_root')
     os.makedirs(vecto_root, exist_ok=True)
     argv = ['C01_Generate_Reports.py', vecto_root, '--report-dir', cwd,
             '--ref-vecto-root', ref_vecto_root]
-    if is_ref_run:
-        argv.append('--is-ref-run')
 
     old_argv, old_cwd = sys.argv, os.getcwd()
     sys.argv = argv
@@ -522,10 +520,35 @@ class TestRefreshRefReport:
         assert not old_report.exists()
         assert len(list(reports_dir.glob('OR_unknown_*.xlsx'))) == 1
 
-    def test_is_ref_run_flag_recognised(self, tmp_path):
-        C01 = _import_c01_with_ref(str(tmp_path / 'ref_vecto'), str(tmp_path), is_ref_run=True)
+    def test_main_refreshes_reference_report_without_any_flag(self, tmp_path, monkeypatch):
+        # vecto_root and ref_vecto_root both resolve to version 'unknown'
+        # (no real vectocmd.exe here) but get distinct git hashes, so the
+        # current-run report (OR_unknown_..._<cur_hash>.xlsx) and the
+        # refreshed reference report (OR_unknown_..._<ref_hash>.xlsx) are
+        # still distinguishable by filename.
+        ref_vecto_root = tmp_path / 'ref_vecto'
+        ref_vecto_root.mkdir()
+        _init_git_repo(str(ref_vecto_root))
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        _write_result_dir(
+            cwd / 'XX_RESULTS' / 'unknown', 'CaseA',
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+        )
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        _init_git_repo(C01.vecto_root)
+        monkeypatch.chdir(cwd)
+        monkeypatch.setattr(C01, 'vecto_hash', C01.get_vecto_hash(C01.vecto_root))
 
-        assert C01.args.is_ref_run is True
+        C01.main()
+
+        ref_hash = C01.get_vecto_hash(str(ref_vecto_root))
+        ref_reports = list((cwd / 'Reports').glob(f'OR_unknown_*_{ref_hash}.xlsx'))
+        cur_reports = list((cwd / 'Reports').glob(f'OR_unknown_*_{C01.vecto_hash}.xlsx'))
+        assert len(ref_reports) == 1
+        assert len(cur_reports) == 1
+        assert ref_reports != cur_reports
 
 
 class TestGetLatestMrReport:
