@@ -36,6 +36,37 @@ def C01():
     return _import_c01()
 
 
+def _init_git_repo(path):
+    """get_vecto_hash runs `git rev-parse --short HEAD` against the given
+    root - give it a real (if minimal) repo so it returns an actual hash
+    instead of git's "not a git repository" error text."""
+    import subprocess
+    subprocess.run(['git', 'init', '-q'], cwd=path, check=True)
+    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=path, check=True)
+    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=path, check=True)
+    subprocess.run(['git', 'commit', '--allow-empty', '-q', '-m', 'init'], cwd=path, check=True)
+
+
+def _import_c01_with_ref(ref_vecto_root, cwd, is_ref_run=False):
+    sys.modules.pop('C01_Generate_Reports', None)
+    vecto_root = os.path.join(cwd, 'vecto_root')
+    os.makedirs(vecto_root, exist_ok=True)
+    argv = ['C01_Generate_Reports.py', vecto_root, '--report-dir', cwd,
+            '--ref-vecto-root', ref_vecto_root]
+    if is_ref_run:
+        argv.append('--is-ref-run')
+
+    old_argv, old_cwd = sys.argv, os.getcwd()
+    sys.argv = argv
+    os.chdir(cwd)
+    try:
+        import C01_Generate_Reports as C01
+    finally:
+        sys.argv = old_argv
+        os.chdir(old_cwd)
+    return C01
+
+
 _VSUM_COMMENT_LINE = '# VECTO-DEV 5.1.3-DEV - 01.01.2026 00:00'
 _VSUM_HEADER = 'Job [-],Input File [-],Cycle [-],Status,CO2 [g/km],FC-Final [g/km],EC_el_final [kWh/km]'
 _VSUM_FOOTER = '#@ SHA256: deadbeef='
@@ -423,6 +454,78 @@ class TestWriteReport:
         failed_names = C01.write_report(str(tmp_path), str(out_path))
 
         assert failed_names == ['CaseBad']
+
+
+class TestRefreshRefReport:
+    def test_writes_report_from_ref_version_results(self, tmp_path, monkeypatch):
+        ref_vecto_root = tmp_path / 'ref_vecto'
+        ref_vecto_root.mkdir()
+        _init_git_repo(str(ref_vecto_root))
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        _write_result_dir(
+            cwd / 'XX_RESULTS' / 'unknown', 'CaseA',
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+        )
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        monkeypatch.chdir(cwd)
+
+        C01.refresh_ref_report()
+
+        reports = list((cwd / 'Reports').glob('OR_unknown_*.xlsx'))
+        assert len(reports) == 1
+
+    def test_no_ref_vecto_root_is_noop(self, tmp_path, capsys):
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        C01 = _import_c01_with_ref(str(tmp_path / 'ref_vecto'), cwd=str(cwd))
+        C01.args.ref_vecto_root = None
+
+        C01.refresh_ref_report()
+
+        assert 'not supplied' in capsys.readouterr().out
+
+    def test_missing_result_dir_is_noop(self, tmp_path, capsys, monkeypatch):
+        ref_vecto_root = tmp_path / 'ref_vecto'
+        ref_vecto_root.mkdir()
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        monkeypatch.chdir(cwd)
+
+        C01.refresh_ref_report()
+
+        assert list((cwd / 'Reports').glob('OR_*.xlsx')) == []
+        assert 'not found' in capsys.readouterr().out
+
+    def test_removes_old_report_for_same_version(self, tmp_path, monkeypatch):
+        ref_vecto_root = tmp_path / 'ref_vecto'
+        ref_vecto_root.mkdir()
+        _init_git_repo(str(ref_vecto_root))
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        _write_result_dir(
+            cwd / 'XX_RESULTS' / 'unknown', 'CaseA',
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+        )
+        reports_dir = cwd / 'Reports'
+        reports_dir.mkdir()
+        old_report = reports_dir / 'OR_unknown_260101_0001_abc1234.xlsx'
+        old_report.write_bytes(b'stale')
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        monkeypatch.chdir(cwd)
+
+        C01.refresh_ref_report()
+
+        assert not old_report.exists()
+        assert len(list(reports_dir.glob('OR_unknown_*.xlsx'))) == 1
+
+    def test_is_ref_run_flag_recognised(self, tmp_path):
+        C01 = _import_c01_with_ref(str(tmp_path / 'ref_vecto'), str(tmp_path), is_ref_run=True)
+
+        assert C01.args.is_ref_run is True
 
 
 class TestGetLatestMrReport:

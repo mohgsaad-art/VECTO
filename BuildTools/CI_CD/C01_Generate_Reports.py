@@ -13,7 +13,8 @@ Usage:
         [--interim-report]           Write to Interim_Reports/ subfolder instead of Reports/
         [--reports-cache <path>]     Cache directory used to determine the next report number
         [--mr-reports-cache <path>]  Directory for MR OR reports (default: <reports-cache>/MR)
-        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-mr-run
+        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-ref-run/--is-mr-run
+        [--is-ref-run]               Also (re)generate the reference OR report from XX_RESULTS/<ref_version>
         [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
@@ -84,6 +85,14 @@ parser.add_argument(
     help='When set, also generates the MR OR report (from <ref-vecto-root>/MR results) '
          'before generating the current report, so the Intermediate Delta is included '
          'in the same pipeline run.',
+)
+parser.add_argument(
+    '--is-ref-run',
+    action='store_true',
+    default=False,
+    help='When set, also (re)generates the reference OR report (from <ref-vecto-root> '
+         'results) before generating the current report, so the reference Delta reflects '
+         'this same pipeline run instead of a report from an earlier, separate run.',
 )
 args = parser.parse_args()
 
@@ -631,6 +640,34 @@ def refresh_mr_report() -> None:
     print(f'MR report written: {mr_output_path}')
 
 
+def refresh_ref_report() -> None:
+    """Generate a fresh reference OR report from <ref-vecto-root> results,
+    replacing any existing report for that version in _reports_cache.
+
+    Mirrors refresh_mr_report(). Only called when --is-ref-run is set.
+    """
+    if not args.ref_vecto_root:
+        print('--ref-vecto-root not supplied - cannot generate reference report.')
+        return
+
+    ref_version = get_vecto_version(args.ref_vecto_root)
+    ref_result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', ref_version)
+    if not os.path.isdir(ref_result_dir):
+        print(f'Reference result dir not found at {ref_result_dir} - skipping reference report.')
+        return
+
+    for _old in glob.glob(os.path.join(_reports_cache, f'OR_{ref_version}_*.xlsx')):
+        os.remove(_old)
+        print(f'Removed old reference report: {_old}')
+
+    ref_hash = get_vecto_hash(args.ref_vecto_root)
+    ref_nnnn = get_next_report_number(_reports_cache)
+    ref_output_path = os.path.join(_reports_cache, f'OR_{ref_version}_{date}_{ref_nnnn}_{ref_hash}.xlsx')
+
+    write_report(ref_result_dir, ref_output_path)
+    print(f'Reference report written: {ref_output_path}')
+
+
 def purge_old_failed_reports(failed_reports_dir: str, max_age_days: int = 10) -> None:
     if not os.path.isdir(failed_reports_dir):
         return
@@ -661,8 +698,13 @@ def copy_failed_outputs(failed_names: list[str], src_result_dir: str, dest_dir: 
 
 
 def main() -> None:
-    # When --is-mr-run is set, regenerate the MR OR report first so the
-    # Intermediate Delta reflects the latest MR build in this same pipeline run.
+    # When --is-ref-run/--is-mr-run is set, regenerate the reference/MR OR
+    # report first so the Delta reflects this same pipeline run instead of
+    # an earlier, separately-produced report.
+    if args.is_ref_run:
+        print('--- Generating reference OR report ---')
+        refresh_ref_report()
+
     if args.is_mr_run:
         print('--- Generating MR OR report ---')
         refresh_mr_report()
