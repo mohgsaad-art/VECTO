@@ -441,13 +441,16 @@ def get_REF_vehicles(df_vehicles: pd.DataFrame):
 
     return df_vehicles_REF
 
-def generate_PRIM_COMP_job(PRIM,COMP,fjob_fpath,RunSimulation: bool = True):
+def generate_PRIM_COMP_job(PRIM,COMP,fjob_fpath,RunSimulation: bool = True, datetime_val: datetime = None):
+    if datetime_val is None:
+        datetime_val = datetime.now()
+
     # FM from prim and comp
     # --------------------------
     job_dict = {
        "Header": {
          "CreatedBy": "Guillaume Alix, JRC, Ispra",
-         "Date": datetime.now().isoformat()+'Z',
+         "Date": datetime_val.isoformat()+'Z',
          "AppVersion": "2.2",
          "FileVersion": 10
        },
@@ -466,14 +469,16 @@ def generate_PRIM_COMP_job(PRIM,COMP,fjob_fpath,RunSimulation: bool = True):
     with open(fjob_fpath, "w") as file:
         json.dump(job_dict, file, indent=2)
 
-def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath,RunSimulation: bool = True):
+def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath,RunSimulation: bool = True, datetime_val: datetime = None):
+    if datetime_val is None:
+        datetime_val = datetime.now()
 
     # FM from prim VIF and COMP
     # --------------------------
     job_dict = {
           "Header": {
         	"CreatedBy": "Guillaume Alix, JRC, Ispra",
-        	"Date": datetime.now().isoformat()+'Z',
+        	"Date": datetime_val.isoformat()+'Z',
         	"AppVersion": "2.2",
         	"FileVersion": 7
           },

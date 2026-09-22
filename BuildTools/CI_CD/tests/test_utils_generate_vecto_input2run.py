@@ -3,8 +3,10 @@ Tests for FUNCTIONS.utils_generate_vecto_input2run: is_xml_valid2run and its
 supporting reductions (get_vehicles, get_REF_vehicles).
 """
 
+import json
 import os
 import sys
+from datetime import datetime
 
 import pandas as pd
 import pytest
@@ -370,3 +372,39 @@ class TestA02RunSimulationFlag:
 
         content = out.read_text(encoding='utf-8')
         assert '"RunSimulation": "true"' in content
+
+    def test_generate_prim_comp_job_uses_supplied_datetime(self, tmp_path):
+        out = tmp_path / 'job.vecto'
+        fixed = datetime(2026, 1, 8, 8, 30, 0, 8888)
+        generate_PRIM_COMP_job('prim.xml', 'comp.xml', str(out), datetime_val=fixed)
+
+        job = json.loads(out.read_text(encoding='utf-8'))
+        assert job['Header']['Date'] == fixed.isoformat() + 'Z'
+
+    def test_generate_prim_comp_job_defaults_to_now(self, tmp_path):
+        out = tmp_path / 'job.vecto'
+        before = datetime.now()
+        generate_PRIM_COMP_job('prim.xml', 'comp.xml', str(out))
+        after = datetime.now()
+
+        job = json.loads(out.read_text(encoding='utf-8'))
+        written = datetime.fromisoformat(job['Header']['Date'].removesuffix('Z'))
+        assert before <= written <= after
+
+    def test_generate_primvif_comp_job_uses_supplied_datetime(self, tmp_path):
+        out = tmp_path / 'job.vecto'
+        fixed = datetime(2026, 1, 8, 8, 30, 0, 8888)
+        generate_PRIMVIF_COMP_job('vif.xml', 'comp.xml', str(out), datetime_val=fixed)
+
+        job = json.loads(out.read_text(encoding='utf-8'))
+        assert job['Header']['Date'] == fixed.isoformat() + 'Z'
+
+    def test_generate_primvif_comp_job_defaults_to_now(self, tmp_path):
+        out = tmp_path / 'job.vecto'
+        before = datetime.now()
+        generate_PRIMVIF_COMP_job('vif.xml', 'comp.xml', str(out))
+        after = datetime.now()
+
+        job = json.loads(out.read_text(encoding='utf-8'))
+        written = datetime.fromisoformat(job['Header']['Date'].removesuffix('Z'))
+        assert before <= written <= after

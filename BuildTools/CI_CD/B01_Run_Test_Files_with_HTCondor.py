@@ -120,13 +120,17 @@ while True:
         t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
 # --- Step 5: Extract result files ---
+# --suffix scopes each B14 call to one VECTO version's result archives.
 print('Extracting result files...')
 run(f'python B14_Unzip_Results.py "{vecto_root}"')
 
 if args.ref_vecto_root:
+    print('Extracting reference result files...')
+    run(f'python B14_Unzip_Results.py "{args.ref_vecto_root}" --suffix _REF')
+
     mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
     if os.path.isdir(mr_vecto_root):
         print('Extracting MR result files...')
-        output = run(f'python B14_Unzip_Results.py "{mr_vecto_root}"')
+        run(f'python B14_Unzip_Results.py "{mr_vecto_root}" --suffix _MR')
 
 print('Done.')
