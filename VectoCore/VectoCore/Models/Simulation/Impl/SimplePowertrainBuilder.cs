@@ -531,12 +531,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var gearbox = ComponentFactory.CreateGearboxBatteryOnlyHybrid(data.JobType, data.Cycle.CycleType, data.GearboxSinglePwt.Type, container.RunData.ElectricMachinesSinglePwt.First().Item1
 			,container, axlePtContainer, null);
             
-            //var idleController = GetIdleController(data.PTOSinglePwt, engine, container);
-            //var clutch = (data.GearboxSinglePwt.Type.ManualTransmission() || data.GearboxSinglePwt.Type == GearboxType.IHPC)
-            //    ? ComponentFactory.CreateClutch(data.JobType, container, axlePtContainer, data.EngineData)
-            //    : null;
-
-
             var vehicle = ComponentFactory.CreateVehicle(container, data.VehicleData, data.AirdragData);
 
             // TODO: MQ 2018-11-19: engineering mode needs AUX power from cycle, use face cycle...
@@ -553,13 +547,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                 default:
                     throw new VectoException("Wrong CycleType for SimplePowertrain", ErrorCodes.VEHICLE_INVALID_CYCLE);
             }
-
-            //if ((data.SuperCapData != null || data.BatteryData != null) && data.EngineData.WHRType.IsElectrical()) {
-            //    var dcDcConverterEfficiency = DeclarationData.WHRChargerEfficiency;
-            //    var whrCharger = ComponentFactory.CreateWHRCharger(container, dcDcConverterEfficiency);
-            //    es.Connect(whrCharger);
-            //    engine.WHRCharger = whrCharger;
-            //}
 
 			var ctl = ComponentFactory.CreateElectricMotorControllerBatteryOnlyHybrid(data.Cycle.CycleType, container, axlePtContainer, es);
             vehicle.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius,
@@ -580,17 +567,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                     GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesSinglePwt, container, axlePtContainer, es, ctl))
                 .AddComponent(
                     GetElectricMachine(PowertrainPosition.IHPC, data.ElectricMachinesSinglePwt, container, axlePtContainer, es, ctl));
-                //.AddComponent(clutch)
-                //.AddComponent(
-                //    GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesSinglePwt, container, axlePtContainer, es, ctl))
-                //.AddComponent(engine, idleController);
             AddAuxiliaries(engine, container, data, axlePtContainer);
 
-            if (data.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
-                // this has to be done _after_ the powertrain is connected together so that the cluch already has its nextComponent set (necessary in the idle controlelr)
-                //clutch.IdleController = idleController;
-                
-            }
 
             if (data.BusAuxiliaries != null) {
                 if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
