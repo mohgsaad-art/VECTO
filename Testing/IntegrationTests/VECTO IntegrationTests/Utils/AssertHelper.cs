@@ -35,6 +35,7 @@ using System.Diagnostics;
 using System.Reflection;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
@@ -214,6 +215,32 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 			}
         }
 
+		public static void AssertMetrics(ISimulatorFactory factory, Dictionary<String, double> metrics,
+			double tolerance = DoubleExtensionMethods.ToleranceFactor, bool isFCHV = false)
+		{
+			String sumFilePath = WriteSumFile(factory);
+
+			var table = VectoCSVFile.Read(sumFilePath, true, true);
+			var row = isFCHV ? table.Rows[1] : table.Rows[0];
+
+			Dictionary<string, double> results = new Dictionary<string, double>();
+
+			foreach (var kvp in metrics) {
+				double result;
+				Assert.IsTrue(double.TryParse(row[kvp.Key].ToString(), out result));
+
+				results.Add(kvp.Key, result);
+
+				TestContext.WriteLine($"{kvp.Key} = {result}   (expected = {kvp.Value})");
+            }
+			TestContext.WriteLine();
+			TestContext.WriteLine(metrics.Keys.Select(x => results[x]).Join());
+
+			foreach (var kvp in metrics) {
+				AreRelativeEqual(kvp.Value.SI<Scalar>(), results[kvp.Key].SI<Scalar>(), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})", tolerance);
+			}
+        }
+
 		public static void ReadMetricsFromVSum(String vsumPath, int vsumRow, Dictionary<String, double> metrics)
 		{
 			var distanceTable = VectoCSVFile.Read(vsumPath, true, true);
@@ -228,6 +255,17 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
         }
 
 		private static string WriteSumFile(SimulatorFactory factory)
+        {
+			String sumFilePath = ((FileOutputWriter) factory.ReportWriter).SumFileName;
+
+			if (!File.Exists(sumFilePath)) {
+				factory.SumData.Finish();
+            }
+
+			return sumFilePath;
+		}
+
+		private static string WriteSumFile(ISimulatorFactory factory)
         {
 			String sumFilePath = ((FileOutputWriter) factory.ReportWriter).SumFileName;
 
