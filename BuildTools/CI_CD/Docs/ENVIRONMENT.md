@@ -173,7 +173,7 @@ python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queu
 - Requires HTCondor (`condor_submit`, `condor_q`) to be available on the system.
 - Internally calls B12 to generate the queue file, then submits via `condor_submit`.
 - Polls `condor_q` every 30 s until the queue is empty (timeout: 10 h).
-- Extracts result archives via B14 once all jobs finish. If `<ref-vecto-root>/MR` exists, also extracts MR result archives.
+- Extracts result archives via B14 once all jobs finish: once for the current version, once for `--ref-vecto-root` (`--suffix _REF`) if supplied, and once for `<ref-vecto-root>/MR` (`--suffix _MR`) if it exists — so each version's results land in its own `Z00_VECTO_OUTPUTS`/`XX_RESULTS` folder.
 
 ### B12 — Generate HTCondor queue file
 ```bash
@@ -183,7 +183,7 @@ python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
 - `--force-rerun`: include jobs whose output archive already exists in `Z00_VECTO_OUTPUTS` (default: skip completed jobs).
 - `--no-hev`: exclude HEV vehicles from the job list.
-- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, two extra job groups are appended: (1) vehicles missing from the reference OR report, run against the reference executable; (2) vehicles missing from the MR OR report (`<reports-cache>/MR`), run against the MR executable (`<ref-vecto-root>/MR`). This enables both the reference delta (C44) and the Intermediate (MR) delta.
+- `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, two extra job groups are appended: (1) vehicles missing from the reference OR report, run against the reference executable, output filenames suffixed `_REF`; (2) vehicles missing from the MR OR report (`<reports-cache>/MR`), run against the MR executable (`<ref-vecto-root>/MR`), output filenames suffixed `_MR`. These suffixes let B14 tell which VECTO version produced each result archive. This enables both the reference delta (C44) and the Intermediate (MR) delta.
 - `--reports-cache`: directory containing `OR_*.xlsx` report files used to detect missing vehicles for the reference version. Defaults to the standard CI Reports directory. MR reports are read from `<reports-cache>/MR`.
 - Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first, then reference-version jobs, then MR-version jobs.
 - Prepares the job list before submission.
@@ -200,13 +200,14 @@ python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filenam
 
 ### B14 — Extract HTCondor result archives
 ```bash
-python B14_Unzip_Results.py <vecto_root> [--force-rerun]
+python B14_Unzip_Results.py <vecto_root> [--force-rerun] [--suffix {_REF,_MR}]
 ```
 - `vecto_root`: path to the VECTO installation directory. Used to determine the version subfolder (`XX_RESULTS/<version>/`, `Z00_VECTO_OUTPUTS/<version>/`).
 - `--force-rerun`: overwrite already-extracted result directories (default: skip existing).
-- Moves `*_out.zip` files from the current working directory into `Z00_VECTO_OUTPUTS/<version>/` (created in cwd).
+- `--suffix`: only pick up output zips carrying this job-type suffix (`_REF`/`_MR`, added by B12 for `--ref-vecto-root`/MR jobs). Default (unset) picks up only unsuffixed, current-version results. HTCondor drops every job's output zip into the same working directory regardless of which VECTO executable produced it, so this filter is what keeps reference/MR results out of the current version's folder — call B14 once per version, each with the matching `--suffix`, rather than once for everything.
+- Moves matching `*_out.zip` files from the current working directory into `Z00_VECTO_OUTPUTS/<version>/` (created in cwd); the suffix is stripped when reconstructing the result path.
 - Unpacks each archive into `XX_RESULTS/<version>/` (created in cwd), reconstructing the directory tree from the flat output filename.
-- Called automatically by B01 after all HTCondor jobs finish.
+- Called automatically by B01 after all HTCondor jobs finish (once per version, with the matching `--suffix`).
 
 ### C01 — Generate all reports
 ```bash
@@ -217,7 +218,7 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
 - `--interim-report`: write reports to an `Interim_Reports` subfolder of the report directory.
 - `--reports-cache`: directory used to determine the next report number (NNNN) and to receive a copy of the generated report. Created automatically if it does not exist. Defaults to the same directory as the report output.
 - `--mr-reports-cache`: directory where the single MR OR report is stored. Defaults to `<reports-cache>/MR`.
-- `--ref-vecto-root`: path to `REF_VECTO_ROOT`. Required when `--is-mr-run` is set; the MR VECTO executable is taken from `<ref-vecto-root>/MR`.
+- `--ref-vecto-root`: path to `REF_VECTO_ROOT`. Required when `--is-mr-run` is set; the MR VECTO executable is taken from `<ref-vecto-root>/MR`. Whenever it's supplied, the reference OR report is *always* (re)generated from `XX_RESULTS/<ref_version>/` before the current report — no flag needed. Any existing report for that version in `<reports-cache>` is deleted first. Requires B01/B12/B14 to have been run with `--ref-vecto-root` so `XX_RESULTS/<ref_version>/` is actually populated — B14 routes reference-build result archives there via its own `--suffix _REF` (see B14 below); without that, the refresh has nothing to read and prints a warning instead.
 - `--is-mr-run`: when set, generates (or refreshes) the MR OR report from `XX_RESULTS/<mr_version>/` before generating the current report. The old MR OR report in `<mr-reports-cache>` is deleted first (single-report invariant). After this flag's logic runs, the Intermediate Delta is produced regardless.
 - Reads test cases from `XX_RESULTS` in the current working directory.
 - Report naming convention: `OR_{Version}_{Date}_{NNNN}_{Hash}[_suffix].xlsx` (e.g. `OR_5.1.1_260408_0001_a1b2c3d.xlsx`). NNNN is one higher than the highest number already present in the cache directory, ensuring no collision on re-runs.
