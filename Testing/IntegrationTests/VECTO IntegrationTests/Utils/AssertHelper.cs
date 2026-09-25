@@ -237,9 +237,53 @@ namespace TUGraz.Vecto.IntegrationTests.Utils
 			TestContext.WriteLine(metrics.Keys.Select(x => results[x]).Join());
 
 			foreach (var kvp in metrics) {
+				LogGitlabMetrics(kvp.Key, results[kvp.Key]);
+			}
+
+			foreach (var kvp in metrics) {
 				AreRelativeEqual(kvp.Value.SI<Scalar>(), results[kvp.Key].SI<Scalar>(), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})", tolerance);
 			}
         }
+
+		/// <summary>
+		/// Appends the current test result to the metrics file gitlab_metrics.log.
+		///
+		/// The metrics file stores key value pairs in different lines with format:
+		/// GENVEH.MethodName.VehicleInputFile.CycleName_(MetricField,ExpectedValue) ActualValue
+		///
+		/// The file location can be overridden with the GENVEH_METRICS_FPATH environment variable.
+		/// </summary>
+		/// <param name="metricField">Name of the metric field to log.</param>
+		/// <param name="actual">Result of the current test to log.</param>
+		private static void LogGitlabMetrics(string metricField, double actual)
+		{
+			var metricFieldFormatted = metricField.Replace(" ", "");
+
+			var arguments = TestContext.CurrentContext.Test.Arguments;
+			string vehicleFileRaw = arguments[0].ToString();
+			string cycleName = arguments[1].ToString();
+			string expectedValue = arguments[2].ToString();
+
+			string vehicleFile =
+				Path.GetFileName(vehicleFileRaw)
+					.Replace(" ", "_")
+					.Replace(".", "_");
+
+			var metricKey = $"GENVEH.{TestContext.CurrentContext.Test.MethodName}.{vehicleFile}.{cycleName}_({metricFieldFormatted},{expectedValue})";
+
+			var metricsFile = Environment.GetEnvironmentVariable("GENVEH_METRICS_FPATH");
+			var filePath = !string.IsNullOrEmpty(metricsFile)
+				? metricsFile
+				: Path.Join(TestContext.CurrentContext.TestDirectory, "gitlab_metrics.log");
+
+			using var mutex = new Mutex(false, "Global\\VectoGitlabMetrics");
+			mutex.WaitOne();
+			try {
+				File.AppendAllText(filePath, $"{metricKey} {actual}{Environment.NewLine}");
+			} finally {
+				mutex.ReleaseMutex();
+			}
+		}
 
 		public static void ReadMetricsFromVSum(String vsumPath, int vsumRow, Dictionary<String, double> metrics)
 		{
