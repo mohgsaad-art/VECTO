@@ -59,14 +59,14 @@ _GENERIC_LORRY_XML = (
     b'<VIN>GENERICVIN0002</VIN></Vehicle></Root>'
 )
 
-# read_vecto_file requires <Date> (or it raises removing a None element) and
-# a namespace/xsi:type containing "Primary" (a recognized file_type); the
-# final get_REF_vehicles() dropna() also requires <VehicleCategory>, or the
-# row is silently dropped as missing REF_veh_category.
+# read_vecto_file needs a real DeclarationInput namespace plus an xsi:type
+# containing "Primary" to land in file_type 1 (any other namespace adds the
+# "other" bucket 4); the final get_REF_vehicles() dropna() also requires
+# <VehicleCategory>, or the row is silently dropped as missing REF_veh_category.
 _ISSUE_PRIMARY_XML = (
-    b'<Root xmlns="urn:placeholder:PrimaryDeclaration"'
+    b'<Root xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"'
     b' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-    b'<Vehicle><VIN>PLACEHOLDERVIN001</VIN>'
+    b'<Vehicle xsi:type="PrimaryVehicleDeclarationType"><VIN>PLACEHOLDERVIN001</VIN>'
     b'<VehicleCategory>N2</VehicleCategory>'
     b'</Vehicle>'
     b'<Date>2020-01-01</Date>'

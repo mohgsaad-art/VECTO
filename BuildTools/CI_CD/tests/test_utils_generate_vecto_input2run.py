@@ -270,6 +270,7 @@ class TestGetVehiclesValidToRunReduction:
             'is_xml_pev': False,
             'is_xml_ovc': False,
             'is_xml_lorry': False,
+            'is_xml_multi': False,
             'veh_class': 'M3',
             'veh_category': 'cat',
             'OEM': 'oem',

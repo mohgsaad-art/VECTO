@@ -150,6 +150,8 @@ def read_vecto_file(fpath: Path | str) -> list:
             veh_category = el_text(veh_el, "{*}VehicleCategory","{*}ChassisConfiguration")
             OVC = el_text(veh_el, "{*}OVC", "{*}OvcHev")
 
+            veh_bodywork = el_text(veh_el, "{*}BodyworkCode")
+
             # if veh_el is None:
             #     raise ValueError("No <Vehicle> elememt.")
 
@@ -195,19 +197,35 @@ def read_vecto_file(fpath: Path | str) -> list:
 
 
             # generating data hash by removing useless data
-
-            VIN_el = xml_tree.find(".//{*}VIN")
-            VIN_el.getparent().remove(VIN_el)
-            # special Mercedes, who also change the date and vehicle id to fit the VIN
-            # Vehicle1 = xml_tree_1.find('.//{*}Vehicle')
-            veh_el.attrib['id']=''
-            Date_el = xml_tree.find('.//{*}Date')
-            Date_el.getparent().remove(Date_el)
-
-            Digests =  xml_tree.findall('.//{*}DigestValue')
-            for Digest in Digests:
-                Digest.text=''
-
+            # new version: text elements are replaced by empty string
+            # only to get the hash because the file might not be runable after 
+            # that (ex: date must be in date format, eg. '2020-01-01T08:00:00Z')
+                
+            fld2empty_str = [
+                'VIN',
+                'Date',
+                'DigestValue',
+                'Manufacturer',
+                'ManufacturerAddress',
+                'Model',
+                'AppVersion',
+                'CertificationNumber',
+                'SimulationToolLicenseNumber',
+                'Make',
+                'TypeApprovalNumber',
+                'VectoLicenseNbr',
+                'VehicleTypeApprovalNumber',
+                ]
+            
+            for fld in fld2empty_str:
+                nodes = xml_tree.findall('.//{*}'+fld)
+                for node in nodes:
+                    node.text=''
+                    parent = node.getparent()
+                    if 'id' in parent.attrib: 
+                        parent.attrib['id']=''
+                
+            
             etree.indent(xml_tree,space='\t',level=0)
 
             xml_tree_cp = copy.deepcopy(xml_tree)
@@ -232,6 +250,7 @@ def read_vecto_file(fpath: Path | str) -> list:
                     "vehicle_xsd_type": veh_xsd_type,
                     "veh_class": veh_class,
                     "veh_category": veh_category,
+                    "veh_bodywork": veh_bodywork,
                     "is_xml_input": is_xml_input,
                     "is_xml_output": is_xml_output,
                     "is_xml_vif": is_xml_vif,
@@ -242,6 +261,7 @@ def read_vecto_file(fpath: Path | str) -> list:
                     "is_xml_lorry": is_xml_lorry,
                     "is_xml_valid2run": is_xml_valid2run,
                     "is_xml_conventional": "Conventional" in veh_xsd_type,
+                    "is_xml_multi": "Multiple" in veh_xsd_type,
                     "is_xml_hev": "HEV" in veh_xsd_type,
                     "is_xml_fchv": "FC" in veh_xsd_type,
                     "is_xml_ovc": is_OVC,
@@ -250,7 +270,7 @@ def read_vecto_file(fpath: Path | str) -> list:
                     "file_type": ("Primary" in veh_xsd_type)*1 +\
                         ("VIF" in veh_xsd_type)*2 +\
                             ("Complete" in veh_xsd_type)*3 +\
-                                ("VIF" not in veh_xsd_type and "Declaration" not in veh_xsd_type)*4,
+                                ("VIF" not in veh_xsd_type and 'DeclarationInput' not in veh_xsd_type and 'BusDeclaration' not in veh_xsd_type and 'LorryDeclaration' not in veh_xsd_type)*4 ,
                     "data_hash": data_hash,
                     "data_hash_short":data_hash[0:5],
                     "non_xml_file_errors": None,
@@ -386,7 +406,7 @@ def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
 
     df_vehicles['Issue_VIN'] = df_vehicles.index.values # as it is the result of a grouby on Issue and VIN, we created for each line a list with the same values multiple times
 
-    for c in ['is_xml_conventional','is_xml_fchv','is_xml_hev', 'is_xml_iepc', 'is_xml_pev', 'is_xml_ovc','veh_class','veh_category','OEM','VIN','iid','art10_label','is_xml_lorry']:
+    for c in ['is_xml_conventional','is_xml_fchv','is_xml_hev', 'is_xml_iepc', 'is_xml_pev', 'is_xml_ovc','is_xml_multi','veh_class','veh_category','OEM','VIN','iid','art10_label','is_xml_lorry']:
         df_vehicles[c] = df_vehicles[c].str[0] # take first elt, meaning main or primary or VIF
 
     # is_xml_valid2run must NOT go through the .str[0] reduction above: for a
@@ -410,7 +430,10 @@ def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
     sel_ovc = (df_vehicles['is_xml_ovc']==True) & \
         ((df_vehicles['is_xml_hev']==True) | \
          (df_vehicles['is_xml_fchv']==True))
-    df_vehicles.loc[sel_ovc,'veh_pwt']+='ovc' # there are some PEVovc and IEPCovc ???
+    df_vehicles.loc[sel_ovc,'veh_pwt']+='ovc' # there are some PEVovc and IEPCovc ??? 
+    
+    df_vehicles.loc[df_vehicles['is_xml_multi']==True,'veh_pwt'] = 'm' + df_vehicles.loc[df_vehicles['is_xml_multi']==True,'veh_pwt']
+    
 
     return df_vehicles
 
@@ -431,7 +454,14 @@ def get_REF_vehicles(df_vehicles: pd.DataFrame):
     df_vehicles_groupby_vhash['REF_save_dirname']=df_vehicles_groupby_vhash['REF_veh_category'].str.replace(' ','') \
         + '_' + df_vehicles_groupby_vhash['REF_veh_pwt'] \
         + '_' + df_vehicles_groupby_vhash['REF_veh_hash_short']
-
+    
+    chars_to_remove = ' :!?<>'
+    df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_Issue_VIN'].str.translate(str.maketrans({c:'' for c in chars_to_remove})) \
+        + '_' + df_vehicles_groupby_vhash['REF_veh_pwt'].str.replace('m','')
+    df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('_CONV','')
+    df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('ovc','')
+    df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('_FCHV','')
+    
     # reduce dataframe to ref files to prepqre copy
     col_sel = [c for c in df_vehicles_groupby_vhash.columns if 'REF' in c and c!='REF_idx']
 

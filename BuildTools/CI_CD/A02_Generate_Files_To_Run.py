@@ -344,6 +344,14 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
             .join(df_vecto_filt.set_index('gitlab_upload_hash'), on='gitlab_upload_hash', how='left')
             .dropna(subset=['VIN'])
         )
+        
+        # adaptation to trick the system for complete not valid to run: only the bodywork code is important for those, as it is used to define the primary step missions
+        # some complete might be different but lead in the end to the same primary simulation, without running the complete in the end
+        has_bodywork = df_vecto_ordered.veh_bodywork.fillna('').astype(str).str.strip() != ''
+        selec_dhash2replace = (df_vecto_ordered.is_xml_valid2run==False) & (df_vecto_ordered.is_xml_completed==True) & has_bodywork
+        df_vecto_ordered.loc[selec_dhash2replace,'data_hash']=df_vecto_ordered.loc[selec_dhash2replace,'veh_bodywork']
+        df_vecto_ordered.loc[selec_dhash2replace,'data_hash_short']=df_vecto_ordered.loc[selec_dhash2replace,'veh_bodywork']
+        
         df_vehicles = get_vehicles(df_vecto_ordered)
         df_vehicles_ref = get_REF_vehicles(df_vehicles)
 
