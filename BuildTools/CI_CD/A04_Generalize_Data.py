@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-A04 - Generalize identifying XML element values to generic placeholders.
+A04 - Make identifying XML element values confidential.
 
-Walks <data_dir> recursively (every subfolder, any depth) and overwrites the
-text content of every Manufacturer, ManufacturerAddress, Model, VIN, and
-CertificationNumber element (namespace-agnostic match) with a fixed generic
-value, in place.
+Walks <data_dir> recursively (every subfolder, any depth) and, in place, for
+every CONFIDENTIAL_FIELDS element (namespace-agnostic match):
+  - Date elements get DEFAULT_DATE (the file must stay XSD-valid);
+  - every other field gets CONFIDENTIAL_VALUE;
+  - the `id` attribute of each such element's parent is renamed to
+    'Confidential-ID00', 'Confidential-ID01', ... in document order, and any
+    `URI="#<old id>"` reference (e.g. a signature's di:Reference) is updated
+    to match, so the original id cannot leak through it.
+
+A02 applies the same transformation (anonymize_xml_bytes) to every issue
+vehicle XML before zipping it, and names it '<vehicle_type>_confidential.xml'.
+Generic vehicles are never touched.
 
 With --process-zips, any .zip file encountered is also unzipped, its .xml
 entries generalized the same way, and the archive rewritten in place with
@@ -31,14 +39,27 @@ from pathlib import Path
 
 from lxml import etree
 
-# Element name -> generic replacement value.
-GENERIC_VALUES = {
-    'Manufacturer': 'Vecto Manufacturer',
-    'ManufacturerAddress': 'Vecto Manufacturer Address',
-    'Model': 'Vecto Model',
-    'VIN': 'Vecto VIN Number',
-    'CertificationNumber': 'Vecto Certification Number',
-}
+# Element names whose text content is identifying and must be replaced.
+CONFIDENTIAL_FIELDS = [
+    'VIN',
+    'Date',
+    'DigestValue',
+    'Manufacturer',
+    'ManufacturerAddress',
+    'Model',
+    'AppVersion',
+    'CertificationNumber',
+    'SimulationToolLicenseNumber',
+    'Make',
+    'TypeApprovalNumber',
+    'VectoLicenseNbr',
+    'VehicleTypeApprovalNumber',
+]
+
+CONFIDENTIAL_VALUE = 'CONFIDENTIAL'
+DEFAULT_DATE = '2020-01-01T08:00:00Z'  # Date is xs:dateTime - must stay a valid date
+ID_PREFIX = 'Confidential-ID'
+CONFIDENTIAL_SUFFIX = '_confidential.xml'  # file name suffix used by A02 for issue vehicles
 
 ENV_VAR_NAME = 'A04_DATA_DIR'
 
@@ -70,30 +91,65 @@ def find_zip_files(data_dir: Path) -> list[Path]:
     ]
 
 
-def generalize_xml_file(fpath: Path) -> int:
-    """Rewrite every GENERIC_VALUES element's text content in fpath with its
-    generic value, in place. Returns the number of elements changed.
+def anonymize_tree(root) -> int:
+    """Make every CONFIDENTIAL_FIELDS element under root confidential, in
+    place (see module docstring). Returns the number of elements changed.
 
     Elements are matched namespace-agnostically. Elements with no text
-    content are left untouched (no text node to replace). If the file
-    cannot be parsed as XML, it is left untouched and 0 is returned.
+    content are left untouched (no text node to replace), but their parent's
+    id is still renamed.
     """
-    try:
-        tree = etree.parse(str(fpath))
-    except etree.XMLSyntaxError:
-        return 0
-
+    fields = set(CONFIDENTIAL_FIELDS)
     changed = 0
-    root = tree.getroot()
-    for name, generic_value in GENERIC_VALUES.items():
-        for el in root.findall(f'.//{{*}}{name}'):
-            if el.text is None:
-                continue
-            el.text = generic_value
+    parents_with_id = []
+
+    # root.iter() walks in document order, so ids are numbered in that order.
+    for el in root.iter():
+        if not isinstance(el.tag, str) or etree.QName(el).localname not in fields:
+            continue
+        if el.text is not None:
+            el.text = DEFAULT_DATE if etree.QName(el).localname == 'Date' else CONFIDENTIAL_VALUE
             changed += 1
+        parent = el.getparent()
+        if parent is not None and 'id' in parent.attrib and parent not in parents_with_id:
+            parents_with_id.append(parent)
+
+    renamed_ids = {}
+    for i, parent in enumerate(parents_with_id):
+        new_id = f'{ID_PREFIX}{i:02d}'
+        renamed_ids[parent.attrib['id']] = new_id
+        parent.attrib['id'] = new_id
+
+    if renamed_ids:
+        for el in root.iter():
+            uri = el.attrib.get('URI') if isinstance(el.tag, str) else None
+            if uri and uri.startswith('#') and uri[1:] in renamed_ids:
+                el.attrib['URI'] = '#' + renamed_ids[uri[1:]]
+
+    return changed
+
+
+def anonymize_xml_bytes(content: bytes) -> tuple[bytes, int]:
+    """Return (confidential content, number of elements changed) for an XML
+    document given as bytes. If content cannot be parsed as XML, it is
+    returned unchanged with 0."""
+    try:
+        root = etree.fromstring(content)
+    except etree.XMLSyntaxError:
+        return content, 0
+
+    changed = anonymize_tree(root)
+    return etree.tostring(root, xml_declaration=True, encoding='utf-8'), changed
+
+
+def generalize_xml_file(fpath: Path) -> int:
+    """Make fpath confidential in place (see anonymize_xml_bytes). Returns
+    the number of elements changed. If the file cannot be parsed as XML, it
+    is left untouched and 0 is returned."""
+    content, changed = anonymize_xml_bytes(fpath.read_bytes())
 
     if changed:
-        tree.write(str(fpath), xml_declaration=True, encoding='utf-8')
+        fpath.write_bytes(content)
 
     return changed
 
@@ -195,7 +251,7 @@ def generalize_data(data_dir: Path, process_zips: bool = False) -> dict[str, int
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description='Generalize identifying XML element values to generic placeholders.'
+        description='Make identifying XML element values confidential.'
     )
     parser.add_argument(
         'data_dir',

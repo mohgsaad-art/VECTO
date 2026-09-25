@@ -26,6 +26,7 @@ from pathlib import Path
 import pandas as pd
 from lxml import etree
 
+from A04_Generalize_Data import CONFIDENTIAL_SUFFIX, anonymize_xml_bytes
 from FUNCTIONS.VECTO import (
     get_dict_val_from_keypath,
     get_inputs_path,
@@ -344,14 +345,14 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
             .join(df_vecto_filt.set_index('gitlab_upload_hash'), on='gitlab_upload_hash', how='left')
             .dropna(subset=['VIN'])
         )
-        
+
         # adaptation to trick the system for complete not valid to run: only the bodywork code is important for those, as it is used to define the primary step missions
         # some complete might be different but lead in the end to the same primary simulation, without running the complete in the end
         has_bodywork = df_vecto_ordered.veh_bodywork.fillna('').astype(str).str.strip() != ''
         selec_dhash2replace = (df_vecto_ordered.is_xml_valid2run==False) & (df_vecto_ordered.is_xml_completed==True) & has_bodywork
         df_vecto_ordered.loc[selec_dhash2replace,'data_hash']=df_vecto_ordered.loc[selec_dhash2replace,'veh_bodywork']
         df_vecto_ordered.loc[selec_dhash2replace,'data_hash_short']=df_vecto_ordered.loc[selec_dhash2replace,'veh_bodywork']
-        
+
         df_vehicles = get_vehicles(df_vecto_ordered)
         df_vehicles_ref = get_REF_vehicles(df_vehicles)
 
@@ -371,12 +372,13 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
         .explode(col_to_explode)
     )
 
-    # Group by dirname → collect files
+    # Group by dirname --> collect files.
+    # <Issue vehicle XMLs are made confidential (A04) before zipping
     groups: dict[str, list[tuple[str, bytes, bool]]] = {}
     for _, row in df_to_run.iterrows():
         dirname = str(Path(_MODE_ART10) / row['REF_save_dirname'])
-        filename = row['REF_vehicle_type'] + '.xml'
-        content = Path(row['REF_local_path']).read_bytes()
+        filename = row['REF_vehicle_type'] + CONFIDENTIAL_SUFFIX
+        content, _ = anonymize_xml_bytes(Path(row['REF_local_path']).read_bytes())
         groups.setdefault(dirname, []).append((filename, content, row['REF_is_xml_valid2run']))
 
     # Add generated .vecto job files for bus configurations
