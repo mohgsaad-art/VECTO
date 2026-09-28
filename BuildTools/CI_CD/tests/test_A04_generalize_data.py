@@ -8,8 +8,13 @@ import zipfile
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from A04_Generalize_Data import (
+    CONFIDENTIAL_FIELDS,
+    CONFIDENTIAL_SUFFIX,
+    CONFIDENTIAL_VALUE,
+    DEFAULT_DATE,
     ENV_VAR_NAME,
-    GENERIC_VALUES,
+    ID_PREFIX,
+    anonymize_xml_bytes,
     find_xml_files,
     find_zip_files,
     generalize_data,
@@ -110,14 +115,14 @@ class TestGeneralizeXmlFile:
 
         assert changed == 5
         content = fpath.read_text(encoding='utf-8')
-        assert '<Manufacturer>Vecto Manufacturer</Manufacturer>' in content
-        assert '<ManufacturerAddress>Vecto Manufacturer Address</ManufacturerAddress>' in content
-        assert '<Model>Vecto Model</Model>' in content
-        assert '<VIN>Vecto VIN Number</VIN>' in content
-        assert '<CertificationNumber>Vecto Certification Number</CertificationNumber>' in content
+        assert '<Manufacturer>CONFIDENTIAL</Manufacturer>' in content
+        assert '<ManufacturerAddress>CONFIDENTIAL</ManufacturerAddress>' in content
+        assert '<Model>CONFIDENTIAL</Model>' in content
+        assert '<VIN>CONFIDENTIAL</VIN>' in content
+        assert '<CertificationNumber>CONFIDENTIAL</CertificationNumber>' in content
 
     def test_overwrites_unconditionally_even_if_already_generic(self, tmp_path):
-        xml = _XML_TEMPLATE.replace('Real Manufacturer Co', 'Vecto Manufacturer')
+        xml = _XML_TEMPLATE.replace('Real Manufacturer Co', 'CONFIDENTIAL')
         fpath = _write_xml(tmp_path / 'vehicle.xml', xml)
 
         changed = generalize_xml_file(fpath)
@@ -138,7 +143,7 @@ class TestGeneralizeXmlFile:
         changed = generalize_xml_file(fpath)
 
         assert changed == 1
-        assert 'Vecto Manufacturer<' in fpath.read_text(encoding='utf-8')
+        assert 'CONFIDENTIAL<' in fpath.read_text(encoding='utf-8')
 
     def test_repeated_elements_are_all_replaced(self, tmp_path):
         xml = """<?xml version="1.0" encoding="utf-8"?>
@@ -153,7 +158,7 @@ class TestGeneralizeXmlFile:
 
         assert changed == 2
         content = fpath.read_text(encoding='utf-8')
-        assert content.count('<Manufacturer>Vecto Manufacturer</Manufacturer>') == 2
+        assert content.count('<Manufacturer>CONFIDENTIAL</Manufacturer>') == 2
 
     def test_element_with_no_text_is_left_untouched(self, tmp_path):
         xml = """<?xml version="1.0" encoding="utf-8"?>
@@ -199,8 +204,8 @@ class TestGeneralizeZipFile:
         assert elements_changed == 5
         with zipfile.ZipFile(fpath) as zf:
             content = zf.read('vehicle.xml').decode('utf-8')
-        assert '<Manufacturer>Vecto Manufacturer</Manufacturer>' in content
-        assert '<VIN>Vecto VIN Number</VIN>' in content
+        assert '<Manufacturer>CONFIDENTIAL</Manufacturer>' in content
+        assert '<VIN>CONFIDENTIAL</VIN>' in content
 
     def test_processes_all_xml_entries_keeps_others_unchanged(self, tmp_path):
         fpath = _write_zip(tmp_path / 'bundle.zip', {
@@ -304,7 +309,7 @@ class TestGeneralizeData:
         assert summary['zips_changed'] == 1
         with zipfile.ZipFile(tmp_path / 'bundle.zip') as zf:
             content = zf.read('vehicle.xml').decode('utf-8')
-        assert '<Manufacturer>Vecto Manufacturer</Manufacturer>' in content
+        assert '<Manufacturer>CONFIDENTIAL</Manufacturer>' in content
 
     def test_process_zips_true_with_no_matching_entries_does_not_rewrite(self, tmp_path):
         _write_zip(tmp_path / 'bundle.zip', {'readme.txt': 'no xml here'})
@@ -315,22 +320,151 @@ class TestGeneralizeData:
         assert summary['zips_changed'] == 0
 
 
+
+
 # ---------------------------------------------------------------------------
-# GENERIC_VALUES / ENV_VAR_NAME contract
+# anonymize_xml_bytes
 # ---------------------------------------------------------------------------
 
-class TestGenericValuesContract:
-    def test_all_five_elements_are_mapped(self):
-        assert set(GENERIC_VALUES) == {
-            'Manufacturer', 'ManufacturerAddress', 'Model', 'VIN', 'CertificationNumber',
+_ALL_FIELDS_XML = """<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"
+    xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+  <Vehicle id="VEH-WVWZZZ1JZXW000001">
+    <Manufacturer>Real Manufacturer Co</Manufacturer>
+    <ManufacturerAddress>123 Real Street</ManufacturerAddress>
+    <Model>RM-9000</Model>
+    <VIN>WVWZZZ1JZXW000001</VIN>
+    <Date>2024-05-17T10:11:12Z</Date>
+    <Make>RealMake</Make>
+    <AppVersion>RealTool 1.2.3</AppVersion>
+    <VehicleTypeApprovalNumber>e1*2018/858*00001*01</VehicleTypeApprovalNumber>
+    <Components>
+      <Engine>
+        <Data id="ENG-e12*0815/8051*2017/05E0000*00">
+          <Manufacturer>Real Engine Co</Manufacturer>
+          <Model>Engine X</Model>
+          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <Date>2017-02-15T11:00:00Z</Date>
+          <AppVersion>EngTool 3</AppVersion>
+          <TypeApprovalNumber>TA-123</TypeApprovalNumber>
+          <Displacement>12740</Displacement>
+        </Data>
+        <Signature>
+          <di:Reference URI="#ENG-e12*0815/8051*2017/05E0000*00">
+            <di:DigestValue>e0c253b643f7f8f09b963aca4a264d06fbfa599f</di:DigestValue>
+          </di:Reference>
+        </Signature>
+      </Engine>
+    </Components>
+    <SimulationToolLicenseNumber>LIC-1</SimulationToolLicenseNumber>
+    <VectoLicenseNbr>LIC-2</VectoLicenseNbr>
+  </Vehicle>
+</tns:VectoInputDeclaration>
+"""
+
+_ORIGINAL_VALUES = [
+    'Real Manufacturer Co', '123 Real Street', 'RM-9000', 'WVWZZZ1JZXW000001',
+    'RealMake', 'RealTool', 'e1*2018/858*00001*01', 'Real Engine Co', 'Engine X',
+    'e12*0815/8051*2017/05E0000*00', 'EngTool', 'TA-123', 'LIC-1', 'LIC-2',
+    'e0c253b643f7f8f09b963aca4a264d06fbfa599f', '2024-05-17', '2017-02-15',
+    'VEH-WVWZZZ1JZXW000001',
+]
+
+
+def _anonymize(xml: str):
+    content, changed = anonymize_xml_bytes(xml.encode('utf-8'))
+    return content.decode('utf-8'), changed
+
+
+class TestAnonymizeXmlBytes:
+    def test_all_confidential_fields_are_replaced(self):
+        content, changed = _anonymize(_ALL_FIELDS_XML)
+
+        # Vehicle: 10, engine Data: 6, DigestValue: 1.
+        assert changed == 17
+        for fld in CONFIDENTIAL_FIELDS:
+            if fld in ('Date', 'DigestValue'):
+                continue
+            assert f'<{fld}>CONFIDENTIAL</{fld}>' in content
+        assert '<di:DigestValue>CONFIDENTIAL</di:DigestValue>' in content
+
+    def test_date_gets_default_date_not_confidential(self):
+        content, _ = _anonymize(_ALL_FIELDS_XML)
+
+        assert content.count(f'<Date>{DEFAULT_DATE}</Date>') == 2
+        assert '<Date>CONFIDENTIAL</Date>' not in content
+
+    def test_no_original_value_survives(self):
+        content, _ = _anonymize(_ALL_FIELDS_XML)
+
+        for original in _ORIGINAL_VALUES:
+            assert original not in content
+
+    def test_parent_ids_renamed_in_document_order(self):
+        content, _ = _anonymize(_ALL_FIELDS_XML)
+
+        # Vehicle comes first in the document, then the engine Data element;
+        # each gets exactly one id although it has several matched children.
+        assert f'<Vehicle id="{ID_PREFIX}00">' in content
+        assert f'<Data id="{ID_PREFIX}01">' in content
+        assert f'{ID_PREFIX}02' not in content
+
+    def test_reference_uri_follows_renamed_id(self):
+        content, _ = _anonymize(_ALL_FIELDS_XML)
+
+        assert f'URI="#{ID_PREFIX}01"' in content
+
+    def test_unrelated_elements_are_untouched(self):
+        content, _ = _anonymize(_ALL_FIELDS_XML)
+
+        assert '<Displacement>12740</Displacement>' in content
+
+    def test_unrelated_id_and_uri_are_untouched(self):
+        xml = """<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Data id="keep-me"><Displacement>1</Displacement></Data>
+  <Reference URI="#keep-me"/>
+</Root>
+"""
+        content, changed = _anonymize(xml)
+
+        assert changed == 0
+        assert 'id="keep-me"' in content
+        assert 'URI="#keep-me"' in content
+
+    def test_malformed_xml_is_returned_unchanged(self):
+        raw = b'<Root><VIN>WVW</VIN>'
+
+        content, changed = anonymize_xml_bytes(raw)
+
+        assert changed == 0
+        assert content == raw
+
+    def test_is_idempotent(self):
+        once, _ = _anonymize(_ALL_FIELDS_XML)
+
+        twice, _ = _anonymize(once)
+
+        assert twice == once
+
+
+# ---------------------------------------------------------------------------
+# Constants contract
+# ---------------------------------------------------------------------------
+
+class TestConfidentialContract:
+    def test_all_roadmap_fields_are_covered(self):
+        assert set(CONFIDENTIAL_FIELDS) == {
+            'VIN', 'Date', 'DigestValue', 'Manufacturer', 'ManufacturerAddress', 'Model',
+            'AppVersion', 'CertificationNumber', 'SimulationToolLicenseNumber', 'Make',
+            'TypeApprovalNumber', 'VectoLicenseNbr', 'VehicleTypeApprovalNumber',
         }
 
-    def test_generic_values_match_roadmap(self):
-        assert GENERIC_VALUES['Manufacturer'] == 'Vecto Manufacturer'
-        assert GENERIC_VALUES['ManufacturerAddress'] == 'Vecto Manufacturer Address'
-        assert GENERIC_VALUES['Model'] == 'Vecto Model'
-        assert GENERIC_VALUES['VIN'] == 'Vecto VIN Number'
-        assert GENERIC_VALUES['CertificationNumber'] == 'Vecto Certification Number'
+    def test_replacement_values_match_roadmap(self):
+        assert CONFIDENTIAL_VALUE == 'CONFIDENTIAL'
+        assert DEFAULT_DATE == '2020-01-01T08:00:00Z'
+        assert ID_PREFIX == 'Confidential-ID'
+        assert CONFIDENTIAL_SUFFIX == '_confidential.xml'
 
     def test_env_var_name_is_a04_data_dir(self):
         assert ENV_VAR_NAME == 'A04_DATA_DIR'

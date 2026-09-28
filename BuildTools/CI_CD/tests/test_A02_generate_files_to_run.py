@@ -505,3 +505,67 @@ class TestCollectIssueVehicles:
 
         zips = list(out_dir.glob('Declaration/*/input.zip'))
         assert len(zips) == 1
+
+
+_ISSUE_COMPLETED_XML = (
+    b'<Root xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"'
+    b' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+    b'<Vehicle xsi:type="CompletedBusDeclarationType"><VIN>PLACEHOLDERVIN001</VIN>'
+    b'<VehicleCategory>M3</VehicleCategory>'
+    b'</Vehicle>'
+    b'<Date>2021-06-01T00:00:00Z</Date>'
+    b'</Root>'
+)
+
+
+class TestCollectIssueVehiclesConfidential:
+    """Issue vehicle XMLs are made confidential (A04) before zipping; generic
+    vehicle XMLs are not."""
+
+    @staticmethod
+    def _collect(tmp_path, members):
+        test_pool_issue_dir = tmp_path / "ISSUE"
+        pool_root = tmp_path / "pool"
+        _make_issue_folder(test_pool_issue_dir, "0180", "YV2XT60C1RA341486", members)
+        synthesize_pool(test_pool_issue_dir, pool_root)
+        return collect_issue_vehicles(pool_root)
+
+    def test_issue_xml_values_are_confidential(self, tmp_path):
+        result = self._collect(tmp_path, {"vehicle_input.xml": _ISSUE_PRIMARY_XML})
+
+        content = next(c for name, c in result[0].files if name.endswith('.xml'))
+        assert b'PLACEHOLDERVIN001' not in content
+        assert b'<VIN>CONFIDENTIAL</VIN>' in content
+        assert b'<Date>2020-01-01T08:00:00Z</Date>' in content
+
+    def test_issue_xml_is_renamed_with_confidential_suffix(self, tmp_path):
+        result = self._collect(tmp_path, {"vehicle_input.xml": _ISSUE_PRIMARY_XML})
+
+        names = [name for name, _ in result[0].files]
+        assert names == ['PrimaryVehicleDeclarationType_confidential.xml']
+
+    def test_bus_job_references_confidential_names(self, tmp_path):
+        result = self._collect(tmp_path, {
+            "primary.xml": _ISSUE_PRIMARY_XML,
+            "completed.xml": _ISSUE_COMPLETED_XML,
+        })
+
+        files = dict(result[0].files)
+        assert 'PrimaryVehicleDeclarationType_confidential.xml' in files
+        assert 'CompletedBusDeclarationType_confidential.xml' in files
+        job = json.loads(files['job.vecto'])
+        job_text = json.dumps(job)
+        assert 'PrimaryVehicleDeclarationType_confidential.xml' in job_text
+        assert 'CompletedBusDeclarationType_confidential.xml' in job_text
+
+    def test_generic_xml_is_left_untouched(self, tmp_path):
+        veh_dir = tmp_path / "TruckA"
+        veh_dir.mkdir()
+        (veh_dir / "vehicle.xml").write_bytes(_GENERIC_PRIMARY_XML)
+
+        result = collect_generic_vehicles(str(tmp_path))
+
+        name, content = result[0].files[0]
+        assert name == 'vehicle.xml'
+        assert b'<VIN>GENERICVIN0001</VIN>' in content
+        assert b'CONFIDENTIAL' not in content

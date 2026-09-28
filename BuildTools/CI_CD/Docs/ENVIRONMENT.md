@@ -100,6 +100,7 @@ python A02_Generate_Files_To_Run.py <generic_input_dir> <issues_input_dir> <outp
 - Generic vehicles are placed under `<output_dir>/To_Run/<mode>/<powertrain>/<vehicle>/`.
 - Issue vehicles are placed under `<output_dir>/To_Run/articles/<vehicle>/`.
 - Issue vehicles labeled `art10::rejected`, `art10::open`, or `art10::need_info` are excluded from the run.
+- **Confidential inputs:** every issue vehicle XML is made confidential with A04's `anonymize_xml_bytes` (see A04) before it is zipped, and is named `<vehicle_type>_confidential.xml` (the generated bus `job.vecto` references these names). Generic vehicles are not modified. Duplicate removal uses the original files, so it is unaffected. Existing `input.zip` files are only rewritten with `--force-repackage`.
 - **Duplicate removal:** issue vehicles sharing the same data hash are run once. The hash is computed on the XML with non-simulation fields blanked (`VIN`, `Date`, `DigestValue`, `Manufacturer`, `ManufacturerAddress`, `Model`, `Make`, `AppVersion`, `CertificationNumber`, `SimulationToolLicenseNumber`, `TypeApprovalNumber`, `VectoLicenseNbr`, `VehicleTypeApprovalNumber`, plus the parent's `id` attribute). For a completed-bus file that is not valid to run, the hash is replaced by its `BodyworkCode`, since only that drives the primary-step missions.
 - Issue vehicle folders are named `<VehicleCategory>_<Powertrain>_<ShortHash>`. Vehicles with multiple powertrains get an `m` prefix on the powertrain (e.g. `mCONV`).
 - No intermediate folders are created: all vehicles are collected in memory and written directly as `input.zip` files.
@@ -119,16 +120,20 @@ python A03_Scan_XML_Metadata.py <extract_root> [--output-dir <path>] [--copy-onl
 - Temporary extraction directories (for archives found while walking) are not cleaned up automatically.
 - If an XML file fails to parse, a `WARNING: failed to parse ...` line is printed to stdout. To avoid leaking local filesystem paths into CI logs, only the file's immediate parent folder name is printed (not the full path), and the trailing `(path/URI, line N)` segment embedded in the underlying lxml error message is stripped entirely.
 
-### A04 — Generalize identifying XML element values
+### A04 — Make identifying XML element values confidential
 ```bash
-python A04_Generalize_Data.py <data_dir>
-python A04_Generalize_Data.py -e | --use-env-var
+python A04_Generalize_Data.py <data_dir> [--process-zips]
+python A04_Generalize_Data.py -e | --use-env-var [--process-zips]
 ```
 - `data_dir`: directory to walk for `.xml` files. Ignored if `-e`/`--use-env-var` is passed.
 - `-e`, `--use-env-var`: read the directory to process from the `A04_DATA_DIR` environment variable instead of the `data_dir` argument.
-- Replaces the text content of every `Manufacturer`, `ManufacturerAddress`, `Model`, `VIN`, and `CertificationNumber` element (namespace-agnostic match, all occurrences) with a fixed generic value — `Vecto Manufacturer`, `Vecto Manufacturer Address`, `Vecto Model`, `Vecto VIN Number`, and `Vecto Certification Number` respectively — overwriting unconditionally, in place, in every `.xml` file found.
-- Only loose `.xml` files are processed — archives (`.zip`/`.7z`/`.rar`) are not extracted or followed.
-- A04 replaces every value it finds in these fields with a generic placeholder, across all files in a directory. Rather than typing the directory path every time, set it once in the `A04_DATA_DIR` environment variable and run the script with `-e` to reuse it:
+- `--process-zips`: also unzip, process and re-zip `.zip` files found while walking `data_dir` (one level deep). Without it only loose `.xml` files are processed; `.7z`/`.rar` are never followed.
+- In every `.xml` file found, in place, for every `VIN`, `Date`, `DigestValue`, `Manufacturer`, `ManufacturerAddress`, `Model`, `AppVersion`, `CertificationNumber`, `SimulationToolLicenseNumber`, `Make`, `TypeApprovalNumber`, `VectoLicenseNbr` and `VehicleTypeApprovalNumber` element (namespace-agnostic match, all occurrences):
+  - `Date` is set to `2020-01-01T08:00:00Z` (it must stay a valid `xs:dateTime`); every other field is set to `CONFIDENTIAL`. Empty elements are left as they are.
+  - The `id` attribute of each such element's parent is renamed `Confidential-ID00`, `Confidential-ID01`, … in document order, and every `URI="#<old id>"` (e.g. a component signature's `di:Reference`) is updated to match, so the original id cannot leak through it.
+- The result still passes VECTO's XSD validation and simulates: VECTO copies signature references and digests into its reports without verifying them.
+- A02 applies the same transformation to all issue vehicle inputs (see A02).
+- A04 makes every value it finds in these fields confidential, across all files in a directory. Rather than typing the directory path every time, set it once in the `A04_DATA_DIR` environment variable and run the script with `-e` to reuse it:
   ```powershell
   python.exe .\A04_Generalize_Data.py ".\Group 54 XML"
   ```
