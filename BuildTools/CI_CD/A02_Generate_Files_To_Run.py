@@ -190,13 +190,17 @@ def _vecto_inputs_to_bytes(inputs: dict) -> list[tuple[str, bytes]]:
     return result
 
 
-def _job_json_bytes(prim: str, comp: str, generator_fn, run_simulation: bool = True) -> bytes:
-    """Capture generate_PRIM_COMP_job / generate_PRIMVIF_COMP_job output as bytes."""
+def _job_json_bytes(prim: str, comp: str, generator_fn, run_simulation: bool | None = True) -> bytes:
+    """Capture generate_PRIM_COMP_job / generate_PRIMVIF_COMP_job output as bytes.
+    run_simulation=None calls the generator without the flag (v7 jobs have no RunSimulation)."""
     import tempfile
     with tempfile.NamedTemporaryFile(suffix='.vecto', delete=False) as f:
         tmp = f.name
     try:
-        generator_fn(prim, comp, tmp, run_simulation)
+        if run_simulation is None:
+            generator_fn(prim, comp, tmp)
+        else:
+            generator_fn(prim, comp, tmp, run_simulation)
         return Path(tmp).read_bytes()
     finally:
         Path(tmp).unlink(missing_ok=True)
@@ -392,8 +396,7 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
             job_bytes = _job_json_bytes(prim_files[0], comp_files[0], generate_PRIM_COMP_job, comp_valid)
             files.append(('job.vecto', job_bytes, True))
         elif comp_files and vif_files:
-            comp_valid = [f[2] for f in files if 'comp' in f[0].lower()][0]
-            job_bytes = _job_json_bytes(vif_files[0], comp_files[0], generate_PRIMVIF_COMP_job, comp_valid)
+            job_bytes = _job_json_bytes(vif_files[0], comp_files[0], generate_PRIMVIF_COMP_job, run_simulation=None)
             files.append(('job.vecto', job_bytes, True))
 
     return [VehicleManifest(dirname=dirname, files=[f[0:2] for f in files]) for dirname, files in groups.items()]

@@ -499,7 +499,7 @@ def generate_PRIM_COMP_job(PRIM,COMP,fjob_fpath,RunSimulation: bool = True, date
     with open(fjob_fpath, "w") as file:
         json.dump(job_dict, file, indent=2)
 
-def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath,RunSimulation: bool = True, datetime_val: datetime = None):
+def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath, datetime_val: datetime = None):
     if datetime_val is None:
         datetime_val = datetime.now()
 

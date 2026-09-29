@@ -301,11 +301,12 @@ class TestJobJsonBytes:
         job = json.loads(result)
         assert job['Body']['RunSimulation'] == 'false'
 
-    def test_primvif_comp_job_run_simulation_false(self):
-        result = _job_json_bytes('vif.xml', 'comp.xml', generate_PRIMVIF_COMP_job, run_simulation=False)
+    def test_primvif_comp_job_has_no_run_simulation(self):
+        result = _job_json_bytes('vif.xml', 'comp.xml', generate_PRIMVIF_COMP_job, run_simulation=None)
 
         job = json.loads(result)
-        assert job['Body']['RunSimulation'] == 'false'
+        assert 'RunSimulation' not in job['Body']
+        assert job['Header']['FileVersion'] == 7
         assert job['Body']['PrimaryVehicleResults'] == 'vif.xml'
         assert job['Body']['CompletedVehicle'] == 'comp.xml'
 

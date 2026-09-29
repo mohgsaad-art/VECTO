@@ -360,19 +360,18 @@ class TestA02RunSimulationFlag:
         content = out.read_text(encoding='utf-8')
         assert '"RunSimulation": "true"' in content
 
-    def test_generate_primvif_comp_job_run_simulation_false(self, tmp_path):
-        out = tmp_path / 'job.vecto'
-        generate_PRIMVIF_COMP_job('vif.xml', 'comp.xml', str(out), RunSimulation=False)
-
-        content = out.read_text(encoding='utf-8')
-        assert '"RunSimulation": "false"' in content
-
-    def test_generate_primvif_comp_job_default_run_simulation_true(self, tmp_path):
+    def test_generate_primvif_comp_job_omits_run_simulation(self, tmp_path):
         out = tmp_path / 'job.vecto'
         generate_PRIMVIF_COMP_job('vif.xml', 'comp.xml', str(out))
 
         content = out.read_text(encoding='utf-8')
-        assert '"RunSimulation": "true"' in content
+        assert 'RunSimulation' not in content
+
+    def test_generate_primvif_comp_job_rejects_run_simulation_argument(self, tmp_path):
+        out = tmp_path / 'job.vecto'
+
+        with pytest.raises(TypeError):
+            generate_PRIMVIF_COMP_job('vif.xml', 'comp.xml', str(out), RunSimulation=False)
 
     def test_generate_prim_comp_job_uses_supplied_datetime(self, tmp_path):
         out = tmp_path / 'job.vecto'
