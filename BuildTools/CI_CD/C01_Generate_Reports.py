@@ -244,7 +244,7 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             try:
                 with open(vecto_file) as fh:
                     vecto_json = json.load(fh)
-                    file_version = jvecto_json['Header']['FileVersion']
+                    file_version = vecto_json['Header']['FileVersion']
                     file_body = vecto_json["Body"]
             except Exception:
                 file_version = 0
