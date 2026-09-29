@@ -601,6 +601,80 @@ def write_report(result_dir: str, output_path: str) -> list[str]:
     return failed_names
 
 
+_MERGE_KEY_COLUMNS = {'Test_Name', 'case', *_VSUM_KEYID_ALL, *_CRF_KEY4CAT}
+_DERIVED_SHEETS = {'stats of non-zero variations'}
+
+
+def _report_number(path: str) -> int:
+    m = re.search(r'_(\d{4})_', os.path.basename(path))
+    return int(m.group(1)) if m else -1
+
+
+def _read_keyed_sheet(xls: pd.ExcelFile, sheet: str) -> tuple[pd.DataFrame, int]:
+    """Read a report sheet with its leading key columns as index (merged cells are forward-filled).
+    Returns (frame, number of index columns); 0 index columns means the sheet has no test-name key."""
+    header = pd.read_excel(xls, sheet_name=sheet, nrows=0).columns
+    n_index = 0
+    for col in header:
+        if col not in _MERGE_KEY_COLUMNS:
+            break
+        n_index += 1
+    if n_index == 0:
+        return pd.read_excel(xls, sheet_name=sheet), 0
+    return pd.read_excel(xls, sheet_name=sheet, index_col=list(range(n_index))), n_index
+
+
+def _write_keyed_sheet(writer: pd.ExcelWriter, df: pd.DataFrame, sheet: str) -> None:
+    """Write df like df.to_excel (MultiIndex rows merged) but by blanking repeated key cells instead of
+    creating merged ranges: the cells read back identically, and openpyxl's merged-range handling is
+    super-linear (minutes per sheet for ~10k rows)."""
+    flat = df.reset_index()
+    keys = list(flat.columns[:df.index.nlevels])
+    orig = flat[keys]
+    prev = orig.shift()
+    same_as_prev = (orig == prev) | (orig.isna() & prev.isna())
+    blank = same_as_prev.cumprod(axis=1).astype(bool)  # a level repeats only if all outer levels repeat too
+    if len(blank):
+        blank.iloc[0, :] = False
+    flat[keys] = orig.astype(object).mask(blank)
+    flat.to_excel(writer, sheet_name=sheet, index=False)
+
+
+def merge_or_reports(existing_path: str, new_path: str, output_path: str) -> None:
+    """Write output_path = existing report with every test case found in the new report replaced
+    by the new report's rows (cases only in the new report are added). The derived statistics
+    sheet is dropped because it would describe only part of the merged data."""
+    with pd.ExcelFile(existing_path) as existing, pd.ExcelFile(new_path) as new:
+        new_frames = {}
+        new_cases = set()
+        for sheet in new.sheet_names:
+            if sheet in _DERIVED_SHEETS:
+                continue
+            df, n_index = _read_keyed_sheet(new, sheet)
+            new_frames[sheet] = (df, n_index)
+            if n_index:
+                new_cases.update(df.index.get_level_values(0))
+
+        sheets = [s for s in existing.sheet_names if s not in _DERIVED_SHEETS]
+        sheets += [s for s in new_frames if s not in sheets]
+
+        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+            for sheet in sheets:
+                new_df, n_index = new_frames.get(sheet, (None, 0))
+                if sheet in existing.sheet_names:
+                    old_df, old_index = _read_keyed_sheet(existing, sheet)
+                    if old_index:
+                        old_df = old_df[~old_df.index.get_level_values(0).isin(new_cases)]
+                        merged = old_df if new_df is None else pd.concat([old_df, new_df])
+                        _write_keyed_sheet(writer, merged.sort_index(), sheet)
+                    else:
+                        old_df.to_excel(writer, sheet_name=sheet, index=False)
+                elif n_index:
+                    _write_keyed_sheet(writer, new_df, sheet)
+                else:
+                    new_df.to_excel(writer, sheet_name=sheet, index=False)
+
+
 def refresh_mr_report() -> None:
     """Generate a fresh MR OR report, replacing any existing one in _mr_reports_cache.
 
@@ -648,20 +722,40 @@ def refresh_ref_report() -> None:
         return
 
     ref_version = get_vecto_version(args.ref_vecto_root)
+    if ref_version == 'unknown':
+        print(f'WARNING: could not determine the reference VECTO version from --ref-vecto-root '
+              f'"{args.ref_vecto_root}" (no vectocmd there?). It must point to the versioned VECTO folder.')
     ref_result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', ref_version)
     if not os.path.isdir(ref_result_dir):
         print(f'Reference result dir not found at {ref_result_dir} - skipping reference report.')
         return
 
-    for _old in glob.glob(os.path.join(_reports_cache, f'OR_{ref_version}_*.xlsx')):
-        os.remove(_old)
-        print(f'Removed old reference report: {_old}')
-
+    old_reports = glob.glob(os.path.join(_reports_cache, f'OR_{ref_version}_*.xlsx'))
     ref_hash = get_vecto_hash(args.ref_vecto_root)
     ref_nnnn = get_next_report_number(_reports_cache)
     ref_output_path = os.path.join(_reports_cache, f'OR_{ref_version}_{date}_{ref_nnnn}_{ref_hash}.xlsx')
 
-    write_report(ref_result_dir, ref_output_path)
+    # XX_RESULTS only holds this run's reference jobs, so merge them into the existing reference report
+    # instead of replacing it, otherwise all previously simulated vehicles would be lost.
+    latest_old = max(old_reports, key=_report_number, default=None)
+    if latest_old is None:
+        write_report(ref_result_dir, ref_output_path)
+    else:
+        new_part = ref_output_path + '.new.xlsx'
+        write_report(ref_result_dir, new_part)
+        try:
+            merge_or_reports(latest_old, new_part, ref_output_path)
+            print(f'Merged new reference results into {os.path.basename(latest_old)}')
+        except Exception as exc:
+            print(f'WARNING: could not merge with existing reference report {latest_old} ({exc}); '
+                  f'writing the new results only.')
+            shutil.copyfile(new_part, ref_output_path)
+        finally:
+            os.remove(new_part)
+
+    for _old in old_reports:
+        os.remove(_old)
+        print(f'Removed old reference report: {_old}')
     print(f'Reference report written: {ref_output_path}')
 
 

@@ -612,6 +612,125 @@ class TestRefreshRefReport:
         assert ref_reports != cur_reports
 
 
+_OK_RUN = dict(
+    log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+    vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+)
+
+
+def _sheet_cases(report_path, sheet):
+    df = pd.read_excel(report_path, sheet_name=sheet)
+    first = df.columns[0]
+    return df[first].ffill().tolist()
+
+
+class TestMergeOrReports:
+    def _report(self, C01, base, cases):
+        results = base / 'results'
+        for name, run in cases.items():
+            _write_result_dir(results, name, **run)
+        path = base / 'report.xlsx'
+        C01.write_report(str(results), str(path))
+        return path
+
+    def test_keeps_existing_and_adds_new_vehicles(self, tmp_path, C01):
+        existing = self._report(C01, tmp_path / 'old', {'CaseA': _OK_RUN, 'CaseB': _OK_RUN})
+        new = self._report(C01, tmp_path / 'new', {'CaseC': _OK_RUN})
+        merged = tmp_path / 'merged.xlsx'
+
+        C01.merge_or_reports(str(existing), str(new), str(merged))
+
+        assert _sheet_cases(merged, 'Success') == ['CaseA', 'CaseB', 'CaseC']
+        assert _sheet_cases(merged, 'CO2__g_km') == ['CaseA', 'CaseB', 'CaseC']
+
+    def test_replaces_resimulated_vehicle(self, tmp_path, C01):
+        failed_run = dict(
+            log_lines=['VIN1 Urban _ReferenceLoad  88.22%  10.00s'],
+            vsum_rows=[('1-0-', 'VIN1', 'Urban.vdri', 'Aborted', 0.0)],
+        )
+        existing = self._report(C01, tmp_path / 'old', {'CaseA': failed_run, 'CaseB': _OK_RUN})
+        new = self._report(C01, tmp_path / 'new', {'CaseA': _OK_RUN})
+        merged = tmp_path / 'merged.xlsx'
+
+        C01.merge_or_reports(str(existing), str(new), str(merged))
+
+        success = pd.read_excel(merged, sheet_name='Success', index_col=0)
+        assert list(success.index) == ['CaseA', 'CaseB']
+        assert success.loc['CaseA', 'Success'] == 'OK'
+
+    def test_keeps_all_rows_of_a_multi_cycle_vehicle(self, tmp_path, C01):
+        two_cycles = dict(
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s',
+                       'VIN1 Urban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0),
+                       ('1-1-', 'VIN1', 'Urban.vdri', 'Success', 450.0)],
+        )
+        existing = self._report(C01, tmp_path / 'old', {'CaseA': two_cycles})
+        new = self._report(C01, tmp_path / 'new', {'CaseB': _OK_RUN})
+        merged = tmp_path / 'merged.xlsx'
+
+        C01.merge_or_reports(str(existing), str(new), str(merged))
+
+        assert _sheet_cases(merged, 'CO2__g_km') == ['CaseA', 'CaseA', 'CaseB']
+
+    def test_merged_sheet_cells_match_a_directly_written_report(self, tmp_path, C01):
+        two_cycles = dict(
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s',
+                       'VIN1 Urban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0),
+                       ('1-1-', 'VIN1', 'Urban.vdri', 'Success', 450.0)],
+        )
+        existing = self._report(C01, tmp_path / 'old', {'CaseA': two_cycles})
+        new = self._report(C01, tmp_path / 'new', {'CaseB': _OK_RUN})
+        direct = self._report(C01, tmp_path / 'direct', {'CaseA': two_cycles, 'CaseB': _OK_RUN})
+        merged = tmp_path / 'merged.xlsx'
+
+        C01.merge_or_reports(str(existing), str(new), str(merged))
+
+        for sheet in ('Success', 'CO2__g_km'):
+            expected = pd.read_excel(direct, sheet_name=sheet, header=None)
+            actual = pd.read_excel(merged, sheet_name=sheet, header=None)
+            pd.testing.assert_frame_equal(actual, expected, check_dtype=False)
+
+
+class TestRefreshRefReportMerge:
+    def test_merges_new_results_into_existing_reference_report(self, tmp_path, monkeypatch):
+        ref_vecto_root = tmp_path / 'ref_vecto'
+        ref_vecto_root.mkdir()
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        _write_result_dir(cwd / 'XX_RESULTS' / 'unknown', 'CaseNew', **_OK_RUN)
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        monkeypatch.chdir(cwd)
+        old_results = tmp_path / 'old_results'
+        _write_result_dir(old_results, 'CaseOld', **_OK_RUN)
+        reports_dir = cwd / 'Reports'
+        reports_dir.mkdir(exist_ok=True)
+        old_report = reports_dir / 'OR_unknown_260101_0001_abc1234.xlsx'
+        C01.write_report(str(old_results), str(old_report))
+
+        C01.refresh_ref_report()
+
+        reports = list(reports_dir.glob('OR_unknown_*.xlsx'))
+        assert not old_report.exists()
+        assert len(reports) == 1
+        assert _sheet_cases(reports[0], 'Success') == ['CaseNew', 'CaseOld']
+
+    def test_unknown_version_warns_with_the_supplied_path(self, tmp_path, capsys, monkeypatch):
+        ref_vecto_root = tmp_path / 'ref_vecto_parent'
+        ref_vecto_root.mkdir()
+        cwd = tmp_path / 'cwd'
+        cwd.mkdir()
+        C01 = _import_c01_with_ref(str(ref_vecto_root), str(cwd))
+        monkeypatch.chdir(cwd)
+
+        C01.refresh_ref_report()
+
+        out = capsys.readouterr().out
+        assert 'WARNING' in out
+        assert str(ref_vecto_root) in out
+
+
 class TestGetLatestMrReport:
     def test_returns_none_for_missing_dir(self, tmp_path, C01):
         assert C01.get_latest_mr_report(str(tmp_path / 'missing')) is None
