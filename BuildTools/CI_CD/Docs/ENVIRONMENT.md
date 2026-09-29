@@ -230,7 +230,12 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
 - Reads test cases from `XX_RESULTS` in the current working directory.
 - Report naming convention: `OR_{Version}_{Date}_{NNNN}_{Hash}[_suffix].xlsx` (e.g. `OR_5.1.1_260408_0001_a1b2c3d.xlsx`). NNNN is one higher than the highest number already present in the cache directory, ensuring no collision on re-runs.
 - Output: a single combined `.xlsx` containing:
-  - `Success`, `cpu_time` — pass/fail summary sheets
+  - `Success`, `cpu_time` — pass/fail summary sheets. `Success` values per result folder:
+    - `not run` (no `.vsum`, no `.log`), `ERROR no vsum`, `ERROR empty vsum`
+    - `OK` — all runs `Success`/`PrimaryBusSimulationIgnore`, log matches vsum, no `Error` line in the (final) `RSLT_MANUFACTURER` file and, for v10 primary+completed jobs with `RunSimulation: true`, a final `.RSLT_MANUFACTURER.xml` exists
+    - `ERROR Timeout` — the `.log` content mentions a timeout. Jobs removed by HTCondor's 12 h `periodic_remove` leave no output and appear as `not run`.
+    - `ERROR VIF` — runs and log are fine, but the manufacturer report contains an `Error` line (e.g. results VECTO reports as errors for ignored primary runs)
+    - `ERROR` — any other failure, including a v10 completed step that should have run but produced no final `.RSLT_MANUFACTURER.xml`
   - `CO2__g_km_`, `FC-Final__g_km_`, `EC_el_final__kWh_km_`, … — VSUM detail sheets
   - `CRF_CO2__g_km_`, `CRF_FuelConsumption__g_km_`, `CRF_FuelConsumption__MJ_km_` — MRF/CRF fuel consumption sheets
   - `stats_of_non-zero_variations` — VSUM deviation statistics

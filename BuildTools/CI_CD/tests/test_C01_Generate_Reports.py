@@ -296,6 +296,67 @@ class TestBuildSummaryDataframeClassification:
         assert failed == ['Bad']
 
 
+_V10_JOB = {'Header': {'FileVersion': 10},
+            'Body': {'PrimaryVehicle': 'primary.xml', 'InterimStep': 'completed.xml'}}
+
+
+class TestBuildSummaryDataframeCompleteStep:
+    def _write_v10_case(self, base, run_simulation):
+        job = json.loads(json.dumps(_V10_JOB))
+        job['Body']['RunSimulation'] = run_simulation
+        d = _write_result_dir(
+            base, 'CaseBus',
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+            vecto_json=job,
+        )
+        (d / 'job.RSLT_MANUFACTURER_PRIMARY.xml').write_text('OK\n', encoding='utf-8')
+
+    def test_run_simulation_true_without_final_mrf_is_error(self, tmp_path, C01):
+        self._write_v10_case(tmp_path, run_simulation=True)
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'complete_step_ok'] == False
+        assert df.loc[0, 'Success'] == 'ERROR'
+        assert failed == ['CaseBus']
+
+    def test_run_simulation_false_without_final_mrf_is_ok(self, tmp_path, C01):
+        self._write_v10_case(tmp_path, run_simulation=False)
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'complete_step_ok'] == True
+        assert df.loc[0, 'Success'] == 'OK'
+
+
+class TestBuildSummaryDataframeTimeLimit:
+    # Test names must not contain the word checked for: pytest puts the test name in tmp_path.
+    def test_time_limit_message_in_log_is_error_timeout(self, tmp_path, C01):
+        _write_result_dir(
+            tmp_path, 'CaseLimit',
+            log_lines=['VIN1 HeavyUrban _LowLoading  42.00%  10.00s', 'Simulation aborted: Timeout after 3600 s'],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Aborted', 0.0)],
+        )
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'Success'] == 'ERROR Timeout'
+        assert failed == ['CaseLimit']
+
+    def test_word_only_in_result_path_is_plain_error(self, tmp_path, C01):
+        _write_result_dir(
+            tmp_path, 'Case_timeout_dir',
+            log_lines=['VIN1 Urban _ReferenceLoad  88.22%  10.00s'],
+            vsum_rows=[('1-0-', 'VIN1', 'Urban.vdri', 'Aborted', 0.0)],
+        )
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'Success'] == 'ERROR'
+        assert df.loc[0, 'cpu_time'] == 0.0
+
+
 class TestWriteSummaryReport:
     def test_writes_success_and_cpu_time_sheets(self, tmp_path, C01):
         _write_result_dir(

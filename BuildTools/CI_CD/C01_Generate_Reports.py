@@ -274,9 +274,11 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             success_list.append('OK')
             cpu_time.append(float(t_cpu[0]))
         else:
-            if 'timeout' in log:
+            with open(log) as fh:
+                timed_out = 'timeout' in fh.read().lower()
+            if timed_out:
                 success_list.append('ERROR Timeout')
-                cpu_time.append(float(_num_pattern.findall(log)[0]))
+                cpu_time.append(float(t_cpu[0]) if t_cpu else 0.0)
             elif vsum_ok and log_ok:
                 success_list.append('ERROR VIF')
                 cpu_time.append(0.0)
