@@ -35,6 +35,8 @@ def get_vecto_hash(vecto_root):
         f'git -C "{vecto_root}" rev-parse --short HEAD',
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
     )
+    if result.returncode != 0:
+        return 'unknown'
     return result.stdout.decode('utf-8').strip() or 'unknown'
 
 
