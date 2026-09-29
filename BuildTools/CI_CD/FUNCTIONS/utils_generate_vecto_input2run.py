@@ -198,9 +198,9 @@ def read_vecto_file(fpath: Path | str) -> list:
 
             # generating data hash by removing useless data
             # new version: text elements are replaced by empty string
-            # only to get the hash because the file might not be runable after 
+            # only to get the hash because the file might not be runable after
             # that (ex: date must be in date format, eg. '2020-01-01T08:00:00Z')
-                
+
             fld2empty_str = [
                 'VIN',
                 'Date',
@@ -216,16 +216,16 @@ def read_vecto_file(fpath: Path | str) -> list:
                 'VectoLicenseNbr',
                 'VehicleTypeApprovalNumber',
                 ]
-            
+
             for fld in fld2empty_str:
                 nodes = xml_tree.findall('.//{*}'+fld)
                 for node in nodes:
                     node.text=''
                     parent = node.getparent()
-                    if 'id' in parent.attrib: 
+                    if 'id' in parent.attrib:
                         parent.attrib['id']=''
-                
-            
+
+
             etree.indent(xml_tree,space='\t',level=0)
 
             xml_tree_cp = copy.deepcopy(xml_tree)
@@ -430,10 +430,10 @@ def get_vehicles(df_vecto_ord_filt: pd.DataFrame):
     sel_ovc = (df_vehicles['is_xml_ovc']==True) & \
         ((df_vehicles['is_xml_hev']==True) | \
          (df_vehicles['is_xml_fchv']==True))
-    df_vehicles.loc[sel_ovc,'veh_pwt']+='ovc' # there are some PEVovc and IEPCovc ??? 
-    
+    df_vehicles.loc[sel_ovc,'veh_pwt']+='ovc' # there are some PEVovc and IEPCovc ???
+
     df_vehicles.loc[df_vehicles['is_xml_multi']==True,'veh_pwt'] = 'm' + df_vehicles.loc[df_vehicles['is_xml_multi']==True,'veh_pwt']
-    
+
 
     return df_vehicles
 
@@ -454,14 +454,14 @@ def get_REF_vehicles(df_vehicles: pd.DataFrame):
     df_vehicles_groupby_vhash['REF_save_dirname']=df_vehicles_groupby_vhash['REF_veh_category'].str.replace(' ','') \
         + '_' + df_vehicles_groupby_vhash['REF_veh_pwt'] \
         + '_' + df_vehicles_groupby_vhash['REF_veh_hash_short']
-    
+
     chars_to_remove = ' :!?<>'
     df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_Issue_VIN'].str.translate(str.maketrans({c:'' for c in chars_to_remove})) \
         + '_' + df_vehicles_groupby_vhash['REF_veh_pwt'].str.replace('m','')
     df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('_CONV','')
     df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('ovc','')
     df_vehicles_groupby_vhash['REF_save_dirname_old'] = df_vehicles_groupby_vhash['REF_save_dirname_old'].str.replace('_FCHV','')
-    
+
     # reduce dataframe to ref files to prepqre copy
     col_sel = [c for c in df_vehicles_groupby_vhash.columns if 'REF' in c and c!='REF_idx']
 
@@ -479,7 +479,7 @@ def generate_PRIM_COMP_job(PRIM,COMP,fjob_fpath,RunSimulation: bool = True, date
     # --------------------------
     job_dict = {
        "Header": {
-         "CreatedBy": "Guillaume Alix, JRC, Ispra",
+         "CreatedBy": "Fuego CI. JRC, Ispra.",
          "Date": datetime_val.isoformat()+'Z',
          "AppVersion": "2.2",
          "FileVersion": 10
@@ -507,7 +507,7 @@ def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath,RunSimulation: bool = True
     # --------------------------
     job_dict = {
           "Header": {
-        	"CreatedBy": "Guillaume Alix, JRC, Ispra",
+        	"CreatedBy": "Fuego CI. JRC, Ispra.",
         	"Date": datetime_val.isoformat()+'Z',
         	"AppVersion": "2.2",
         	"FileVersion": 7
@@ -515,7 +515,6 @@ def generate_PRIMVIF_COMP_job(PRIMVIF,COMP,fjob_fpath,RunSimulation: bool = True
           "Body": {
         	"PrimaryVehicleResults":  PRIMVIF,
         	"CompletedVehicle": COMP,
-        	"RunSimulation": str(RunSimulation).lower()
           }
         }
 
