@@ -179,6 +179,7 @@ python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queu
 - `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B12.
 - `--limit N`: truncate the queue to the first N jobs after generation. If omitted, all jobs are submitted.
 - Requires HTCondor (`condor_submit`, `condor_q`) to be available on the system.
+- Requires the environment variable **`zipmep`** (password of the job output archives); B01 stops before submitting if it is missing or empty. The submit template forwards it to every job (`environment = "zipmep=$ENV(zipmep)"`); avoid quote characters in the password. In CI define it as a masked GitLab variable.
 - Internally calls B12 to generate the queue file, then submits via `condor_submit`.
 - Polls `condor_q` every 30 s until the queue is empty (timeout: 10 h).
 - Extracts result archives via B14 once all jobs finish: once for the current version, once for `--ref-vecto-root` (`--suffix _REF`) if supplied, and once for `<ref-vecto-root>/MR` (`--suffix _MR`) if it exists — so each version's results land in its own `Z00_VECTO_OUTPUTS`/`XX_RESULTS` folder.
@@ -205,6 +206,8 @@ python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filenam
 - `output_filename`: output archive name (without extension). Result is saved as `<output_filename>.zip`.
 - Called by the HTCondor submit script — not intended to be run directly.
 - Unpacks the input archive, runs VECTO, and archives the results.
+- The result archive is **password-protected** (AES-256, WinZip AES — open with 7-Zip/WinRAR, not Windows Explorer) with the password from the `zipmep` environment variable (`FUNCTIONS/SECURE_ZIP.py`). The job fails at start, before running VECTO, if `zipmep` is missing or empty.
+- Requires `pyzipper` in the Python used by HTCondor jobs (`D:\Apps\Python\WPy64-312101`, not `vecto_env`): `python -m pip install pyzipper`.
 
 ### B14 — Extract HTCondor result archives
 ```bash
@@ -214,7 +217,7 @@ python B14_Unzip_Results.py <vecto_root> [--force-rerun] [--suffix {_REF,_MR}]
 - `--force-rerun`: overwrite already-extracted result directories (default: skip existing).
 - `--suffix`: only pick up output zips carrying this job-type suffix (`_REF`/`_MR`, added by B12 for `--ref-vecto-root`/MR jobs). Default (unset) picks up only unsuffixed, current-version results. HTCondor drops every job's output zip into the same working directory regardless of which VECTO executable produced it, so this filter is what keeps reference/MR results out of the current version's folder — call B14 once per version, each with the matching `--suffix`, rather than once for everything.
 - Moves matching `*_out.zip` files from the current working directory into `Z00_VECTO_OUTPUTS/<version>/` (created in cwd); the suffix is stripped when reconstructing the result path.
-- Unpacks each archive into `XX_RESULTS/<version>/` (created in cwd), reconstructing the directory tree from the flat output filename.
+- Unpacks each archive into `XX_RESULTS/<version>/` (created in cwd), reconstructing the directory tree from the flat output filename. Archives are decrypted with the `zipmep` password (B14 fails if it is missing); older unencrypted archives still extract. `Z00_VECTO_OUTPUTS` keeps the encrypted archives.
 - Called automatically by B01 after all HTCondor jobs finish (once per version, with the matching `--suffix`).
 
 ### C01 — Generate all reports

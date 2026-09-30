@@ -3,6 +3,9 @@ universe = local
 executable = D:\Apps\Python\WPy64-312101\python\python.exe
 arguments = B13_Run_Single_Vecto_File.py $(vecto) $(input_dir)\input.zip $(output_file_name)_out.zip
 
+# Forward the output-archive password (read by B13) from the submitting environment.
+environment = "zipmep=$ENV(zipmep)"
+
 request_cpus = 1
 batch_name = vecto_batch
 

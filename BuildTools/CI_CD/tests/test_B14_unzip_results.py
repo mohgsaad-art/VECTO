@@ -11,12 +11,20 @@ import os
 import sys
 import zipfile
 
+import pytest
+import pyzipper
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from B14_Unzip_Results import extract_outputs, matches_suffix, move_outputs
+from FUNCTIONS.SECURE_ZIP import ZIP_PASSWORD_ENV
+
+PASSWORD = 'test-password'
 
 
 def _write_zip(path, member_name='result.txt', content=b'data'):
-    with zipfile.ZipFile(path, 'w') as zf:
+    """Write a job output archive the way B13 does: AES-256 encrypted with PASSWORD."""
+    with pyzipper.AESZipFile(path, 'w', compression=pyzipper.ZIP_DEFLATED, encryption=pyzipper.WZ_AES) as zf:
+        zf.setpassword(PASSWORD.encode('utf-8'))
         zf.writestr(member_name, content)
     return path
 
@@ -94,7 +102,7 @@ class TestExtractOutputs:
         _write_zip(storage / 'Declaration__Bus_CONV_abc12_REF_out.zip')
         extract_dir = tmp_path / 'extract'
 
-        outpaths = extract_outputs(str(storage), str(extract_dir))
+        outpaths = extract_outputs(str(storage), str(extract_dir), password=PASSWORD)
 
         expected = extract_dir / 'Declaration' / 'Bus_CONV_abc12'
         assert str(expected) in outpaths
@@ -106,7 +114,7 @@ class TestExtractOutputs:
         _write_zip(storage / 'Declaration__Bus_CONV_abc12_MR_out.zip')
         extract_dir = tmp_path / 'extract'
 
-        outpaths = extract_outputs(str(storage), str(extract_dir))
+        outpaths = extract_outputs(str(storage), str(extract_dir), password=PASSWORD)
 
         expected = extract_dir / 'Declaration' / 'Bus_CONV_abc12'
         assert str(expected) in outpaths
@@ -118,7 +126,7 @@ class TestExtractOutputs:
         _write_zip(storage / 'Declaration__Bus_CONV_abc12_out.zip')
         extract_dir = tmp_path / 'extract'
 
-        outpaths = extract_outputs(str(storage), str(extract_dir))
+        outpaths = extract_outputs(str(storage), str(extract_dir), password=PASSWORD)
 
         expected = extract_dir / 'Declaration' / 'Bus_CONV_abc12'
         assert str(expected) in outpaths
@@ -132,7 +140,7 @@ class TestExtractOutputs:
         existing.mkdir(parents=True)
         (existing / 'old.txt').write_text('old content')
 
-        extract_outputs(str(storage), str(extract_dir), force_rerun=False)
+        extract_outputs(str(storage), str(extract_dir), force_rerun=False, password=PASSWORD)
 
         assert (existing / 'old.txt').is_file()
         assert not (existing / 'result.txt').exists()
@@ -146,7 +154,7 @@ class TestExtractOutputs:
         existing.mkdir(parents=True)
         (existing / 'old.txt').write_text('old content')
 
-        extract_outputs(str(storage), str(extract_dir), force_rerun=True)
+        extract_outputs(str(storage), str(extract_dir), force_rerun=True, password=PASSWORD)
 
         assert (existing / 'result.txt').is_file()
 
@@ -162,10 +170,51 @@ class TestExtractOutputs:
         cur_extract = tmp_path / 'extract' / '5.1.4-DEV'
         ref_extract = tmp_path / 'extract' / '5.1.3'
 
-        extract_outputs(str(cur_storage), str(cur_extract))
-        extract_outputs(str(ref_storage), str(ref_extract))
+        extract_outputs(str(cur_storage), str(cur_extract), password=PASSWORD)
+        extract_outputs(str(ref_storage), str(ref_extract), password=PASSWORD)
 
         cur_result = cur_extract / 'Declaration' / 'Bus_CONV_abc12' / 'result.txt'
         ref_result = ref_extract / 'Declaration' / 'Bus_CONV_abc12' / 'result.txt'
         assert cur_result.read_bytes() == b'current result'
         assert ref_result.read_bytes() == b'reference result'
+
+
+class TestExtractOutputsPassword:
+    def test_legacy_plain_zip_still_extracts(self, tmp_path):
+        storage = tmp_path / 'storage'
+        storage.mkdir()
+        with zipfile.ZipFile(storage / 'VehA_out.zip', 'w') as zf:
+            zf.writestr('result.txt', b'plain')
+        extract_dir = tmp_path / 'extract'
+
+        extract_outputs(str(storage), str(extract_dir), password=PASSWORD)
+
+        assert (extract_dir / 'VehA' / 'result.txt').read_bytes() == b'plain'
+
+    def test_wrong_password_raises(self, tmp_path):
+        storage = tmp_path / 'storage'
+        storage.mkdir()
+        _write_zip(storage / 'VehA_out.zip')
+
+        with pytest.raises(RuntimeError):
+            extract_outputs(str(storage), str(tmp_path / 'extract'), password='wrong-password')
+
+    def test_password_taken_from_environment_by_default(self, tmp_path, monkeypatch):
+        monkeypatch.setenv(ZIP_PASSWORD_ENV, PASSWORD)
+        storage = tmp_path / 'storage'
+        storage.mkdir()
+        _write_zip(storage / 'VehA_out.zip')
+        extract_dir = tmp_path / 'extract'
+
+        extract_outputs(str(storage), str(extract_dir))
+
+        assert (extract_dir / 'VehA' / 'result.txt').is_file()
+
+    def test_missing_password_environment_raises(self, tmp_path, monkeypatch):
+        monkeypatch.delenv(ZIP_PASSWORD_ENV, raising=False)
+        storage = tmp_path / 'storage'
+        storage.mkdir()
+        _write_zip(storage / 'VehA_out.zip')
+
+        with pytest.raises(RuntimeError, match=ZIP_PASSWORD_ENV):
+            extract_outputs(str(storage), str(tmp_path / 'extract'))

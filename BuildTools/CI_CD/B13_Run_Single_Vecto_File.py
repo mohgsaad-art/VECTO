@@ -22,6 +22,7 @@ import time
 from pathlib import Path
 
 from FUNCTIONS.REPORTS import get_vecto_version
+from FUNCTIONS.SECURE_ZIP import get_zip_password, write_encrypted_zip
 
 # ---------------------------------------------------------------------------
 # Argument parsing
@@ -47,6 +48,9 @@ args = parser.parse_args()
 vecto_root = args.vecto_root
 input_archive = args.input_archive
 output_filename = args.output_filename
+
+# The output archive is password-protected; fail before running VECTO if the password is missing.
+zip_password = get_zip_password()
 
 # ---------------------------------------------------------------------------
 # Platform setup
@@ -196,15 +200,14 @@ for root, dummy, files in os.walk(Path(file2run).parent):
 # ---------------------------------------------------------------------------
 
 arch_stem = Path(output_filename).stem
-arch_ext = Path(output_filename).suffixes[-1].lstrip('.') if Path(output_filename).suffixes else 'zip'
-arch_path = f'{arch_stem}.{arch_ext}'
+arch_path = f'{arch_stem}.zip'
 
 if os.path.exists(arch_path):
     print(f'Removing pre-existing archive: {arch_path}')
     os.remove(arch_path)
 
-print(f'Archiving results: {arch_path} from {work_dir}')
-shutil.make_archive(arch_stem, arch_ext, root_dir=work_dir)
+print(f'Archiving results (password-protected): {arch_path} from {work_dir}')
+write_encrypted_zip(work_dir, arch_path, zip_password)
 
 if run_error is not None:
     raise run_error

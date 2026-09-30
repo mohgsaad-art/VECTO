@@ -22,6 +22,7 @@ import shutil
 from pathlib import Path
 
 from FUNCTIONS.REPORTS import get_vecto_version
+from FUNCTIONS.SECURE_ZIP import extract_zip, get_zip_password
 
 _KNOWN_SUFFIXES = ('_REF', '_MR')
 
@@ -50,11 +51,13 @@ def move_outputs(cwd: str, version_storage: str, suffix: str) -> list[str]:
     return moved
 
 
-def extract_outputs(version_storage: str, extract_dir: str, force_rerun: bool = False) -> list[str]:
+def extract_outputs(version_storage: str, extract_dir: str, force_rerun: bool = False,
+                    password: str | None = None) -> list[str]:
     """Unpack every '*_out.zip' in version_storage into extract_dir,
     reconstructing the result directory tree from the flat filename (with
-    any job-type suffix stripped). Returns the output paths (including ones
-    skipped because they already existed)."""
+    any job-type suffix stripped). Archives are password-protected by B13; the
+    password defaults to the 'zipmep' environment variable (plain zips still work).
+    Returns the output paths (including ones skipped because they already existed)."""
     outpaths = []
     for filename in os.listdir(version_storage):
         if not filename.endswith('_out.zip'):
@@ -71,7 +74,9 @@ def extract_outputs(version_storage: str, extract_dir: str, force_rerun: bool = 
 
         if not os.path.exists(outpath) or force_rerun:
             Path(outpath).mkdir(parents=True, exist_ok=True)
-            shutil.unpack_archive(zip_outfile, outpath)
+            if password is None:
+                password = get_zip_password()
+            extract_zip(zip_outfile, outpath, password)
 
     return outpaths
 
@@ -99,6 +104,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    password = get_zip_password()  # fail fast if 'zipmep' is missing, before moving anything
     vecto_version = get_vecto_version(args.vecto_root)
 
     storage_dir = os.path.join(os.getcwd(), 'Z00_VECTO_OUTPUTS')
@@ -111,7 +117,7 @@ def main() -> None:
     for filename in moved:
         print(f'Moved: {filename} -> {version_storage}')
 
-    outpaths = extract_outputs(version_storage, version_extract_dir, args.force_rerun)
+    outpaths = extract_outputs(version_storage, version_extract_dir, args.force_rerun, password)
     for outpath in outpaths:
         print(f'Extracted: {outpath}')
 

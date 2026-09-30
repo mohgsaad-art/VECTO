@@ -14,6 +14,8 @@ import subprocess
 import time
 import os
 
+from FUNCTIONS.SECURE_ZIP import get_zip_password
+
 SUBMIT_TEMPLATE = 'B11_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
@@ -54,6 +56,9 @@ parser.add_argument(
     help='Limit the number of jobs submitted to HTCondor to the first N entries in the queue file.'
 )
 args = parser.parse_args()
+
+# Jobs zip their outputs with this password (forwarded by the submit template); fail before submitting.
+get_zip_password()
 
 if not os.path.exists(args.vecto_root):
     raise FileNotFoundError(f'VECTO path does not exist: {args.vecto_root}')
