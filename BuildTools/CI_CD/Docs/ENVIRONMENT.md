@@ -207,7 +207,7 @@ python B13_Run_Single_Vecto_File.py <vecto_root> <input_archive> <output_filenam
 - Called by the HTCondor submit script — not intended to be run directly.
 - Unpacks the input archive, runs VECTO, and archives the results.
 - The result archive is **password-protected** (AES-256, WinZip AES — open with 7-Zip/WinRAR, not Windows Explorer) with the password from the `zipmep` environment variable (`FUNCTIONS/SECURE_ZIP.py`). The job fails at start, before running VECTO, if `zipmep` is missing or empty.
-- Requires `pyzipper` in the Python used by HTCondor jobs (`D:\Apps\Python\WPy64-312101`, not `vecto_env`): `python -m pip install pyzipper`.
+- Requires `pyzipper` in the Python used by HTCondor jobs (`D:\Apps\Python\WPy64-312101`, not `vecto_env`): `python -m pip install pyzipper`. If pyzipper is not installed, B13/B14 fall back to the **7-Zip** command line, looked up in this order: env `SEVEN_ZIP_PATH`, `7z` on `PATH`, `C:\Program Files\7-Zip\7z.exe`; if neither backend is available the job fails. Both backends write the same AES-256 zip format. Note: with 7-Zip the password is passed on its command line (visible in the process list while it runs); pyzipper has no such exposure and is preferred.
 
 ### B14 — Extract HTCondor result archives
 ```bash
