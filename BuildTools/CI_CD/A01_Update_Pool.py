@@ -10,6 +10,7 @@ Usage:
         [--gitlab-url <url>]      GitLab instance URL (default: https://code.europa.eu)
         [--project-path <path>]   GitLab project path (default: vecto/vecto)
         [--token <token>]         GitLab private token; falls back to credentials.GITLAB_TOKEN
+        [--force-update]          Re-fetch all issues (new issue_txt_data_vNN.json when an issue changed)
 """
 
 import argparse
@@ -34,7 +35,6 @@ from FUNCTIONS.utils_harvest_gitlab import (
     get_issue_local_path,
     get_last_issues,
     get_link_local_path,
-    make_scan_df,
     store_issue_data,
 )
 from FUNCTIONS.utils_pool import (
@@ -44,6 +44,7 @@ from FUNCTIONS.utils_pool import (
     ISSUE_DESC_FILENAME,
     PROJECT_PATH_DEFAULT,
     get_reference_date,
+    latest_issue_files,
     load_credentials,
     timed,
 )
@@ -60,8 +61,10 @@ def update_pool(
     df_passwords,
     default_password: str | None,
     ssl_verify: bool | str = True,
+    force_update: bool = False,
 ) -> None:
-    """Connect to GitLab, download new issue attachments, and extract archives."""
+    """Connect to GitLab, download new issue attachments, and extract archives.
+    force_update re-fetches every art10 issue instead of only those updated since the last run."""
     save_dir_raw = pool_root / 'A00_RAW'
     save_dir_extract = pool_root / 'A01_EXTRACT'
     saved_last_status_path = pool_root / 'status.json'
@@ -77,8 +80,12 @@ def update_pool(
         dl_url_base = project._links['self'].replace('api/v4/projects/', '-/project/')
 
     # Determine reference date
-    date_ref = get_reference_date(save_dir_raw, save_dir_extract, saved_last_status_path)
-    print(f'  date_ref = {date_ref.strftime(DATE_FORMAT)}')
+    if force_update:
+        date_ref = None
+        print('  Forced update: fetching all issues')
+    else:
+        date_ref = get_reference_date(save_dir_raw, save_dir_extract, saved_last_status_path)
+        print(f'  date_ref = {date_ref.strftime(DATE_FORMAT)}')
 
     # List new issues
     art10_labels = get_art10_labels()
@@ -93,30 +100,31 @@ def update_pool(
         print('  No new issues - nothing to download.')
         return
 
-    print(f'  Issues updated since {date_ref.strftime(DATE_FORMAT)}: {[i.iid for i in issues]}')
+    since = 'the beginning' if date_ref is None else date_ref.strftime(DATE_FORMAT)
+    print(f'  Issues updated since {since}: {[i.iid for i in issues]}')
     date_ref = datetime.now()
 
-    # Store issue metadata
+    # Store issue metadata (a new _vNN file only when the issue changed)
     save_dirs_updated = []
     with timed('Store issue data'):
         for issue in issues:
             issue_data = get_issue_data(issue)
             save_dir_raw_i = get_issue_local_path(save_dir_raw, issue.iid)
-            store_issue_data(issue_data, save_dir_raw_i, ISSUE_DESC_FILENAME)
-            save_dirs_updated.append(save_dir_raw_i)
+            if store_issue_data(issue_data, save_dir_raw_i, ISSUE_DESC_FILENAME):
+                save_dirs_updated.append(save_dir_raw_i)
+    print(f'  {len(save_dirs_updated)} of {len(issues)} issue(s) stored as a new version')
 
     # Scan for links in updated issues and download
-    issue_data_files = list(save_dir_raw.glob(f'*/{ISSUE_DESC_FILENAME}*.json'))
+    issue_data_files = latest_issue_files(save_dir_raw, ISSUE_DESC_FILENAME)
     issue_data_files_select = [f for f in issue_data_files if f.parent in save_dirs_updated]
 
     all_scans = scan_issue_files(issue_data_files_select)
-    df_issue_links = make_scan_df(all_scans, 'links')
-    print(f'  {len(df_issue_links)} links to test')
+    links_by_issue = [(scan['iid'], link) for scan in all_scans for link in scan['links']]
+    print(f'  {len(links_by_issue)} links to test')
 
     i_dl = 0
     with timed('Download attachments from GitLab'):
-        for iid, line in df_issue_links.iterrows():
-            link = line['links']
+        for iid, link in links_by_issue:
             dl_path = get_link_local_path(save_dir_raw, iid, link)
             if not dl_path.exists():
                 status_code = dl_link_gitlab(gl, dl_url_base, link, dl_path, token)
@@ -202,6 +210,14 @@ def main() -> None:
         help='SSL verification: path to a CA bundle file, or "false" to disable verification '
              '(use "false" for servers with self-signed certificates). Default: verify with system CAs.',
     )
+    parser.add_argument(
+        '--force-update',
+        action='store_true',
+        default=False,
+        help='Re-fetch every art10 issue, not only those updated since the last run. Issues already in the '
+             'pool get a new issue_txt_data_vNN.json when their notes, labels, state, title or description '
+             'changed; existing files are never overwritten.',
+    )
     args = parser.parse_args()
 
     # Parse --ssl-verify: "false" → False, a path → str, omitted → True
@@ -221,6 +237,7 @@ def main() -> None:
         df_passwords=df_passwords,
         default_password=default_password,
         ssl_verify=ssl_verify,
+        force_update=args.force_update,
     )
     print('Done.')
 

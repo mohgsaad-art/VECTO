@@ -79,7 +79,7 @@ cd BuildTools/CI_CD
 ```bash
 python A01_Update_Pool.py <pool_root>
     [--gitlab-url <url>] [--project-path <path>] [--token <token>] [--credentials <path>]
-    [--ssl-verify <ca_bundle_or_false>]
+    [--ssl-verify <ca_bundle_or_false>] [--force-update]
 ```
 - `pool_root`: root of the local pool directory (contains `A00_RAW` and `A01_EXTRACT` subdirs).
 - `--gitlab-url`: GitLab instance URL (default: `https://code.europa.eu`).
@@ -87,7 +87,9 @@ python A01_Update_Pool.py <pool_root>
 - `--token`: GitLab private token. Falls back to `credentials.GITLAB_TOKEN` if not supplied.
 - `--credentials`: path to a `credentials.py` file. Defaults to `credentials.py` resolved from `sys.path`.
 - `--ssl-verify`: SSL verification — path to a CA bundle file, or `false` to disable (use `false` for servers with self-signed certificates). Defaults to system CA verification.
+- `--force-update`: re-fetch **every** art10 issue instead of only those updated since the date in `status.json`. Meant for the scheduled CI job (`update-test-pool` in vectoci, run by a pipeline schedule with variable `POOL_UPDATE=true`).
 - Connects to GitLab, downloads new issue attachments since the last run, extracts archives, and saves a `status.json` timestamp to `<pool_root>`.
+- **Issue data versions:** each issue's data is stored as `A00_RAW/<iid>/issue_txt_data_vNN.json`. A file is never overwritten: a new `_vNN` is written only when the fetched issue differs from the latest stored version in its notes (count, or a note's id/`created_at`/`updated_at`), labels, label events, state, title or description. Attachments are downloaded only for issues that got a new version. A02 (and A01 itself) read only the highest version of each issue.
 
 ### A02 — Generate HTCondor-ready zipped inputs from generic and issue vehicle files
 ```bash
