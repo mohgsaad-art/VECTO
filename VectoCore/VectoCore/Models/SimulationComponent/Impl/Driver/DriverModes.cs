@@ -1042,6 +1042,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     }
 
                     break;
+
+                case ResponseOverload _:
+                    if (PowertrainContainer.GearboxInfo.GearboxType.AutomaticTransmission() && PowertrainContainer.GearboxInfo.LastShift==absTime)
+                    {
+                        response = Driver.DrivingActionCoast(absTime, ds, targetVelocity, gradient);
+                    }
+                    else
+                    {
+                        response = Driver.DrivingActionRoll(absTime, ds,
+                                        DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                    }
+                    break;
             }
 
             //} while (!(response is ResponseSuccess) && i++ < 3);
