@@ -19,6 +19,7 @@ import numpy as np
 from lxml import etree, objectify
 from ordered_set import OrderedSet as oset  # type: ignore
 
+from .utils_pool import latest_issue_files
 from .utils import (
     el_text,
     parse_xsd_type,
@@ -283,7 +284,7 @@ def read_vecto_file(fpath: Path | str) -> list:
 
 def scan_pool(save_dir_RAW: Path | str, save_dir_EXTRACT: Path | str, issue_desc_save_file_name):
 
-    raw_issue_jsons = list(save_dir_RAW.glob(f"*/{issue_desc_save_file_name}*.json"))
+    raw_issue_jsons = latest_issue_files(save_dir_RAW, issue_desc_save_file_name)
     all_scans_sorted = scan_issue_files(raw_issue_jsons)
     all_links_sorted = list(oset(itt.chain(*[i["links"] for i in all_scans_sorted]))) # should be sorted in order of appearance
 
@@ -306,7 +307,7 @@ def scan_pool(save_dir_RAW: Path | str, save_dir_EXTRACT: Path | str, issue_desc
     return df_IssueVINs_declared, df_hash_sorted
 
 def read_pool_stats(save_dir_RAW: Path | str, issue_desc_save_file_name):
-    raw_issue_jsons = list(save_dir_RAW.glob(f"*/{issue_desc_save_file_name}*.json"))
+    raw_issue_jsons = latest_issue_files(save_dir_RAW, issue_desc_save_file_name)
 
     df_issues = read_issue_files(raw_issue_jsons)
 

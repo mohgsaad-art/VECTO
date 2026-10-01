@@ -7,6 +7,7 @@ import contextlib
 import importlib
 import importlib.util
 import json
+import re
 import sys
 import time
 from datetime import datetime, timedelta
@@ -34,6 +35,19 @@ def timed(label: str):
     t = time.time()
     yield
     print(f'  {label}: {time.time() - t:.1f}s')
+
+
+def latest_issue_files(save_dir_raw: Path, issue_desc_filename: str) -> list[Path]:
+    """Newest issue data file (issue_txt_data_v*.json) of each issue folder (highest _vNN; an unversioned file ranks lowest)."""
+    latest: dict[Path, tuple[int, Path]] = {}
+    for path in Path(save_dir_raw).glob(f'*/{issue_desc_filename}*.json'):
+        match = re.fullmatch(rf'{re.escape(issue_desc_filename)}(?:_v(\d+))?', path.stem)
+        if not match:
+            continue
+        version = int(match.group(1)) if match.group(1) else 0
+        if path.parent not in latest or version > latest[path.parent][0]:
+            latest[path.parent] = (version, path)
+    return [path for _, path in sorted(latest.values(), key=lambda item: str(item[1].parent))]
 
 
 def try_import_credentials(credentials_path: str | None = None):
