@@ -30,9 +30,28 @@ from .utils import get_issue_id_from_path, scan_issue_files
 
 # local function
 
+def issue_data_signature(issue_data: dict) -> dict:
+    """The parts of an issue that warrant a new stored version when they change."""
+    issue = issue_data.get("issue") or {}
+    return {
+        "notes": sorted(
+            (n.get("id"), n.get("created_at"), n.get("updated_at")) for n in issue_data.get("notes") or []
+        ),
+        "title": issue.get("title"),
+        "description": issue.get("description"),
+        "labels": sorted(issue.get("labels") or []),
+        "state": issue.get("state"),
+        "label_events": sorted(
+            (e.get("id"), e.get("created_at"), e.get("action"), (e.get("label") or {}).get("name"))
+            for e in issue_data.get("label_events") or []
+        ),
+    }
+
+
 def store_issue_data(issue_data: dict,
                      issue_local_dir: str|Path,
                      issue_desc_save_file_name:str) -> bool:
+    """Store issue_data as the next _vNN file if it differs from the latest one; never overwrites."""
 
     save_dir = Path(str(issue_local_dir))
 
@@ -43,9 +62,10 @@ def store_issue_data(issue_data: dict,
         outfile_fpath_template, start=1, overwrite=False, also_last=True
     )
 
-    ## Download new data only if different from last time fetched.
     new_file_created = False
-    if not old_outfile_fpath or json.loads(old_outfile_fpath.read_text()) != issue_data:
+    if not old_outfile_fpath or (
+        issue_data_signature(json.loads(old_outfile_fpath.read_text())) != issue_data_signature(issue_data)
+    ):
         print(f"  + new version of {outfile_fpath}")
         ensure_dir(outfile_fpath.parent)
         with outfile_fpath.open("wt") as f:
