@@ -270,7 +270,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 				case CycleType.PTO:
 					throw new VectoException("PTO Cycle can not be used as main cycle!", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 				default:
-					throw new ArgumentOutOfRangeException("CycleType unknown:" + data.Cycle.CycleType);
+					throw new VectoException($"CycleType unknown: {data.Cycle.CycleType}", ErrorCodes.SIMFACTORY_INVALID_CYCLE);
 			}
 			return run;
 		}

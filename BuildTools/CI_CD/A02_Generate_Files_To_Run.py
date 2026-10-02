@@ -189,13 +189,13 @@ def _vecto_inputs_to_bytes(inputs: dict) -> list[tuple[str, bytes]]:
     return result
 
 
-def _job_json_bytes(prim: str, comp: str, generator_fn) -> bytes:
+def _job_json_bytes(prim: str, comp: str, generator_fn, run_simulation: bool = True) -> bytes:
     """Capture generate_PRIM_COMP_job / generate_PRIMVIF_COMP_job output as bytes."""
     import tempfile
     with tempfile.NamedTemporaryFile(suffix='.vecto', delete=False) as f:
         tmp = f.name
     try:
-        generator_fn(prim, comp, tmp)
+        generator_fn(prim, comp, tmp, run_simulation)
         return Path(tmp).read_bytes()
     finally:
         Path(tmp).unlink(missing_ok=True)
@@ -357,18 +357,19 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
 
     # Build manifests from df_vehicles_ref
     col_to_explode = ['REF_local_path', 'REF_file_type', 'REF_vehicle_type']
+    excluded_labels = ['art10::rejected', 'art10::open', 'art10::need_info']
     df_to_run = (
-        df_vehicles_ref[df_vehicles_ref.REF_art10_label != 'art10::rejected']
+        df_vehicles_ref[~df_vehicles_ref.REF_art10_label.isin(excluded_labels)]
         .explode(col_to_explode)
     )
 
     # Group by dirname → collect files
-    groups: dict[str, list[tuple[str, bytes]]] = {}
+    groups: dict[str, list[tuple[str, bytes, bool]]] = {}
     for _, row in df_to_run.iterrows():
         dirname = str(Path(_MODE_ART10) / row['REF_save_dirname'])
         filename = row['REF_vehicle_type'] + '.xml'
         content = Path(row['REF_local_path']).read_bytes()
-        groups.setdefault(dirname, []).append((filename, content))
+        groups.setdefault(dirname, []).append((filename, content, row['REF_is_xml_valid2run']))
 
     # Add generated .vecto job files for bus configurations
     for dirname, files in groups.items():
@@ -377,13 +378,15 @@ def collect_issue_vehicles(issues_input_dir: Path) -> list[VehicleManifest]:
         prim_files = [f for f in xml_names if 'prim' in f.lower()]
         vif_files = [f for f in xml_names if 'vif' in f.lower()]
         if comp_files and prim_files:
-            job_bytes = _job_json_bytes(prim_files[0], comp_files[0], generate_PRIM_COMP_job)
-            files.append(('job.vecto', job_bytes))
+            comp_valid = [f[2] for f in files if 'comp' in f[0].lower()][0]
+            job_bytes = _job_json_bytes(prim_files[0], comp_files[0], generate_PRIM_COMP_job, comp_valid)
+            files.append(('job.vecto', job_bytes, True))
         elif comp_files and vif_files:
-            job_bytes = _job_json_bytes(vif_files[0], comp_files[0], generate_PRIMVIF_COMP_job)
-            files.append(('job.vecto', job_bytes))
+            comp_valid = [f[2] for f in files if 'comp' in f[0].lower()][0]
+            job_bytes = _job_json_bytes(vif_files[0], comp_files[0], generate_PRIMVIF_COMP_job, comp_valid)
+            files.append(('job.vecto', job_bytes, True))
 
-    return [VehicleManifest(dirname=dirname, files=files) for dirname, files in groups.items()]
+    return [VehicleManifest(dirname=dirname, files=[f[0:2] for f in files]) for dirname, files in groups.items()]
 
 
 # ---------------------------------------------------------------------------

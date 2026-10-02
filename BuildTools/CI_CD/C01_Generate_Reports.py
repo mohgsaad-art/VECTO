@@ -13,7 +13,9 @@ Usage:
         [--interim-report]           Write to Interim_Reports/ subfolder instead of Reports/
         [--reports-cache <path>]     Cache directory used to determine the next report number
         [--mr-reports-cache <path>]  Directory for MR OR reports (default: <reports-cache>/MR)
-        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-mr-run
+        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; when supplied, the reference OR report is
+                                       always (re)generated from XX_RESULTS/<ref_version> if present.
+                                       Required with --is-mr-run.
         [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
@@ -31,6 +33,7 @@ import pandas as pd
 from lxml import etree
 
 from C44_Generate_Delta_Report import append_delta_to_report, generate_delta_report
+from FUNCTIONS.LOG_VSUM_MATCH import check_log_vsum_match
 from FUNCTIONS.REPORTS import (
     find_result_dirs,
     get_default_report_dir,
@@ -212,8 +215,13 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
         vsum_ok = len(df_vsum) > 0 and df_vsum['Status'].isin(_valid_statuses).all()
 
         log = logs[0]
-        with open(log) as fh:
-            log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
+        try:
+            log_ok = check_log_vsum_match(log, df_vsum, valid_statuses=_valid_statuses).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); '
+                  f'falling back to legacy 100% substring check.')
+            with open(log) as fh:
+                log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
         with open(log) as fh:
             t_cpu = [_num_pattern.findall(line)[0] for line in fh if 'Simulation runs' in line]
 
@@ -235,7 +243,9 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             )
             try:
                 with open(vecto_file) as fh:
-                    file_version = json.load(fh)['Header']['FileVersion']
+                    vecto_json = json.load(fh)
+                    file_version = jvecto_json['Header']['FileVersion']
+                    file_body = vecto_json["Body"]
             except Exception:
                 file_version = 0
 
@@ -243,11 +253,11 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
                 rslt_mfr_final = [
                     f for f in os.listdir(res_dir) if '.RSLT_MANUFACTURER.xml' in f
                 ]
-                if not rslt_mfr_final:
-                    with open(log) as fh:
-                        exempted = any('xempted' in line for line in fh)
-                    if not exempted:
-                        complete_step_ok = False
+                if (not rslt_mfr_final) and (str(file_body["RunSimulation"]).lower()=='true'):
+                    complete_step_ok = False
+                    vsum_ok=False # vsum miss the complete data
+                else:
+                    complete_step_ok = True
 
         # RSLT_MANUFACTURER error check
         rslt_mfr_ok = True
@@ -465,12 +475,17 @@ def build_crf_dataframe(result_dir: str) -> pd.DataFrame | None:
     for res_dir in res_dir_list:
         crf_files = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.RSLT_CUSTOMER.xml')]
         logs      = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.log')]
+        vsums     = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.vsum')]
 
-        if not crf_files or not logs:
+        if not crf_files or not logs or not vsums:
             continue
 
-        with open(logs[0]) as fh:
-            log_ok = any('[100.000%]' in line or '[100.00%]' in line for line in fh)
+        try:
+            df_vsum = pd.read_csv(vsums[0], skiprows=[0])[:-1]
+            log_ok = check_log_vsum_match(logs[0], df_vsum).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); skipping.')
+            continue
         if not log_ok:
             continue
 
@@ -618,6 +633,36 @@ def refresh_mr_report() -> None:
     print(f'MR report written: {mr_output_path}')
 
 
+def refresh_ref_report() -> None:
+    """Generate a fresh reference OR report from <ref-vecto-root> results,
+    replacing any existing report for that version in _reports_cache.
+
+    Mirrors refresh_mr_report(). Called unconditionally whenever
+    --ref-vecto-root is supplied; no-ops if it is absent or its
+    XX_RESULTS/<ref_version> results aren't available yet.
+    """
+    if not args.ref_vecto_root:
+        print('--ref-vecto-root not supplied - cannot generate reference report.')
+        return
+
+    ref_version = get_vecto_version(args.ref_vecto_root)
+    ref_result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', ref_version)
+    if not os.path.isdir(ref_result_dir):
+        print(f'Reference result dir not found at {ref_result_dir} - skipping reference report.')
+        return
+
+    for _old in glob.glob(os.path.join(_reports_cache, f'OR_{ref_version}_*.xlsx')):
+        os.remove(_old)
+        print(f'Removed old reference report: {_old}')
+
+    ref_hash = get_vecto_hash(args.ref_vecto_root)
+    ref_nnnn = get_next_report_number(_reports_cache)
+    ref_output_path = os.path.join(_reports_cache, f'OR_{ref_version}_{date}_{ref_nnnn}_{ref_hash}.xlsx')
+
+    write_report(ref_result_dir, ref_output_path)
+    print(f'Reference report written: {ref_output_path}')
+
+
 def purge_old_failed_reports(failed_reports_dir: str, max_age_days: int = 10) -> None:
     if not os.path.isdir(failed_reports_dir):
         return
@@ -648,8 +693,13 @@ def copy_failed_outputs(failed_names: list[str], src_result_dir: str, dest_dir: 
 
 
 def main() -> None:
-    # When --is-mr-run is set, regenerate the MR OR report first so the
-    # Intermediate Delta reflects the latest MR build in this same pipeline run.
+    # Regenerate the reference OR report first, whenever possible, so the
+    # reference Delta reflects this same pipeline run instead of an earlier,
+    # separately-produced report. When --is-mr-run is set, do the same for
+    # the MR OR report.
+    print('--- Generating reference OR report ---')
+    refresh_ref_report()
+
     if args.is_mr_run:
         print('--- Generating MR OR report ---')
         refresh_mr_report()
