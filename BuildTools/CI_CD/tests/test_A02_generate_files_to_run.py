@@ -1,6 +1,6 @@
 """
 Tests for A02_Generate_Files_To_Run.py: collect_generic_vehicles,
-collect_issue_vehicles (exercised end-to-end via DevTools/synthesize_issue_pool.py),
+collect_issue_vehicles (exercised end-to-end on a placeholder pool from pool_helpers.py),
 and package_vehicles. All XML/vecto content used here is placeholder data
 built in tmp_path - no real pool data is read.
 """
@@ -13,7 +13,7 @@ import zipfile
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'DevTools'))
+sys.path.insert(0, os.path.dirname(__file__))
 
 from A02_Generate_Files_To_Run import (
     VehicleManifest,
@@ -30,7 +30,7 @@ from A02_Generate_Files_To_Run import (
     package_vehicles,
 )
 from FUNCTIONS.utils_generate_vecto_input2run import generate_PRIM_COMP_job, generate_PRIMVIF_COMP_job
-from synthesize_issue_pool import synthesize_pool
+from pool_helpers import synthesize_pool
 
 
 def _write_zip(path, members: dict[str, bytes]):

@@ -5,11 +5,11 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'DevTools'))
+sys.path.insert(0, os.path.dirname(__file__))
 
 from FUNCTIONS.utils_generate_vecto_input2run import read_pool_stats, scan_pool
 from FUNCTIONS.utils_pool import ISSUE_DESC_FILENAME, latest_issue_files
-from synthesize_issue_pool import build_minimal_issue_json, make_fake_hash
+from pool_helpers import build_minimal_issue_json, make_fake_hash
 
 
 def _write(raw_dir, iid, file_name, label='art10::approved', links=()):
