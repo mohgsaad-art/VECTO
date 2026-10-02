@@ -433,7 +433,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			ctl.Gearbox = gbx;
 			ctl.Engine = engine;
 
-            var vehicleHasBOMode = data.InputData.JobInputData.Vehicle.BatteryOnlyMode;
+            var vehicleHasBOMode = data.VehicleData.InputData.BatteryOnlyMode;
 			var idleController = GetIdleController(data.PTOSinglePwt, engine, container, vehicleHasBOMode);
 			var clutch = (data.GearboxSinglePwt.Type.ManualTransmission() || data.GearboxSinglePwt.Type == GearboxType.IHPC)
 				? ComponentFactory.CreateClutch(data.JobType, container, powertrainContainer, data.EngineData) 

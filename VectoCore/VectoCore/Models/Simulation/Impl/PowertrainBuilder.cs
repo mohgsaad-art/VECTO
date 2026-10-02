@@ -609,7 +609,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				engine.WHRCharger = whrCharger;
 			}
 
-            var vehicleHasBOMode = data.InputData.JobInputData.Vehicle.BatteryOnlyMode;
+            var vehicleHasBOMode = data.VehicleData.InputData.BatteryOnlyMode;
 
             var cycle = ComponentFactory.CreateDistanceBasedDrivingCycle(container, data.Cycle);
 			var idleController = GetIdleController(data.PTOSinglePwt, engine, container, vehicleHasBOMode);
