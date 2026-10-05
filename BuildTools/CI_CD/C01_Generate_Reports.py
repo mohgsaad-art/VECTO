@@ -258,6 +258,13 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
                     vsum_ok=False # vsum miss the complete data
                 else:
                     complete_step_ok = True
+            elif file_version == 7:
+                # VIF + completed job: no preceding primary run, the completed
+                # vehicle is the only stage, so its final MRF must exist.
+                rslt_mfr_final = [
+                    f for f in os.listdir(res_dir) if '.RSLT_MANUFACTURER.xml' in f
+                ]
+                complete_step_ok = bool(rslt_mfr_final)
 
         # RSLT_MANUFACTURER error check
         rslt_mfr_ok = True

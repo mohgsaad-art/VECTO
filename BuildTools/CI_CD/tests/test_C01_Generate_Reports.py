@@ -330,6 +330,39 @@ class TestBuildSummaryDataframeCompleteStep:
         assert df.loc[0, 'Success'] == 'OK'
 
 
+_V7_JOB = {'Header': {'FileVersion': 7},
+           'Body': {'PrimaryVehicleResults': 'vif.xml', 'CompletedVehicle': 'completed.xml'}}
+
+
+class TestBuildSummaryDataframeCompleteStepV7:
+    def _write_v7_case(self, base, with_final_mrf):
+        return _write_result_dir(
+            base, 'CaseBusVif',
+            log_lines=['VIN1 HeavyUrban _LowLoading  100.00%  10.00s', _OK_LOG_TAIL],
+            vsum_rows=[('1-0-', 'VIN1', 'HeavyUrban.vdri', 'Success', 500.0)],
+            vecto_json=_V7_JOB,
+            rslt_manufacturer_ok=True if with_final_mrf else None,
+        )
+
+    def test_without_final_mrf_is_error(self, tmp_path, C01):
+        self._write_v7_case(tmp_path, with_final_mrf=False)
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'complete_step_ok'] == False
+        assert df.loc[0, 'Success'].startswith('ERROR')
+        assert failed == ['CaseBusVif']
+
+    def test_with_final_mrf_is_ok(self, tmp_path, C01):
+        self._write_v7_case(tmp_path, with_final_mrf=True)
+
+        df, failed = C01.build_summary_dataframe(str(tmp_path))
+
+        assert df.loc[0, 'complete_step_ok'] == True
+        assert df.loc[0, 'Success'] == 'OK'
+        assert failed == []
+
+
 class TestBuildSummaryDataframeTimeLimit:
     # Test names must not contain the word checked for: pytest puts the test name in tmp_path.
     def test_time_limit_message_in_log_is_error_timeout(self, tmp_path, C01):
