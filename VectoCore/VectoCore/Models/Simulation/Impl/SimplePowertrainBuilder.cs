@@ -497,8 +497,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					clutch.IdleController = idleController;
 				}
 			}
-
-			if (data.BusAuxiliaries != null) {
+            if (vehicleHasBOMode) {
+                AddElectricAuxiliaries(data, container, powertrainContainer, es, null, dcdc);
+            }
+            if (data.BusAuxiliaries != null) {
 				if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
 					throw new VectoException("BusAux data set but no BusAux component found!", ErrorCodes.VEHICLE_BUS_AUXILIARIES_MISSING);
 				}
