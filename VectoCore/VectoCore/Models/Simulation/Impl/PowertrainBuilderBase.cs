@@ -479,8 +479,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				"10, 50, 0").ToStream(), CycleType.MeasuredSpeed, "DummyCycle", false);
 
 		protected IIdleController
-			GetIdleController(PTOData pto, ICombustionEngine engine, IVehicleContainer container) =>
-			pto?.PTOCycle is null
+            GetIdleController(PTOData pto, ICombustionEngine engine, IVehicleContainer container, bool vehicleHasBoMode = false) =>
+			pto?.PTOCycle is null || vehicleHasBoMode
 				? engine.IdleController
 				: new IdleControllerSwitcher(engine.IdleController, new PTOCycleController(container, pto.PTOCycle));
 

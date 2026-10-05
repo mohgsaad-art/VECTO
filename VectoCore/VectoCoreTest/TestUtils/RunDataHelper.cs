@@ -10,11 +10,6 @@ namespace TUGraz.VectoCore.Tests.TestUtils
 				return rd;
 			}
 
-
-
-
-
-
 			var factorCharge = rd.HybridStrategyParameters.EquivalenceFactorCharge /
 								rd.HybridStrategyParameters.EquivalenceFactor;
 			var factorDischarge = rd.HybridStrategyParameters.EquivalenceFactorDischarge /

@@ -609,8 +609,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				engine.WHRCharger = whrCharger;
 			}
 
-			var cycle = ComponentFactory.CreateDistanceBasedDrivingCycle(container, data.Cycle);
-			var idleController = GetIdleController(data.PTOSinglePwt, engine, container);
+            var vehicleHasBOMode = data.VehicleData.InputData.BatteryOnlyMode;
+
+            var cycle = ComponentFactory.CreateDistanceBasedDrivingCycle(container, data.Cycle);
+			var idleController = GetIdleController(data.PTOSinglePwt, engine, container, vehicleHasBOMode);
 			cycle.IdleController = idleController as IIdleControllerSwitcher;
 			cycle.AddComponent(ComponentFactory.CreateDriver(data.JobType, numShiftableGearboxes, container, data.DriverData, 
 					ComponentFactory.CreateDriverStrategy(data.JobType, numShiftableGearboxes, container)))
@@ -633,6 +635,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesSinglePwt, container, es, ctl, powertrainContainer))
 				.AddComponent(engine, idleController);
 			AddAuxiliaries(engine, container, data, powertrainContainer);
+            
 
 			if (data.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
 				// this has to be done _after_ the powertrain is connected together so that the cluch already has its nextComponent set (necessary in the idle controlelr)
@@ -644,8 +647,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			var dcdc = ComponentFactory.CreateDCDCConverter(container, data.DCDCData.DCDCEfficiency);
-
-			if (data.BusAuxiliaries != null) {
+            if (vehicleHasBOMode) {
+                AddElectricAuxiliaries(data, container, powertrainContainer, es, cycle, dcdc);
+            }
+            if (data.BusAuxiliaries != null) {
 				if (container.BusAux is BusAuxiliariesAdapter busAux) {
 					var auxCfg = data.BusAuxiliaries;
 					var electricStorage = ComponentFactory.CreateSimpleBattery(
