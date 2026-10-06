@@ -49,6 +49,11 @@ parser.add_argument(
     help='Directory containing OR_*.xlsx report files used to detect missing vehicles for the reference version.'
 )
 parser.add_argument(
+    '--release-tag',
+    default=None,
+    help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is used as the reference report (passed through to B12).'
+)
+parser.add_argument(
     '--limit',
     type=int,
     default=None,
@@ -81,7 +86,8 @@ print('Generating queue file...')
 print(f'--- vecto ref root: "{args.ref_vecto_root}"')
 _ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root else ''
 _cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
-output32 = run(f'python B12_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
+_tag_arg = f' --release-tag "{args.release_tag}"' if args.release_tag else ''
+output32 = run(f'python B12_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}{_tag_arg}')
 print(output32)
 
 # --- Step 1b: Truncate queue file if --limit is set ---

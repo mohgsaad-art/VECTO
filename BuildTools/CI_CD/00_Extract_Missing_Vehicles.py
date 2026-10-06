@@ -60,11 +60,11 @@ def get_vehicle_ids_from_pool(test_pool_path: str) -> set[str]:
 # Report
 # ---------------------------------------------------------------------------
 
-def find_latest_report(reports_cache: str, vecto_root: str) -> str | None:
+def find_latest_report(reports_cache: str, vecto_root: str, release_tag: str | None = None) -> str | None:
     """Return the path of the most relevant OR summary report in reports_cache.
 
     Search order (matches C01.get_latest_release_report):
-      1. Latest published Release/v* git tag
+      1. release_tag when given (skips the git lookup), otherwise the latest published Release/v* git tag
       2. Latest official, then RC, then DEV release tag
       3. Fallback: report with the highest NNNN in the cache
     Returns None if the cache directory is empty or missing.
@@ -83,11 +83,13 @@ def find_latest_report(reports_cache: str, vecto_root: str) -> str | None:
                 best_nnnn, best_path = nnnn_val, os.path.join(reports_cache, fname)
         return best_path
 
-    git_root = (get_vecto_git_root(os.path.dirname(os.path.abspath(__file__)))
-                or get_vecto_git_root(vecto_root)
-                or vecto_root)
-    latest_tag = get_latest_vecto_release(git_root)
-    by_type = get_latest_vecto_releases_by_type(git_root)
+    git_root = None
+    if release_tag:
+        latest_tag, by_type = release_tag, {}
+    else:
+        git_root = get_vecto_git_root(vecto_root) or vecto_root
+        latest_tag = get_latest_vecto_release(git_root)
+        by_type = get_latest_vecto_releases_by_type(git_root)
 
     print(f'--- git_root: {git_root}')
     print(f'--- latest_tag: {latest_tag}')
