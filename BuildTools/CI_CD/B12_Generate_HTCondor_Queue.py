@@ -35,13 +35,13 @@ def _load_extract_missing():
     return mod
 
 
-def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache, release_tag=None):
+def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache, release_tag=None, allow_prerelease=False):
     """Return the set of vehicle IDs present in the pool but absent from the latest reference OR report."""
     pool_ids = em.get_vehicle_ids_from_pool(test_pool_path)
 
     print(f'Reports cache: {reports_cache}')
     print(f'Reference VECTO root: {ref_vecto_root}')
-    ref_report = em.find_latest_report(reports_cache, ref_vecto_root, release_tag)
+    ref_report = em.find_latest_report(reports_cache, release_tag, allow_prerelease)
     if ref_report is None:
         print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
         ref_report_ids = set()
@@ -144,8 +144,10 @@ def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input
                             release_tag=None):
     """Return job-arg tuples for vehicles missing from the given vecto_root's
     latest OR report. suffix ('_REF' or '_MR') is appended to each output
-    filename so B14 can later tell which VECTO version produced it."""
-    missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache, release_tag)
+    filename so B14 can later tell which VECTO version produced it. Only the
+    MR reports cache may pick an RC/DEV report as reference."""
+    missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache, release_tag,
+                                  allow_prerelease=(suffix == '_MR'))
     missing_dirs = em.resolve_input_dirs(missing_ids, test_pool_path)
     print(f'Identified {len(missing_ids)} missing vehicle(s) for VECTO version at {vecto_root}')
 

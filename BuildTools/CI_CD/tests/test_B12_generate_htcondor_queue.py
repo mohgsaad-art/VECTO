@@ -37,11 +37,13 @@ class _FakeExtractMissing:
     def __init__(self, missing_ids, input_dirs_by_id):
         self._missing_ids = missing_ids
         self._input_dirs_by_id = input_dirs_by_id
+        self.report_lookups = []
 
     def get_vehicle_ids_from_pool(self, test_pool_path):
         return set(self._input_dirs_by_id)
 
-    def find_latest_report(self, reports_cache, vecto_root):
+    def find_latest_report(self, reports_cache, release_tag=None, allow_prerelease=False):
+        self.report_lookups.append((reports_cache, release_tag, allow_prerelease))
         return None
 
     def get_vehicle_ids_from_report(self, report_path):
@@ -107,3 +109,30 @@ class TestBuildMissingJobArgsSuffix:
         )
 
         assert ref_jobs[0][2] != mr_jobs[0][2]
+
+
+class TestBuildMissingJobArgsReportLookup:
+    def _lookup(self, tmp_path, suffix):
+        B12 = _import_b12()
+        em = _FakeExtractMissing(
+            missing_ids=['VehA'],
+            input_dirs_by_id={'VehA': str(tmp_path / 'VehA')},
+        )
+
+        B12._build_missing_job_args(
+            em, str(tmp_path / 'vecto'), str(tmp_path),
+            str(tmp_path / 'reports_cache'), str(tmp_path), force_rerun=True, no_hev=False,
+            suffix=suffix, release_tag='Release/v5.1.4-DEV',
+        )
+
+        return em.report_lookups
+
+    def test_reference_lookup_considers_official_releases_only(self, tmp_path):
+        lookups = self._lookup(tmp_path, '_REF')
+
+        assert lookups == [(str(tmp_path / 'reports_cache'), 'Release/v5.1.4-DEV', False)]
+
+    def test_mr_lookup_also_considers_rc_and_dev(self, tmp_path):
+        lookups = self._lookup(tmp_path, '_MR')
+
+        assert lookups == [(str(tmp_path / 'reports_cache'), 'Release/v5.1.4-DEV', True)]

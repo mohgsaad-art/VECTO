@@ -16,6 +16,8 @@ Usage:
         [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; when supplied, the reference OR report is
                                        always (re)generated from XX_RESULTS/<ref_version> if present.
                                        Required with --is-mr-run.
+        [--release-tag <tag>]        Release tag (e.g. Release/v5.1.4-DEV) whose OR report is preferred as
+                                       the reference for the delta; otherwise the highest official release.
         [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
@@ -78,6 +80,12 @@ parser.add_argument(
     default=None,
     help='Path to REF_VECTO_ROOT. When supplied together with --is-mr-run, '
          'the MR vecto executable is taken from <ref-vecto-root>/MR.',
+)
+parser.add_argument(
+    '--release-tag',
+    default=None,
+    help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is preferred as the reference for the '
+         'delta report. Without a matching report, the highest official release report is used.',
 )
 parser.add_argument(
     '--is-mr-run',
@@ -817,7 +825,7 @@ def main() -> None:
         print(f'Copying {len(failed_names)} failed vehicle(s) to: {dest}')
         copy_failed_outputs(failed_names, result_dir, dest)
 
-    ref_report = get_latest_release_report(_reports_cache, vecto_root)
+    ref_report = get_latest_release_report(_reports_cache, args.release_tag)
     if ref_report and ref_report != output_path:
         generate_delta_report(ref_report, output_path)
         append_delta_to_report(ref_report, output_path)

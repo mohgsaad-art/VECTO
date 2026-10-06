@@ -160,25 +160,29 @@ python C04_Generate_HTML_Report.py [--report-dir <path>] [--interim-report]
 
 ### 00 — Extract missing vehicles
 ```bash
-python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-cache <path>] [--output <path>]
+python 00_Extract_Missing_Vehicles.py <vecto_root> <test_pool_path> [--reports-cache <path>] [--release-tag <tag>] [--allow-prerelease] [--output <path>]
 ```
-- `vecto_root`: path to the VECTO installation directory (used to resolve git tags when searching for the latest OR report).
+- `vecto_root`: path to the VECTO installation directory.
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
 - `--reports-cache`: directory containing `OR_*.xlsx` report files. Defaults to the standard CI Reports directory (`D:/CI/Reports` or `C:/CI/Reports`).
+- `--release-tag`: release tag whose OR report is preferred as the reference (see the selection rule below).
+- `--allow-prerelease`: also consider RC/DEV reports when no report matches the tag (used for the MR reports cache).
 - `--output`: output file path for missing vehicle input directories (default: `./missing_vehicles.txt`).
+- **Reference report selection** (`FUNCTIONS/REPORTS.get_latest_release_report`, no git lookup): if `--release-tag` is given and reports exist for that exact version (e.g. `Release/v5.1.4-DEV` → `OR_5.1.4-DEV_…`), the newest of them is used (date, then NNNN). Otherwise all `OR_*.xlsx` summary reports are ranked by numeric version, then release type (official > RC > DEV), then date (YYMMDD), then NNNN, and the highest wins. RC/DEV reports are only considered with `--allow-prerelease` (the MR reports cache); otherwise only official releases count. The chosen report and the rule that picked it are printed.
 - Compares vehicles in the test pool against the latest OR report and writes the input directory path of each missing vehicle (one per line) to the output file.
 - Exits with a return code equal to the number of missing vehicles (0 if none).
 - Implements the Case 2 backwards-compatibility check: run only new/un-run vehicles against the current VECTO version.
 
 ### B01 — Submit test cases to HTCondor
 ```bash
-python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>] [--limit N]
+python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queue-name <name>] [--ref-vecto-root <path>] [--reports-cache <path>] [--release-tag <tag>] [--limit N]
 ```
 - `vecto_root`: path to the VECTO installation directory (passed through to B12 and B13).
 - `test_pool_path`: root directory of the test pool (input files expected directly under `<test_pool_path>/<vehicle>/input.zip`).
 - `--queue-name`: HTCondor queue name used to track this submission (default: basename of `vecto_root`).
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, missing vehicles are also queued against this version for delta comparison (Case 1 backward-compatibility). Also used to derive the MR VECTO root (`<ref-vecto-root>/MR`).
 - `--reports-cache`: directory containing `OR_*.xlsx` report files, used to detect vehicles missing from the reference version report. Passed through to B12.
+- `--release-tag`: passed through to B12 to pick the reference OR reports (see 00).
 - `--limit N`: truncate the queue to the first N jobs after generation. If omitted, all jobs are submitted.
 - Requires HTCondor (`condor_submit`, `condor_q`) to be available on the system.
 - Requires the environment variable **`zipmep`** (password of the job output archives); B01 stops before submitting if it is missing or empty. The submit template forwards it to every job (`environment = "zipmep=$ENV(zipmep)"`); avoid quote characters in the password. In CI define it as a masked GitLab variable.
@@ -188,7 +192,7 @@ python B01_Run_Test_Files_with_HTCondor.py <vecto_root> <test_pool_path> [--queu
 
 ### B12 — Generate HTCondor queue file
 ```bash
-python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>]
+python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rerun] [--no-hev] [--ref-vecto-root <path>] [--reports-cache <path>] [--release-tag <tag>]
 ```
 - `vecto_root`: path to the VECTO installation directory.
 - `test_pool_path`: root directory of the test pool. Input files are expected directly under `<test_pool_path>/<vehicle>/input.zip`.
@@ -196,6 +200,7 @@ python B12_Generate_HTCondor_Queue.py <vecto_root> <test_pool_path> [--force-rer
 - `--no-hev`: exclude HEV vehicles from the job list.
 - `--ref-vecto-root`: path to the reference (previous official) VECTO installation directory. When supplied, two extra job groups are appended: (1) vehicles missing from the reference OR report, run against the reference executable, output filenames suffixed `_REF`; (2) vehicles missing from the MR OR report (`<reports-cache>/MR`), run against the MR executable (`<ref-vecto-root>/MR`), output filenames suffixed `_MR`. These suffixes let B14 tell which VECTO version produced each result archive. This enables both the reference delta (C44) and the Intermediate (MR) delta.
 - `--reports-cache`: directory containing `OR_*.xlsx` report files used to detect missing vehicles for the reference version. Defaults to the standard CI Reports directory. MR reports are read from `<reports-cache>/MR`.
+- `--release-tag`: release tag whose OR report is preferred as the reference. The reference lookup in `<reports-cache>` only falls back to official releases; the MR lookup in `<reports-cache>/MR` also considers RC/DEV (selection rule as in 00).
 - Writes `batch_arguments.txt` in the current working directory — one line per job in the format `<vecto_root> <input_dir> <output_filename>`. Current-version jobs come first, then reference-version jobs, then MR-version jobs.
 - Prepares the job list before submission.
 
@@ -224,7 +229,7 @@ python B14_Unzip_Results.py <vecto_root> [--force-rerun] [--suffix {_REF,_MR}]
 
 ### C01 — Generate all reports
 ```bash
-python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-report] [--reports-cache <path>] [--mr-reports-cache <path>] [--ref-vecto-root <path>] [--is-mr-run]
+python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-report] [--reports-cache <path>] [--mr-reports-cache <path>] [--ref-vecto-root <path>] [--release-tag <tag>] [--is-mr-run]
 ```
 - `vecto_root`: path to the VECTO installation directory (used to retrieve version and commit hash for the report name).
 - `--report-dir`: directory inside which a `Reports` folder will be created (default: `D:/CI/Reports` if `D:/` exists, otherwise `C:/CI/Reports`).
@@ -232,6 +237,7 @@ python C01_Generate_Reports.py <vecto_root> [--report-dir <path>] [--interim-rep
 - `--reports-cache`: directory used to determine the next report number (NNNN) and to receive a copy of the generated report. Created automatically if it does not exist. Defaults to the same directory as the report output.
 - `--mr-reports-cache`: directory where the single MR OR report is stored. Defaults to `<reports-cache>/MR`.
 - `--ref-vecto-root`: path to `REF_VECTO_ROOT`. Required when `--is-mr-run` is set; the MR VECTO executable is taken from `<ref-vecto-root>/MR`. Whenever it's supplied, the reference OR report is *always* (re)generated from `XX_RESULTS/<ref_version>/` before the current report — no flag needed. The version is read from `<ref-vecto-root>/vectocmd.exe`, so pass the **same versioned folder given to B01/B12** (e.g. `<REF_VECTO_ROOT>/5.1.3`); if no version can be read a `WARNING` naming the path is printed. Because `XX_RESULTS/<ref_version>/` only holds the reference jobs of the current run, the new results are **merged** into the latest existing `OR_<ref_version>_*.xlsx` in `<reports-cache>` (cases present in the new results replace the old rows, all other cases are kept; the derived `stats of non-zero variations` sheet is dropped), written with the next NNNN, and the older report(s) are deleted. If the existing report can't be read, the new results are written alone. Requires B01/B12/B14 to have been run with `--ref-vecto-root` so `XX_RESULTS/<ref_version>/` is actually populated — B14 routes reference-build result archives there via its own `--suffix _REF` (see B14 below); without that, the refresh has nothing to read and prints a warning instead.
+- `--release-tag`: release tag whose OR report in `<reports-cache>` is used as the reference for the delta report; without a matching report the highest **official** release report is used (selection rule as in 00).
 - `--is-mr-run`: when set, generates (or refreshes) the MR OR report from `XX_RESULTS/<mr_version>/` before generating the current report. The old MR OR report in `<mr-reports-cache>` is deleted first (single-report invariant). After this flag's logic runs, the Intermediate Delta is produced regardless.
 - Reads test cases from `XX_RESULTS` in the current working directory.
 - Report naming convention: `OR_{Version}_{Date}_{NNNN}_{Hash}[_suffix].xlsx` (e.g. `OR_5.1.1_260408_0001_a1b2c3d.xlsx`). NNNN is one higher than the highest number already present in the cache directory, ensuring no collision on re-runs.
