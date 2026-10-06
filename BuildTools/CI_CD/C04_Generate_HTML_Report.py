@@ -79,7 +79,7 @@ def badge_color(status):
 _CRITERIA_COLS = ['vsum_ok', 'log_ok', 'rslt_mfr_ok', 'complete_step_ok']
 _CRITERIA_LABELS = {
     'vsum_ok':          'VSUM',
-    'log_ok':           'Log 100%',
+    'log_ok':           'Log/Vsum Match',
     'rslt_mfr_ok':      'MRF',
     'complete_step_ok': 'Complete step',
 }
@@ -142,8 +142,26 @@ for test_name, row in df.iterrows():
        (isinstance(_delta_crf_val, str) and _delta_crf_val.startswith('WARNING')) or \
        _regression_val == 'ERROR':
         _warn_icon = ' <span style="color:#856404" title="Delta warning">&#9888;</span>'
+
+    _status_tokens = []
+    if status == 'OK':
+        _status_tokens.append('passed')
+    elif status == 'not run':
+        _status_tokens.append('not-run')
+    elif isinstance(status, str) and status.startswith('ERROR'):
+        _status_tokens.append('failed')
+    if isinstance(_delta_val, str) and _delta_val.startswith('WARNING'):
+        _status_tokens.append('warn-delta')
+    if isinstance(_delta_mr_val, str) and _delta_mr_val.startswith('WARNING'):
+        _status_tokens.append('warn-delta-mr')
+    if isinstance(_delta_crf_val, str) and _delta_crf_val.startswith('WARNING'):
+        _status_tokens.append('warn-crf')
+    if _regression_val == 'ERROR':
+        _status_tokens.append('regression')
+    _data_status = ' '.join(_status_tokens)
+
     rows_html += (
-        f'<tr style="background:{bg}">'
+        f'<tr style="background:{bg}" data-status="{_data_status}">'
         f'<td>{test_name}{_warn_icon}</td>'
         f'<td><span style="padding:2px 8px;border-radius:4px;font-size:11px;{badge}">{status}</span></td>'
         f'{criteria_cells}'
@@ -185,6 +203,7 @@ html = f"""<!DOCTYPE html>
   }}
   .card {{
     padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: bold; min-width: 90px; text-align: center;
+    cursor: pointer;
   }}
   .card .num {{ font-size: 28px; display: block; }}
   .card-total {{ background: #e9ecef; color: #495057; }}
@@ -192,6 +211,7 @@ html = f"""<!DOCTYPE html>
   .card-error {{ background: #f8d7da; color: #721c24; }}
   .card-skip  {{ background: #e2e3e5; color: #383d41; }}
   .card-warn  {{ background: #fff3cd; color: #856404; }}
+  .card-active {{ outline: 3px solid #404040; outline-offset: -3px; }}
   .meta {{ color: #aaa; font-size: 11px; margin-bottom: 14px; }}
   input#search {{
     padding: 5px 10px; font-size: 13px; border: 1px solid #ddd;
@@ -206,14 +226,14 @@ html = f"""<!DOCTYPE html>
 <p class="meta">Generated: {now.strftime("%Y-%m-%d %H:%M")} &nbsp;|&nbsp; Source: {source_file}</p>
 
 <div class="summary">
-  <div class="card card-total"><span class="num">{total}</span>Total</div>
-  <div class="card card-ok"><span class="num">{n_ok}</span>Passed</div>
-  <div class="card card-error"><span class="num">{n_error}</span>Failed</div>
-  {'<div class="card card-warn"><span class="num">' + str(n_delta_warn) + '</span>Warnings</div>' if _has_delta else ''}
-  {'<div class="card card-warn"><span class="num">' + str(n_delta_mr_warn) + '</span>Inter Warnings</div>' if _has_delta_mr else ''}
-  {'<div class="card card-warn"><span class="num">' + str(n_delta_crf_warn) + '</span>CRF Warnings</div>' if _has_delta_crf else ''}
-  {'<div class="card card-error"><span class="num">' + str(n_regression_err) + '</span>Regressions</div>' if _has_regression else ''}
-  <div class="card card-skip"><span class="num">{n_not_run}</span>Not run</div>
+  <div class="card card-total" data-filter="total" onclick="filterByStatus('total')"><span class="num">{total}</span>Total</div>
+  <div class="card card-ok" data-filter="passed" onclick="filterByStatus('passed')"><span class="num">{n_ok}</span>Passed</div>
+  <div class="card card-error" data-filter="failed" onclick="filterByStatus('failed')"><span class="num">{n_error}</span>Failed</div>
+  {'<div class="card card-warn" data-filter="warn-delta" onclick="filterByStatus(\'warn-delta\')"><span class="num">' + str(n_delta_warn) + '</span>Warnings</div>' if _has_delta else ''}
+  {'<div class="card card-warn" data-filter="warn-delta-mr" onclick="filterByStatus(\'warn-delta-mr\')"><span class="num">' + str(n_delta_mr_warn) + '</span>Inter Warnings</div>' if _has_delta_mr else ''}
+  {'<div class="card card-warn" data-filter="warn-crf" onclick="filterByStatus(\'warn-crf\')"><span class="num">' + str(n_delta_crf_warn) + '</span>CRF Warnings</div>' if _has_delta_crf else ''}
+  {'<div class="card card-error" data-filter="regression" onclick="filterByStatus(\'regression\')"><span class="num">' + str(n_regression_err) + '</span>Regressions</div>' if _has_regression else ''}
+  <div class="card card-skip" data-filter="not-run" onclick="filterByStatus('not-run')"><span class="num">{n_not_run}</span>Not run</div>
 </div>
 
 <h2>Results</h2>
@@ -224,7 +244,7 @@ html = f"""<!DOCTYPE html>
       <th onclick="sortTable(0)" title="Test case identifier derived from the input directory path">Test Name &#8597;</th>
       <th onclick="sortTable(1)" title="Overall result: OK when all criteria pass, ERROR otherwise">Status &#8597;</th>
       <th onclick="sortTable(2)" title="True when a vsum file exists and all simulations in it have Status = Success">VSUM &#8597;</th>
-      <th onclick="sortTable(3)" title="True when the VECTO log file contains a 100% completion line">Log 100% &#8597;</th>
+      <th onclick="sortTable(3)" title="True when every per-cycle log progress line is corroborated by a valid vsum result row (no silently dropped or unexplained non-Success cycles)">Log/Vsum Match &#8597;</th>
       <th onclick="sortTable(4)" title="True when the RSLT_MANUFACTURER file contains no Error entries">MRF &#8597;</th>
       <th onclick="sortTable(5)" title="True when the complete-step check passes (bus-specific; n/a for other vehicles)">Complete step &#8597;</th>
       {'<th onclick="sortTable(6)" title="WARNING when CO2/FC delta vs. reference version exceeds the defined threshold">Delta &#8597;</th>' if _has_delta else ''}
@@ -238,13 +258,35 @@ html = f"""<!DOCTYPE html>
 </table>
 
 <script>
-function filterTable() {{
-  var input = document.getElementById('search').value.toLowerCase();
+var activeStatusFilter = null; // null = no status filter (show all statuses)
+
+function applyFilters() {{
+  var searchInput = document.getElementById('search').value.toLowerCase();
   var rows = document.getElementById('resultsTable').getElementsByTagName('tr');
   for (var i = 1; i < rows.length; i++) {{
-    var text = rows[i].innerText.toLowerCase();
-    rows[i].style.display = text.includes(input) ? '' : 'none';
+    var matchesSearch = rows[i].innerText.toLowerCase().includes(searchInput);
+    var matchesStatus = !activeStatusFilter ||
+      (rows[i].dataset.status || '').split(' ').includes(activeStatusFilter);
+    rows[i].style.display = (matchesSearch && matchesStatus) ? '' : 'none';
   }}
+}}
+
+function filterTable() {{
+  applyFilters();
+}}
+
+function filterByStatus(key) {{
+  var cards = document.querySelectorAll('.card[data-filter]');
+  if (key === 'total' || activeStatusFilter === key) {{
+    activeStatusFilter = null;
+    cards.forEach(function(c) {{ c.classList.remove('card-active'); }});
+  }} else {{
+    activeStatusFilter = key;
+    cards.forEach(function(c) {{
+      c.classList.toggle('card-active', c.dataset.filter === key);
+    }});
+  }}
+  applyFilters();
 }}
 
 function sortTable(col) {{

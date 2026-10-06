@@ -13,7 +13,11 @@ Usage:
         [--interim-report]           Write to Interim_Reports/ subfolder instead of Reports/
         [--reports-cache <path>]     Cache directory used to determine the next report number
         [--mr-reports-cache <path>]  Directory for MR OR reports (default: <reports-cache>/MR)
-        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; required with --is-mr-run
+        [--ref-vecto-root <path>]    Path to REF_VECTO_ROOT; when supplied, the reference OR report is
+                                       always (re)generated from XX_RESULTS/<ref_version> if present.
+                                       Required with --is-mr-run.
+        [--release-tag <tag>]        Release tag (e.g. Release/v5.1.4-DEV) whose OR report is preferred as
+                                       the reference for the delta; otherwise the highest official release.
         [--is-mr-run]                Also generate the MR OR report and include the Intermediate Delta
 """
 
@@ -31,6 +35,7 @@ import pandas as pd
 from lxml import etree
 
 from C44_Generate_Delta_Report import append_delta_to_report, generate_delta_report
+from FUNCTIONS.LOG_VSUM_MATCH import check_log_vsum_match
 from FUNCTIONS.REPORTS import (
     find_result_dirs,
     get_default_report_dir,
@@ -75,6 +80,12 @@ parser.add_argument(
     default=None,
     help='Path to REF_VECTO_ROOT. When supplied together with --is-mr-run, '
          'the MR vecto executable is taken from <ref-vecto-root>/MR.',
+)
+parser.add_argument(
+    '--release-tag',
+    default=None,
+    help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is preferred as the reference for the '
+         'delta report. Without a matching report, the highest official release report is used.',
 )
 parser.add_argument(
     '--is-mr-run',
@@ -212,8 +223,13 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
         vsum_ok = len(df_vsum) > 0 and df_vsum['Status'].isin(_valid_statuses).all()
 
         log = logs[0]
-        with open(log) as fh:
-            log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
+        try:
+            log_ok = check_log_vsum_match(log, df_vsum, valid_statuses=_valid_statuses).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); '
+                  f'falling back to legacy 100% substring check.')
+            with open(log) as fh:
+                log_ok = any('[100.00%]' in line or '[100.000%]' in line for line in fh)
         with open(log) as fh:
             t_cpu = [_num_pattern.findall(line)[0] for line in fh if 'Simulation runs' in line]
 
@@ -235,7 +251,9 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             )
             try:
                 with open(vecto_file) as fh:
-                    file_version = json.load(fh)['Header']['FileVersion']
+                    vecto_json = json.load(fh)
+                    file_version = vecto_json['Header']['FileVersion']
+                    file_body = vecto_json["Body"]
             except Exception:
                 file_version = 0
 
@@ -243,11 +261,18 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
                 rslt_mfr_final = [
                     f for f in os.listdir(res_dir) if '.RSLT_MANUFACTURER.xml' in f
                 ]
-                if not rslt_mfr_final:
-                    with open(log) as fh:
-                        exempted = any('xempted' in line for line in fh)
-                    if not exempted:
-                        complete_step_ok = False
+                if (not rslt_mfr_final) and (str(file_body["RunSimulation"]).lower()=='true'):
+                    complete_step_ok = False
+                    vsum_ok=False # vsum miss the complete data
+                else:
+                    complete_step_ok = True
+            elif file_version == 7:
+                # VIF + completed job: no preceding primary run, the completed
+                # vehicle is the only stage, so its final MRF must exist.
+                rslt_mfr_final = [
+                    f for f in os.listdir(res_dir) if '.RSLT_MANUFACTURER.xml' in f
+                ]
+                complete_step_ok = bool(rslt_mfr_final)
 
         # RSLT_MANUFACTURER error check
         rslt_mfr_ok = True
@@ -264,9 +289,11 @@ def build_summary_dataframe(result_dir: str) -> tuple[pd.DataFrame, list[str]]:
             success_list.append('OK')
             cpu_time.append(float(t_cpu[0]))
         else:
-            if 'timeout' in log:
+            with open(log) as fh:
+                timed_out = 'timeout' in fh.read().lower()
+            if timed_out:
                 success_list.append('ERROR Timeout')
-                cpu_time.append(float(_num_pattern.findall(log)[0]))
+                cpu_time.append(float(t_cpu[0]) if t_cpu else 0.0)
             elif vsum_ok and log_ok:
                 success_list.append('ERROR VIF')
                 cpu_time.append(0.0)
@@ -465,12 +492,17 @@ def build_crf_dataframe(result_dir: str) -> pd.DataFrame | None:
     for res_dir in res_dir_list:
         crf_files = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.RSLT_CUSTOMER.xml')]
         logs      = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.log')]
+        vsums     = [os.path.join(res_dir, f) for f in os.listdir(res_dir) if f.endswith('.vsum')]
 
-        if not crf_files or not logs:
+        if not crf_files or not logs or not vsums:
             continue
 
-        with open(logs[0]) as fh:
-            log_ok = any('[100.000%]' in line or '[100.00%]' in line for line in fh)
+        try:
+            df_vsum = pd.read_csv(vsums[0], skiprows=[0])[:-1]
+            log_ok = check_log_vsum_match(logs[0], df_vsum).ok
+        except Exception as exc:
+            print(f'  WARNING: log/vsum cross-check failed for {res_dir} ({exc}); skipping.')
+            continue
         if not log_ok:
             continue
 
@@ -584,6 +616,80 @@ def write_report(result_dir: str, output_path: str) -> list[str]:
     return failed_names
 
 
+_MERGE_KEY_COLUMNS = {'Test_Name', 'case', *_VSUM_KEYID_ALL, *_CRF_KEY4CAT}
+_DERIVED_SHEETS = {'stats of non-zero variations'}
+
+
+def _report_number(path: str) -> int:
+    m = re.search(r'_(\d{4})_', os.path.basename(path))
+    return int(m.group(1)) if m else -1
+
+
+def _read_keyed_sheet(xls: pd.ExcelFile, sheet: str) -> tuple[pd.DataFrame, int]:
+    """Read a report sheet with its leading key columns as index (merged cells are forward-filled).
+    Returns (frame, number of index columns); 0 index columns means the sheet has no test-name key."""
+    header = pd.read_excel(xls, sheet_name=sheet, nrows=0).columns
+    n_index = 0
+    for col in header:
+        if col not in _MERGE_KEY_COLUMNS:
+            break
+        n_index += 1
+    if n_index == 0:
+        return pd.read_excel(xls, sheet_name=sheet), 0
+    return pd.read_excel(xls, sheet_name=sheet, index_col=list(range(n_index))), n_index
+
+
+def _write_keyed_sheet(writer: pd.ExcelWriter, df: pd.DataFrame, sheet: str) -> None:
+    """Write df like df.to_excel (MultiIndex rows merged) but by blanking repeated key cells instead of
+    creating merged ranges: the cells read back identically, and openpyxl's merged-range handling is
+    super-linear (minutes per sheet for ~10k rows)."""
+    flat = df.reset_index()
+    keys = list(flat.columns[:df.index.nlevels])
+    orig = flat[keys]
+    prev = orig.shift()
+    same_as_prev = (orig == prev) | (orig.isna() & prev.isna())
+    blank = same_as_prev.cumprod(axis=1).astype(bool)  # a level repeats only if all outer levels repeat too
+    if len(blank):
+        blank.iloc[0, :] = False
+    flat[keys] = orig.astype(object).mask(blank)
+    flat.to_excel(writer, sheet_name=sheet, index=False)
+
+
+def merge_or_reports(existing_path: str, new_path: str, output_path: str) -> None:
+    """Write output_path = existing report with every test case found in the new report replaced
+    by the new report's rows (cases only in the new report are added). The derived statistics
+    sheet is dropped because it would describe only part of the merged data."""
+    with pd.ExcelFile(existing_path) as existing, pd.ExcelFile(new_path) as new:
+        new_frames = {}
+        new_cases = set()
+        for sheet in new.sheet_names:
+            if sheet in _DERIVED_SHEETS:
+                continue
+            df, n_index = _read_keyed_sheet(new, sheet)
+            new_frames[sheet] = (df, n_index)
+            if n_index:
+                new_cases.update(df.index.get_level_values(0))
+
+        sheets = [s for s in existing.sheet_names if s not in _DERIVED_SHEETS]
+        sheets += [s for s in new_frames if s not in sheets]
+
+        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+            for sheet in sheets:
+                new_df, n_index = new_frames.get(sheet, (None, 0))
+                if sheet in existing.sheet_names:
+                    old_df, old_index = _read_keyed_sheet(existing, sheet)
+                    if old_index:
+                        old_df = old_df[~old_df.index.get_level_values(0).isin(new_cases)]
+                        merged = old_df if new_df is None else pd.concat([old_df, new_df])
+                        _write_keyed_sheet(writer, merged.sort_index(), sheet)
+                    else:
+                        old_df.to_excel(writer, sheet_name=sheet, index=False)
+                elif n_index:
+                    _write_keyed_sheet(writer, new_df, sheet)
+                else:
+                    new_df.to_excel(writer, sheet_name=sheet, index=False)
+
+
 def refresh_mr_report() -> None:
     """Generate a fresh MR OR report, replacing any existing one in _mr_reports_cache.
 
@@ -618,6 +724,56 @@ def refresh_mr_report() -> None:
     print(f'MR report written: {mr_output_path}')
 
 
+def refresh_ref_report() -> None:
+    """Generate a fresh reference OR report from <ref-vecto-root> results,
+    replacing any existing report for that version in _reports_cache.
+
+    Mirrors refresh_mr_report(). Called unconditionally whenever
+    --ref-vecto-root is supplied; no-ops if it is absent or its
+    XX_RESULTS/<ref_version> results aren't available yet.
+    """
+    if not args.ref_vecto_root:
+        print('--ref-vecto-root not supplied - cannot generate reference report.')
+        return
+
+    ref_version = get_vecto_version(args.ref_vecto_root)
+    if ref_version == 'unknown':
+        print(f'WARNING: could not determine the reference VECTO version from --ref-vecto-root '
+              f'"{args.ref_vecto_root}" (no vectocmd there?). It must point to the versioned VECTO folder.')
+    ref_result_dir = os.path.join(os.getcwd(), 'XX_RESULTS', ref_version)
+    if not os.path.isdir(ref_result_dir):
+        print(f'Reference result dir not found at {ref_result_dir} - skipping reference report.')
+        return
+
+    old_reports = glob.glob(os.path.join(_reports_cache, f'OR_{ref_version}_*.xlsx'))
+    ref_hash = get_vecto_hash(args.ref_vecto_root)
+    ref_nnnn = get_next_report_number(_reports_cache)
+    ref_output_path = os.path.join(_reports_cache, f'OR_{ref_version}_{date}_{ref_nnnn}_{ref_hash}.xlsx')
+
+    # XX_RESULTS only holds this run's reference jobs, so merge them into the existing reference report
+    # instead of replacing it, otherwise all previously simulated vehicles would be lost.
+    latest_old = max(old_reports, key=_report_number, default=None)
+    if latest_old is None:
+        write_report(ref_result_dir, ref_output_path)
+    else:
+        new_part = ref_output_path + '.new.xlsx'
+        write_report(ref_result_dir, new_part)
+        try:
+            merge_or_reports(latest_old, new_part, ref_output_path)
+            print(f'Merged new reference results into {os.path.basename(latest_old)}')
+        except Exception as exc:
+            print(f'WARNING: could not merge with existing reference report {latest_old} ({exc}); '
+                  f'writing the new results only.')
+            shutil.copyfile(new_part, ref_output_path)
+        finally:
+            os.remove(new_part)
+
+    for _old in old_reports:
+        os.remove(_old)
+        print(f'Removed old reference report: {_old}')
+    print(f'Reference report written: {ref_output_path}')
+
+
 def purge_old_failed_reports(failed_reports_dir: str, max_age_days: int = 10) -> None:
     if not os.path.isdir(failed_reports_dir):
         return
@@ -648,8 +804,13 @@ def copy_failed_outputs(failed_names: list[str], src_result_dir: str, dest_dir: 
 
 
 def main() -> None:
-    # When --is-mr-run is set, regenerate the MR OR report first so the
-    # Intermediate Delta reflects the latest MR build in this same pipeline run.
+    # Regenerate the reference OR report first, whenever possible, so the
+    # reference Delta reflects this same pipeline run instead of an earlier,
+    # separately-produced report. When --is-mr-run is set, do the same for
+    # the MR OR report.
+    print('--- Generating reference OR report ---')
+    refresh_ref_report()
+
     if args.is_mr_run:
         print('--- Generating MR OR report ---')
         refresh_mr_report()
@@ -664,7 +825,7 @@ def main() -> None:
         print(f'Copying {len(failed_names)} failed vehicle(s) to: {dest}')
         copy_failed_outputs(failed_names, result_dir, dest)
 
-    ref_report = get_latest_release_report(_reports_cache, vecto_root)
+    ref_report = get_latest_release_report(_reports_cache, args.release_tag)
     if ref_report and ref_report != output_path:
         generate_delta_report(ref_report, output_path)
         append_delta_to_report(ref_report, output_path)

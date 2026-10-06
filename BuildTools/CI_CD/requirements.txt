@@ -5,3 +5,4 @@ openpyxl
 ordered-set
 patool
 python-gitlab
+pyzipper

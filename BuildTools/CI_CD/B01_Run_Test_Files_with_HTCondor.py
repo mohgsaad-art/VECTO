@@ -14,11 +14,12 @@ import subprocess
 import time
 import os
 
+from FUNCTIONS.SECURE_ZIP import get_zip_password
+
 SUBMIT_TEMPLATE = 'B11_HTCondor_Submit_Template.sh'
 SUBMIT_GENERATED = 'htc_submit_run_VECTO_generated.sh'
 
-POLL_INTERVAL_SECONDS = 600 # 10 minutes
-MAX_WAIT_SECONDS = 10 * 3600  # 10 hours
+POLL_INTERVAL_SECONDS = 600   # 10 minutes
 
 parser = argparse.ArgumentParser(
     description='Submit VECTO test cases to HTCondor and wait for completion.'
@@ -48,6 +49,11 @@ parser.add_argument(
     help='Directory containing OR_*.xlsx report files used to detect missing vehicles for the reference version.'
 )
 parser.add_argument(
+    '--release-tag',
+    default=None,
+    help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is used as the reference report (passed through to B12).'
+)
+parser.add_argument(
     '--limit',
     type=int,
     default=None,
@@ -55,6 +61,9 @@ parser.add_argument(
     help='Limit the number of jobs submitted to HTCondor to the first N entries in the queue file.'
 )
 args = parser.parse_args()
+
+# Jobs zip their outputs with this password (forwarded by the submit template); fail before submitting.
+get_zip_password()
 
 if not os.path.exists(args.vecto_root):
     raise FileNotFoundError(f'VECTO path does not exist: {args.vecto_root}')
@@ -77,7 +86,8 @@ print('Generating queue file...')
 print(f'--- vecto ref root: "{args.ref_vecto_root}"')
 _ref_arg = f' --ref-vecto-root "{args.ref_vecto_root}"' if args.ref_vecto_root else ''
 _cache_arg = f' --reports-cache "{args.reports_cache}"' if args.reports_cache else ''
-output32 = run(f'python B12_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}')
+_tag_arg = f' --release-tag "{args.release_tag}"' if args.release_tag else ''
+output32 = run(f'python B12_Generate_HTCondor_Queue.py "{vecto_root}" "{test_pool_path}"{_ref_arg}{_cache_arg}{_tag_arg}')
 print(output32)
 
 # --- Step 1b: Truncate queue file if --limit is set ---
@@ -109,7 +119,7 @@ print('Waiting for HTCondor jobs to complete...')
 t_start = time.time()
 t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
-while time.time() - t_start < MAX_WAIT_SECONDS:
+while True:
     if time.time() >= t_next_check:
         queue_status = run('condor_q')
         print(queue_status)
@@ -121,13 +131,17 @@ while time.time() - t_start < MAX_WAIT_SECONDS:
         t_next_check = time.time() + POLL_INTERVAL_SECONDS
 
 # --- Step 5: Extract result files ---
+# --suffix scopes each B14 call to one VECTO version's result archives.
 print('Extracting result files...')
 run(f'python B14_Unzip_Results.py "{vecto_root}"')
 
 if args.ref_vecto_root:
+    print('Extracting reference result files...')
+    run(f'python B14_Unzip_Results.py "{args.ref_vecto_root}" --suffix _REF')
+
     mr_vecto_root = os.path.join(args.ref_vecto_root, 'MR')
     if os.path.isdir(mr_vecto_root):
         print('Extracting MR result files...')
-        output = run(f'python B14_Unzip_Results.py "{mr_vecto_root}"')
+        run(f'python B14_Unzip_Results.py "{mr_vecto_root}" --suffix _MR')
 
 print('Done.')

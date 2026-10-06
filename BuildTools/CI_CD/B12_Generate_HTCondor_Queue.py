@@ -10,8 +10,10 @@ format expected by the HTCondor submit script:
 
 When --ref-vecto-root is supplied, missing vehicles (those absent from the
 latest OR report for the reference version) are appended as additional jobs
-using the reference executable. This enables Case 1 backward-compatibility
-delta comparison via C44.
+using the reference executable, with output filenames suffixed '_REF' (or
+'_MR' for a <ref-vecto-root>/MR build) so B14 can later route each result
+archive to its own VECTO version's folder. This enables Case 1 backward-
+compatibility delta comparison via C44.
 """
 
 import argparse
@@ -33,11 +35,13 @@ def _load_extract_missing():
     return mod
 
 
-def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache):
+def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache, release_tag=None, allow_prerelease=False):
     """Return the set of vehicle IDs present in the pool but absent from the latest reference OR report."""
     pool_ids = em.get_vehicle_ids_from_pool(test_pool_path)
 
-    ref_report = em.find_latest_report(reports_cache, ref_vecto_root)
+    print(f'Reports cache: {reports_cache}')
+    print(f'Reference VECTO root: {ref_vecto_root}')
+    ref_report = em.find_latest_report(reports_cache, release_tag, allow_prerelease)
     if ref_report is None:
         print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
         ref_report_ids = set()
@@ -82,6 +86,12 @@ parser.add_argument(
     default=None,
     help='Directory containing OR_*.xlsx report files used to detect missing vehicles for the reference version. '
          'Defaults to the standard CI Reports directory.'
+)
+parser.add_argument(
+    '--release-tag',
+    default=None,
+    help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is used as the reference report. '
+         'Defaults to looking up the release tags in the git repository.'
 )
 args = parser.parse_args()
 
@@ -130,9 +140,14 @@ if not force_rerun:
 if args.no_hev:
     job_args = [a for a in job_args if 'HEV' not in a[2]]
 
-def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input_root, force_rerun, no_hev):
-    """Return job-arg tuples for vehicles missing from the given vecto_root's latest OR report."""
-    missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache)
+def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input_root, force_rerun, no_hev, suffix,
+                            release_tag=None):
+    """Return job-arg tuples for vehicles missing from the given vecto_root's
+    latest OR report. suffix ('_REF' or '_MR') is appended to each output
+    filename so B14 can later tell which VECTO version produced it. Only the
+    MR reports cache may pick an RC/DEV report as reference."""
+    missing_ids = get_missing_ids(em, test_pool_path, vecto_root, reports_cache, release_tag,
+                                  allow_prerelease=(suffix == '_MR'))
     missing_dirs = em.resolve_input_dirs(missing_ids, test_pool_path)
     print(f'Identified {len(missing_ids)} missing vehicle(s) for VECTO version at {vecto_root}')
 
@@ -144,7 +159,7 @@ def _build_missing_job_args(em, vecto_root, test_pool_path, reports_cache, input
     job_list = []
     for input_dir in missing_dirs:
         rel = os.path.normpath(os.path.relpath(input_dir, input_root))
-        output_filename = rel.replace(os.sep, '__') + '_REF'
+        output_filename = rel.replace(os.sep, '__') + suffix
         if not force_rerun and output_filename + '_out.zip' in existing:
             continue
         print(f'Queuing job for missing vehicle: {output_filename}')
@@ -166,7 +181,7 @@ if args.ref_vecto_root:
     print('--- ref-vecto-root supplied, extracting missing vehicles for reference jobs')
     ref_job_args, ref_missing_count = _build_missing_job_args(
         em, args.ref_vecto_root, test_pool_path,
-        reports_cache, input_root, force_rerun, args.no_hev,
+        reports_cache, input_root, force_rerun, args.no_hev, '_REF', args.release_tag,
     )
     print(f'Missing from reference report: {ref_missing_count} vehicle(s)')
     print(f'Reference version jobs queued: {len(ref_job_args)}')
@@ -178,7 +193,7 @@ if args.ref_vecto_root:
         mr_reports_cache = os.path.join(reports_cache, 'MR')
         mr_job_args, mr_missing_count = _build_missing_job_args(
             em, mr_vecto_root, test_pool_path,
-            mr_reports_cache, input_root, force_rerun, args.no_hev,
+            mr_reports_cache, input_root, force_rerun, args.no_hev, '_MR', args.release_tag,
         )
         print(f'Missing from MR report: {mr_missing_count} vehicle(s)')
         print(f'MR version jobs queued: {len(mr_job_args)}')

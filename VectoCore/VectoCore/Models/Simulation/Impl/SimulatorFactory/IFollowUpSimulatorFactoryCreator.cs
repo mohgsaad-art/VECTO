@@ -17,7 +17,7 @@ using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.
 namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 {
     public interface IFollowUpSimulatorFactoryCreator
-	{ 
+	{
 		ISimulatorFactory GetNextFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries);
 
 		IOutputDataWriter CurrentStageOutputDataWriter { get; }
@@ -75,8 +75,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			_originalDeclarationReport = originalDeclarationReport;
 			_currentStageOutputDataWriter =
 				new TempFileOutputWriter(
-					originalReportWriter, 
-					ReportType.DeclarationReportManufacturerXML, 
+					originalReportWriter,
+					ReportType.DeclarationReportManufacturerXML,
 					ReportType.DeclarationReportMonitoringXML);
 
 			_currentStageDeclarationReport =
@@ -94,7 +94,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			var aborted = progressEntries.Where(e => e.Value.Error != null).ToArray();
 			if (aborted.Any()) {
 				throw new VectoException(
-					"Not all primary cycle runs finished successfully!", 
+					"Not all primary cycle runs finished successfully!",
 					ErrorCodes.SIMFACTORY_FOLLOWUP_PRIMARY_FAILED,
 					"Make sure all primary cycle runs complete successfully to be able to continue with the follow-up simulation.");
 			}
@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
     }
 
-	
+
 	public class CompletedAfterInterimPrimaryFactoryCreator : FollowUpSimulatorFactoryCreator
 	{
 		private readonly IXMLInputDataReader _xmlInputDataReader;
@@ -139,7 +139,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			IOutputDataWriter originalOutputDataWriter,
 			IDeclarationReport originalDeclarationReport,
 			IXMLInputDataReader inputDataReader,
-			ISimulatorFactoryFactory simulatorFactoryFactory, 
+			ISimulatorFactoryFactory simulatorFactoryFactory,
 			bool validate) : base(simulatorFactoryFactory, validate)
 		{
 			_currentStageOutputDataWriter = originalOutputDataWriter;
@@ -149,6 +149,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			_xmlInputDataReader = inputDataReader;
 
 		}
+		
 		public override ISimulatorFactory GetNextFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries)
 		{
 			if (!_originalInputData.SimulateResultingVIF) {

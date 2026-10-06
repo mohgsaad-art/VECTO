@@ -167,7 +167,7 @@ assert (_pp := next_fpath("foo{}", also_last=True)) == (Path("foo0"), None), _pp
 
 def get_issue_id_from_path(fpath: Path | str) -> str:
     filep = str(fpath)
-    regexp = r"[0-9]{4}"
+    regexp = r"[\\/]([0-9]{4})[\\/]"
     iids = re.findall(regexp, filep)
     iid=None
     if iids:
@@ -287,6 +287,21 @@ def find_VINs(link_txt: str) -> list[str]:
     return list(oset(VIN_list))
 
 T_scan = TypedDict("T_scan", {"iid": int, "links": list[str], "VINs": list[str]})
+def _chronological_links(issue: dict, notes: list[dict]) -> list[str]:
+    """Upload links ordered oldest first, by note date (updated_at, else created_at)."""
+    texts = [(issue.get("created_at") or "", "\n".join([issue.get("title") or "", issue.get("description") or ""]))]
+    texts += [(note.get("updated_at") or note.get("created_at") or "", note.get("body") or "") for note in notes]
+    texts.sort(key=lambda dated_text: dated_text[0])
+
+    links: list[str] = []
+    for _, text in texts:
+        for link in find_links(text):
+            if link in links:
+                links.remove(link)
+            links.append(link)
+    return links
+
+
 def scan_issue_files(datafiles: list) -> list[T_scan]:
     all_scans = []
     for datafile in datafiles:
@@ -315,7 +330,7 @@ def scan_issue_files(datafiles: list) -> list[T_scan]:
             # "closed_at": issue_dict["closed_at"],
             # "label_events": label_events,
             "VINs": find_VINs("\n".join([title, desc])),
-            "links": find_links(text_blob),
+            "links": _chronological_links(issue_dict, issue_data["notes"]),
         }
         if "assword" in text_blob:
             scanned["pswd"] = True

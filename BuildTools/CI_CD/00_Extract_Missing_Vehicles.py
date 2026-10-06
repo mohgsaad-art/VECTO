@@ -13,22 +13,11 @@ Implements the "Case 2" check described in fuego_server_concept.md:
 
 import argparse
 import os
-import re
 import sys
 
 import pandas as pd
 
-from FUNCTIONS.REPORTS import (
-    get_default_report_dir,
-    get_latest_vecto_release,
-    get_latest_vecto_releases_by_type,
-)
-from FUNCTIONS.VECTO import get_vecto_git_root
-
-# ---------------------------------------------------------------------------
-# Report filename regex - matches OR_{Version}_{Date}_{NNNN}_{Hash}.xlsx
-# ---------------------------------------------------------------------------
-_REPORT_RE = re.compile(r'^OR_(.+)_\d{6}_(\d{4})_[0-9a-f]+\.xlsx$')
+from FUNCTIONS.REPORTS import get_default_report_dir, get_latest_release_report
 
 
 # ---------------------------------------------------------------------------
@@ -60,56 +49,15 @@ def get_vehicle_ids_from_pool(test_pool_path: str) -> set[str]:
 # Report
 # ---------------------------------------------------------------------------
 
-def find_latest_report(reports_cache: str, vecto_root: str) -> str | None:
-    """Return the path of the most relevant OR summary report in reports_cache.
+def find_latest_report(reports_cache: str, release_tag: str | None = None,
+                       allow_prerelease: bool = False) -> str | None:
+    """Return the path of the reference OR summary report in reports_cache.
 
-    Search order (matches C01.get_latest_release_report):
-      1. Latest published Release/v* git tag
-      2. Latest official, then RC, then DEV release tag
-      3. Fallback: report with the highest NNNN in the cache
+    See FUNCTIONS.REPORTS.get_latest_release_report: the report matching release_tag
+    if any, otherwise the highest version/date/NNNN (RC/DEV only with allow_prerelease).
     Returns None if the cache directory is empty or missing.
     """
-    if not os.path.isdir(reports_cache):
-        return None
-
-    def _best_for_version(tag_version: str) -> str | None:
-        best_nnnn, best_path = -1, None
-        for fname in os.listdir(reports_cache):
-            m = _REPORT_RE.match(fname)
-            if not m or m.group(1) != tag_version:
-                continue
-            nnnn_val = int(m.group(2))
-            if nnnn_val > best_nnnn:
-                best_nnnn, best_path = nnnn_val, os.path.join(reports_cache, fname)
-        return best_path
-
-    git_root = get_vecto_git_root(vecto_root) or vecto_root
-    latest_tag = get_latest_vecto_release(git_root)
-    by_type = get_latest_vecto_releases_by_type(git_root)
-
-    candidates = []
-    if latest_tag:
-        candidates.append(latest_tag)
-    for key in ('official', 'rc', 'dev'):
-        tag = by_type.get(key)
-        if tag and tag not in candidates:
-            candidates.append(tag)
-
-    for tag in candidates:
-        result = _best_for_version(tag.removeprefix('Release/v'))
-        if result:
-            return result
-
-    # Fallback: highest NNNN regardless of version
-    best_nnnn, best_path = -1, None
-    for fname in os.listdir(reports_cache):
-        m = _REPORT_RE.match(fname)
-        if not m:
-            continue
-        nnnn_val = int(m.group(2))
-        if nnnn_val > best_nnnn:
-            best_nnnn, best_path = nnnn_val, os.path.join(reports_cache, fname)
-    return best_path
+    return get_latest_release_report(reports_cache, release_tag, allow_prerelease)
 
 
 def get_vehicle_ids_from_report(report_path: str) -> set[str]:
@@ -169,7 +117,7 @@ def main() -> None:
     )
     parser.add_argument(
         'vecto_root',
-        help='Path to the VECTO installation directory (used to resolve git tags).',
+        help='Path to the VECTO installation directory.',
     )
     parser.add_argument(
         'test_pool_path',
@@ -179,6 +127,16 @@ def main() -> None:
         '--reports-cache',
         default=None,
         help='Directory containing OR_*.xlsx report files. Defaults to D:/CI/Reports or C:/CI/Reports.',
+    )
+    parser.add_argument(
+        '--release-tag',
+        default=None,
+        help='Release tag (e.g. Release/v5.1.4-DEV) whose OR report is preferred as the reference report.',
+    )
+    parser.add_argument(
+        '--allow-prerelease',
+        action='store_true',
+        help='Also consider RC/DEV reports when no report matches the release tag (MR reports cache).',
     )
     parser.add_argument(
         '--output',
@@ -196,7 +154,7 @@ def main() -> None:
 
     pool_ids = get_vehicle_ids_from_pool(args.test_pool_path)
 
-    report_path = find_latest_report(reports_cache, args.vecto_root)
+    report_path = find_latest_report(reports_cache, args.release_tag, args.allow_prerelease)
     if report_path is None:
         print(f'No OR report found in: {reports_cache}')
         print('All pool vehicles are considered missing.')

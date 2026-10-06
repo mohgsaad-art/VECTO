@@ -6,27 +6,10 @@ Created on Wed Jul  3 10:23:50 2024
 """
 import os
 import json
-import subprocess
 import pandas as pd
 import copy
 from lxml import etree
 import re
-
-def get_vecto_git_root(path: str) -> str | None:
-    """Walk up from path until a git repository root is found.
-
-    Uses 'git -C <path> rev-parse --show-toplevel' which automatically
-    traverses parent directories. Returns the repo root path, or None
-    if no git repository is found.
-    """
-    result = subprocess.run(
-        f'git -C "{path}" rev-parse --show-toplevel',
-        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True
-    )
-    if result.returncode != 0:
-        return None
-    return result.stdout.decode('utf-8').strip()
-
 
 def get_environment():
     try:

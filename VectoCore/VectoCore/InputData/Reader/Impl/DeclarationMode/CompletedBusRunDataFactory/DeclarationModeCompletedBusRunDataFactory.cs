@@ -594,7 +594,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 			{
 				if (PrimaryVehicle.ArchitectureID.IsOneOf(ArchitectureID.S2, ArchitectureID.S_IEPC))
 				{
-					throw new ArgumentException(nameof(PrimaryVehicle.ArchitectureID));
+					throw new VectoException(
+						$"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+						ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
 				}
 				runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters()
 				{
@@ -621,7 +623,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 			{
 				if (PrimaryVehicle.ArchitectureID != ArchitectureID.S2)
 				{
-					throw new ArgumentException(nameof(PrimaryVehicle));
+					throw new VectoException(
+						$"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+						ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
 				}
 
 				var gbxInput = PrimaryVehicle.Components.GearboxInputData;
@@ -1145,7 +1149,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
             {
                 if (PrimaryVehicle.ArchitectureID == ArchitectureID.F2)
                 {
-                    throw new ArgumentException();
+                    throw new VectoException(
+                        $"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+                        ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
                 }
 
                 runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters()
@@ -1171,7 +1177,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
             {
                 if (PrimaryVehicle.ArchitectureID != ArchitectureID.F2)
                 {
-                    throw new ArgumentException(nameof(PrimaryVehicle));
+                    throw new VectoException(
+                        $"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+                        ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
                 }
 
                 var gbxInput = PrimaryVehicle.Components.GearboxInputData;
@@ -1402,7 +1410,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
 				if (PrimaryVehicle.ArchitectureID == ArchitectureID.E2) {
-					throw new ArgumentException();
+					throw new VectoException(
+						$"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+						ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
 				}
 				runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
@@ -1424,7 +1434,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
 				if (PrimaryVehicle.ArchitectureID != ArchitectureID.E2) {
-					throw new ArgumentException(nameof(PrimaryVehicle));
+					throw new VectoException(
+						$"Unsupported architecture '{PrimaryVehicle.ArchitectureID}' for completed bus gearbox/gearshift data",
+						ErrorCodes.VEHICLE_ARCHITECTURE_MISMATCH);
 				}
 
 				var gbxInput = PrimaryVehicle.Components.GearboxInputData;
