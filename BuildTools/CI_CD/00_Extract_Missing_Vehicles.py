@@ -87,6 +87,10 @@ def find_latest_report(reports_cache: str, vecto_root: str) -> str | None:
     latest_tag = get_latest_vecto_release(git_root)
     by_type = get_latest_vecto_releases_by_type(git_root)
 
+    print(f'--- git_root: {git_root}')
+    print(f'--- latest_tag: {latest_tag}')
+    print(f'--- by_type: {by_type}')
+
     candidates = []
     if latest_tag:
         candidates.append(latest_tag)

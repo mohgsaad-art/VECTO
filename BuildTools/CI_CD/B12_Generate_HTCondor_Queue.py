@@ -39,6 +39,8 @@ def get_missing_ids(em, test_pool_path, ref_vecto_root, reports_cache):
     """Return the set of vehicle IDs present in the pool but absent from the latest reference OR report."""
     pool_ids = em.get_vehicle_ids_from_pool(test_pool_path)
 
+    print(f'Reports cache: {reports_cache}')
+    print(f'Reference VECTO root: {ref_vecto_root}')
     ref_report = em.find_latest_report(reports_cache, ref_vecto_root)
     if ref_report is None:
         print(f'No OR report found in {reports_cache} for reference version - treating all pool vehicles as missing.')
