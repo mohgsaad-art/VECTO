@@ -83,7 +83,11 @@ def find_latest_report(reports_cache: str, vecto_root: str) -> str | None:
                 best_nnnn, best_path = nnnn_val, os.path.join(reports_cache, fname)
         return best_path
 
-    git_root = get_vecto_git_root(vecto_root) or vecto_root
+    # Resolve release tags from the repo these scripts live in: vecto_root is often a
+    # copied VECTO build outside any checkout (e.g. the reference version under REF_VECTO_ROOT).
+    git_root = (get_vecto_git_root(os.path.dirname(os.path.abspath(__file__)))
+                or get_vecto_git_root(vecto_root)
+                or vecto_root)
     latest_tag = get_latest_vecto_release(git_root)
     by_type = get_latest_vecto_releases_by_type(git_root)
 
